@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "63993951087",
+    "firebase_url": "https://photoday-33237.firebaseio.com",
+    "project_id": "photoday-33237",
+    "storage_bucket": "photoday-33237.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63993951087:android:5f30bc2668abbce32c2e9a",
+        "android_client_info": {
+          "package_name": "com.example.photoday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "63993951087-p075a4oa7905pf439v3t46nirm5114q6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.photoday",
+            "certificate_hash": "3c0786117417b3ceab66f8514c872e86cdcaf568"
+          }
+        },
+        {
+          "client_id": "63993951087-inqbcuolqastbcqamqv3okq62sak58a2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEgVunRv4MwGYbbh_hzDu0xz4aiG4eGGo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "63993951087-inqbcuolqastbcqamqv3okq62sak58a2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
