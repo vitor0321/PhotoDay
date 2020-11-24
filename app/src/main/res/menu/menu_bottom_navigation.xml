@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/timelineFragment"
+        android:title="@string/timeline"
+        android:icon="@drawable/ic_timeline_foreground"/>
+
+    <item
+        android:id="@+id/calendarFragment"
+        android:title="@string/calendar"
+        android:icon="@drawable/ic_calendar_foreground"/>
+
+    <item
+        android:id="@+id/galleryFragment"
+        android:title="@string/gallery"
+        android:icon="@drawable/ic_gallery_foreground"/>
+</menu>

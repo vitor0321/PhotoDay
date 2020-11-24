@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/timelineFragment">
+
+    <fragment
+        android:id="@+id/timelineFragment"
+        android:name="com.example.photoday.ui.fragments.timeline.TimelineFragment"
+        android:label="Timeline"
+        android:layout="@layout/fragment_timeline"
+        tools:layout="@layout/fragment_timeline" />
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.photoday.ui.fragments.calendar.CalendarFragment"
+        android:label="Calendar"
+        android:layout="@layout/fragment_calendar"
+        tools:layout="@layout/fragment_calendar" />
+
+    <fragment
+        android:id="@+id/galleryFragment"
+        android:name="com.example.photoday.ui.fragments.gallery.GalleryFragment"
+        android:label="Gallery"
+        android:layout="@layout/fragment_gallery"
+        tools:layout="@layout/fragment_gallery">
+
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_loginFragment"
+        app:destination="@id/login_graph"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        app:popUpTo="@id/timelineFragment"
+        app:popUpToInclusive="true" />
+    <navigation
+        android:id="@+id/login_graph"
+        android:label="Graph Login"
+        app:startDestination="@id/loginFragment">
+        <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.example.photoday.ui.fragments.login.LoginFragment"
+            android:label="Login"
+            tools:layout="@layout/fragment_login">
+            <action
+                android:id="@+id/action_loginFragment_to_oneFragment"
+                app:destination="@id/timelineFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/loginFragment"
+                app:popUpToInclusive="true" />
+            <action
+                android:id="@+id/action_loginFragment_to_register"
+                app:destination="@id/register"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpToInclusive="false" />
+        </fragment>
+        <fragment
+            android:id="@+id/register"
+            android:name="com.example.fragmenttest.fragment.register.Register"
+            android:label="Register"
+            tools:layout="@layout/fragment_register_user">
+            <action
+                android:id="@+id/action_register_to_loginFragment"
+                app:destination="@id/loginFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/loginFragment"
+                app:popUpToInclusive="true" />
+        </fragment>
+    </navigation>
+</navigation>
