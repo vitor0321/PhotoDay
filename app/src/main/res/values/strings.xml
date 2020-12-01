@@ -10,4 +10,7 @@
     <string name="timeline">Timeline</string>
     <string name="calendar">Calendar</string>
     <string name="gallery">Gallery</string>
+    <string name="nome">Nome</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
 </resources>

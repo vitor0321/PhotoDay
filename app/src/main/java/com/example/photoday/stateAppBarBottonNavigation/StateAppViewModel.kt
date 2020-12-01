@@ -1,25 +1,30 @@
-package com.example.fragmenttest.activity.state
+package com.example.photoday.stateAppBarBottonNavigation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.view.View
+import androidx.appcompat.app.ActionBar
 import androidx.lifecycle.ViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class StateAppViewModel : ViewModel() {
 
-        /*LiveData publico, que pode ser usado*/
-        val components: LiveData<Components> get() = _components
-
-        /*LiveData privado que será usado somente pela classe*/
-        private val _components = MutableLiveData<Components>().also {
-            it.value = hasComponents
+    fun state(
+        components: Components,
+        supportActionBar: ActionBar?,
+        main_activity_nav_bottom: BottomNavigationView?
+    ) {
+        when {
+            /*aqui vai ativar ou não a actionBar*/
+            components.appBar -> supportActionBar?.show()
+            !components.appBar -> supportActionBar?.hide()
         }
-
-        var hasComponents: Components = Components()
-        set(value) {
-            field = value
-            _components.value = value
+        when {
+            /*aqui vai ativar ou não o Bottom navegation*/
+            components.bottomNavigation ->
+                main_activity_nav_bottom?.visibility = View.VISIBLE
+            !components.bottomNavigation ->
+                main_activity_nav_bottom?.visibility = View.GONE
         }
-
+    }
 }
 
 

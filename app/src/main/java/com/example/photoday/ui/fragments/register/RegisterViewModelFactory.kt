@@ -1,4 +1,4 @@
-package com.example.fragmenttest.fragment.register
+package com.example.photoday.ui.fragments.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

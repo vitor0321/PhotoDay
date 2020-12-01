@@ -1,4 +1,4 @@
-package com.example.fragmenttest.activity.state
+package com.example.photoday.stateAppBarBottonNavigation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

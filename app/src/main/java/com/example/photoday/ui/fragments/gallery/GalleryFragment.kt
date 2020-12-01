@@ -1,19 +1,20 @@
 package com.example.photoday.ui.fragments.gallery
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.example.fragmenttest.activity.state.Components
 import com.example.photoday.R
-import com.example.photoday.ui.fragments.base.BaseFragment
 import com.example.photoday.injector.ViewModelInjector
+import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
+import com.example.photoday.ui.fragments.base.BaseFragment
 
-class GalleryFragment : BaseFragment(){
+class GalleryFragment : BaseFragment() {
 
     private val viewModel by lazy { ViewModelInjector.providerGalleryViewModel() }
-    private val stateViewModel  by lazy { ViewModelInjector.providerStateAppViewModel() }
+    private lateinit var sendDataToActivityInterface: SendDataToActivityInterface
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,6 +25,14 @@ class GalleryFragment : BaseFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        stateViewModel.hasComponents = Components(true,true)
+        /*enviando o status da AppBar e do Navigation a Activity*/
+        viewModel.stateAppBarNavigation(sendDataToActivityInterface)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val activity: Activity = context as Activity
+        /*ativando a interface para enviar dados a fragment*/
+        sendDataToActivityInterface = activity as SendDataToActivityInterface
     }
 }

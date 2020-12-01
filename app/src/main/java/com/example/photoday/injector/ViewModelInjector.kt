@@ -1,9 +1,9 @@
 package com.example.photoday.injector
 
-import com.example.fragmenttest.activity.state.StateAppViewModel
-import com.example.fragmenttest.activity.state.StateAppViewModelFactory
-import com.example.fragmenttest.fragment.register.RegisterViewModel
-import com.example.fragmenttest.fragment.register.RegisterViewModelFactory
+import com.example.photoday.stateAppBarBottonNavigation.StateAppViewModel
+import com.example.photoday.stateAppBarBottonNavigation.StateAppViewModelFactory
+import com.example.photoday.ui.fragments.register.RegisterViewModel
+import com.example.photoday.ui.fragments.register.RegisterViewModelFactory
 import com.example.photoday.repository.LoginRepositoryShared
 import com.example.photoday.ui.fragments.base.BaseViewModel
 import com.example.photoday.ui.fragments.base.BaseViewModelFactory
@@ -18,12 +18,12 @@ import com.example.photoday.ui.fragments.timeline.TimelineViewModelFatory
 
 object ViewModelInjector {
 
-    fun providerRegisterViewModel(): RegisterViewModel{
+    fun providerRegisterViewModel(): RegisterViewModel {
         return RegisterViewModelFactory()
             .create(RegisterViewModel::class.java)
     }
 
-    fun providerStateAppViewModel():StateAppViewModel{
+    fun providerStateAppViewModel(): StateAppViewModel {
         return StateAppViewModelFactory()
             .create(StateAppViewModel::class.java)
     }

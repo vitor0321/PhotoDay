@@ -5,7 +5,6 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.MainActivity"
     app:startDestination="@id/main_activity_nav_host">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
