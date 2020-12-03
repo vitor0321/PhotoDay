@@ -7,21 +7,21 @@
 
     <fragment
         android:id="@+id/timelineFragment"
-        android:name="com.example.photoday.ui.fragments.timeline.TimelineFragment"
+        android:name="com.example.photoday.ui.fragment.timeline.TimelineFragment"
         android:label="Timeline"
         android:layout="@layout/fragment_timeline"
         tools:layout="@layout/fragment_timeline" />
 
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.example.photoday.ui.fragments.calendar.CalendarFragment"
+        android:name="com.example.photoday.ui.fragment.calendar.CalendarFragment"
         android:label="Calendar"
         android:layout="@layout/fragment_calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/galleryFragment"
-        android:name="com.example.photoday.ui.fragments.gallery.GalleryFragment"
+        android:name="com.example.photoday.ui.fragment.gallery.GalleryFragment"
         android:label="Gallery"
         android:layout="@layout/fragment_gallery"
         tools:layout="@layout/fragment_gallery">
@@ -43,11 +43,11 @@
         app:startDestination="@id/loginFragment">
         <fragment
             android:id="@+id/loginFragment"
-            android:name="com.example.photoday.ui.fragments.login.LoginFragment"
+            android:name="com.example.photoday.ui.fragmentLogin.login.LoginFragment"
             android:label="Login"
             tools:layout="@layout/fragment_login">
             <action
-                android:id="@+id/action_loginFragment_to_oneFragment"
+                android:id="@+id/action_loginFragment_to_timelineFragment"
                 app:destination="@id/timelineFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
                 app:exitAnim="@anim/nav_default_exit_anim"
@@ -66,7 +66,7 @@
         </fragment>
         <fragment
             android:id="@+id/register"
-            android:name="com.example.photoday.ui.fragments.register.Register"
+            android:name="com.example.photoday.ui.fragment.register.Register"
             android:label="Register"
             tools:layout="@layout/fragment_register_user">
             <action

@@ -5,24 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_login_security"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_colorFilter="@color/orange"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/login_security" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_user_id"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:textColorHint="@color/orange_light"
         android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lottie_login_security"
         app:layout_constraintVertical_bias="0.0">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/id_user"
-            android:inputType="number"
+            android:hint="@string/email_user"
+            android:inputType="textEmailAddress"
             android:textSize="18sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -32,6 +45,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textColorHint="@color/orange_light"
         android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         app:layout_constraintEnd_toEndOf="@id/login_user_id"
         app:layout_constraintStart_toStartOf="@id/login_user_id"
@@ -42,7 +56,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
-            android:inputType="number"
+            android:inputType="textPassword"
+            android:textColorHint="@color/orange_light"
             android:textSize="18sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -64,7 +79,7 @@
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:text="@string/register_new_user"
-        android:textColor="@color/design_default_color_primary_dark"
+        android:textColor="@color/orange"
         app:layout_constraintEnd_toEndOf="@id/login_button_log"
         app:layout_constraintStart_toStartOf="@id/login_button_log"
         app:layout_constraintTop_toBottomOf="@id/login_button_log" />

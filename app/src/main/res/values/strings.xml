@@ -3,7 +3,7 @@
     <string name="photo_day">Photo Day</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="id_user">id User</string>
+    <string name="email_user">Email User</string>
     <string name="password">Password</string>
     <string name="login">login</string>
     <string name="register_new_user">Register New User</string>
@@ -13,4 +13,13 @@
     <string name="nome">Nome</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Register</string>
+    <string name="title_activity_splash_login">SplashLogin</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

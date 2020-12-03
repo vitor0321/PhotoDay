@@ -2,19 +2,19 @@ package com.example.photoday.injector
 
 import com.example.photoday.stateAppBarBottonNavigation.StateAppViewModel
 import com.example.photoday.stateAppBarBottonNavigation.StateAppViewModelFactory
-import com.example.photoday.ui.fragments.register.RegisterViewModel
-import com.example.photoday.ui.fragments.register.RegisterViewModelFactory
+import com.example.photoday.ui.fragment.register.RegisterViewModel
+import com.example.photoday.ui.fragment.register.RegisterViewModelFactory
 import com.example.photoday.repository.LoginRepositoryShared
-import com.example.photoday.ui.fragments.base.BaseViewModel
-import com.example.photoday.ui.fragments.base.BaseViewModelFactory
-import com.example.photoday.ui.fragments.calendar.CalendarViewModel
-import com.example.photoday.ui.fragments.calendar.CalendarViewModelFactory
-import com.example.photoday.ui.fragments.gallery.GalleryViewModel
-import com.example.photoday.ui.fragments.gallery.GalleryViewModelFactory
-import com.example.photoday.ui.fragments.login.LoginViewModel
-import com.example.photoday.ui.fragments.login.LoginViewModelFactory
-import com.example.photoday.ui.fragments.timeline.TimelineViewModel
-import com.example.photoday.ui.fragments.timeline.TimelineViewModelFatory
+import com.example.photoday.ui.fragment.base.BaseViewModel
+import com.example.photoday.ui.fragment.base.BaseViewModelFactory
+import com.example.photoday.ui.fragment.calendar.CalendarViewModel
+import com.example.photoday.ui.fragment.calendar.CalendarViewModelFactory
+import com.example.photoday.ui.fragment.gallery.GalleryViewModel
+import com.example.photoday.ui.fragment.gallery.GalleryViewModelFactory
+import com.example.photoday.ui.fragmentLogin.login.LoginViewModel
+import com.example.photoday.ui.fragmentLogin.login.LoginViewModelFactory
+import com.example.photoday.ui.fragment.timeline.TimelineViewModel
+import com.example.photoday.ui.fragment.timeline.TimelineViewModelFatory
 
 object ViewModelInjector {
 
@@ -28,7 +28,7 @@ object ViewModelInjector {
             .create(StateAppViewModel::class.java)
     }
 
-    fun providerLoginViewModel(repositoryShared: LoginRepositoryShared): LoginViewModel{
+    fun providerLoginViewModel(repositoryShared: LoginRepositoryShared): LoginViewModel {
         return LoginViewModelFactory(repositoryShared)
             .create(LoginViewModel::class.java)
     }
