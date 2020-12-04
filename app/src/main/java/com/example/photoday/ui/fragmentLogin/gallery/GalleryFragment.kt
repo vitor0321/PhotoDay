@@ -1,4 +1,4 @@
-package com.example.photoday.ui.fragment.gallery
+package com.example.photoday.ui.fragmentLogin.gallery
 
 import android.app.Activity
 import android.content.Context

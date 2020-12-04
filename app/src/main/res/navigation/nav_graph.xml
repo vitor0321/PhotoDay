@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/galleryFragment"
-        android:name="com.example.photoday.ui.fragment.gallery.GalleryFragment"
+        android:name="com.example.photoday.ui.fragmentLogin.gallery.GalleryFragment"
         android:label="Gallery"
         android:layout="@layout/fragment_gallery"
         tools:layout="@layout/fragment_gallery">

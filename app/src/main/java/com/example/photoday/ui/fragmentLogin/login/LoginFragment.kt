@@ -48,6 +48,7 @@ class LoginFragment : Fragment() {
             viewModel.login()
             val intent = Intent(activity, SplashGreetingLogin::class.java)
             startActivity(intent)
+            activity?.finish()
         }
         //Button para registar no login
         login_button_register.setOnClickListener {
