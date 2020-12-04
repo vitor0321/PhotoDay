@@ -1,4 +1,4 @@
-package com.example.photoday.ui.activity
+package com.example.photoday.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

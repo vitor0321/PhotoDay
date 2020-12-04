@@ -1,19 +1,21 @@
-package com.example.photoday.ui.fragmentLogin.login
+package com.example.photoday.ui.fragment.login
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.repository.LoginRepositoryShared
 import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
-import com.example.photoday.ui.fragmentLogin.splash.SplashGreetingLogin
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
@@ -36,20 +38,23 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init()
     }
 
     private fun init() {
+
+        /*mudar a cor do statusBar*/
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
+
         /*enviando o status da AppBar e do Navigation a Activity*/
         viewModel.stateAppBarNavigation(sendDataToActivityInterface)
+
         //Button para logar
         login_button_log.setOnClickListener {
             viewModel.login()
-            val intent = Intent(activity, SplashGreetingLogin::class.java)
-            startActivity(intent)
-            activity?.finish()
+            viewModel.navFragmentLogin(controlNavigation)
         }
+
         //Button para registar no login
         login_button_register.setOnClickListener {
             viewModel.navFragmentRegister(controlNavigation)

@@ -1,4 +1,4 @@
-package com.example.photoday.ui.fragmentLogin.gallery
+package com.example.photoday.ui.fragment.gallery
 
 import androidx.lifecycle.ViewModel
 import com.example.photoday.constants.TRUE

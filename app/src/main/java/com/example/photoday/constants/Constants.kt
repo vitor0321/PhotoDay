@@ -4,4 +4,4 @@ const val LOGIN_IN = "LOGIN_IN"
 const val TRUE = true
 const val FALSE = false
 
-const val SPLASH_TIME_OUT: Long = 3000
+const val SPLASH_TIME_OUT: Long = 2000

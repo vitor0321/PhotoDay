@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.repository.LoginRepositoryShared
+
 
 abstract class BaseFragment : Fragment() {
 
@@ -27,6 +29,9 @@ abstract class BaseFragment : Fragment() {
         /*para aparecer o menu quando for inflado*/
         setHasOptionsMenu(true)
         arguments?.let {}
+
+        /*mudar a cor do statusBar*/
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -1,4 +1,4 @@
-package com.example.photoday.ui.fragmentLogin.login
+package com.example.photoday.ui.fragment.login
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
@@ -19,7 +19,7 @@ class LoginViewModel(private val repository: LoginRepositoryShared) : ViewModel(
 
     fun navFragmentLogin(navFragment: NavController) {
         /*navegando entre fragment usando o Directions*/
-        val direction = LoginFragmentDirections.actionLoginFragmentToTimelineFragment()
+        val direction = LoginFragmentDirections.actionLoginFragmentToSplashLogin()
         navFragment.navigate(direction)
     }
 

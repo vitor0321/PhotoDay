@@ -1,4 +1,4 @@
-package com.example.photoday.ui.fragmentLogin.login
+package com.example.photoday.ui.fragment.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

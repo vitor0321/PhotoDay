@@ -1,7 +1,9 @@
-package com.example.photoday.ui.fragmentLogin.gallery
+package com.example.photoday.ui.fragment.gallery
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
+import android.icu.util.TimeUnit.values
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import com.example.photoday.R
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
 import com.example.photoday.ui.fragment.base.BaseFragment
+import java.time.chrono.JapaneseEra.values
 
 class GalleryFragment : BaseFragment() {
 
@@ -25,6 +28,7 @@ class GalleryFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         /*enviando o status da AppBar e do Navigation a Activity*/
         viewModel.stateAppBarNavigation(sendDataToActivityInterface)
     }

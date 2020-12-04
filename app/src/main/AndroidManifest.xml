@@ -25,15 +25,10 @@
         android:theme="@style/AppThemeActionBar"
         tools:replace="android:appComponentFactory"
         tools:targetApi="p" >
+
         <activity
-            android:screenOrientation="portrait"
-            android:name=".ui.fragmentLogin.splash.SplashGreetingLogin"
-            android:label="@string/title_activity_splash_login"
-            android:theme="@style/AppThemeActionBar.NoActionBar" >
-        </activity>
-        <activity
-            android:screenOrientation="portrait"
-            android:name=".ui.activity.MainActivity" >
+            android:name=".ui.MainActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,5 +40,4 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-
 </manifest>

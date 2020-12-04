@@ -9,10 +9,10 @@ import com.example.photoday.ui.fragment.base.BaseViewModel
 import com.example.photoday.ui.fragment.base.BaseViewModelFactory
 import com.example.photoday.ui.fragment.calendar.CalendarViewModel
 import com.example.photoday.ui.fragment.calendar.CalendarViewModelFactory
-import com.example.photoday.ui.fragmentLogin.gallery.GalleryViewModel
-import com.example.photoday.ui.fragmentLogin.gallery.GalleryViewModelFactory
-import com.example.photoday.ui.fragmentLogin.login.LoginViewModel
-import com.example.photoday.ui.fragmentLogin.login.LoginViewModelFactory
+import com.example.photoday.ui.fragment.gallery.GalleryViewModel
+import com.example.photoday.ui.fragment.gallery.GalleryViewModelFactory
+import com.example.photoday.ui.fragment.login.LoginViewModel
+import com.example.photoday.ui.fragment.login.LoginViewModelFactory
 import com.example.photoday.ui.fragment.timeline.TimelineViewModel
 import com.example.photoday.ui.fragment.timeline.TimelineViewModelFatory
 
