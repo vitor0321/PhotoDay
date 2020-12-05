@@ -25,6 +25,7 @@ abstract class BaseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         viewModel.init(loginViewModel, navFragment)
         /*para aparecer o menu quando for inflado*/
         setHasOptionsMenu(true)
@@ -41,8 +42,7 @@ abstract class BaseFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_fragment_login_app_bar -> {
-                loginViewModel.logout()
+            R.id.menu_fragment_base_app_bar -> {
                 viewModel.navFragmentLogin(navFragment)
             }
         }

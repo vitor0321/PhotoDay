@@ -9,6 +9,8 @@ import com.example.photoday.ui.fragment.base.BaseViewModel
 import com.example.photoday.ui.fragment.base.BaseViewModelFactory
 import com.example.photoday.ui.fragment.calendar.CalendarViewModel
 import com.example.photoday.ui.fragment.calendar.CalendarViewModelFactory
+import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
+import com.example.photoday.ui.fragment.configuration.ConfigurationViewModelFactory
 import com.example.photoday.ui.fragment.gallery.GalleryViewModel
 import com.example.photoday.ui.fragment.gallery.GalleryViewModelFactory
 import com.example.photoday.ui.fragment.login.LoginViewModel
@@ -17,6 +19,11 @@ import com.example.photoday.ui.fragment.timeline.TimelineViewModel
 import com.example.photoday.ui.fragment.timeline.TimelineViewModelFatory
 
 object ViewModelInjector {
+
+    fun providerConfigurationViewModel(): ConfigurationViewModel {
+        return ConfigurationViewModelFactory()
+            .create(ConfigurationViewModel::class.java)
+    }
 
     fun providerRegisterViewModel(): RegisterViewModel {
         return RegisterViewModelFactory()

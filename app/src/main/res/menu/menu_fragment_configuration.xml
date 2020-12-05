@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/menu_fragment_base_app_bar"
-        android:icon="@mipmap/ic_configuration"
+        android:id="@+id/menu_fragment_configuration_app_bar"
+        android:icon="@mipmap/ic_right_foreground"
         android:iconTint="@color/white"
         android:title="@string/configuration"
         app:showAsAction="always" />
+
 </menu>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.SplashLogin.SplashLogin">
+    tools:context=".ui.fragment.splashLogin.SplashLogin">
 
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="match_parent"
@@ -13,6 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:lottie_speed="2"
         app:lottie_autoPlay="true"
         app:lottie_colorFilter="@color/orange"
         app:lottie_loop="true"
