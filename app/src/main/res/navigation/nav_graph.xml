@@ -3,14 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/timelineFragment">
 
     <fragment
         android:id="@+id/timelineFragment"
         android:name="com.example.photoday.ui.fragment.timeline.TimelineFragment"
         android:label="Timeline"
         android:layout="@layout/fragment_timeline"
-        tools:layout="@layout/fragment_timeline" />
+        tools:layout="@layout/fragment_timeline" >
+        <action
+            android:id="@+id/action_timelineFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/calendarFragment"

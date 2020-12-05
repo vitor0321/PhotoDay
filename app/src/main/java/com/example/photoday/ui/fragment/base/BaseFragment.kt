@@ -1,5 +1,6 @@
 package com.example.photoday.ui.fragment.base
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.Menu
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.repository.LoginRepositoryShared
+import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
 
 
 abstract class BaseFragment : Fragment() {
