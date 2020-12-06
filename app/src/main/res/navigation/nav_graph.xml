@@ -14,8 +14,17 @@
         <action
             android:id="@+id/action_timelineFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/loginFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/timelineFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_timelineFragment_to_configurationFragment"
+            app:destination="@id/configurationFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/timelineFragment" />
     </fragment>
 
     <fragment
@@ -102,10 +111,11 @@
         android:label="fragment_configuration"
         tools:layout="@layout/fragment_configuration">
         <action
-            android:id="@+id/action_configurationFragment_to_loginFragment"
-            app:destination="@id/loginFragment"
+            android:id="@+id/action_configurationFragment_to_splashGoodbyeFragment"
+            app:destination="@id/splashGoodbyeFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/configurationFragment"
@@ -118,6 +128,22 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/configurationFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashGoodbyeFragment"
+        android:name="com.example.photoday.ui.fragment.splashGoodbye.SplashGoodbyeFragment"
+        android:label="fragment_splash_goodbye"
+        tools:layout="@layout/fragment_splash_goodbye" >
+        <action
+            android:id="@+id/action_splashGoodbyeFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>

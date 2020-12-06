@@ -1,6 +1,5 @@
 package com.example.photoday.ui.fragment.base
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.Menu
@@ -12,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.repository.LoginRepositoryShared
-import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
 
 
 abstract class BaseFragment : Fragment() {
@@ -28,7 +26,7 @@ abstract class BaseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.init(loginViewModel, navFragment)
+        init()
         /*para aparecer o menu quando for inflado*/
         setHasOptionsMenu(true)
         arguments?.let {}
@@ -49,5 +47,11 @@ abstract class BaseFragment : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun init() {
+        when {
+            loginViewModel.noIsLogin() -> viewModel.goToLogin(navFragment)
+        }
     }
 }

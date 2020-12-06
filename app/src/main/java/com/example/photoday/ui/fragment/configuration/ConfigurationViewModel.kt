@@ -6,6 +6,7 @@ import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.TRUE
 import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
+import com.example.photoday.ui.fragment.timeline.TimelineFragmentDirections
 
 class ConfigurationViewModel : ViewModel() {
 
@@ -17,7 +18,7 @@ class ConfigurationViewModel : ViewModel() {
 
     fun navFragmentLogin(navFragment: NavController) {
         val direction =
-            ConfigurationFragmentDirections.actionConfigurationFragmentToLoginFragment()
+            ConfigurationFragmentDirections.actionConfigurationFragmentToSplashGoodbyeFragment()
         navFragment.navigate(direction)
     }
 
