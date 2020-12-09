@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_fragment_base_app_bar"
-        android:icon="@mipmap/ic_configuration"
-        android:iconTint="@color/white"
+        android:icon="@mipmap/ic_configuration_white"
         android:title="@string/configuration"
         app:showAsAction="always" />
 </menu>

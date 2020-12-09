@@ -108,7 +108,7 @@
     <fragment
         android:id="@+id/configurationFragment"
         android:name="com.example.photoday.ui.fragment.configuration.ConfigurationFragment"
-        android:label="fragment_configuration"
+        android:label="Configuration"
         tools:layout="@layout/fragment_configuration">
         <action
             android:id="@+id/action_configurationFragment_to_splashGoodbyeFragment"
