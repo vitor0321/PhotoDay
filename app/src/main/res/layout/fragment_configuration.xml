@@ -11,7 +11,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/ic_baseline_tag_faces_24"
+        android:src="@mipmap/ic_face_edit"
         app:layout_constraintBottom_toTopOf="@id/text_view_user_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,9 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textSize="20sp"
-        android:fontFamily="@font/archivo_black"
+        android:fontFamily="@font/allerta"
+        android:hint="@string/name_user"
         android:textColor="@color/orange"
+        android:textSize="@dimen/text_button_size"
         app:layout_constraintBottom_toTopOf="@id/text_view_user_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,28 +36,16 @@
         android:id="@+id/text_view_user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="20sp"
-        android:fontFamily="@font/archivo_black"
+        android:layout_marginTop="18dp"
+        android:textSize="@dimen/text_button_size"
+        android:fontFamily="@font/allerta"
         android:textColor="@color/orange"
-        app:layout_constraintBottom_toTopOf="@id/text_view_user_phone"
+        app:layout_constraintBottom_toTopOf="@id/btn_logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_view_user_name"
+        android:hint="@string/email_user"
         tools:text="@string/email_user" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_view_user_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/orange"
-        android:textSize="20sp"
-        android:fontFamily="@font/archivo_black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_user_email"
-        tools:text="@string/phone" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_logout"
@@ -64,12 +53,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_16dp"
         android:background="@color/orange"
-        android:fontFamily="@font/archivo_black"
+        android:fontFamily="@font/allerta"
         android:text="@string/logout"
+        android:textSize="@dimen/text_button_size"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_user_phone" />
-
+        app:layout_constraintTop_toBottomOf="@id/text_view_user_email" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

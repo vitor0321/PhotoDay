@@ -16,7 +16,8 @@
         android:required="false" />
 
     <application
-        android:allowBackup="true"
+        android:requestLegacyExternalStorage="true"
+        android:hardwareAccelerated="true"
         android:appComponentFactory="androidx"
         android:icon="@mipmap/ic_photo_day_logo"
         android:label="@string/photo_day"
@@ -27,11 +28,10 @@
         tools:targetApi="p" >
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.example.photoday.ui.MainActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

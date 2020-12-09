@@ -4,8 +4,7 @@
 
     <item
         android:id="@+id/menu_fragment_configuration_app_bar"
-        android:icon="@mipmap/ic_right_foreground"
-        android:iconTint="@color/white"
+        android:icon="@mipmap/ic_ok_white"
         android:title="@string/configuration"
         app:showAsAction="always" />
 

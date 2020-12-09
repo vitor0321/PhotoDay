@@ -10,7 +10,6 @@ import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
 import kotlinx.android.synthetic.main.activity_main.*
 
-
 class MainActivity : AppCompatActivity(), SendDataToActivityInterface {
 
     /*é necessário indicar a o Host, quando estamos trabalhando na activity*/
