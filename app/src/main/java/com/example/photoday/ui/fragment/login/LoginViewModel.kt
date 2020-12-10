@@ -1,11 +1,14 @@
 package com.example.photoday.ui.fragment.login
 
+import android.provider.Settings.Global.getString
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.repository.LoginRepositoryShared
 import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 class LoginViewModel(private val repository: LoginRepositoryShared) : ViewModel() {
 
