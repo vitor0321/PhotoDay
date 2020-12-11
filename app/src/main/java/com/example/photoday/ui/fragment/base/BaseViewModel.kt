@@ -7,20 +7,6 @@ import com.example.photoday.ui.fragment.timeline.TimelineFragmentDirections
 
 class BaseViewModel : ViewModel() {
 
-    fun init(
-        loginviewModel: LoginViewModel,
-        controlNavigation: NavController
-    ) {
-        when {
-            loginviewModel.noIsLogin() -> goToLogin(controlNavigation)
-        }
-    }
-
-    fun goToLogin(controlNavigation: NavController) {
-        val direction = TimelineFragmentDirections.actionTimelineFragmentToLoginFragment()
-        controlNavigation.navigate(direction)
-    }
-
     fun navFragmentLogin(
         navFragment: NavController,
     ) {

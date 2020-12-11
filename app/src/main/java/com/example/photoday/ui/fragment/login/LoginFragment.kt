@@ -1,21 +1,17 @@
 package com.example.photoday.ui.fragment.login
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.RC_SIGN_IN
-import com.example.photoday.constants.Uteis
 import com.example.photoday.constants.Uteis.showToast
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.repository.LoginRepositoryShared
@@ -24,9 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
@@ -57,27 +51,19 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val user = auth.currentUser
-        when {
-            user != null -> {
-                viewModel.login()
-                viewModel.navFragmentLogin(controlNavigation)
-            }
-        }
+        buttonNavigation()
+        viewModel.loginStatus(controlNavigation)
     }
 
     private fun init() {
-
-        /*mudar a cor do statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
-
         /*enviando o status da AppBar e do Navigation a Activity*/
         viewModel.stateAppBarNavigation(sendDataToActivityInterface)
 
+        /*mudar a cor do statusBar*/
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
+    }
+
+    private fun buttonNavigation() {
         //Button para logar
         login_button_log.setOnClickListener {
             viewModel.login()
@@ -89,8 +75,9 @@ class LoginFragment : Fragment() {
             viewModel.navFragmentRegister(controlNavigation)
         }
 
+        //Button Login Google
         login_button_google.setOnClickListener {
-            signIn()
+            viewModel.signIn(googleSignInClient, requireActivity())
         }
     }
 
@@ -104,11 +91,6 @@ class LoginFragment : Fragment() {
         googleSignInClient = activity?.let { GoogleSignIn.getClient(it, gso) }!!
     }
 
-    private fun signIn() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         // Result returned from launching the Intent
@@ -117,25 +99,11 @@ class LoginFragment : Fragment() {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
-                firebaseAuthWithGoogle(account.idToken!!)
+                viewModel.firebaseAuthWithGoogle(account.idToken!!, auth, controlNavigation, requireActivity())
             } catch (e: ApiException) {
                 e.message?.let { showToast(requireActivity(), it) }
             }
         }
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-            auth.signInWithCredential(credential)
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        val user = auth.currentUser
-                        viewModel.login()
-                        viewModel.navFragmentLogin(controlNavigation)
-                    } else {
-                        showToast(requireActivity(),"Sorry, auth failed.")
-                    }
-                }
     }
 
     override fun onAttach(context: Context) {
