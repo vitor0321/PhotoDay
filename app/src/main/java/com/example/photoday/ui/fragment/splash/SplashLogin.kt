@@ -1,4 +1,4 @@
-package com.example.photoday.ui.fragment.splashLogin
+package com.example.photoday.ui.fragment.splash
 
 import android.app.Activity
 import android.content.Context

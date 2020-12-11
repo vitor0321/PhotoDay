@@ -1,4 +1,4 @@
-package com.example.photoday.ui.fragment.splashGoodbye
+package com.example.photoday.ui.fragment.splash
 
 import android.app.Activity
 import android.content.Context
@@ -16,7 +16,7 @@ import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
-import com.example.photoday.ui.fragment.splashLogin.SplashLoginDirections
+import com.example.photoday.ui.fragment.splash.SplashGoodbyeFragmentDirections
 
 class SplashGoodbyeFragment : Fragment() {
 

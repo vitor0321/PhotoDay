@@ -2,7 +2,6 @@ package com.example.photoday.ui.fragment.configuration
 
 import android.app.Activity
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -12,7 +11,7 @@ import com.example.photoday.R
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.repository.LoginRepositoryShared
 import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
-import com.example.photoday.ui.fragment.base.BaseFragment
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_configuration.*
 
 class ConfigurationFragment : Fragment() {
@@ -47,14 +46,18 @@ class ConfigurationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       init()
+        init()
     }
 
-    private fun init(){
+    private fun init() {
         /*enviando o status da AppBar e do Navigation a Activity*/
         viewModel.stateAppBarNavigation(sendDataToActivityInterface)
 
+        /*set name, emamil e photo do usuário*/
+        viewModel.googleSingIn(text_view_user_name, text_view_user_email)
+
         btn_logout.setOnClickListener {
+
             viewModel.navFragmentLogin(navFragment)
             loginViewModel.logout()
         }
