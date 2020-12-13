@@ -2,17 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/timelineFragment"
+        android:id="@+id/nav_timelineFragment"
         android:icon="@drawable/ic_timeline"
+        android:checked="true"
+        android:title="@string/timeline" />
+
+    <item
+        android:id="@+id/nav_1"
         android:title="" />
 
     <item
-        android:id="@+id/calendarFragment"
-        android:icon="@drawable/ic_calendar"
+        android:id="@+id/nav_2"
         android:title="" />
 
     <item
-        android:id="@+id/galleryFragment"
+        android:id="@+id/nav_3"
+        android:title="" />
+
+    <item
+        android:id="@+id/nav_galleryFragment"
         android:icon="@drawable/ic_gallery"
-        android:title="" />
+        android:title="@string/gallery" />
 </menu>

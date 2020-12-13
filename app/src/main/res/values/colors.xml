@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#FF9800</color>
     <color name="orange_light">#F3B965</color>
+
+    <color name="colorNavigation">#F5F5F6</color>
+    <color name="colorNavigationItemDefault">#777777</color>
+    <color name="colorNavigationItemChecked">#FFFFFF</color>
+
+    <color name="colorItemTexto">#47525E</color>
+    <color name="colorItemTextoPequeno">#777</color>
 </resources>

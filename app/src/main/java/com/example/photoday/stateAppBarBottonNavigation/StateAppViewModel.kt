@@ -3,7 +3,9 @@ package com.example.photoday.stateAppBarBottonNavigation
 import android.view.View
 import androidx.appcompat.app.ActionBar
 import androidx.lifecycle.ViewModel
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class StateAppViewModel : ViewModel() {
 
@@ -19,10 +21,13 @@ class StateAppViewModel : ViewModel() {
         }
         when {
             /*aqui vai ativar ou não o Bottom navegation*/
-            components.bottomNavigation ->
+            components.bottomNavigation -> {
                 main_activity_nav_bottom?.visibility = View.VISIBLE
-            !components.bottomNavigation ->
+            }
+
+            !components.bottomNavigation -> {
                 main_activity_nav_bottom?.visibility = View.GONE
+            }
         }
     }
 }
