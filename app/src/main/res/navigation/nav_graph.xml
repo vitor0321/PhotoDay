@@ -6,21 +6,32 @@
     app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/timelineFragment"
+        android:id="@+id/nav_timelineFragment"
         android:name="com.example.photoday.ui.fragment.timeline.TimelineFragment"
         android:label="Timeline"
         android:layout="@layout/fragment_timeline"
-        tools:layout="@layout/fragment_timeline"/>
+        tools:layout="@layout/fragment_timeline">
+        <action
+            android:id="@+id/action_timelineFragment_to_configurationFragment"
+            app:destination="@id/configurationFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpToInclusive="false"
+            />
+
+    </fragment>
 
     <fragment
-        android:id="@+id/calendarFragment"
+        android:id="@+id/nav_calendarFragment"
         android:name="com.example.photoday.ui.fragment.calendar.CalendarFragment"
         android:label="Calendar"
         android:layout="@layout/fragment_calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
-        android:id="@+id/galleryFragment"
+        android:id="@+id/nav_galleryFragment"
         android:name="com.example.photoday.ui.fragment.gallery.GalleryFragment"
         android:label="Gallery"
         android:layout="@layout/fragment_gallery"
@@ -50,7 +61,7 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_loginFragment_to_timelineFragment"
-            app:destination="@id/timelineFragment"
+            app:destination="@id/nav_timelineFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
@@ -80,7 +91,7 @@
         tools:layout="@layout/fragment_splash_login">
         <action
             android:id="@+id/action_splashLogin_to_timelineFragment"
-            app:destination="@id/timelineFragment"
+            app:destination="@id/nav_timelineFragment"
             app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
@@ -91,13 +102,11 @@
 
     <action
         android:id="@+id/action_global_configurationFragment"
-        app:destination="@id/configurationFragment"
+        app:destination="@id/nav_timelineFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/nav_default_pop_exit_anim"
-        app:popUpTo="@id/timelineFragment"
-        app:popUpToInclusive="true" />
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
     <fragment
         android:id="@+id/configurationFragment"
@@ -109,14 +118,14 @@
             app:destination="@id/splashGoodbyeFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
-            app:launchSingleTop="true"
+            app:launchSingleTop="false"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/configurationFragment"
+            app:popUpTo="@id/nav_timelineFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_configurationFragment_to_timelineFragment"
-            app:destination="@id/timelineFragment"
+            app:destination="@id/nav_timelineFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"

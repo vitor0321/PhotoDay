@@ -3,15 +3,14 @@ package com.example.photoday.ui.fragment.calendar
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.fragment.app.Fragment
 import com.example.photoday.R
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
 import com.example.photoday.ui.fragment.base.BaseFragment
 
-class CalendarFragment : BaseFragment() {
+class CalendarFragment : Fragment() {
 
     private val viewModel by lazy { ViewModelInjector.providerCalendarViewModel() }
     private lateinit var sendDataToActivityInterface: SendDataToActivityInterface

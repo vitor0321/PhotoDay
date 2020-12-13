@@ -6,9 +6,6 @@
     <string name="password">Password</string>
     <string name="logout">logout</string>
     <string name="register_new_user">Register New User</string>
-    <string name="timeline">Timeline</string>
-    <string name="calendar">Calendar</string>
-    <string name="gallery">Gallery</string>
     <string name="nome">Nome</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Register</string>
@@ -27,4 +24,8 @@
     <string name="phone">Phone</string>
     <string name="configuration">Configuration</string>
     <string name="login">Login</string>
+    <string name="timeline">Timeline</string>
+    <string name="calendar">Calendar</string>
+    <string name="gallery">Gallery</string>
+    <string name="add_photo">ADD Photo</string>
 </resources>

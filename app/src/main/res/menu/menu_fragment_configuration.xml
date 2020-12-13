@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/menu_fragment_configuration_app_bar"
-        android:icon="@drawable/ic__confirmation_configuration"
+        android:icon="@drawable/ic_confirmation_conf"
         android:title="@string/configuration"
         app:showAsAction="always" />
 

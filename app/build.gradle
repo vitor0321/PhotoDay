@@ -44,6 +44,9 @@ kapt {
 
 dependencies {
 
+    //Material Design Dependency:
+    implementation 'com.google.android.material:material:1.3.0-alpha04'
+
     //transforama a imagem em um circulo no xml
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 

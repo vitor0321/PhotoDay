@@ -11,7 +11,7 @@ class BaseViewModel : ViewModel() {
         navFragment: NavController,
     ) {
         val direction =
-            TimelineFragmentDirections.actionGlobalConfigurationFragment()
+            TimelineFragmentDirections.actionTimelineFragmentToConfigurationFragment()
         navFragment.navigate(direction)
     }
 }
