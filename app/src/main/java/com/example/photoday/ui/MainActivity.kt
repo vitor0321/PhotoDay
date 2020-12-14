@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity(), SendDataToActivityInterface {
 
     /*é necessário indicar a o Host, quando estamos trabalhando na activity*/
     private val controlNavigation by lazy { findNavController(R.id.main_activity_nav_host) }
-    private val viewModelState by lazy { ViewModelInjector.providerStateAppViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,10 +45,23 @@ class MainActivity : AppCompatActivity(), SendDataToActivityInterface {
     }
 
     override fun sendStateComponents(stateComponents: Components) {
-        viewModelState.state(
-            stateComponents,
-            supportActionBar,
-            main_activity_nav_bottom
-        )
+        when {
+            /*aqui vai ativar ou não a actionBar*/
+            stateComponents.appBar -> supportActionBar?.show()
+            !stateComponents.appBar -> supportActionBar?.hide()
+        }
+        when {
+            /*aqui vai ativar ou não o Bottom navegation*/
+            stateComponents.bottomNavigation -> {
+                main_activity_nav_bottom?.visibility = View.VISIBLE
+                fab_bottom_add.show()
+                bottom_app_bar.performShow()
+            }
+            !stateComponents.bottomNavigation -> {
+                main_activity_nav_bottom?.visibility = View.GONE
+                fab_bottom_add.hide()
+                bottom_app_bar.performHide()
+            }
+        }
     }
 }

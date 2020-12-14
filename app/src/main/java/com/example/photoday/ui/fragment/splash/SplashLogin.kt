@@ -1,25 +1,25 @@
 package com.example.photoday.ui.fragment.splash
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
+import com.example.photoday.constants.TRUE
+import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.stateAppBarBottonNavigation.Components
-import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
+import com.example.photoday.ui.fragment.base.BaseFragment
 
-class SplashLogin : Fragment() {
+class SplashLogin : BaseFragment(){
 
     private val controlNavigation by lazy { findNavController() }
-    private lateinit var sendDataToActivityInterface: SendDataToActivityInterface
+    private val viewModelBase by lazy { ViewModelInjector.providerBaseViewModel() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,9 +35,13 @@ class SplashLogin : Fragment() {
     }
 
     private fun init() {
+
         /*aqui estamos passando os parametros para estar visivel ou não a AppBar e o Navigation*/
         val components = Components(FALSE, FALSE)
-        sendDataToActivityInterface.sendStateComponents(components)
+        viewModelBase.stateFragmentBottom(components)
+
+        /*mudar a cor do statusBar*/
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
 
         //define o tempo que a activity estará ativa atá passar para a outra
         Handler(Looper.getMainLooper()).postDelayed({
@@ -46,12 +50,5 @@ class SplashLogin : Fragment() {
                 SplashLoginDirections.actionSplashLoginToTimelineFragment()
             controlNavigation.navigate(direction)
         }, SPLASH_TIME_OUT)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val activity: Activity = context as Activity
-        /*ativando a interface para enviar dados a fragment*/
-        sendDataToActivityInterface = activity as SendDataToActivityInterface
     }
 }

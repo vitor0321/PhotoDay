@@ -1,19 +1,18 @@
 package com.example.photoday.ui.fragment.calendar
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.photoday.R
+import com.example.photoday.constants.TRUE
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
-import com.example.photoday.ui.fragment.base.BaseFragment
+import com.example.photoday.stateAppBarBottonNavigation.Components
 
 class CalendarFragment : Fragment() {
 
-    private val viewModel by lazy { ViewModelInjector.providerCalendarViewModel() }
-    private lateinit var sendDataToActivityInterface: SendDataToActivityInterface
+    private val viewModelBase by lazy { ViewModelInjector.providerBaseViewModel() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,14 +23,13 @@ class CalendarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /*enviando o status da AppBar e do Navigation a Activity*/
-        viewModel.stateAppBarNavigation(sendDataToActivityInterface)
+
+        init()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val activity: Activity = context as Activity
-        /*ativando a interface para enviar dados a fragment*/
-        sendDataToActivityInterface = activity as SendDataToActivityInterface
+    private fun init(){
+        /*aqui estamos passando os parametros para estar visivel ou não a AppBar e o Navigation*/
+        val components = Components(TRUE, TRUE)
+        viewModelBase.stateFragmentBottom(components)
     }
 }
