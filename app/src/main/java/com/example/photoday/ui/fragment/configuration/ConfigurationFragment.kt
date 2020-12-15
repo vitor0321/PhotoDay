@@ -6,23 +6,20 @@ import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
-import com.example.photoday.constants.FALSE
-import com.example.photoday.constants.TRUE
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.repository.LoginRepositoryShared
-import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.ui.fragment.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_configuration.*
 
 class ConfigurationFragment : BaseFragment() {
 
     private val viewModel by lazy { ViewModelInjector.providerConfigurationViewModel() }
+    private val viewModelBase by lazy { ViewModelInjector.providerBaseViewModel()}
     private val loginViewModel by lazy {
         val sharedPref by lazy { requireActivity().getPreferences(Context.MODE_PRIVATE) }
         val repositoryShared = LoginRepositoryShared(sharedPref)
         ViewModelInjector.providerLoginViewModel(repositoryShared)
     }
-    private val viewModelBase by lazy { ViewModelInjector.providerBaseViewModel() }
     private val navFragment by lazy { findNavController() }
 
     override fun onCreateView(
@@ -30,6 +27,7 @@ class ConfigurationFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        requireActivity()
         /*para aparecer o menu quando for inflado*/
         setHasOptionsMenu(true)
         arguments?.let {}
@@ -50,10 +48,7 @@ class ConfigurationFragment : BaseFragment() {
     }
 
     private fun init() {
-
-        /*aqui estamos passando os parametros para estar visivel ou não a AppBar e o Navigation*/
-        val components = Components(TRUE, FALSE)
-        viewModelBase.stateFragmentBottom(components)
+        viewModel.sentStatusToBase(viewModelBase)
 
         /*set name, emamil e photo do usuário*/
         viewModel.googleSingIn(text_view_user_name, text_view_user_email)

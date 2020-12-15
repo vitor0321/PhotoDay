@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.injector.ViewModelInjector
@@ -23,21 +24,20 @@ abstract class BaseFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         init()
+        initObserver()
     }
 
-    private fun init(){
+    private fun init() {
         /*para aparecer o menu quando for inflado*/
         setHasOptionsMenu(true)
         arguments?.let {}
 
         /*mudar a cor do statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
-
-        initObserve()
     }
 
-    private fun initObserve(){
-        viewModel.componentsMutable.observe(this, androidx.lifecycle.Observer {
+    private fun initObserver() {
+        viewModel.status.observe(this, Observer {
             sendDataToActivityInterface.sendStateComponents(it)
         })
     }
@@ -62,5 +62,6 @@ abstract class BaseFragment : Fragment() {
         /*ativando a interface para enviar dados a fragment*/
         sendDataToActivityInterface = activity as SendDataToActivityInterface
     }
+
 
 }

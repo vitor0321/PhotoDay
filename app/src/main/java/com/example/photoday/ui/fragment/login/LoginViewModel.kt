@@ -52,6 +52,11 @@ class LoginViewModel(private val repository: LoginRepositoryShared) : ViewModel(
         startActivityForResult(requireActivity, signInIntent, RC_SIGN_IN, null)
     }
 
+    fun sentStatusToBase(viewModelBase: BaseViewModel) {
+        val components = Components(FALSE, FALSE)
+        viewModelBase.stateFragment(components)
+    }
+
     fun firebaseAuthWithGoogle(
         idToken: String,
         auth: FirebaseAuth,
@@ -69,11 +74,5 @@ class LoginViewModel(private val repository: LoginRepositoryShared) : ViewModel(
                     Uteis.showToast(requireActivity, "Sorry, auth failed.")
                 }
             }
-    }
-
-    fun statusAppBarNavigation(viewModelBase: BaseViewModel) {
-        /*aqui estamos passando os parametros para estar visivel ou não a AppBar e o Navigation*/
-        val components = Components(FALSE, FALSE)
-        viewModelBase.stateFragmentBottom(components)
     }
 }

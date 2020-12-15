@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
-import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
 import com.example.photoday.ui.fragment.calendar.CalendarFragment
@@ -54,13 +53,14 @@ class MainActivity : AppCompatActivity(), SendDataToActivityInterface {
             /*aqui vai ativar ou não o Bottom navegation*/
             stateComponents.bottomNavigation -> {
                 main_activity_nav_bottom?.visibility = View.VISIBLE
-                fab_bottom_add.show()
-                bottom_app_bar.performShow()
+                bottom_app_bar?.visibility = View.VISIBLE
+                fab_bottom_add?.visibility = View.VISIBLE
             }
+
             !stateComponents.bottomNavigation -> {
-                main_activity_nav_bottom?.visibility = View.GONE
-                fab_bottom_add.hide()
-                bottom_app_bar.performHide()
+                main_activity_nav_bottom?.visibility = View.INVISIBLE
+                bottom_app_bar?.visibility = View.INVISIBLE
+                fab_bottom_add?.visibility = View.INVISIBLE
             }
         }
     }

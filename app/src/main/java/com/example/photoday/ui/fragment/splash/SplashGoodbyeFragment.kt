@@ -11,15 +11,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
-import com.example.photoday.constants.TRUE
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.ui.fragment.base.BaseFragment
 
 class SplashGoodbyeFragment : BaseFragment() {
 
-    private val controlNavigation by lazy { findNavController() }
     private val viewModelBase by lazy { ViewModelInjector.providerBaseViewModel() }
+    private val controlNavigation by lazy { findNavController() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +29,7 @@ class SplashGoodbyeFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        requireActivity()
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_splash_goodbye, container, false)
     }
@@ -40,13 +40,11 @@ class SplashGoodbyeFragment : BaseFragment() {
     }
 
     private fun init() {
-
-        /*aqui estamos passando os parametros para estar visivel ou não a AppBar e o Navigation*/
-        val components = Components(FALSE, FALSE)
-        viewModelBase.stateFragmentBottom(components)
+        sentStatusToBase()
 
         /*mudar a cor do statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white
+        )
 
         //define o tempo que a activity estará ativa atá passar para a outra
         Handler(Looper.getMainLooper()).postDelayed({
@@ -55,5 +53,10 @@ class SplashGoodbyeFragment : BaseFragment() {
                 SplashGoodbyeFragmentDirections.actionSplashGoodbyeFragmentToLoginFragment()
             controlNavigation.navigate(direction)
         }, SPLASH_TIME_OUT)
+    }
+
+    private fun sentStatusToBase() {
+        val components = Components(FALSE, FALSE)
+        viewModelBase.stateFragment(components)
     }
 }

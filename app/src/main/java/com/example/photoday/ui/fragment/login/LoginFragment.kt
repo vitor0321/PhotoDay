@@ -6,17 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
-import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.RC_SIGN_IN
-import com.example.photoday.constants.TRUE
 import com.example.photoday.constants.Uteis.showToast
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.repository.LoginRepositoryShared
-import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -43,6 +39,7 @@ class LoginFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        requireActivity()
         val view = inflater.inflate(R.layout.fragment_login, container, false)
         //create login google
         createRequestLoginGoogle()
@@ -58,7 +55,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun init() {
-        viewModel.statusAppBarNavigation(viewModelBase)
+        viewModel.sentStatusToBase(viewModelBase)
 
         /*mudar a cor do statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
@@ -100,7 +97,12 @@ class LoginFragment : BaseFragment() {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
-                viewModel.firebaseAuthWithGoogle(account.idToken!!, auth, controlNavigation, requireActivity())
+                viewModel.firebaseAuthWithGoogle(
+                    account.idToken!!,
+                    auth,
+                    controlNavigation,
+                    requireActivity()
+                )
             } catch (e: ApiException) {
                 e.message?.let { showToast(requireActivity(), it) }
             }

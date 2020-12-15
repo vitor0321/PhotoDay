@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
-import com.example.photoday.constants.FALSE
-import com.example.photoday.constants.TRUE
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.ui.fragment.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_register_user.*
 
@@ -24,6 +21,7 @@ class Register : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        requireActivity()
         return inflater.inflate(R.layout.fragment_register_user, container, false)
     }
 
@@ -33,9 +31,7 @@ class Register : BaseFragment() {
     }
 
     private fun init() {
-        /*aqui estamos passando os parametros para estar visivel ou não a AppBar e o Navigation*/
-        val components = Components(FALSE, FALSE)
-        viewModelBase.stateFragmentBottom(components)
+        viewModel.sentStatusToBase(viewModelBase)
 
         register_user_button.setOnClickListener {
             viewModel.navFragment(controlNavigation)
