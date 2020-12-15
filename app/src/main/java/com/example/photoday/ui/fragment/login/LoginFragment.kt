@@ -58,9 +58,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun init() {
-        /*aqui estamos passando os parametros para estar visivel ou não a AppBar e o Navigation*/
-        val components = Components(FALSE, FALSE)
-        viewModelBase.stateFragmentBottom(components)
+        viewModel.statusAppBarNavigation(viewModelBase)
 
         /*mudar a cor do statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)

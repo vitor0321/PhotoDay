@@ -4,9 +4,12 @@ import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.constants.Uteis
 import com.example.photoday.repository.LoginRepositoryShared
+import com.example.photoday.stateAppBarBottonNavigation.Components
+import com.example.photoday.ui.fragment.base.BaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -66,5 +69,11 @@ class LoginViewModel(private val repository: LoginRepositoryShared) : ViewModel(
                     Uteis.showToast(requireActivity, "Sorry, auth failed.")
                 }
             }
+    }
+
+    fun statusAppBarNavigation(viewModelBase: BaseViewModel) {
+        /*aqui estamos passando os parametros para estar visivel ou não a AppBar e o Navigation*/
+        val components = Components(FALSE, FALSE)
+        viewModelBase.stateFragmentBottom(components)
     }
 }
