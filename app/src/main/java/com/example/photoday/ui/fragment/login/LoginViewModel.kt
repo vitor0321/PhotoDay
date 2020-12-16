@@ -52,11 +52,6 @@ class LoginViewModel(private val repository: LoginRepositoryShared) : ViewModel(
         startActivityForResult(requireActivity, signInIntent, RC_SIGN_IN, null)
     }
 
-    fun sentStatusToBase(viewModelBase: BaseViewModel) {
-        val components = Components(FALSE, FALSE)
-        viewModelBase.stateFragment(components)
-    }
-
     fun firebaseAuthWithGoogle(
         idToken: String,
         auth: FirebaseAuth,

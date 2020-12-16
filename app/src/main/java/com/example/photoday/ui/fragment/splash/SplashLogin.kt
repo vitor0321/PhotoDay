@@ -12,11 +12,11 @@ import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.stateAppBarBottonNavigation.Components
+import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 
 class SplashLogin : BaseFragment() {
 
-    private val viewModelBase by lazy { ViewModelInjector.providerBaseViewModel() }
     private val controlNavigation by lazy { findNavController() }
 
     override fun onCreateView(
@@ -34,7 +34,11 @@ class SplashLogin : BaseFragment() {
     }
 
     private fun init() {
-        sentStatusToBase()
+
+        /*Enviando o status do AppBar e do Bottom Navigation para a Activity*/
+        val statusAppBarNavigation = Components(FALSE, FALSE)
+        val mainActivity = requireActivity() as MainActivity
+        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
         //define o tempo que a activity estará ativa atá passar para a outra
         Handler(Looper.getMainLooper()).postDelayed({
@@ -45,8 +49,8 @@ class SplashLogin : BaseFragment() {
         }, SPLASH_TIME_OUT)
     }
 
-    private fun sentStatusToBase() {
+   /* private fun sentStatusToBase() {
         val components = Components(FALSE, FALSE)
         viewModelBase.stateFragment(components)
-    }
+    }*/
 }

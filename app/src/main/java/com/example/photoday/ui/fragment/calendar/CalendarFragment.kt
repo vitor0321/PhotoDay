@@ -1,24 +1,24 @@
 package com.example.photoday.ui.fragment.calendar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.photoday.R
+import com.example.photoday.constants.TRUE
 import com.example.photoday.injector.ViewModelInjector
+import com.example.photoday.stateAppBarBottonNavigation.Components
+import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 
 class CalendarFragment : BaseFragment() {
 
-    private val viewModelBase by lazy { ViewModelInjector.providerBaseViewModel()}
-    private val viewModel by lazy { ViewModelInjector.providerCalendarViewModel()}
+    private val viewModel by lazy { ViewModelInjector.providerCalendarViewModel() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        requireActivity()
         return inflater.inflate(R.layout.fragment_calendar, container, false)
     }
 
@@ -27,7 +27,10 @@ class CalendarFragment : BaseFragment() {
         init()
     }
 
-    private fun init(){
-        viewModel.sentStatusToBase(viewModelBase)
+    private fun init() {
+        /*Enviando o status do AppBar e do Bottom Navigation para a Activity*/
+        val statusAppBarNavigation = Components(TRUE, TRUE)
+        val mainActivity = requireActivity() as MainActivity
+        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
     }
 }

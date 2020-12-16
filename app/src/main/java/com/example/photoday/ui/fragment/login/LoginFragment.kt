@@ -9,10 +9,13 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
+import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.constants.Uteis.showToast
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.repository.LoginRepositoryShared
+import com.example.photoday.stateAppBarBottonNavigation.Components
+import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -28,8 +31,6 @@ class LoginFragment : BaseFragment() {
         val repositoryShared = LoginRepositoryShared(sharedPref)
         ViewModelInjector.providerLoginViewModel(repositoryShared)
     }
-    private val viewModelBase by lazy { ViewModelInjector.providerBaseViewModel() }
-
     private val controlNavigation by lazy { findNavController() }
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
@@ -39,7 +40,6 @@ class LoginFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        requireActivity()
         val view = inflater.inflate(R.layout.fragment_login, container, false)
         //create login google
         createRequestLoginGoogle()
@@ -55,7 +55,10 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun init() {
-        viewModel.sentStatusToBase(viewModelBase)
+        /*Enviando o status do AppBar e do Bottom Navigation para a Activity*/
+        val statusAppBarNavigation = Components(FALSE, FALSE)
+        val mainActivity = requireActivity() as MainActivity
+        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
         /*mudar a cor do statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)

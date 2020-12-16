@@ -1,7 +1,5 @@
 package com.example.photoday.ui.fragment.base
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,19 +10,17 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
+import com.example.photoday.ui.MainActivity
 
 abstract class BaseFragment : Fragment() {
 
     private val viewModel by lazy { ViewModelInjector.providerBaseViewModel() }
     private val navFragment by lazy { findNavController() }
-    private lateinit var sendDataToActivityInterface: SendDataToActivityInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         init()
-        initObserver()
     }
 
     private fun init() {
@@ -34,12 +30,6 @@ abstract class BaseFragment : Fragment() {
 
         /*mudar a cor do statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
-    }
-
-    private fun initObserver() {
-        viewModel.status.observe(this, Observer {
-            sendDataToActivityInterface.sendStateComponents(it)
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -55,13 +45,4 @@ abstract class BaseFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val activity: Activity = context as Activity
-        /*ativando a interface para enviar dados a fragment*/
-        sendDataToActivityInterface = activity as SendDataToActivityInterface
-    }
-
-
 }

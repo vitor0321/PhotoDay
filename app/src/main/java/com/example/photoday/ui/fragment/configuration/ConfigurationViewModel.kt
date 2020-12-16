@@ -4,10 +4,6 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.R
-import com.example.photoday.constants.FALSE
-import com.example.photoday.constants.TRUE
-import com.example.photoday.stateAppBarBottonNavigation.Components
-import com.example.photoday.ui.fragment.base.BaseViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class ConfigurationViewModel : ViewModel() {
@@ -24,11 +20,6 @@ class ConfigurationViewModel : ViewModel() {
         val direction =
             ConfigurationFragmentDirections.actionConfigurationFragmentToTimelineFragment()
         navFragment.navigate(direction)
-    }
-
-    fun sentStatusToBase(viewModelBase: BaseViewModel) {
-        val components = Components(TRUE, FALSE)
-        viewModelBase.stateFragment(components)
     }
 
     /*set name, emamil e photo do usuário*/
