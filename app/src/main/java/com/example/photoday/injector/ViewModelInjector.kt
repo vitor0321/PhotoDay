@@ -1,7 +1,5 @@
 package com.example.photoday.injector
 
-import com.example.photoday.stateAppBarBottonNavigation.StateAppViewModel
-import com.example.photoday.stateAppBarBottonNavigation.StateAppViewModelFactory
 import com.example.photoday.ui.fragment.register.RegisterViewModel
 import com.example.photoday.ui.fragment.register.RegisterViewModelFactory
 import com.example.photoday.repository.LoginRepositoryShared
@@ -28,11 +26,6 @@ object ViewModelInjector {
     fun providerRegisterViewModel(): RegisterViewModel {
         return RegisterViewModelFactory()
             .create(RegisterViewModel::class.java)
-    }
-
-    fun providerStateAppViewModel(): StateAppViewModel {
-        return StateAppViewModelFactory()
-            .create(StateAppViewModel::class.java)
     }
 
     fun providerLoginViewModel(repositoryShared: LoginRepositoryShared): LoginViewModel {

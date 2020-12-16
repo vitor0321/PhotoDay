@@ -1,6 +1,5 @@
 package com.example.photoday.ui.fragment.login
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,14 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
+import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.constants.Uteis.showToast
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.repository.LoginRepositoryShared
-import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
+import com.example.photoday.stateAppBarBottonNavigation.Components
+import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.fragment.base.BaseFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -23,16 +24,14 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
     private val viewModel by lazy {
         val sharedPref by lazy { requireActivity().getPreferences(Context.MODE_PRIVATE) }
         val repositoryShared = LoginRepositoryShared(sharedPref)
         ViewModelInjector.providerLoginViewModel(repositoryShared)
     }
-
     private val controlNavigation by lazy { findNavController() }
-    private lateinit var sendDataToActivityInterface: SendDataToActivityInterface
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
 
@@ -56,8 +55,10 @@ class LoginFragment : Fragment() {
     }
 
     private fun init() {
-        /*enviando o status da AppBar e do Navigation a Activity*/
-        viewModel.stateAppBarNavigation(sendDataToActivityInterface)
+        /*Enviando o status do AppBar e do Bottom Navigation para a Activity*/
+        val statusAppBarNavigation = Components(FALSE, FALSE)
+        val mainActivity = requireActivity() as MainActivity
+        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
         /*mudar a cor do statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
@@ -99,17 +100,15 @@ class LoginFragment : Fragment() {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
-                viewModel.firebaseAuthWithGoogle(account.idToken!!, auth, controlNavigation, requireActivity())
+                viewModel.firebaseAuthWithGoogle(
+                    account.idToken!!,
+                    auth,
+                    controlNavigation,
+                    requireActivity()
+                )
             } catch (e: ApiException) {
                 e.message?.let { showToast(requireActivity(), it) }
             }
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val activity: Activity = context as Activity
-        /*ativando a interface para enviar dados a fragment*/
-        sendDataToActivityInterface = activity as SendDataToActivityInterface
     }
 }

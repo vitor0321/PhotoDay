@@ -6,17 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
-import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.stateAppBarBottonNavigation.Components
-import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
 import com.example.photoday.ui.fragment.calendar.CalendarFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), SendDataToActivityInterface {
+class MainActivity : AppCompatActivity() {
 
     /*é necessário indicar a o Host, quando estamos trabalhando na activity*/
     private val controlNavigation by lazy { findNavController(R.id.main_activity_nav_host) }
-    private val viewModelState by lazy { ViewModelInjector.providerStateAppViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +21,27 @@ class MainActivity : AppCompatActivity(), SendDataToActivityInterface {
         //background menu navigation
         main_activity_nav_bottom.background = null
         init()
+    }
+
+    fun statusAppBarNavigation(stateComponents: Components) {
+        when {
+            /*aqui vai ativar ou não a actionBar*/
+            stateComponents.appBar -> supportActionBar?.show()
+            !stateComponents.appBar -> supportActionBar?.hide()
+        }
+        when {
+            /*aqui vai ativar ou não o Bottom navegation*/
+            stateComponents.bottomNavigation -> {
+                main_activity_nav_bottom?.visibility = View.VISIBLE
+                bottom_app_bar?.visibility = View.VISIBLE
+                fab_bottom_add?.visibility = View.VISIBLE
+            }
+            !stateComponents.bottomNavigation -> {
+                main_activity_nav_bottom?.visibility = View.INVISIBLE
+                bottom_app_bar?.visibility = View.INVISIBLE
+                fab_bottom_add?.visibility = View.INVISIBLE
+            }
+        }
     }
 
     private fun init() {
@@ -43,13 +61,5 @@ class MainActivity : AppCompatActivity(), SendDataToActivityInterface {
             }
         /*vai controlar toda a nevegação do botton Navegation*/
         main_activity_nav_bottom.setupWithNavController(controlNavigation)
-    }
-
-    override fun sendStateComponents(stateComponents: Components) {
-        viewModelState.state(
-            stateComponents,
-            supportActionBar,
-            main_activity_nav_bottom
-        )
     }
 }

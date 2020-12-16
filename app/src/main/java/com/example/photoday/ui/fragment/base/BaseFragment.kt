@@ -6,9 +6,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.injector.ViewModelInjector
+import com.example.photoday.ui.MainActivity
 
 abstract class BaseFragment : Fragment() {
 
@@ -18,6 +20,10 @@ abstract class BaseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        init()
+    }
+
+    private fun init() {
         /*para aparecer o menu quando for inflado*/
         setHasOptionsMenu(true)
         arguments?.let {}
@@ -39,5 +45,4 @@ abstract class BaseFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 }

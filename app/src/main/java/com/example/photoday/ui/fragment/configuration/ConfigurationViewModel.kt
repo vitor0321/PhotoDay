@@ -1,27 +1,14 @@
 package com.example.photoday.ui.fragment.configuration
 
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.R
-import com.example.photoday.constants.FALSE
-import com.example.photoday.constants.TRUE
-import com.example.photoday.stateAppBarBottonNavigation.Components
-import com.example.photoday.stateAppBarBottonNavigation.SendDataToActivityInterface
-import com.example.photoday.ui.fragment.login.LoginViewModel
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
 
 class ConfigurationViewModel : ViewModel() {
 
     var auth = FirebaseAuth.getInstance()
-
-    fun stateAppBarNavigation(sendDataToActivityInterface: SendDataToActivityInterface) {
-        /*aqui estamos passando os parametros para estar visivel ou não a AppBar e o Navigation*/
-        val components = Components(TRUE, FALSE)
-        sendDataToActivityInterface.sendStateComponents(components)
-    }
 
     fun navFragmentLogin(navFragment: NavController) {
         val direction =
