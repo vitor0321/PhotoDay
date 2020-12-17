@@ -1,26 +1,27 @@
 package com.example.photoday.ui.fragment.login
 
+import android.content.Context
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.constants.Uteis
-import com.example.photoday.repository.LoginRepositoryShared
-import com.example.photoday.stateAppBarBottonNavigation.Components
-import com.example.photoday.ui.fragment.base.BaseViewModel
+import com.example.photoday.repository.sharedPreferences.LoginRepositoryShared
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
-class LoginViewModel(private val repository: LoginRepositoryShared) : ViewModel() {
+class LoginViewModel(private val repository: LoginRepositoryShared, private val logout: Logout) : ViewModel() {
 
     fun login() = repository.login()
 
     fun loginIn(): Boolean = repository.loginIn()
 
-    fun logout() = repository.logout()
+    fun logout(context: Context) {
+        logout.logout(context)
+        repository.logout()
+    }
 
     fun noIsLogin(): Boolean = !loginIn()
 

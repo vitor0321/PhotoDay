@@ -9,7 +9,7 @@ import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.TRUE
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.repository.LoginRepositoryShared
+import com.example.photoday.repository.sharedPreferences.LoginRepositoryShared
 import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
@@ -60,7 +60,7 @@ class ConfigurationFragment : BaseFragment() {
         btn_logout.setOnClickListener {
 
             viewModel.navFragmentLogin(navFragment)
-            loginViewModel.logout()
+            context?.let { context -> loginViewModel.logout(context) }
         }
     }
 

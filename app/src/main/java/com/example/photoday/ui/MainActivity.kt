@@ -1,5 +1,7 @@
 package com.example.photoday.ui
 
+import android.app.Activity
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -7,8 +9,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
 import com.example.photoday.stateAppBarBottonNavigation.Components
-import com.example.photoday.ui.fragment.calendar.CalendarFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,14 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        fab_bottom_add.setOnClickListener {
-            val calendarFragment = CalendarFragment()
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.main_activity_nav_host, calendarFragment)
-                addToBackStack(null)
-                commit()
-            }
-        }
+        fab_bottom_add.setOnClickListener { datePicker()}
 
         controlNavigation
             .addOnDestinationChangedListener { controller, destination, arguments ->
@@ -61,5 +56,15 @@ class MainActivity : AppCompatActivity() {
             }
         /*vai controlar toda a nevegação do botton Navegation*/
         main_activity_nav_bottom.setupWithNavController(controlNavigation)
+    }
+
+    private fun datePicker() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        DatePickerDialog(this, DatePickerDialog.OnDateSetListener{ view, year, monthOfYear, dayOfMonth ->
+        }, year, month, day).show()
     }
 }

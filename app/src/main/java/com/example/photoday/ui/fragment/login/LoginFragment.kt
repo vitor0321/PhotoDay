@@ -7,16 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.constants.Uteis.showToast
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.repository.LoginRepositoryShared
+import com.example.photoday.repository.sharedPreferences.LoginRepositoryShared
 import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.ui.MainActivity
-import com.example.photoday.ui.fragment.base.BaseFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -24,7 +24,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class LoginFragment : BaseFragment() {
+class LoginFragment : Fragment() {
 
     private val viewModel by lazy {
         val sharedPref by lazy { requireActivity().getPreferences(Context.MODE_PRIVATE) }
@@ -79,6 +79,7 @@ class LoginFragment : BaseFragment() {
         //Button Login Google
         login_button_google.setOnClickListener {
             viewModel.signIn(googleSignInClient, requireActivity())
+            viewModel.login()
         }
     }
 
