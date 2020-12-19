@@ -15,7 +15,7 @@
         app:lottie_autoPlay="true"
         app:lottie_colorFilter="@color/orange"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/register_security" />
+        app:lottie_rawRes="@raw/login_security" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_user_id"
@@ -84,12 +84,13 @@
             android:textSize="18sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/register_user_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/register"
+        android:background="@drawable/round_button"
         android:fontFamily="@font/allerta"
         android:textColor="@color/white"
         android:textSize="@dimen/text_button_size"
