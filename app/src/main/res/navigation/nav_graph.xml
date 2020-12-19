@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/splashIntroFragment">
 
     <fragment
         android:id="@+id/nav_timelineFragment"
@@ -18,17 +18,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpToInclusive="false"
-            />
+            app:popUpToInclusive="false" />
 
     </fragment>
-
-    <fragment
-        android:id="@+id/nav_calendarFragment"
-        android:name="com.example.photoday.ui.fragment.calendar.CalendarFragment"
-        android:label="Calendar"
-        android:layout="@layout/fragment_calendar"
-        tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/nav_galleryFragment"
@@ -67,7 +59,7 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/register"
@@ -149,5 +141,20 @@
             app:popUpTo="@id/splashGoodbyeFragment"
             app:popUpToInclusive="true" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/splashIntroFragment"
+        android:name="com.example.photoday.ui.fragment.splash.SplashIntroFragment"
+        android:label="Splash Intro"
+        tools:layout="@layout/fragment_splash_intro" >
+        <action
+            android:id="@+id/action_splashIntroFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/splashGoodbyeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

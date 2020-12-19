@@ -15,7 +15,7 @@ import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 
-class SplashGoodbyeFragment : BaseFragment() {
+class SplashIntroFragment : BaseFragment() {
 
     private val controlNavigation by lazy { findNavController() }
 
@@ -29,7 +29,7 @@ class SplashGoodbyeFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_splash_goodbye, container, false)
+        return inflater.inflate(R.layout.fragment_splash_intro, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,7 +53,7 @@ class SplashGoodbyeFragment : BaseFragment() {
         Handler(Looper.getMainLooper()).postDelayed({
             /*navegando entre fragment usando o Directions*/
             val direction =
-                SplashGoodbyeFragmentDirections.actionSplashGoodbyeFragmentToLoginFragment()
+                SplashIntroFragmentDirections.actionSplashIntroFragmentToLoginFragment()
             controlNavigation.navigate(direction)
         }, SPLASH_TIME_OUT)
     }

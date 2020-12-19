@@ -1,6 +1,5 @@
 package com.example.photoday.ui
 
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
@@ -20,8 +19,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //background menu navigation
-        main_activity_nav_bottom.background = null
+
         init()
     }
 
@@ -47,7 +45,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        fab_bottom_add.setOnClickListener { datePicker()}
+        //background menu navigation
+        main_activity_nav_bottom.background = null
+
+        //todos os components inicializam HIDE e depois cada fragment decide o que aparece ou não
+        supportActionBar?.hide()
+        main_activity_nav_bottom?.visibility = View.INVISIBLE
+        bottom_app_bar?.visibility = View.INVISIBLE
+        fab_bottom_add?.visibility = View.INVISIBLE
+
+        fab_bottom_add.setOnClickListener { datePicker() }
 
         controlNavigation
             .addOnDestinationChangedListener { controller, destination, arguments ->
@@ -64,7 +71,14 @@ class MainActivity : AppCompatActivity() {
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        DatePickerDialog(this, DatePickerDialog.OnDateSetListener{ view, year, monthOfYear, dayOfMonth ->
-        }, year, month, day).show()
+        DatePickerDialog(
+            this,
+            R.style.MyDatePickerDialogTheme,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            },
+            year,
+            month,
+            day
+        ).show()
     }
 }

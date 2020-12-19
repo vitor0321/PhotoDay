@@ -6,4 +6,8 @@
         <item name="colorPrimaryDark">@color/orange</item>
         <item name="colorAccent">@color/design_default_color_primary</item>
     </style>
+
+    <style name="MyDatePickerDialogTheme" parent="AppThemeActionBar">
+        <item name="android:tint">@color/orange</item>
+    </style>
 </resources>
