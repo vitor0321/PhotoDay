@@ -58,7 +58,6 @@ class ConfigurationFragment : BaseFragment() {
         viewModel.googleSingIn(text_view_user_name, text_view_user_email)
 
         btn_logout.setOnClickListener {
-
             viewModel.navFragmentLogin(navFragment)
             context?.let { context -> loginViewModel.logout(context) }
         }
