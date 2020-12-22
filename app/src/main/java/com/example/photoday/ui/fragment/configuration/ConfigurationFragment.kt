@@ -29,11 +29,11 @@ class ConfigurationFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        /*para aparecer o menu quando for inflado*/
+        /*show OptionsMenu when inflate*/
         setHasOptionsMenu(true)
         arguments?.let {}
 
-        /*mudar a cor do statusBar*/
+        /*change color statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
         return inflater.inflate(R.layout.fragment_configuration, container, false)
     }
@@ -49,12 +49,12 @@ class ConfigurationFragment : BaseFragment() {
     }
 
     private fun init() {
-        /*Enviando o status do AppBar e do Bottom Navigation para a Activity*/
+        /*Sending status AppBar and Bottom Navigation to the Activity*/
         val statusAppBarNavigation = Components(TRUE, FALSE)
         val mainActivity = requireActivity() as MainActivity
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
-        /*set name, emamil e photo do usuário*/
+        /*set name,email and photo of user*/
         viewModel.googleSingIn(text_view_user_name, text_view_user_email)
 
         btn_logout.setOnClickListener {

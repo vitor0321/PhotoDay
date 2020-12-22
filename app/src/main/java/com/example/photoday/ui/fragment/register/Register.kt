@@ -33,7 +33,7 @@ class Register : BaseFragment() {
 
     private fun init() {
 
-        /*Enviando o status do AppBar e do Bottom Navigation para a Activity*/
+        /*Sending status AppBar and Bottom Navigation to the Activity*/
         val statusAppBarNavigation = Components(FALSE, FALSE)
         val mainActivity = requireActivity() as MainActivity
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)

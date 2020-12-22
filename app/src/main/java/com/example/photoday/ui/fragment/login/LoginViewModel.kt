@@ -12,7 +12,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
-class LoginViewModel(private val repository: LoginRepositoryShared, private val logout: Logout) : ViewModel() {
+class LoginViewModel(private val repository: LoginRepositoryShared, private val logout: Logout) :
+    ViewModel() {
 
     fun login() = repository.login()
 
@@ -31,13 +32,13 @@ class LoginViewModel(private val repository: LoginRepositoryShared, private val 
     }
 
     fun navFragmentLogin(navFragment: NavController) {
-        /*navegando entre fragment usando o Directions*/
+        /*Navigation between fragments Directions*/
         val direction = LoginFragmentDirections.actionLoginFragmentToSplashLogin()
         navFragment.navigate(direction)
     }
 
     fun navFragmentRegister(navFragment: NavController) {
-        /*navegando entre fragment usando o Directions*/
+        /*Navigation between fragments Directions*/
         val direction = LoginFragmentDirections.actionLoginFragmentToRegister()
         navFragment.navigate(direction)
     }

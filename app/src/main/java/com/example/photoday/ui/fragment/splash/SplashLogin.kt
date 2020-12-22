@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
-import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
@@ -34,23 +33,17 @@ class SplashLogin : BaseFragment() {
     }
 
     private fun init() {
-
-        /*Enviando o status do AppBar e do Bottom Navigation para a Activity*/
+        /*Sending status AppBar and Bottom Navigation to the Activity*/
         val statusAppBarNavigation = Components(FALSE, FALSE)
         val mainActivity = requireActivity() as MainActivity
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
-        //define o tempo que a activity estará ativa atá passar para a outra
+        //define time that the activity is active until it passes to the other
         Handler(Looper.getMainLooper()).postDelayed({
-            /*navegando entre fragment usando o Directions*/
+            /*Navigation between fragments Directions*/
             val direction =
                 SplashLoginDirections.actionSplashLoginToTimelineFragment()
             controlNavigation.navigate(direction)
         }, SPLASH_TIME_OUT)
     }
-
-   /* private fun sentStatusToBase() {
-        val components = Components(FALSE, FALSE)
-        viewModelBase.stateFragment(components)
-    }*/
 }

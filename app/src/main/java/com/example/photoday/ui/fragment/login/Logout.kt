@@ -7,12 +7,11 @@ import com.example.photoday.constants.Uteis.showToast
 import com.firebase.ui.auth.AuthUI
 
 object Logout {
-
-    fun logout(context: Context){
+    fun logout(context: Context) {
         AuthUI.getInstance()
             .signOut(context)
             .addOnSuccessListener {
-            showToast(context, context.getString(R.string.successfully_logged))
-        }
+                showToast(context, context.getString(R.string.successfully_logged))
+            }
     }
 }

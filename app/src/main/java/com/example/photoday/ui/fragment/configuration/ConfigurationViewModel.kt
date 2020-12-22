@@ -22,7 +22,7 @@ class ConfigurationViewModel : ViewModel() {
         navFragment.navigate(direction)
     }
 
-    /*set name, emamil e photo do usuário*/
+    /*set name, email and photo of the user*/
     fun googleSingIn(
         text_view_user_name: AppCompatTextView,
         text_view_user_email: AppCompatTextView

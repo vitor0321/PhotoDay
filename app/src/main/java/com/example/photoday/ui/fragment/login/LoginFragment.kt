@@ -55,23 +55,23 @@ class LoginFragment : Fragment() {
     }
 
     private fun init() {
-        /*Enviando o status do AppBar e do Bottom Navigation para a Activity*/
+        /*Sending status AppBar and Bottom Navigation to the Activity*/
         val statusAppBarNavigation = Components(FALSE, FALSE)
         val mainActivity = requireActivity() as MainActivity
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
-        /*mudar a cor do statusBar*/
+        /*change color statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
     }
 
     private fun buttonNavigation() {
-        //Button para logar
+        //Button to login
         login_button_log.setOnClickListener {
             viewModel.login()
             viewModel.navFragmentLogin(controlNavigation)
         }
 
-        //Button para registar no login
+        //Button register
         login_button_register.setOnClickListener {
             viewModel.navFragmentRegister(controlNavigation)
         }

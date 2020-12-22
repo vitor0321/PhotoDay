@@ -39,19 +39,19 @@ class SplashGoodbyeFragment : BaseFragment() {
 
     private fun init() {
 
-        /*Enviando o status do AppBar e do Bottom Navigation para a Activity*/
+        /*Sending status AppBar and Bottom Navigation to the Activity*/
         val statusAppBarNavigation = Components(FALSE, FALSE)
         val mainActivity = requireActivity() as MainActivity
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
-        /*mudar a cor do statusBar*/
+        /*change color of statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(
             requireContext(), R.color.white
         )
 
-        //define o tempo que a activity estará ativa atá passar para a outra
+        //define time that the activity is active until it passes to the other
         Handler(Looper.getMainLooper()).postDelayed({
-            /*navegando entre fragment usando o Directions*/
+            /*Navigation between fragments Directions*/
             val direction =
                 SplashGoodbyeFragmentDirections.actionSplashGoodbyeFragmentToLoginFragment()
             controlNavigation.navigate(direction)

@@ -13,7 +13,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    /*é necessário indicar a o Host, quando estamos trabalhando na activity*/
+    /* it is necessary to indicate to the Host, when we are working on the activity */
     private val controlNavigation by lazy { findNavController(R.id.main_activity_nav_host) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         //background menu navigation
         main_activity_nav_bottom.background = null
 
-        //todos os components inicializam HIDE e depois cada fragment decide o que aparece ou não
+        // all components start with HIDE and then each fragment decides what appears or not
         supportActionBar?.hide()
         main_activity_nav_bottom?.visibility = View.INVISIBLE
         bottom_app_bar?.visibility = View.INVISIBLE
@@ -37,21 +37,21 @@ class MainActivity : AppCompatActivity() {
 
         controlNavigation
             .addOnDestinationChangedListener { controller, destination, arguments ->
-                /*aletar o titulo da fragment conforme está no Label do nav_graph*/
+                /* change the fragment title as it is in the nav_graph Label */
                 title = destination.label
             }
-        /*vai controlar toda a nevegação do botton Navegation*/
+        /* control all bottom navigation navigation */
         main_activity_nav_bottom.setupWithNavController(controlNavigation)
     }
 
     fun statusAppBarNavigation(stateComponents: Components) {
         when {
-            /*aqui vai ativar ou não a actionBar*/
+            /* here will activate or not the actionBar */
             stateComponents.appBar -> supportActionBar?.show()
             !stateComponents.appBar -> supportActionBar?.hide()
         }
         when {
-            /*aqui vai ativar ou não o Bottom navegation*/
+            /*here will activate or not the Bottom navegation*/
             stateComponents.bottomNavigation -> {
                 main_activity_nav_bottom?.visibility = View.VISIBLE
                 bottom_app_bar?.visibility = View.VISIBLE
@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun datePicker() {
+        /*inflater datePicker*/
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
