@@ -23,27 +23,6 @@ class MainActivity : AppCompatActivity() {
         init()
     }
 
-    fun statusAppBarNavigation(stateComponents: Components) {
-        when {
-            /*aqui vai ativar ou não a actionBar*/
-            stateComponents.appBar -> supportActionBar?.show()
-            !stateComponents.appBar -> supportActionBar?.hide()
-        }
-        when {
-            /*aqui vai ativar ou não o Bottom navegation*/
-            stateComponents.bottomNavigation -> {
-                main_activity_nav_bottom?.visibility = View.VISIBLE
-                bottom_app_bar?.visibility = View.VISIBLE
-                fab_bottom_add?.visibility = View.VISIBLE
-            }
-            !stateComponents.bottomNavigation -> {
-                main_activity_nav_bottom?.visibility = View.INVISIBLE
-                bottom_app_bar?.visibility = View.INVISIBLE
-                fab_bottom_add?.visibility = View.INVISIBLE
-            }
-        }
-    }
-
     private fun init() {
         //background menu navigation
         main_activity_nav_bottom.background = null
@@ -65,6 +44,27 @@ class MainActivity : AppCompatActivity() {
         main_activity_nav_bottom.setupWithNavController(controlNavigation)
     }
 
+    fun statusAppBarNavigation(stateComponents: Components) {
+        when {
+            /*aqui vai ativar ou não a actionBar*/
+            stateComponents.appBar -> supportActionBar?.show()
+            !stateComponents.appBar -> supportActionBar?.hide()
+        }
+        when {
+            /*aqui vai ativar ou não o Bottom navegation*/
+            stateComponents.bottomNavigation -> {
+                main_activity_nav_bottom?.visibility = View.VISIBLE
+                bottom_app_bar?.visibility = View.VISIBLE
+                fab_bottom_add?.visibility = View.VISIBLE
+            }
+            !stateComponents.bottomNavigation -> {
+                main_activity_nav_bottom?.visibility = View.INVISIBLE
+                bottom_app_bar?.visibility = View.INVISIBLE
+                fab_bottom_add?.visibility = View.INVISIBLE
+            }
+        }
+    }
+
     private fun datePicker() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         DatePickerDialog(
             this,
             R.style.MyDatePickerDialogTheme,
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            { view, year, monthOfYear, dayOfMonth ->
             },
             year,
             month,

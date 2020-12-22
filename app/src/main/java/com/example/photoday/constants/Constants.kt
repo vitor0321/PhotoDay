@@ -9,5 +9,5 @@ const val SPLASH_TIME_OUT: Long = 2000
 const val RC_SIGN_IN = 123
 const val REQUEST_GALLERY = 11
 
-const val REQ_CODE = 100
+const val SPAN_COUNT = 1
 
