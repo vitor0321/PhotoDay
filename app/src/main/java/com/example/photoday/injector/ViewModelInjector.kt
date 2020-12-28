@@ -27,10 +27,8 @@ object ViewModelInjector {
             .create(RegisterViewModel::class.java)
     }
 
-    fun providerLoginViewModel(repositoryShared: LoginRepositoryShared): LoginViewModel {
-        return LoginViewModelFactory(
-            repositoryShared,
-            Logout)
+    fun providerLoginViewModel(): LoginViewModel {
+        return LoginViewModelFactory()
             .create(LoginViewModel::class.java)
     }
 

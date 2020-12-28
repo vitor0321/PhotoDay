@@ -4,11 +4,16 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryDark">@color/orange</item>
-        <item name="colorAccent">@color/design_default_color_primary</item>
+        <item name="colorAccent">@color/orange_light</item>
     </style>
 
     <style name="MyDatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:headerBackground">@color/orange</item>
         <item name="colorAccent">@color/orange</item>
+    </style>
+
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:textColorHint">@color/colorNavigationItemDefault</item>
     </style>
 </resources>

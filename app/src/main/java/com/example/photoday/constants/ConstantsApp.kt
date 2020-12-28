@@ -11,3 +11,5 @@ const val REQUEST_GALLERY = 11
 
 const val SPAN_COUNT = 1
 
+const val GALLERY_TYPE = "image/*"
+

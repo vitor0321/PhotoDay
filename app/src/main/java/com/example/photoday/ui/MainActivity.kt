@@ -1,19 +1,24 @@
 package com.example.photoday.ui
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
+import com.example.photoday.constants.GALLERY_TYPE
+import com.example.photoday.injector.ViewModelInjector
+import com.example.photoday.permission.CheckVersionPermission.galleryPermission
 import com.example.photoday.stateAppBarBottonNavigation.Components
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    /* it is necessary to indicate to the Host, when we are working on the activity */
     private val controlNavigation by lazy { findNavController(R.id.main_activity_nav_host) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +38,9 @@ class MainActivity : AppCompatActivity() {
         bottom_app_bar?.visibility = View.INVISIBLE
         fab_bottom_add?.visibility = View.INVISIBLE
 
-        fab_bottom_add.setOnClickListener { datePicker() }
+        fab_bottom_add.setOnClickListener {
+            datePicker()
+        }
 
         controlNavigation
             .addOnDestinationChangedListener { controller, destination, arguments ->

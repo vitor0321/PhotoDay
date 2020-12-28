@@ -8,22 +8,20 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.TRUE
+import com.example.photoday.constants.Uteis
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.repository.sharedPreferences.LoginRepositoryShared
 import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_configuration.*
 
 class ConfigurationFragment : BaseFragment() {
 
     private val viewModel by lazy { ViewModelInjector.providerConfigurationViewModel() }
-    private val loginViewModel by lazy {
-        val sharedPref by lazy { requireActivity().getPreferences(Context.MODE_PRIVATE) }
-        val repositoryShared = LoginRepositoryShared(sharedPref)
-        ViewModelInjector.providerLoginViewModel(repositoryShared)
-    }
     private val navFragment by lazy { findNavController() }
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +29,7 @@ class ConfigurationFragment : BaseFragment() {
     ): View? {
         /*show OptionsMenu when inflate*/
         setHasOptionsMenu(true)
+        auth = FirebaseAuth.getInstance()
         arguments?.let {}
 
         /*change color statusBar*/
@@ -58,8 +57,9 @@ class ConfigurationFragment : BaseFragment() {
         viewModel.googleSingIn(text_view_user_name, text_view_user_email)
 
         btn_logout.setOnClickListener {
+            /*logout with Firebase*/
+            auth.signOut()
             viewModel.navFragmentLogin(navFragment)
-            context?.let { context -> loginViewModel.logout(context) }
         }
     }
 
