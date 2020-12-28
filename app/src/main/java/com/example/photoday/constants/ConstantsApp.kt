@@ -13,3 +13,6 @@ const val SPAN_COUNT = 1
 
 const val GALLERY_TYPE = "image/*"
 
+const val ONSTART = 100
+const val FIRSTLOGIN = 200
+

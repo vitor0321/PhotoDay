@@ -13,8 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
+import com.example.photoday.constants.FIRSTLOGIN
+import com.example.photoday.constants.ONSTART
 import com.example.photoday.constants.RC_SIGN_IN
-import com.example.photoday.constants.Uteis
 import com.example.photoday.constants.Uteis.showToast
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.stateAppBarBottonNavigation.Components
@@ -60,7 +61,7 @@ class LoginFragment : Fragment() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
-        viewModel.updateUI(currentUser, controlNavigation, context)
+        viewModel.updateUI(currentUser, controlNavigation, context, ONSTART)
     }
 
     private fun init() {
@@ -92,16 +93,17 @@ class LoginFragment : Fragment() {
         //Button forgot Password
         login_button_forgot_password.setOnClickListener {
             /*Alert Dialog Forgot the password*/
-            val builder = context?.let { context -> AlertDialog.Builder(context, R.style.MyDialogTheme) }
+            val builder =
+                context?.let { context -> AlertDialog.Builder(context, R.style.MyDialogTheme) }
             val inflater = layoutInflater
             builder?.setTitle(getString(R.string.what_is_your_email))
             val view = inflater.inflate(R.layout.dialog_forgot_password, null)
             val userEmail = view.findViewById<EditText>(R.id.edit_text_email_confirm)
             builder?.setView(view)
-            builder?.setPositiveButton(getString(R.string.ok)) { dialogInterface, i ->
+            builder?.setPositiveButton(getString(R.string.ok)) { _, _ ->
                 forgotPassword(userEmail)
             }
-            builder?.setNegativeButton(getString(R.string.cancel)) { dialogInterface, i -> }
+            builder?.setNegativeButton(getString(R.string.cancel)) { _, _ -> }
             builder?.show()
         }
     }
@@ -130,20 +132,20 @@ class LoginFragment : Fragment() {
     private fun forgotPassword(userEmail: EditText) {
         when {
             userEmail.text.toString().isEmpty() -> {
-                showToast(context,getString(R.string.please_enter_email))
+                showToast(context, getString(R.string.please_enter_email))
             }
             !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
-                showToast(context,getString(R.string.please_enter_valid_email))
+                showToast(context, getString(R.string.please_enter_valid_email))
             }
             else -> {
                 auth.sendPasswordResetEmail(userEmail.text.toString())
                     .addOnCompleteListener { task ->
                         when {
                             task.isSuccessful -> {
-                                showToast(context,getString(R.string.email_sent))
+                                showToast(context, getString(R.string.email_sent))
                             }
-                            !task.isSuccessful ->{
-                                showToast(context,getString(R.string.unregistered_email))
+                            !task.isSuccessful -> {
+                                showToast(context, getString(R.string.unregistered_email))
                             }
                         }
                     }
@@ -183,7 +185,7 @@ class LoginFragment : Fragment() {
         signInWithEmailAndPassword()
     }
 
-    private fun signInWithEmailAndPassword(){
+    private fun signInWithEmailAndPassword() {
         /*checking if the user exists*/
         auth.signInWithEmailAndPassword(
             login_user_id.text.toString(),
@@ -194,12 +196,12 @@ class LoginFragment : Fragment() {
                     task.isSuccessful -> {
                         // Sign in success, update UI with the signed-in user's information
                         val user = auth.currentUser
-                        viewModel.updateUI(user, controlNavigation, context)
+                        viewModel.updateUI(user, controlNavigation, context, FIRSTLOGIN)
                     }
                     else -> {
                         // If sign in fails, display a message to the user.
                         showToast(context, getString(R.string.login_failed))
-                        viewModel.updateUI(null, controlNavigation, context)
+                        viewModel.updateUI(null, controlNavigation, context, FIRSTLOGIN)
                     }
                 }
             }
