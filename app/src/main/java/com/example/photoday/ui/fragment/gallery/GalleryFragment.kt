@@ -10,7 +10,7 @@ import com.example.photoday.R
 import com.example.photoday.adapter.GalleryListAdapter
 import com.example.photoday.constants.TRUE
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.stateAppBarBottonNavigation.Components
+import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_gallery.*

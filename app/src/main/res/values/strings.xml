@@ -38,7 +38,6 @@
     <string name="check_your_email">\"Check your Email \"</string>
     <string name="cancel">Cancel</string>
     <string name="please_enter_email">Please enter email</string>
-    <string name="please_enter_valid_email">Please enter valid email</string>
     <string name="please_enter_password">Please enter password</string>
     <string name="fail_reset_email">Fail to send reset password email!</string>
     <string name="unregistered_email">Unregistered Email</string>
@@ -53,4 +52,5 @@
     <string name="check_your_email_and_confirm">Check your Email and Confirm</string>
     <string name="authentication_failed_try_again">Authentication failed. Try again</string>
     <string name="title_activity_maps">Map</string>
+    <string name="please_enter_valid_email">Please Enter Valid Email</string>
 </resources>

@@ -13,10 +13,8 @@ import com.example.photoday.constants.Uteis.showToast
 import com.example.photoday.ui.fragment.login.Logout.updateUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginViewModel : ViewModel() {
-
 
     fun firebaseAuthWithGoogle(
         idToken: String,
@@ -40,7 +38,43 @@ class LoginViewModel : ViewModel() {
             }
     }
 
-    fun signInWithEmailAndPassword(
+    fun doLogin(
+        loginUserId: AppCompatEditText,
+        loginPassword: AppCompatEditText,
+        auth: FirebaseAuth,
+        requireActivity: FragmentActivity,
+        context: Context?,
+        controlNavigation: NavController
+    ) {
+        /*here you will authenticate your email and password*/
+        when {
+            loginUserId.text.toString().isEmpty() -> {
+                loginUserId.error = context!!.getString(R.string.please_enter_email)
+                loginUserId.requestFocus()
+                return
+            }
+            !Patterns.EMAIL_ADDRESS.matcher(loginUserId.text.toString()).matches() -> {
+                loginUserId.error = context!!.getString(R.string.please_enter_valid_email)
+                loginUserId.requestFocus()
+                return
+            }
+            loginPassword.text.toString().isEmpty() -> {
+                loginPassword.error = context!!.getString(R.string.please_enter_password)
+                loginPassword.requestFocus()
+                return
+            }
+        }
+        signInWithEmailAndPassword(
+            auth,
+            loginUserId,
+            loginPassword,
+            requireActivity,
+            context,
+            controlNavigation
+        )
+    }
+
+    private fun signInWithEmailAndPassword(
         auth: FirebaseAuth,
         login_user_id: AppCompatEditText,
         login_password: AppCompatEditText,
@@ -62,7 +96,7 @@ class LoginViewModel : ViewModel() {
                     }
                     else -> {
                         // If sign in fails, display a message to the user.
-                        showToast(context, R.string.login_failed.toString())
+                        showToast(context,context!!.getString(R.string.login_failed))
                         updateUI(null, controlNavigation, context, FIRSTLOGIN)
                     }
                 }
@@ -72,20 +106,20 @@ class LoginViewModel : ViewModel() {
     fun forgotPassword(userEmail: EditText, context: Context?, auth: FirebaseAuth) {
         when {
             userEmail.text.toString().isEmpty() -> {
-                showToast(context, R.string.please_enter_email.toString())
+                showToast(context, context!!.getString(R.string.please_enter_email))
             }
             !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
-                showToast(context, R.string.please_enter_valid_email.toString())
+                showToast(context, context!!.getString(R.string.please_enter_valid_email))
             }
             else -> {
                 auth.sendPasswordResetEmail(userEmail.text.toString())
                     .addOnCompleteListener { task ->
                         when {
                             task.isSuccessful -> {
-                                showToast(context, R.string.email_sent.toString())
+                                showToast(context, context!!.getString(R.string.email_sent))
                             }
-                            !task.isSuccessful -> {
-                                showToast(context, R.string.unregistered_email.toString())
+                            else -> {
+                                showToast(context, context!!.getString(R.string.unregistered_email))
                             }
                         }
                     }

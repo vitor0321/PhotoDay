@@ -2,7 +2,6 @@ package com.example.photoday.ui.fragment.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,7 @@ import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.constants.Uteis.showToast
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
-import com.example.photoday.stateAppBarBottonNavigation.Components
+import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.login.Logout.updateUI
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -67,7 +66,16 @@ class LoginFragment : Fragment() {
 
     private fun initButton() {
         //Button to login
-        login_button_log.setOnClickListener { doLogin() }
+        login_button_log.setOnClickListener {
+            viewModel.doLogin(
+                login_user_id,
+                login_password,
+                auth,
+                requireActivity(),
+                context,
+                controlNavigation
+            )
+        }
 
         //Button register
         login_button_register.setOnClickListener { navFragmentLoginToRegister(controlNavigation) }
@@ -140,34 +148,5 @@ class LoginFragment : Fragment() {
         }
         builder?.setNegativeButton(getString(R.string.cancel)) { _, _ -> }
         builder?.show()
-    }
-
-    private fun doLogin() {
-        /*here you will authenticate your email and password*/
-        when {
-            login_user_id.text.toString().isEmpty() -> {
-                login_user_id.error = getString(R.string.please_enter_email)
-                login_user_id.requestFocus()
-                return
-            }
-            !Patterns.EMAIL_ADDRESS.matcher(login_user_id.text.toString()).matches() -> {
-                login_user_id.error = getString(R.string.please_enter_valid_email)
-                login_user_id.requestFocus()
-                return
-            }
-            login_password.text.toString().isEmpty() -> {
-                login_password.error = getString(R.string.please_enter_password)
-                login_password.requestFocus()
-                return
-            }
-        }
-        viewModel.signInWithEmailAndPassword(
-            auth,
-            login_user_id,
-            login_password,
-            requireActivity(),
-            context,
-            controlNavigation
-        )
     }
 }

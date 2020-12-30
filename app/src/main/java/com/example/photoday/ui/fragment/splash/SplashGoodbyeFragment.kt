@@ -12,7 +12,7 @@ import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.navigation.Navigation.navFragmentSplashGoodbyeToLogin
-import com.example.photoday.stateAppBarBottonNavigation.Components
+import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 

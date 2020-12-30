@@ -10,7 +10,7 @@ import com.example.photoday.constants.TRUE
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
 import com.example.photoday.navigation.Navigation.navFragmentConfigurationToTimeline
-import com.example.photoday.stateAppBarBottonNavigation.Components
+import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.google.firebase.auth.FirebaseAuth
