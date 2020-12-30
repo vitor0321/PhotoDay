@@ -10,18 +10,6 @@ class ConfigurationViewModel : ViewModel() {
 
     var auth = FirebaseAuth.getInstance()
 
-    fun navFragmentLogin(navFragment: NavController) {
-        val direction =
-            ConfigurationFragmentDirections.actionConfigurationFragmentToSplashGoodbyeFragment()
-        navFragment.navigate(direction)
-    }
-
-    fun navTimeline(navFragment: NavController) {
-        val direction =
-            ConfigurationFragmentDirections.actionConfigurationFragmentToTimelineFragment()
-        navFragment.navigate(direction)
-    }
-
     /*set name, email and photo of the user*/
     fun googleSingIn(
         text_view_user_name: AppCompatTextView,

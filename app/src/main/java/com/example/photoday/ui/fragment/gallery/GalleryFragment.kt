@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.adapter.GalleryListAdapter
@@ -23,20 +24,18 @@ class GalleryFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_gallery, container, false)
+        val view = inflater.inflate(R.layout.fragment_gallery, container, false)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        initRecyclerView()
     }
 
-    private fun init() {
-        /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val statusAppBarNavigation = Components(TRUE, TRUE)
-        val mainActivity = requireActivity() as MainActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
+    private fun init(){
+        statusBarNavigation()
+        initRecyclerView()
     }
 
     private fun initRecyclerView() {
@@ -45,5 +44,15 @@ class GalleryFragment : BaseFragment() {
             galleryAdapter = GalleryListAdapter()
             adapter = galleryAdapter
         }
+    }
+
+    private fun statusBarNavigation() {
+        /*Sending status AppBar and Bottom Navigation to the Activity*/
+        val statusAppBarNavigation = Components(TRUE, TRUE)
+        val mainActivity = requireActivity() as MainActivity
+        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
+
+        /*change color statusBar*/
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
     }
 }

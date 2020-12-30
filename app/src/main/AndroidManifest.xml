@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.photoday" >
+    package="com.example.photoday">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -16,28 +17,33 @@
         android:required="false" />
 
     <application
-        android:requestLegacyExternalStorage="true"
-        android:hardwareAccelerated="true"
         android:appComponentFactory="androidx"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_photo_day_logo"
         android:label="@string/photo_day"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_photo_day_logo"
         android:supportsRtl="true"
         android:theme="@style/AppThemeActionBar"
         tools:replace="android:appComponentFactory"
-        tools:targetApi="p" >
+        tools:targetApi="p">
 
         <activity
-            android:name="com.example.photoday.ui.MainActivity"
-            android:screenOrientation="portrait" >
+            android:name=".ui.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+        <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+
 </manifest>

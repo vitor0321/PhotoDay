@@ -16,3 +16,4 @@ const val GALLERY_TYPE = "image/*"
 const val ONSTART = 100
 const val FIRSTLOGIN = 200
 
+const val DEFAULT_WEB_CLIENT_ID = "49062301467-3v2h2s5hk33aic1a1g86j05rdbhqb3af.apps.googleusercontent.com"

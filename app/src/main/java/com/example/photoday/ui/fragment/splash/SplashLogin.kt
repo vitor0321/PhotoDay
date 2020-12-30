@@ -6,10 +6,12 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
+import com.example.photoday.navigation.Navigation.navFragmentSplashLoginToTimeline
 import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
@@ -33,17 +35,24 @@ class SplashLogin : BaseFragment() {
     }
 
     private fun init() {
+        statusBarNavigation()
+
+        //define time that the activity is active until it passes to the other
+        Handler(Looper.getMainLooper()).postDelayed({
+            /*Navigation between fragments Directions*/
+            navFragmentSplashLoginToTimeline(controlNavigation)
+        }, SPLASH_TIME_OUT)
+    }
+
+    private fun statusBarNavigation() {
         /*Sending status AppBar and Bottom Navigation to the Activity*/
         val statusAppBarNavigation = Components(FALSE, FALSE)
         val mainActivity = requireActivity() as MainActivity
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
-        //define time that the activity is active until it passes to the other
-        Handler(Looper.getMainLooper()).postDelayed({
-            /*Navigation between fragments Directions*/
-            val direction =
-                SplashLoginDirections.actionSplashLoginToTimelineFragment()
-            controlNavigation.navigate(direction)
-        }, SPLASH_TIME_OUT)
+        /*change color of statusBar*/
+        activity?.window?.statusBarColor = ContextCompat.getColor(
+            requireContext(), R.color.white
+        )
     }
 }

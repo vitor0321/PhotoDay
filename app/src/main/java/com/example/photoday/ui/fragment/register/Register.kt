@@ -5,6 +5,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
@@ -26,22 +27,30 @@ class Register : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_register_user, container, false)
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
-        return inflater.inflate(R.layout.fragment_register_user, container, false)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initButton()
         init()
     }
 
     private fun init() {
+        statusBarNavigation()
+        initButton()
+    }
+
+    private fun statusBarNavigation() {
         /*Sending status AppBar and Bottom Navigation to the Activity*/
         val statusAppBarNavigation = Components(FALSE, FALSE)
         val mainActivity = requireActivity() as MainActivity
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
+
+        /*change color statusBar*/
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
     }
 
     private fun initButton() {
