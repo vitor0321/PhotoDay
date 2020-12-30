@@ -3,12 +3,12 @@ package com.example.photoday.ui.fragment.register
 import android.content.Context
 import android.util.Patterns
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.R
 import com.example.photoday.constants.Uteis.showToast
 import com.example.photoday.navigation.Navigation.navFragmentRegisterToLogin
+import com.example.photoday.ui.fragment.login.Logout.createUserWithEmailAndPassword
 import com.google.firebase.auth.FirebaseAuth
 
 class RegisterViewModel : ViewModel() {
@@ -58,42 +58,6 @@ class RegisterViewModel : ViewModel() {
             context,
             controlNavigation
         )
-    }
-
-    private fun createUserWithEmailAndPassword(
-        auth: FirebaseAuth,
-        registerUser: AppCompatEditText,
-        registerUserPassword: AppCompatEditText,
-        context: Context?,
-        controlNavigation: NavController
-    ) {
-        /*Create New User */
-        auth.createUserWithEmailAndPassword(
-            registerUser.text.toString(),
-            registerUserPassword.text.toString()
-        )
-            .addOnCompleteListener { task ->
-                val user = auth.currentUser
-                when {
-                    task.isSuccessful -> {
-                        user!!.sendEmailVerification()
-                            .addOnCompleteListener {
-                                showToast(context, R.string.login_success.toString())
-                                navFragmentRegisterToLogin(controlNavigation)
-                            }
-                        showToast(
-                            context, R.string.check_your_email_and_confirm.toString()
-                        )
-                    }
-                    !task.isSuccessful -> {
-                        navFragmentRegisterToLogin(controlNavigation)
-                        showToast(context, R.string.email_already_exists.toString())
-                    }
-                    else -> {
-                        showToast(context, R.string.authentication_failed_try_again.toString())
-                    }
-                }
-            }
     }
 }
 

@@ -20,6 +20,8 @@ import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.fragment.login.Logout.firebaseAuthWithGoogle
+import com.example.photoday.ui.fragment.login.Logout.forgotPassword
 import com.example.photoday.ui.fragment.login.Logout.updateUI
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -121,7 +123,7 @@ class LoginFragment : Fragment() {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
-                    viewModel.firebaseAuthWithGoogle(
+                    firebaseAuthWithGoogle(
                         account.idToken!!,
                         auth,
                         controlNavigation,
@@ -144,7 +146,7 @@ class LoginFragment : Fragment() {
         val userEmail = view.findViewById<EditText>(R.id.edit_text_email_confirm)
         builder?.setView(view)
         builder?.setPositiveButton(getString(R.string.ok)) { _, _ ->
-            viewModel.forgotPassword(userEmail,context, auth)
+            forgotPassword(userEmail,context, auth)
         }
         builder?.setNegativeButton(getString(R.string.cancel)) { _, _ -> }
         builder?.show()

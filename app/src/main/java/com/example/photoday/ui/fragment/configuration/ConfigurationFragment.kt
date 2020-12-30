@@ -13,6 +13,7 @@ import com.example.photoday.navigation.Navigation.navFragmentConfigurationToTime
 import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
+import com.example.photoday.ui.fragment.login.Logout.logout
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_configuration.*
 
@@ -75,7 +76,7 @@ class ConfigurationFragment : BaseFragment() {
     private fun initButton() {
         btn_logout.setOnClickListener {
             /*logout with Firebase*/
-            auth.signOut()
+            context?.let { context -> logout(context) }
             navFragmentConfigurationToSplashGoodbye(navFragment)
         }
     }
