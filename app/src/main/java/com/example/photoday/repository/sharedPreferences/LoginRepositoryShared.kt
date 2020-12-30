@@ -1,4 +1,4 @@
-package com.example.photoday.repository
+package com.example.photoday.repository.sharedPreferences
 
 import android.content.SharedPreferences
 import androidx.core.content.edit

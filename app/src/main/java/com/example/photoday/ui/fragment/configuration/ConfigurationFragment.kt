@@ -1,6 +1,5 @@
 package com.example.photoday.ui.fragment.configuration
 
-import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.core.content.ContextCompat
@@ -9,33 +8,27 @@ import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.TRUE
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.repository.LoginRepositoryShared
+import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
+import com.example.photoday.navigation.Navigation.navFragmentConfigurationToTimeline
 import com.example.photoday.stateAppBarBottonNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_configuration.*
 
 class ConfigurationFragment : BaseFragment() {
 
     private val viewModel by lazy { ViewModelInjector.providerConfigurationViewModel() }
-    private val loginViewModel by lazy {
-        val sharedPref by lazy { requireActivity().getPreferences(Context.MODE_PRIVATE) }
-        val repositoryShared = LoginRepositoryShared(sharedPref)
-        ViewModelInjector.providerLoginViewModel(repositoryShared)
-    }
     private val navFragment by lazy { findNavController() }
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        /*para aparecer o menu quando for inflado*/
-        setHasOptionsMenu(true)
-        arguments?.let {}
-
-        /*mudar a cor do statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
-        return inflater.inflate(R.layout.fragment_configuration, container, false)
+        val view = inflater.inflate(R.layout.fragment_configuration, container, false)
+        auth = FirebaseAuth.getInstance()
+        return view
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -48,28 +41,43 @@ class ConfigurationFragment : BaseFragment() {
         init()
     }
 
-    private fun init() {
-        /*Enviando o status do AppBar e do Bottom Navigation para a Activity*/
-        val statusAppBarNavigation = Components(TRUE, FALSE)
-        val mainActivity = requireActivity() as MainActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
-
-        /*set name, emamil e photo do usuário*/
-        viewModel.googleSingIn(text_view_user_name, text_view_user_email)
-
-        btn_logout.setOnClickListener {
-
-            viewModel.navFragmentLogin(navFragment)
-            loginViewModel.logout()
-        }
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_fragment_configuration_app_bar -> {
-                viewModel.navTimeline(navFragment)
+                navFragmentConfigurationToTimeline(navFragment)
             }
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun init() {
+        /*set name,email and photo of user*/
+        viewModel.googleSingIn(text_view_user_name, text_view_user_email)
+
+        initButton()
+        statusBarNavigation()
+    }
+
+    private fun statusBarNavigation() {
+        /*show OptionsMenu when inflate*/
+        setHasOptionsMenu(true)
+        arguments?.let {}
+
+        /*Sending status AppBar and Bottom Navigation to the Activity*/
+        val statusAppBarNavigation = Components(TRUE, FALSE)
+        val mainActivity = requireActivity() as MainActivity
+        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
+
+        /*change color statusBar*/
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
+    }
+
+    private fun initButton() {
+        btn_logout.setOnClickListener {
+            /*logout with Firebase*/
+            auth.signOut()
+            navFragmentConfigurationToSplashGoodbye(navFragment)
+        }
+    }
+
 }

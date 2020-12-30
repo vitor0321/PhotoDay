@@ -6,11 +6,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.ui.MainActivity
+import com.example.photoday.navigation.Navigation.navFragmentTimelineToConfiguration
 
 abstract class BaseFragment : Fragment() {
 
@@ -20,16 +19,7 @@ abstract class BaseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        init()
-    }
-
-    private fun init() {
-        /*para aparecer o menu quando for inflado*/
-        setHasOptionsMenu(true)
-        arguments?.let {}
-
-        /*mudar a cor do statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
+        statusBarNavigation()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -40,9 +30,18 @@ abstract class BaseFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_fragment_base_app_bar -> {
-                viewModel.navFragmentLogin(navFragment)
+                navFragmentTimelineToConfiguration(navFragment)
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun statusBarNavigation() {
+        /*para aparecer o menu quando for inflado*/
+        setHasOptionsMenu(true)
+        arguments?.let {}
+
+        /*mudar a cor do statusBar*/
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
     }
 }

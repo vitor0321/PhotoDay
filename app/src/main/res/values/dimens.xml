@@ -15,4 +15,9 @@
     <dimen name="fab_cradle_vertical_offset_10dp">10dp</dimen>
     <dimen name="fab_cradle_counded_corner_radius_20dp">20dp</dimen>
     <dimen name="layout_margin_end_16dp">16dp</dimen>
+    <dimen name="radius_button">8dp</dimen>
+    <dimen name="margin_in_button">1dp</dimen>
+    <dimen name="radius_edit_text">8dp</dimen>
+    <dimen name="stroke_edit_tex">1dp</dimen>
+    <dimen name="margin_bottom">8dp</dimen>
 </resources>
