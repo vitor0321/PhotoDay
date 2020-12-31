@@ -1,15 +1,15 @@
 package com.example.photoday.ui.fragment.gallery
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.adapter.GalleryListAdapter
 import com.example.photoday.constants.TRUE
 import com.example.photoday.injector.ViewModelInjector
+import com.example.photoday.navigation.Navigation
 import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
@@ -19,6 +19,7 @@ class GalleryFragment : BaseFragment() {
 
     private val viewModel by lazy { ViewModelInjector.providerGalleryViewModel() }
     private lateinit var galleryAdapter: GalleryListAdapter
+    private val navFragment by lazy { findNavController() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +32,11 @@ class GalleryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_fragment_gallery, menu)
     }
 
     private fun init(){

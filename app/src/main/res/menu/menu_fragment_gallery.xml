@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_fragment_base_app_bar"
-        android:icon="@drawable/ic_confuguration_app"
-        android:title="@string/configuration"
+        android:id="@+id/menu_fragment_gallery_app_bar"
+        android:icon="@drawable/ic_configuration_app"
+        android:title="@string/configuration_gallery"
         app:showAsAction="always" />
 </menu>

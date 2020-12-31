@@ -27,7 +27,16 @@
         android:name="com.example.photoday.ui.fragment.gallery.GalleryFragment"
         android:label="Gallery"
         android:layout="@layout/fragment_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_gallery" >
+        <action
+            android:id="@+id/action_nav_galleryFragment_to_configurationFragment"
+            app:destination="@id/configurationFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpToInclusive="false" />
+    </fragment>
 
     <fragment
         android:id="@+id/loginFragment"

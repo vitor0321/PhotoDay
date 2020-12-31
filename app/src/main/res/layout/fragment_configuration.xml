@@ -7,7 +7,7 @@
     tools:context=".ui.fragment.configuration.ConfigurationFragment">
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/edit_photo_user"
+        android:id="@+id/button_edit_photo_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@+id/image_user"
@@ -29,12 +29,12 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/edit_name_user"
+        android:id="@+id/button_edit_name_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@+id/text_view_user_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/text_view_user_name"
+        app:layout_constraintStart_toEndOf="@id/text_view_user_name"
         android:src="@drawable/ic_edit_pencil"
         android:background="@color/fui_transparent"
         />

@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         controlNavigation
             .addOnDestinationChangedListener { controller, destination, arguments ->
                 /* change the fragment title as it is in the nav_graph Label */
-                title = destination.label
+                title = null
             }
         /* control all bottom navigation navigation */
         main_activity_nav_bottom.setupWithNavController(controlNavigation)

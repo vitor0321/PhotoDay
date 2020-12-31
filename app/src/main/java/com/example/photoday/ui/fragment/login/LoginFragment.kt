@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -21,7 +19,6 @@ import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.repository.firebase.FirebaseLogout.firebaseAuthWithGoogle
-import com.example.photoday.repository.firebase.FirebaseLogout.forgotPassword
 import com.example.photoday.repository.firebase.FirebaseLogout.updateUI
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -59,6 +56,27 @@ class LoginFragment : Fragment() {
         updateUI(currentUser, controlNavigation, context, ONSTART)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // Result returned from launching the Intent
+        when (requestCode) {
+            RC_SIGN_IN -> {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    val account = task.getResult(ApiException::class.java)!!
+                    firebaseAuthWithGoogle(
+                        account.idToken!!,
+                        controlNavigation,
+                        context
+                    )
+                } catch (e: ApiException) {
+                    e.message?.let { showToast(requireActivity(), it) }
+                }
+            }
+        }
+    }
+
     private fun init() {
         // Configure Google Sign In
         createRequestLoginGoogle()
@@ -88,16 +106,6 @@ class LoginFragment : Fragment() {
         login_button_forgot_password.setOnClickListener { alertDialogForgotPassword() }
     }
 
-    private fun statusBarNavigation() {
-        /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val statusAppBarNavigation = Components(FALSE, FALSE)
-        val mainActivity = requireActivity() as MainActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
-
-        /*change color statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
-    }
-
     private fun createRequestLoginGoogle() {
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -113,40 +121,17 @@ class LoginFragment : Fragment() {
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        // Result returned from launching the Intent
-        when (requestCode) {
-            RC_SIGN_IN -> {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                try {
-                    // Google Sign In was successful, authenticate with Firebase
-                    val account = task.getResult(ApiException::class.java)!!
-                    firebaseAuthWithGoogle(
-                        account.idToken!!,
-                        controlNavigation,
-                        context
-                    )
-                } catch (e: ApiException) {
-                    e.message?.let { showToast(requireActivity(), it) }
-                }
-            }
-        }
+    private fun alertDialogForgotPassword() {
+        viewModel.alertDialogForgotPassword(context,layoutInflater)
     }
 
-    private fun alertDialogForgotPassword() {
-        /*Alert Dialog Forgot the password*/
-        val builder =
-            context?.let { context -> AlertDialog.Builder(context, R.style.MyDialogTheme) }
-        val inflater = layoutInflater
-        builder?.setTitle(getString(R.string.what_is_your_email))
-        val view = inflater.inflate(R.layout.dialog_forgot_password, null)
-        val userEmail = view.findViewById<EditText>(R.id.edit_text_email_confirm)
-        builder?.setView(view)
-        builder?.setPositiveButton(getString(R.string.ok)) { _, _ ->
-            forgotPassword(userEmail, context)
-        }
-        builder?.setNegativeButton(getString(R.string.cancel)) { _, _ -> }
-        builder?.show()
+    private fun statusBarNavigation() {
+        /*Sending status AppBar and Bottom Navigation to the Activity*/
+        val statusAppBarNavigation = Components(FALSE, FALSE)
+        val mainActivity = requireActivity() as MainActivity
+        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
+
+        /*change color statusBar*/
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
     }
 }

@@ -43,31 +43,25 @@ class ConfigurationFragment : BaseFragment() {
         init()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_fragment_configuration_app_bar -> {
-                navFragmentConfigurationToTimeline(navFragment)
-            }
-        }
-        return super.onOptionsItemSelected(item)
+    private fun init() {
+        initButton()
+        googleSingIn()
+        statusBarNavigation()
     }
 
-    private fun init() {
+    private fun initButton() {
+        btn_logout.setOnClickListener {
+            /*logout with Firebase*/
+            context?.let { context -> logout(context) }
+            navFragmentConfigurationToSplashGoodbye(navFragment)
+        }
+    }
 
-        val userFirebase = UserFirebase(
-            text_view_user_name.toString(),
-            text_view_user_email.toString(),
-            image_user
-        )
-
+    private fun googleSingIn(){
         /*set name,email and photo of user*/
         viewModel.googleSingIn(text_view_user_name,
             text_view_user_email,
             image_user, this)
-
-
-        initButton()
-        statusBarNavigation()
     }
 
     private fun statusBarNavigation() {
@@ -82,14 +76,6 @@ class ConfigurationFragment : BaseFragment() {
 
         /*change color statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
-    }
-
-    private fun initButton() {
-        btn_logout.setOnClickListener {
-            /*logout with Firebase*/
-            context?.let { context -> logout(context) }
-            navFragmentConfigurationToSplashGoodbye(navFragment)
-        }
     }
 
 }

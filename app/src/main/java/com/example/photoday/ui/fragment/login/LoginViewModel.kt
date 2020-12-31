@@ -2,11 +2,15 @@ package com.example.photoday.ui.fragment.login
 
 import android.content.Context
 import android.util.Patterns
+import android.view.LayoutInflater
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.R
+import com.example.photoday.repository.firebase.FirebaseLogout
 import com.example.photoday.repository.firebase.FirebaseLogout.signInWithEmailAndPassword
 
 class LoginViewModel : ViewModel() {
@@ -43,5 +47,20 @@ class LoginViewModel : ViewModel() {
             context,
             controlNavigation
         )
+    }
+
+    fun alertDialogForgotPassword(context: Context?, layoutInflater: LayoutInflater) {
+        /*Alert Dialog Forgot the password*/
+        val builder =
+            context?.let { context -> AlertDialog.Builder(context, R.style.MyDialogTheme) }
+        builder?.setTitle(context!!.getString(R.string.what_is_your_email))
+        val view = layoutInflater.inflate(R.layout.dialog_forgot_password, null)
+        val userEmail = view.findViewById<EditText>(R.id.edit_text_email_confirm)
+        builder?.setView(view)
+        builder?.setPositiveButton(context!!.getString(R.string.ok)) { _, _ ->
+            FirebaseLogout.forgotPassword(userEmail, context)
+        }
+        builder?.setNegativeButton(context!!.getString(R.string.cancel)) { _, _ -> }
+        builder?.show()
     }
 }
