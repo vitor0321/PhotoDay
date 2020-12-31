@@ -10,10 +10,11 @@ import com.example.photoday.constants.TRUE
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
 import com.example.photoday.navigation.Navigation.navFragmentConfigurationToTimeline
+import com.example.photoday.repository.firebase.FirebaseLogout.logout
+import com.example.photoday.repository.firebase.UserFirebase
 import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.fragment.login.Logout.logout
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_configuration.*
 
@@ -52,8 +53,18 @@ class ConfigurationFragment : BaseFragment() {
     }
 
     private fun init() {
+
+        val userFirebase = UserFirebase(
+            text_view_user_name.toString(),
+            text_view_user_email.toString(),
+            image_user
+        )
+
         /*set name,email and photo of user*/
-        viewModel.googleSingIn(text_view_user_name, text_view_user_email)
+        viewModel.googleSingIn(text_view_user_name,
+            text_view_user_email,
+            image_user, this)
+
 
         initButton()
         statusBarNavigation()

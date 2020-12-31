@@ -1,4 +1,4 @@
-package com.example.photoday.ui.fragment.login
+package com.example.photoday.repository.firebase
 
 import android.content.Context
 import android.util.Patterns
@@ -18,7 +18,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
-object Logout {
+object FirebaseLogout {
+
+    var auth = FirebaseAuth.getInstance()
+
     fun logout(context: Context) {
         AuthUI.getInstance()
             .signOut(context)
@@ -27,7 +30,7 @@ object Logout {
             }
     }
 
-    fun forgotPassword(userEmail: EditText, context: Context?, auth: FirebaseAuth) {
+    fun forgotPassword(userEmail: EditText, context: Context?) {
         when {
             userEmail.text.toString().isEmpty() -> {
                 showToast(context, context!!.getString(R.string.please_enter_email))
@@ -53,7 +56,6 @@ object Logout {
 
     fun firebaseAuthWithGoogle(
         idToken: String,
-        auth: FirebaseAuth,
         controlNavigation: NavController,
         context: Context?
     ) {
@@ -74,7 +76,6 @@ object Logout {
     }
 
     fun createUserWithEmailAndPassword(
-        auth: FirebaseAuth,
         registerUser: AppCompatEditText,
         registerUserPassword: AppCompatEditText,
         context: Context?,
@@ -112,7 +113,6 @@ object Logout {
     }
 
     fun signInWithEmailAndPassword(
-        auth: FirebaseAuth,
         login_user_id: AppCompatEditText,
         login_password: AppCompatEditText,
         requireActivity: FragmentActivity,

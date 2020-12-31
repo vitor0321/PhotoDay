@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.example.photoday.constants.LOGIN_IN
 
-class LoginRepositoryShared(private val preferences: SharedPreferences) {
+class UserRepositoryShared(private val preferences: SharedPreferences) {
 
     fun login() = salve(true)
 
@@ -17,4 +17,6 @@ class LoginRepositoryShared(private val preferences: SharedPreferences) {
             putBoolean(LOGIN_IN, state)
         }
     }
+
+
 }

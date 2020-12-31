@@ -1,6 +1,5 @@
 package com.example.photoday.injector
 
-import com.example.photoday.repository.sharedPreferences.LoginRepositoryShared
 import com.example.photoday.ui.fragment.base.BaseViewModel
 import com.example.photoday.ui.fragment.base.BaseViewModelFactory
 import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
@@ -9,7 +8,6 @@ import com.example.photoday.ui.fragment.gallery.GalleryViewModel
 import com.example.photoday.ui.fragment.gallery.GalleryViewModelFactory
 import com.example.photoday.ui.fragment.login.LoginViewModel
 import com.example.photoday.ui.fragment.login.LoginViewModelFactory
-import com.example.photoday.ui.fragment.login.Logout
 import com.example.photoday.ui.fragment.register.RegisterViewModel
 import com.example.photoday.ui.fragment.register.RegisterViewModelFactory
 import com.example.photoday.ui.fragment.timeline.TimelineViewModel

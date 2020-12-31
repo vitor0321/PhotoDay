@@ -19,7 +19,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="name_user">Name User</string>
+    <string name="user_name">User name</string>
     <string name="email_user">Email User</string>
     <string name="phone">Phone</string>
     <string name="configuration">Configuration</string>

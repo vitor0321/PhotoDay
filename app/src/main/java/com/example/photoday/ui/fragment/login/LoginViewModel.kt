@@ -2,25 +2,18 @@ package com.example.photoday.ui.fragment.login
 
 import android.content.Context
 import android.util.Patterns
-import android.widget.EditText
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.R
-import com.example.photoday.constants.FIRSTLOGIN
-import com.example.photoday.constants.Uteis.showToast
-import com.example.photoday.ui.fragment.login.Logout.signInWithEmailAndPassword
-import com.example.photoday.ui.fragment.login.Logout.updateUI
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
+import com.example.photoday.repository.firebase.FirebaseLogout.signInWithEmailAndPassword
 
 class LoginViewModel : ViewModel() {
 
     fun doLogin(
         loginUserId: AppCompatEditText,
         loginPassword: AppCompatEditText,
-        auth: FirebaseAuth,
         requireActivity: FragmentActivity,
         context: Context?,
         controlNavigation: NavController
@@ -44,7 +37,6 @@ class LoginViewModel : ViewModel() {
             }
         }
         signInWithEmailAndPassword(
-            auth,
             loginUserId,
             loginPassword,
             requireActivity,

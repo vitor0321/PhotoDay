@@ -6,9 +6,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.R
-import com.example.photoday.constants.Uteis.showToast
-import com.example.photoday.navigation.Navigation.navFragmentRegisterToLogin
-import com.example.photoday.ui.fragment.login.Logout.createUserWithEmailAndPassword
+import com.example.photoday.repository.firebase.FirebaseLogout.createUserWithEmailAndPassword
 import com.google.firebase.auth.FirebaseAuth
 
 class RegisterViewModel : ViewModel() {
@@ -52,7 +50,6 @@ class RegisterViewModel : ViewModel() {
         }
 
         createUserWithEmailAndPassword(
-            auth,
             registerUser,
             registerUserPassword,
             context,
