@@ -7,8 +7,8 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.example.photoday.R
-import com.example.photoday.constants.FIRSTLOGIN
-import com.example.photoday.constants.ONSTART
+import com.example.photoday.constants.FIRST_LOGIN
+import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.Uteis.showToast
 import com.example.photoday.navigation.Navigation
 import com.example.photoday.navigation.Navigation.navFragmentLoginToSplashLogin
@@ -66,7 +66,7 @@ object FirebaseLogout {
                     task.isSuccessful -> {
                         // Sign in success, update UI with the signed-in user's information
                         val user = auth.currentUser
-                        updateUI(user, controlNavigation, context, FIRSTLOGIN)
+                        updateUI(user, controlNavigation, context, FIRST_LOGIN)
                     }
                     else -> {
                         showToast(context, context!!.getString(R.string.auth_failed))
@@ -129,12 +129,12 @@ object FirebaseLogout {
                     task.isSuccessful -> {
                         // Sign in success, update UI with the signed-in user's information
                         val user = auth.currentUser
-                        updateUI(user, controlNavigation, context, FIRSTLOGIN)
+                        updateUI(user, controlNavigation, context, FIRST_LOGIN)
                     }
                     else -> {
                         // If sign in fails, display a message to the user.
                         showToast(context,context!!.getString(R.string.login_failed))
-                        updateUI(null, controlNavigation, context, FIRSTLOGIN)
+                        updateUI(null, controlNavigation, context, FIRST_LOGIN)
                     }
                 }
             }
@@ -154,10 +154,10 @@ object FirebaseLogout {
                         /*if you are already logged in go to Timeline,
                         if you are going to log in for the first time go to Splash*/
                         when (onStart) {
-                            ONSTART -> {
+                            ON_START -> {
                                 navFragmentLoginToTimeline(controlNavigation)
                             }
-                            FIRSTLOGIN -> {
+                            FIRST_LOGIN -> {
                                 navFragmentLoginToSplashLogin(controlNavigation)
                             }
                         }

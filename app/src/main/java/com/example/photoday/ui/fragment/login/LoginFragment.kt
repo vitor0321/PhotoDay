@@ -11,15 +11,15 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.DEFAULT_WEB_CLIENT_ID
 import com.example.photoday.constants.FALSE
-import com.example.photoday.constants.ONSTART
+import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.constants.Uteis.showToast
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
-import com.example.photoday.stateBarNavigation.Components
-import com.example.photoday.ui.MainActivity
 import com.example.photoday.repository.firebase.FirebaseLogout.firebaseAuthWithGoogle
 import com.example.photoday.repository.firebase.FirebaseLogout.updateUI
+import com.example.photoday.stateBarNavigation.Components
+import com.example.photoday.ui.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -53,28 +53,7 @@ class LoginFragment : Fragment() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
-        updateUI(currentUser, controlNavigation, context, ONSTART)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        // Result returned from launching the Intent
-        when (requestCode) {
-            RC_SIGN_IN -> {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                try {
-                    // Google Sign In was successful, authenticate with Firebase
-                    val account = task.getResult(ApiException::class.java)!!
-                    firebaseAuthWithGoogle(
-                        account.idToken!!,
-                        controlNavigation,
-                        context
-                    )
-                } catch (e: ApiException) {
-                    e.message?.let { showToast(requireActivity(), it) }
-                }
-            }
-        }
+        updateUI(currentUser, controlNavigation, context, ON_START)
     }
 
     private fun init() {
@@ -104,6 +83,27 @@ class LoginFragment : Fragment() {
 
         //Button forgot Password
         login_button_forgot_password.setOnClickListener { alertDialogForgotPassword() }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // Result returned from launching the Intent
+        when (requestCode) {
+            RC_SIGN_IN -> {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    val account = task.getResult(ApiException::class.java)!!
+                    firebaseAuthWithGoogle(
+                        account.idToken!!,
+                        controlNavigation,
+                        context
+                    )
+                } catch (e: ApiException) {
+                    e.message?.let { showToast(requireActivity(), it) }
+                }
+            }
+        }
     }
 
     private fun createRequestLoginGoogle() {
