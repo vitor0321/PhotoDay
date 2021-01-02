@@ -13,7 +13,7 @@ import com.example.photoday.constants.DEFAULT_WEB_CLIENT_ID
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.RC_SIGN_IN
-import com.example.photoday.constants.Uteis.showToast
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.repository.firebase.FirebaseLogout.firebaseAuthWithGoogle
@@ -53,7 +53,7 @@ class LoginFragment : Fragment() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
-        updateUI(currentUser, controlNavigation, context, ON_START)
+        context?.let { context -> updateUI(currentUser, controlNavigation, ON_START, context) }
     }
 
     private fun init() {
@@ -66,13 +66,15 @@ class LoginFragment : Fragment() {
     private fun initButton() {
         //Button to login
         login_button_log.setOnClickListener {
-            viewModel.doLogin(
-                login_user_id,
-                login_password,
-                requireActivity(),
-                context,
-                controlNavigation
-            )
+            context?.let { context ->
+                viewModel.doLogin(
+                    login_user_id,
+                    login_password,
+                    requireActivity(),
+                    context,
+                    controlNavigation
+                )
+            }
         }
 
         //Button register
@@ -94,13 +96,15 @@ class LoginFragment : Fragment() {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
-                    firebaseAuthWithGoogle(
-                        account.idToken!!,
-                        controlNavigation,
-                        context
-                    )
+                    context?.let { context ->
+                        firebaseAuthWithGoogle(
+                            account.idToken!!,
+                            controlNavigation,
+                            context
+                        )
+                    }
                 } catch (e: ApiException) {
-                    e.message?.let { showToast(requireActivity(), it) }
+                    e.printStackTrace()
                 }
             }
         }

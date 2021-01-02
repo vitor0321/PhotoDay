@@ -9,7 +9,7 @@ import androidx.navigation.NavController
 import com.example.photoday.R
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.ON_START
-import com.example.photoday.constants.Uteis.showToast
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.navigation.Navigation
 import com.example.photoday.navigation.Navigation.navFragmentLoginToSplashLogin
 import com.example.photoday.navigation.Navigation.navFragmentLoginToTimeline
@@ -26,27 +26,28 @@ object FirebaseLogout {
         AuthUI.getInstance()
             .signOut(context)
             .addOnSuccessListener {
-                showToast(context, context.getString(R.string.successfully_logged))
+
+                toast(context,R.string.successfully_logged)
             }
     }
 
-    fun forgotPassword(userEmail: EditText, context: Context?) {
+    fun forgotPassword(context: Context,userEmail: EditText) {
         when {
             userEmail.text.toString().isEmpty() -> {
-                showToast(context, context!!.getString(R.string.please_enter_email))
+                toast(context, R.string.please_enter_email)
             }
             !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
-                showToast(context, context!!.getString(R.string.please_enter_valid_email))
+                toast(context,R.string.please_enter_valid_email)
             }
             else -> {
                 auth.sendPasswordResetEmail(userEmail.text.toString())
                     .addOnCompleteListener { task ->
                         when {
                             task.isSuccessful -> {
-                                showToast(context, context!!.getString(R.string.email_sent))
+                                toast(context,R.string.email_sent)
                             }
                             else -> {
-                                showToast(context, context!!.getString(R.string.unregistered_email))
+                                toast(context,R.string.unregistered_email)
                             }
                         }
                     }
@@ -57,7 +58,7 @@ object FirebaseLogout {
     fun firebaseAuthWithGoogle(
         idToken: String,
         controlNavigation: NavController,
-        context: Context?
+        context: Context
     ) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -66,10 +67,10 @@ object FirebaseLogout {
                     task.isSuccessful -> {
                         // Sign in success, update UI with the signed-in user's information
                         val user = auth.currentUser
-                        updateUI(user, controlNavigation, context, FIRST_LOGIN)
+                        updateUI(user, controlNavigation, FIRST_LOGIN, context)
                     }
                     else -> {
-                        showToast(context, context!!.getString(R.string.auth_failed))
+                        toast(context, R.string.auth_failed)
                     }
                 }
             }
@@ -78,8 +79,8 @@ object FirebaseLogout {
     fun createUserWithEmailAndPassword(
         registerUser: AppCompatEditText,
         registerUserPassword: AppCompatEditText,
-        context: Context?,
-        controlNavigation: NavController
+        controlNavigation: NavController,
+        context: Context
     ) {
         /*Create New User */
         auth.createUserWithEmailAndPassword(
@@ -92,21 +93,17 @@ object FirebaseLogout {
                     task.isSuccessful -> {
                         user!!.sendEmailVerification()
                             .addOnCompleteListener {
-                                showToast(context, context!!.getString(R.string.login_success))
+                                toast(context, R.string.login_success)
                                 Navigation.navFragmentRegisterToLogin(controlNavigation)
                             }
-                        showToast(
-                            context, context!!.getString(R.string.check_your_email_and_confirm)
-                        )
+                        toast(context,R.string.check_your_email_and_confirm)
                     }
                     !task.isSuccessful -> {
                         Navigation.navFragmentRegisterToLogin(controlNavigation)
-                        showToast(context, context!!.getString(R.string.email_already_exists))
+                        toast(context,R.string.email_already_exists)
                     }
                     else -> {
-                        showToast(
-                            context, context!!.getString(R.string.authentication_failed_try_again)
-                        )
+                        toast(context,R.string.authentication_failed_try_again)
                     }
                 }
             }
@@ -116,8 +113,8 @@ object FirebaseLogout {
         login_user_id: AppCompatEditText,
         login_password: AppCompatEditText,
         requireActivity: FragmentActivity,
-        context: Context?,
-        controlNavigation: NavController
+        controlNavigation: NavController,
+        context: Context
     ) {
         /*checking if the user exists*/
         auth.signInWithEmailAndPassword(
@@ -129,12 +126,12 @@ object FirebaseLogout {
                     task.isSuccessful -> {
                         // Sign in success, update UI with the signed-in user's information
                         val user = auth.currentUser
-                        updateUI(user, controlNavigation, context, FIRST_LOGIN)
+                        updateUI(user, controlNavigation, FIRST_LOGIN, context)
                     }
                     else -> {
                         // If sign in fails, display a message to the user.
-                        showToast(context,context!!.getString(R.string.login_failed))
-                        updateUI(null, controlNavigation, context, FIRST_LOGIN)
+                        toast(context, R.string.login_failed)
+                        updateUI(null, controlNavigation, FIRST_LOGIN, context)
                     }
                 }
             }
@@ -143,8 +140,8 @@ object FirebaseLogout {
     fun updateUI(
         currentUser: FirebaseUser?,
         controlNavigation: NavController,
-        context: Context?,
         onStart: Int,
+        context: Context
     ) {
         /*if the user is different from null, then he exists and can log in*/
         when {
@@ -163,7 +160,7 @@ object FirebaseLogout {
                         }
                     }
                     else -> {
-                        showToast(context, context!!.getString(R.string.verify_your_email_address))
+                        toast(context,R.string.verify_your_email_address)
                     }
                 }
             }

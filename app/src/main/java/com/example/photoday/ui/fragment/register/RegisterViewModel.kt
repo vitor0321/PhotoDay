@@ -15,35 +15,34 @@ class RegisterViewModel : ViewModel() {
         registerUser: AppCompatEditText,
         registerUserPassword: AppCompatEditText,
         registerConfirmPassword: AppCompatEditText,
-        auth: FirebaseAuth,
-        context: Context?,
+        context: Context,
         controlNavigation: NavController
     ) {
         /*here you will authenticate your email and password*/
         when {
             registerUser.text.toString().isEmpty() -> {
-                registerUser.error = context!!.getString(R.string.please_enter_email)
+                registerUser.error = context.getString(R.string.please_enter_email)
                 registerUser.requestFocus()
                 return
             }
             !Patterns.EMAIL_ADDRESS.matcher(registerUser.text.toString()).matches() -> {
-                registerUser.error = context!!.getString(R.string.please_enter_valid_email)
+                registerUser.error = context.getString(R.string.please_enter_valid_email)
                 registerUser.requestFocus()
                 return
             }
             registerUserPassword.text.toString().isEmpty() -> {
-                registerUserPassword.error = context!!.getString(R.string.please_enter_password)
+                registerUserPassword.error = context.getString(R.string.please_enter_password)
                 registerUserPassword.requestFocus()
                 return
             }
             registerConfirmPassword.text.toString().isEmpty() -> {
                 registerUserPassword.error =
-                    context!!.getString(R.string.please_enter_password_confirm)
+                    context.getString(R.string.please_enter_password_confirm)
                 registerUserPassword.requestFocus()
                 return
             }
             registerConfirmPassword.text.toString() != registerUserPassword.text.toString() -> {
-                registerUserPassword.error = context!!.getString(R.string.password_are_not_the_same)
+                registerUserPassword.error = context.getString(R.string.password_are_not_the_same)
                 registerUserPassword.requestFocus()
                 return
             }
@@ -52,8 +51,8 @@ class RegisterViewModel : ViewModel() {
         createUserWithEmailAndPassword(
             registerUser,
             registerUserPassword,
-            context,
-            controlNavigation
+            controlNavigation,
+            context
         )
     }
 }

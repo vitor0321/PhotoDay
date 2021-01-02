@@ -19,23 +19,23 @@ class LoginViewModel : ViewModel() {
         loginUserId: AppCompatEditText,
         loginPassword: AppCompatEditText,
         requireActivity: FragmentActivity,
-        context: Context?,
+        context: Context,
         controlNavigation: NavController
     ) {
         /*here you will authenticate your email and password*/
         when {
             loginUserId.text.toString().isEmpty() -> {
-                loginUserId.error = context!!.getString(R.string.please_enter_email)
+                loginUserId.error = context.getString(R.string.please_enter_email)
                 loginUserId.requestFocus()
                 return
             }
             !Patterns.EMAIL_ADDRESS.matcher(loginUserId.text.toString()).matches() -> {
-                loginUserId.error = context!!.getString(R.string.please_enter_valid_email)
+                loginUserId.error = context.getString(R.string.please_enter_valid_email)
                 loginUserId.requestFocus()
                 return
             }
             loginPassword.text.toString().isEmpty() -> {
-                loginPassword.error = context!!.getString(R.string.please_enter_password)
+                loginPassword.error = context.getString(R.string.please_enter_password)
                 loginPassword.requestFocus()
                 return
             }
@@ -44,23 +44,22 @@ class LoginViewModel : ViewModel() {
             loginUserId,
             loginPassword,
             requireActivity,
-            context,
-            controlNavigation
+            controlNavigation,
+            context
         )
     }
 
     fun alertDialogForgotPassword(context: Context?, layoutInflater: LayoutInflater) {
         /*Alert Dialog Forgot the password*/
-        val builder =
-            context?.let { context -> AlertDialog.Builder(context, R.style.MyDialogTheme) }
-        builder?.setTitle(context!!.getString(R.string.what_is_your_email))
+        val builder = context?.let { AlertDialog.Builder(it, R.style.MyDialogTheme) }
+        builder?.setTitle(context.getString(R.string.what_is_your_email))
         val view = layoutInflater.inflate(R.layout.dialog_forgot_password, null)
         val userEmail = view.findViewById<EditText>(R.id.edit_text_email_confirm)
         builder?.setView(view)
-        builder?.setPositiveButton(context!!.getString(R.string.ok)) { _, _ ->
-            FirebaseLogout.forgotPassword(userEmail, context)
+        builder?.setPositiveButton(context.getString(R.string.ok)) { _, _ ->
+            FirebaseLogout.forgotPassword(context, userEmail)
         }
-        builder?.setNegativeButton(context!!.getString(R.string.cancel)) { _, _ -> }
+        builder?.setNegativeButton(context.getString(R.string.cancel)) { _, _ -> }
         builder?.show()
     }
 }

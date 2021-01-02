@@ -54,14 +54,15 @@ class Register : BaseFragment() {
 
     private fun initButton() {
         register_user_button.setOnClickListener {
-            viewModel.signUpUser(
-                register_user_id,
-                register_user_password,
-                register_user_confirm_password,
-                auth,
-                context,
-                controlNavigation
-            )
+            context?.let { context ->
+                viewModel.signUpUser(
+                    register_user_id,
+                    register_user_password,
+                    register_user_confirm_password,
+                    context,
+                    controlNavigation
+                )
+            }
         }
     }
 }
