@@ -1,5 +1,9 @@
 package com.example.photoday.ui.fragment.configuration
 
+import android.content.Context
+import android.view.LayoutInflater
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
@@ -13,8 +17,8 @@ class ConfigurationViewModel : ViewModel() {
 
     /*set name, email and photo of the user*/
     fun googleSingIn(
-        text_view_user_name: AppCompatTextView,
-        text_view_user_email: AppCompatTextView,
+        userName: AppCompatTextView,
+        userEmail: AppCompatTextView,
         image_user: CircleImageView,
         context: ConfigurationFragment
     ) {
@@ -22,8 +26,8 @@ class ConfigurationViewModel : ViewModel() {
         when {
             user != null -> {
                 auth?.let {
-                    text_view_user_name.text = user?.displayName
-                    text_view_user_email.text = user?.email
+                    editUserName(user?.displayName, userName)
+                    userEmail.text = user?.email
 
                         Glide.with(context)
                             .load(user?.photoUrl)
@@ -33,5 +37,27 @@ class ConfigurationViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    fun alertDialogNewUserName(
+        context: Context?,
+        layoutInflater: LayoutInflater,
+        userName: AppCompatTextView
+    ) {
+        /*Alert Dialog Forgot the password*/
+        val builder = context?.let { AlertDialog.Builder(it, R.style.MyDialogTheme) }
+        builder?.setTitle("What's your name?")
+        val view = layoutInflater.inflate(R.layout.dialog_fragment_user_name, null)
+        val newUserName = view.findViewById<EditText>(R.id.edit_text_new_name)
+        builder?.setView(view)
+        builder?.setPositiveButton(context.getString(R.string.ok)) { _, _ ->
+            editUserName(newUserName.toString(), userName)
+        }
+        builder?.setNegativeButton(context.getString(R.string.cancel)) { _, _ -> }
+        builder?.show()
+    }
+
+    private fun editUserName(newUserName: String?, userName: AppCompatTextView) {
+        userName.text = newUserName
     }
 }

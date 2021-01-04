@@ -8,6 +8,13 @@
     android:orientation="horizontal"
     android:padding="@dimen/padding_toast">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_start_toast_image"
+        android:src="@drawable/ic_warning_toast" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_text"
         android:layout_width="wrap_content"
@@ -17,11 +24,5 @@
         android:textSize="@dimen/text_size_toast"
          />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_start_toast_image"
-        android:src="@drawable/ic_warning_toast" />
 
 </LinearLayout>

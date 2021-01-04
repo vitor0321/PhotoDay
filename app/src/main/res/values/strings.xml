@@ -19,7 +19,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="user_name">User name</string>
-    <string name="email_user">Email User</string>
+    <string name="email_user">User Email</string>
     <string name="phone">Phone</string>
     <string name="configuration">Configuration</string>
     <string name="login">Login</string>
@@ -54,4 +54,6 @@
     <string name="please_enter_valid_email">Please Enter Valid Email</string>
     <string name="configuration_gallery">Configuration Gallery</string>
     <string name="cannot_access_gallery">Cannot access the gallery</string>
+    <string name="new_user_name">New Name</string>
+    <string name="camera">Camera</string>
 </resources>

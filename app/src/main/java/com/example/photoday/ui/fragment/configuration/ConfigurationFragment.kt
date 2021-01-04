@@ -5,17 +5,16 @@ import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
-import com.example.photoday.constants.BOTTOM_SHEET_DIALOG
+import com.example.photoday.constants.ADD_PHOTO_DIALOG
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.TRUE
+import com.example.photoday.dialog.AddPhotoDialog
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
 import com.example.photoday.repository.firebase.FirebaseLogout.logout
 import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
-import com.example.photoday.ui.fragment.BottomSheetPhotoFragment
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_configuration.*
 
@@ -58,16 +57,17 @@ class ConfigurationFragment : BaseFragment() {
             navFragmentConfigurationToSplashGoodbye(navFragment)
         }
 
-        /*Button edit photo of the user*/
+        /*Button edit user photo*/
         btn_edit_photo_user.setOnClickListener {
-            val fragManager = activity?.supportFragmentManager
-            val bottomSheetDialogFragment = BottomSheetPhotoFragment()
-            bottomSheetDialogFragment.show(fragManager!!, BOTTOM_SHEET_DIALOG)
+            activity?.let { activity ->
+                AddPhotoDialog.newInstance()
+                    .show(activity.supportFragmentManager, ADD_PHOTO_DIALOG)
+            }
         }
 
-        /*Button edit name of the user */
+        /*Button edit user name */
         btn_edit_name_user.setOnClickListener {
-
+            viewModel.alertDialogNewUserName(context,layoutInflater, text_view_user_name)
         }
     }
 

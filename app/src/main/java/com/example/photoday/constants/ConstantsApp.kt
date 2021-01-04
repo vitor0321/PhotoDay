@@ -17,10 +17,7 @@ const val FIRST_LOGIN = 200
 
 const val DEFAULT_WEB_CLIENT_ID = "49062301467-3v2h2s5hk33aic1a1g86j05rdbhqb3af.apps.googleusercontent.com"
 
-const val BOTTOM_SHEET_DIALOG = "BOTTOM_SHEET_DIALOG"
+const val ADD_PHOTO_DIALOG = "ADD_PHOTO_DIALOG"
+const val ADD_NAME_DIALOG = "ADD_NAME_DIALOG"
 
-const val CAMERA_FILE = "com.coutocode.cameraexample.fileprovider"
-
-const val TAKE_PICTURE = 1
-const val SELECT_PICTURE = 2
 

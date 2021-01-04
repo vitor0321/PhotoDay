@@ -25,4 +25,8 @@
     <dimen name="text_size_toast">16sp</dimen>
     <dimen name="margin_start_toast_image">8dp</dimen>
     <dimen name="padding_toast">8dp</dimen>
+    <dimen name="layout_margin_8dp">8dp</dimen>
+    <dimen name="layout_margin_top_8dp">8dp</dimen>
+    <dimen name="layout_margin_start_16dp">16dp</dimen>
+    <dimen name="padding_dialog">24dp</dimen>
 </resources>

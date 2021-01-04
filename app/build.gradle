@@ -131,4 +131,7 @@ dependencies {
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
+    //Material Dialogs
+    implementation 'com.afollestad.material-dialogs:datetime:3.2.1'
+
 }

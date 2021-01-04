@@ -17,7 +17,7 @@
         app:lottie_autoPlay="true"
         app:lottie_colorFilter="@color/orange"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/login_birds_greeting" />
+        app:lottie_rawRes="@raw/login_intro" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_view_name_photo_day"
