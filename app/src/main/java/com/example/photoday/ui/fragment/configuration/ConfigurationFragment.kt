@@ -3,6 +3,8 @@ package com.example.photoday.ui.fragment.configuration
 import android.os.Bundle
 import android.view.*
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.ADD_PHOTO_DIALOG
@@ -45,7 +47,7 @@ class ConfigurationFragment : BaseFragment() {
 
     private fun init() {
         initButton()
-        googleSingIn()
+        editUser()
         statusBarNavigation()
     }
 
@@ -67,15 +69,21 @@ class ConfigurationFragment : BaseFragment() {
 
         /*Button edit user name */
         btn_edit_name_user.setOnClickListener {
-            viewModel.alertDialogNewUserName(context,layoutInflater, text_view_user_name)
+            viewModel.alertDialogNewUserName(context, layoutInflater)
         }
     }
 
-    private fun googleSingIn(){
+    private fun editUser() {
+        val fragmentActivity = FragmentActivity()
+        val userName = text_view_user_name
+        val userEmail = text_view_user_email
+        val userImage = image_user
+
+        viewModel.userName.observe(fragmentActivity, Observer {
+            userName.text = it
+        })
         /*set name,email and photo of user*/
-        viewModel.googleSingIn(text_view_user_name,
-            text_view_user_email,
-            image_user, this)
+        viewModel.editUser(userName, userEmail, userImage, this)
     }
 
     private fun statusBarNavigation() {
