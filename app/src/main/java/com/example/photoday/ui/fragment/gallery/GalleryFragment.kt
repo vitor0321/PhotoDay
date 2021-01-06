@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.adapter.GalleryListAdapter
 import com.example.photoday.constants.TRUE
+import com.example.photoday.databinding.FragmentConfigurationBinding
+import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.navigation.Navigation
 import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
@@ -17,9 +18,9 @@ import kotlinx.android.synthetic.main.fragment_gallery.*
 
 class GalleryFragment : BaseFragment() {
 
+    private lateinit var binding: FragmentGalleryBinding
     private val viewModel by lazy { ViewModelInjector.providerGalleryViewModel() }
     private lateinit var galleryAdapter: GalleryListAdapter
-    private val navFragment by lazy { findNavController() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +32,7 @@ class GalleryFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentGalleryBinding.bind(view)
         init()
     }
 
@@ -45,10 +47,12 @@ class GalleryFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        recycle_view_list_gallery.apply {
-            layoutManager = LinearLayoutManager(context)
-            galleryAdapter = GalleryListAdapter()
-            adapter = galleryAdapter
+        binding.run {
+            recycleViewListGallery.apply {
+                layoutManager = LinearLayoutManager(context)
+                galleryAdapter = GalleryListAdapter()
+                adapter = galleryAdapter
+            }
         }
     }
 

@@ -16,28 +16,29 @@ class ConfigurationViewModel : ViewModel() {
     var auth = FirebaseAuth.getInstance()
 
     /*set name, email and photo of the user*/
-    fun googleSingIn(
+    fun firebaseSingIn(
         userName: AppCompatTextView,
         userEmail: AppCompatTextView,
-        image_user: CircleImageView,
-        context: ConfigurationFragment
+        userImage: CircleImageView,
+        context: Context?
     ) {
         val user = auth.currentUser
-        when {
-            user != null -> {
-                auth?.let {
-                    editUserName(user?.displayName, userName)
-                    userEmail.text = user?.email
+        auth.let {
+            if (user != null) {
+                editUserName(user.displayName, userName)
+                userEmail.text = user.email
 
-                        Glide.with(context)
-                            .load(user?.photoUrl)
-                            .fitCenter()
-                            .placeholder(R.drawable.com_facebook_profile_picture_blank_square)
-                            .into(image_user)
+                context?.let { context ->
+                    Glide.with(context)
+                        .load(user.photoUrl)
+                        .fitCenter()
+                        .placeholder(R.drawable.com_facebook_profile_picture_blank_square)
+                        .into(userImage)
                 }
             }
         }
     }
+
 
     fun alertDialogNewUserName(
         context: Context?,
@@ -45,7 +46,7 @@ class ConfigurationViewModel : ViewModel() {
         userName: AppCompatTextView
     ) {
         /*Alert Dialog Forgot the password*/
-        val builder = context?.let { AlertDialog.Builder(it, R.style.MyDialogTheme) }
+        val builder = context?.let { context -> AlertDialog.Builder(context, R.style.MyDialogTheme) }
         builder?.setTitle("What's your name?")
         val view = layoutInflater.inflate(R.layout.dialog_fragment_user_name, null)
         val newUserName = view.findViewById<EditText>(R.id.edit_text_new_name)

@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
+import com.example.photoday.databinding.FragmentRegisterUserBinding
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
@@ -20,6 +21,7 @@ class Register : BaseFragment() {
     private val viewModel by lazy { ViewModelInjector.providerRegisterViewModel() }
     private val controlNavigation by lazy { findNavController() }
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: FragmentRegisterUserBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +36,7 @@ class Register : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentRegisterUserBinding.bind(view)
         init()
     }
 
@@ -53,15 +56,17 @@ class Register : BaseFragment() {
     }
 
     private fun initButton() {
-        register_user_button.setOnClickListener {
-            context?.let { context ->
-                viewModel.signUpUser(
-                    register_user_id,
-                    register_user_password,
-                    register_user_confirm_password,
-                    context,
-                    controlNavigation
-                )
+        binding.run {
+            buttonRegisterUser.setOnClickListener {
+                context?.let { context ->
+                    viewModel.signUpUser(
+                        registerUserId,
+                        registerUserPassword,
+                        registerUserConfirmPassword,
+                        context,
+                        controlNavigation
+                    )
+                }
             }
         }
     }

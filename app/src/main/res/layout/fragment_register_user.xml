@@ -74,7 +74,7 @@
         app:passwordToggleEnabled="true" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/register_user_button"
+        android:id="@+id/button_register_user"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

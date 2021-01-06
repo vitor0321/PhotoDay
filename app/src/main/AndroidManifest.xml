@@ -27,7 +27,6 @@
         android:theme="@style/AppThemeActionBar"
         tools:replace="android:appComponentFactory"
         tools:targetApi="p">
-
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait">
@@ -45,12 +44,8 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths">
-            </meta-data>
-
+                android:resource="@xml/file_paths" />
         </provider>
-
-
 
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"

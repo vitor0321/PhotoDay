@@ -49,10 +49,10 @@ class RegisterViewModel : ViewModel() {
         }
 
         createUserWithEmailAndPassword(
+            context,
             registerUser,
             registerUserPassword,
-            controlNavigation,
-            context
+            controlNavigation
         )
     }
 }

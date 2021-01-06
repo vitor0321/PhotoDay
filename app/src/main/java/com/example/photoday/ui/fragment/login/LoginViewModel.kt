@@ -43,9 +43,8 @@ class LoginViewModel : ViewModel() {
         signInWithEmailAndPassword(
             loginUserId,
             loginPassword,
-            requireActivity,
             controlNavigation,
-            context
+            FragmentActivity()
         )
     }
 
@@ -57,7 +56,7 @@ class LoginViewModel : ViewModel() {
         val userEmail = view.findViewById<EditText>(R.id.edit_text_email_confirm)
         builder?.setView(view)
         builder?.setPositiveButton(context.getString(R.string.ok)) { _, _ ->
-            FirebaseLogout.forgotPassword(context, userEmail)
+            FirebaseLogout.forgotPassword(userEmail, context)
         }
         builder?.setNegativeButton(context.getString(R.string.cancel)) { _, _ -> }
         builder?.show()

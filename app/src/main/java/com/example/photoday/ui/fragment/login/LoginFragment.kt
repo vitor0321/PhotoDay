@@ -6,31 +6,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.DEFAULT_WEB_CLIENT_ID
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.RC_SIGN_IN
-import com.example.photoday.constants.Utils.toast
+import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.repository.firebase.FirebaseLogout.firebaseAuthWithGoogle
 import com.example.photoday.repository.firebase.FirebaseLogout.updateUI
 import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.fragment.base.BaseFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.fragment_login.*
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
     private val viewModel by lazy { ViewModelInjector.providerLoginViewModel() }
     private val controlNavigation by lazy { findNavController() }
+    private lateinit var binding: FragmentLoginBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
@@ -46,6 +46,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentLoginBinding.bind(view)
         init()
     }
 
@@ -53,7 +54,7 @@ class LoginFragment : Fragment() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
-        context?.let { context -> updateUI(currentUser, controlNavigation, ON_START, context) }
+        context?.let { context -> updateUI(context,currentUser, controlNavigation, ON_START) }
     }
 
     private fun init() {
@@ -64,27 +65,29 @@ class LoginFragment : Fragment() {
     }
 
     private fun initButton() {
-        //Button to login
-        login_button_log.setOnClickListener {
-            context?.let { context ->
-                viewModel.doLogin(
-                    login_user_id,
-                    login_password,
-                    requireActivity(),
-                    context,
-                    controlNavigation
-                )
+        binding.run {
+            //Button to login
+            loginButtonLog.setOnClickListener {
+                context?.let { context ->
+                    viewModel.doLogin(
+                        loginUserId,
+                        loginPassword,
+                        requireActivity(),
+                        context,
+                        controlNavigation
+                    )
+                }
             }
+
+            //Button register
+            loginButtonRegister.setOnClickListener { navFragmentLoginToRegister(controlNavigation) }
+
+            //Button Login Google
+            loginButtonGoogle.setOnClickListener { signIn() }
+
+            //Button forgot Password
+            loginButtonForgotPassword.setOnClickListener { alertDialogForgotPassword() }
         }
-
-        //Button register
-        login_button_register.setOnClickListener { navFragmentLoginToRegister(controlNavigation) }
-
-        //Button Login Google
-        login_button_google.setOnClickListener { signIn() }
-
-        //Button forgot Password
-        login_button_forgot_password.setOnClickListener { alertDialogForgotPassword() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -98,9 +101,9 @@ class LoginFragment : Fragment() {
                     val account = task.getResult(ApiException::class.java)!!
                     context?.let { context ->
                         firebaseAuthWithGoogle(
+                            context,
                             account.idToken!!,
-                            controlNavigation,
-                            context
+                            controlNavigation
                         )
                     }
                 } catch (e: ApiException) {

@@ -20,24 +20,23 @@ import com.google.firebase.auth.GoogleAuthProvider
 
 object FirebaseLogout {
 
-    var auth = FirebaseAuth.getInstance()
+    private var auth = FirebaseAuth.getInstance()
 
     fun logout(context: Context) {
         AuthUI.getInstance()
             .signOut(context)
             .addOnSuccessListener {
-
-                toast(context,R.string.successfully_logged)
+                toast(context, R.string.successfully_logged)
             }
     }
 
-    fun forgotPassword(context: Context,userEmail: EditText) {
+    fun forgotPassword(userEmail: EditText, context: Context) {
         when {
             userEmail.text.toString().isEmpty() -> {
                 toast(context, R.string.please_enter_email)
             }
             !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
-                toast(context,R.string.please_enter_valid_email)
+                toast(context, R.string.please_enter_valid_email)
             }
             else -> {
                 auth.sendPasswordResetEmail(userEmail.text.toString())
@@ -56,9 +55,9 @@ object FirebaseLogout {
     }
 
     fun firebaseAuthWithGoogle(
+        context: Context,
         idToken: String,
-        controlNavigation: NavController,
-        context: Context
+        controlNavigation: NavController
     ) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -67,7 +66,7 @@ object FirebaseLogout {
                     task.isSuccessful -> {
                         // Sign in success, update UI with the signed-in user's information
                         val user = auth.currentUser
-                        updateUI(user, controlNavigation, FIRST_LOGIN, context)
+                        updateUI(context,user, controlNavigation, FIRST_LOGIN)
                     }
                     else -> {
                         toast(context, R.string.auth_failed)
@@ -77,10 +76,10 @@ object FirebaseLogout {
     }
 
     fun createUserWithEmailAndPassword(
+        context: Context,
         registerUser: AppCompatEditText,
         registerUserPassword: AppCompatEditText,
-        controlNavigation: NavController,
-        context: Context
+        controlNavigation: NavController
     ) {
         /*Create New User */
         auth.createUserWithEmailAndPassword(
@@ -110,38 +109,37 @@ object FirebaseLogout {
     }
 
     fun signInWithEmailAndPassword(
-        login_user_id: AppCompatEditText,
-        login_password: AppCompatEditText,
-        requireActivity: FragmentActivity,
+        loginUserId: AppCompatEditText,
+        loginPassword: AppCompatEditText,
         controlNavigation: NavController,
-        context: Context
+        context: FragmentActivity,
     ) {
         /*checking if the user exists*/
         auth.signInWithEmailAndPassword(
-            login_user_id.text.toString(),
-            login_password.text.toString()
+            loginUserId.text.toString(),
+            loginPassword.text.toString()
         )
-            .addOnCompleteListener(requireActivity) { task ->
+            .addOnCompleteListener(context) { task ->
                 when {
                     task.isSuccessful -> {
                         // Sign in success, update UI with the signed-in user's information
                         val user = auth.currentUser
-                        updateUI(user, controlNavigation, FIRST_LOGIN, context)
+                        updateUI(context, user, controlNavigation, FIRST_LOGIN)
                     }
                     else -> {
                         // If sign in fails, display a message to the user.
                         toast(context, R.string.login_failed)
-                        updateUI(null, controlNavigation, FIRST_LOGIN, context)
+                        updateUI(context, null, controlNavigation, FIRST_LOGIN)
                     }
                 }
             }
     }
 
     fun updateUI(
+        context: Context,
         currentUser: FirebaseUser?,
         controlNavigation: NavController,
         onStart: Int,
-        context: Context
     ) {
         /*if the user is different from null, then he exists and can log in*/
         when {

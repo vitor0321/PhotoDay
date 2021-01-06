@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
+import com.example.photoday.databinding.ActivityMainBinding
 import com.example.photoday.stateBarNavigation.Components
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -14,11 +15,13 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private val controlNavigation by lazy { findNavController(R.id.main_activity_nav_host) }
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        binding = ActivityMainBinding.inflate(layoutInflater).apply {
+            setContentView(root)
+        }
         init()
     }
 
@@ -28,26 +31,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun statusBarNavigation() {
-        // all components start with HIDE and then each fragment decides what appears or not
-        supportActionBar?.hide()
-        main_activity_nav_bottom?.visibility = View.INVISIBLE
-        bottom_app_bar?.visibility = View.INVISIBLE
-        fab_bottom_add?.visibility = View.INVISIBLE
+        binding.run {
+            // all components start with HIDE and then each fragment decides what appears or not
+            supportActionBar?.hide()
+            mainActivityNavBottom.visibility = View.INVISIBLE
+            bottomAppBar.visibility = View.INVISIBLE
+            fabBottomAdd.visibility = View.INVISIBLE
 
-        //background menu navigation
-        main_activity_nav_bottom.background = null
+            //background menu navigation
+            mainActivityNavBottom.background = null
+            /* control all bottom navigation navigation */
+            mainActivityNavBottom.setupWithNavController(controlNavigation)
 
-        controlNavigation
-            .addOnDestinationChangedListener { controller, destination, arguments ->
-                /* change the fragment title as it is in the nav_graph Label */
-                title = null
-            }
-        /* control all bottom navigation navigation */
-        main_activity_nav_bottom.setupWithNavController(controlNavigation)
+            controlNavigation
+                .addOnDestinationChangedListener { _, _, _ ->
+                    /* change the fragment title as it is in the nav_graph Label */
+                    title = null
+                }
+        }
     }
 
     private fun initButton() {
-        fab_bottom_add.setOnClickListener { datePicker() }
+        binding.run {
+            fabBottomAdd.setOnClickListener { datePicker() }
+        }
     }
 
     fun statusAppBarNavigation(stateComponents: Components) {
