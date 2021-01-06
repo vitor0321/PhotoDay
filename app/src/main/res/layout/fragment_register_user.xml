@@ -25,6 +25,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/Email"
+        android:textColor="@color/orange"
         android:inputType="textEmailAddress"
         android:textColorHint="@color/orange_light"
         android:textSize="18sp"
@@ -43,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="@string/password"
+        android:textColor="@color/orange"
         android:inputType="textPassword"
         android:textColorHint="@color/orange_light"
         android:textSize="18sp"
@@ -63,6 +65,7 @@
         android:inputType="textPassword"
         android:textColorHint="@color/orange_light"
         android:textSize="18sp"
+        android:textColor="@color/orange"
         android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         app:layout_constraintEnd_toEndOf="@id/register_user_password"
         app:layout_constraintStart_toStartOf="@id/register_user_password"
@@ -71,7 +74,7 @@
         app:passwordToggleEnabled="true" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/register_user_button"
+        android:id="@+id/button_register_user"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

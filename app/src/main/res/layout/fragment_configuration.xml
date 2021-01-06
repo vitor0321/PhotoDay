@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.configuration.ConfigurationFragment">
 
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_edit_photo_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/image_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/image_user"
+        android:src="@drawable/ic_add_photo_camera"
+        android:background="@color/fui_transparent"
+        />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image_user"
         android:layout_width="100dp"
@@ -17,20 +28,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_edit_name_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/text_view_user_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_view_user_name"
+        android:src="@drawable/ic_edit_pencil"
+        android:background="@color/fui_transparent"
+        />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_view_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/allerta"
-        android:hint="@string/name_user"
+        android:hint="@string/user_name"
         android:textColor="@color/orange"
         android:textSize="@dimen/text_button_size"
+        android:textColorHint="@color/orange_light"
         app:layout_constraintBottom_toTopOf="@id/text_view_user_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image_user"
-        tools:text="@string/name_user" />
+        tools:text="@string/user_name" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_view_user_email"
@@ -38,7 +60,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:textSize="@dimen/text_button_size"
-        android:fontFamily="@font/allerta"
         android:textColor="@color/orange"
         app:layout_constraintBottom_toTopOf="@id/btn_logout"
         app:layout_constraintEnd_toEndOf="parent"

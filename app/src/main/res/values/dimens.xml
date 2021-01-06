@@ -20,4 +20,13 @@
     <dimen name="radius_edit_text">8dp</dimen>
     <dimen name="stroke_edit_tex">1dp</dimen>
     <dimen name="margin_bottom">8dp</dimen>
+    <dimen name="stroke_width_round_toast">4dp</dimen>
+    <dimen name="corners_round_toast_100dp">100dp</dimen>
+    <dimen name="text_size_toast">16sp</dimen>
+    <dimen name="margin_start_toast_image">8dp</dimen>
+    <dimen name="padding_toast">8dp</dimen>
+    <dimen name="layout_margin_8dp">8dp</dimen>
+    <dimen name="layout_margin_top_8dp">8dp</dimen>
+    <dimen name="layout_margin_start_16dp">16dp</dimen>
+    <dimen name="padding_dialog">24dp</dimen>
 </resources>

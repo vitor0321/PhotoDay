@@ -2,7 +2,9 @@ package com.example.photoday.navigation
 
 import androidx.navigation.NavController
 import com.example.photoday.ui.fragment.configuration.ConfigurationFragmentDirections
+import com.example.photoday.ui.fragment.gallery.GalleryFragmentDirections
 import com.example.photoday.ui.fragment.login.LoginFragmentDirections
+import com.example.photoday.ui.fragment.register.RegisterDirections
 import com.example.photoday.ui.fragment.splash.SplashGoodbyeFragmentDirections
 import com.example.photoday.ui.fragment.splash.SplashIntroFragmentDirections
 import com.example.photoday.ui.fragment.splash.SplashLoginDirections
@@ -40,12 +42,6 @@ object Navigation {
         navFragment.navigate(direction)
     }
 
-    fun navFragmentTimelineToConfiguration(navFragment: NavController) {
-        val direction =
-            TimelineFragmentDirections.actionTimelineFragmentToConfigurationFragment()
-        navFragment.navigate(direction)
-    }
-
     fun navFragmentSplashGoodbyeToLogin(navFragment: NavController){
         /*Navigation between fragments Directions*/
         val direction =
@@ -62,6 +58,24 @@ object Navigation {
     fun navFragmentSplashLoginToTimeline(navFragment: NavController){
         val direction =
             SplashLoginDirections.actionSplashLoginToTimelineFragment()
+        navFragment.navigate(direction)
+    }
+
+    fun navFragmentRegisterToLogin(navFragment: NavController){
+        val direction =
+            RegisterDirections.actionRegisterToLoginFragment()
+        navFragment.navigate(direction)
+    }
+
+    fun navFragmentTimelineToConfiguration(navFragment: NavController) {
+        val direction =
+            TimelineFragmentDirections.actionTimelineFragmentToConfigurationFragment()
+        navFragment.navigate(direction)
+    }
+
+    fun navFragmentGalleryToConfiguration(navFragment: NavController){
+        val direction =
+            GalleryFragmentDirections.actionNavGalleryFragmentToConfigurationFragment()
         navFragment.navigate(direction)
     }
 }

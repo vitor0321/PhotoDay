@@ -1,4 +1,4 @@
-package com.example.photoday.stateAppBarBottonNavigation
+package com.example.photoday.stateBarNavigation
 
 import com.example.photoday.constants.FALSE
 

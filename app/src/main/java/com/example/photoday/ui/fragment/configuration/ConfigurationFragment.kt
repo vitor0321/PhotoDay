@@ -5,30 +5,36 @@ import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
+import com.example.photoday.constants.ADD_PHOTO_DIALOG
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.TRUE
+import com.example.photoday.databinding.FragmentConfigurationBinding
+import com.example.photoday.dialog.AddPhotoDialog
 import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
-import com.example.photoday.navigation.Navigation.navFragmentConfigurationToTimeline
-import com.example.photoday.stateAppBarBottonNavigation.Components
+import com.example.photoday.repository.firebase.FirebaseLogout.logout
+import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_configuration.*
 
 class ConfigurationFragment : BaseFragment() {
 
+    private lateinit var binding: FragmentConfigurationBinding
     private val viewModel by lazy { ViewModelInjector.providerConfigurationViewModel() }
     private val navFragment by lazy { findNavController() }
-    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_configuration, container, false)
-        auth = FirebaseAuth.getInstance()
-        return view
+        return inflater.inflate(R.layout.fragment_configuration, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentConfigurationBinding.bind(view)
+        init()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -36,26 +42,38 @@ class ConfigurationFragment : BaseFragment() {
         inflater.inflate(R.menu.menu_fragment_configuration, menu)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        init()
+    private fun init() {
+        initButton()
+        firebaseLogin()
+        statusBarNavigation()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_fragment_configuration_app_bar -> {
-                navFragmentConfigurationToTimeline(navFragment)
+    private fun initButton() {
+        binding.run {
+            /*Button logout*/
+            btnLogout.setOnClickListener {
+                /*logout with Firebase*/
+                context?.let { context -> logout(context) }
+                navFragmentConfigurationToSplashGoodbye(navFragment)
+            }
+            /*Button edit user photo*/
+            btnEditPhotoUser.setOnClickListener {
+                activity?.let { activity ->
+                    AddPhotoDialog.newInstance()
+                        .show(activity.supportFragmentManager, ADD_PHOTO_DIALOG)
+                }
+            }
+            /*Button edit user name */
+            btnEditNameUser.setOnClickListener {
+                viewModel.alertDialogNewUserName(context, layoutInflater, text_view_user_name)
             }
         }
-        return super.onOptionsItemSelected(item)
     }
 
-    private fun init() {
-        /*set name,email and photo of user*/
-        viewModel.googleSingIn(text_view_user_name, text_view_user_email)
-
-        initButton()
-        statusBarNavigation()
+    private fun firebaseLogin(){
+        binding.run {
+            viewModel.firebaseSingIn(textViewUserName, textViewUserEmail, imageUser, context)
+        }
     }
 
     private fun statusBarNavigation() {
@@ -71,13 +89,4 @@ class ConfigurationFragment : BaseFragment() {
         /*change color statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
     }
-
-    private fun initButton() {
-        btn_logout.setOnClickListener {
-            /*logout with Firebase*/
-            auth.signOut()
-            navFragmentConfigurationToSplashGoodbye(navFragment)
-        }
-    }
-
 }

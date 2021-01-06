@@ -1,11 +1,10 @@
 package com.example.photoday.repository.firebase
 
+import android.widget.ImageView
 import java.util.*
 
-class UserFirebase {
-    data class UserFirebase(
-        val name: String? = null,
-        val surname: String? = null,
-        val createAt: Date? = null
-    )
-}
+data class UserFirebase(
+    var name: String? = null,
+    var email: String? = null,
+    var photo: ImageView? = null
+)

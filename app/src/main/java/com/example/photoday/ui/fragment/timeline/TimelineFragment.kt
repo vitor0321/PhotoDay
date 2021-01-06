@@ -1,16 +1,15 @@
 package com.example.photoday.ui.fragment.timeline
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.adapter.TimelineListAdapter
 import com.example.photoday.constants.TRUE
+import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.stateAppBarBottonNavigation.Components
+import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_timeline.*
@@ -19,6 +18,7 @@ class TimelineFragment : BaseFragment() {
 
     private val viewModel by lazy { ViewModelInjector.providerTimelineViewModel() }
     private lateinit var timelineAdapter: TimelineListAdapter
+    private lateinit var binding: FragmentTimelineBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +29,13 @@ class TimelineFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentTimelineBinding.bind(view)
         init()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_fragment_timeline, menu)
     }
 
     private fun init() {
@@ -50,10 +56,12 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        recycle_view_list_timeline.apply {
-            layoutManager = LinearLayoutManager(context)
-            timelineAdapter = TimelineListAdapter()
-            adapter = timelineAdapter
+        binding.run {
+            recycleViewListTimeline.apply {
+                layoutManager = LinearLayoutManager(context)
+                timelineAdapter = TimelineListAdapter()
+                adapter = timelineAdapter
+            }
         }
     }
 }

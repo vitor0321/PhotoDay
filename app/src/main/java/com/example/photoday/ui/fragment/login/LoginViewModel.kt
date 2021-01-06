@@ -2,94 +2,63 @@ package com.example.photoday.ui.fragment.login
 
 import android.content.Context
 import android.util.Patterns
+import android.view.LayoutInflater
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.R
-import com.example.photoday.constants.FIRSTLOGIN
-import com.example.photoday.constants.Uteis.showToast
-import com.example.photoday.ui.fragment.login.Logout.updateUI
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.android.synthetic.main.fragment_login.*
+import com.example.photoday.repository.firebase.FirebaseLogout
+import com.example.photoday.repository.firebase.FirebaseLogout.signInWithEmailAndPassword
 
 class LoginViewModel : ViewModel() {
 
-
-    fun firebaseAuthWithGoogle(
-        idToken: String,
-        auth: FirebaseAuth,
-        controlNavigation: NavController,
-        context: Context?
-    ) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                when {
-                    task.isSuccessful -> {
-                        // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
-                        updateUI(user, controlNavigation, context, FIRSTLOGIN)
-                    }
-                    else -> {
-                        showToast(context, context!!.getString(R.string.auth_failed))
-                    }
-                }
-            }
-    }
-
-    fun signInWithEmailAndPassword(
-        auth: FirebaseAuth,
-        login_user_id: AppCompatEditText,
-        login_password: AppCompatEditText,
+    fun doLogin(
+        loginUserId: AppCompatEditText,
+        loginPassword: AppCompatEditText,
         requireActivity: FragmentActivity,
-        context: Context?,
+        context: Context,
         controlNavigation: NavController
     ) {
-        /*checking if the user exists*/
-        auth.signInWithEmailAndPassword(
-            login_user_id.text.toString(),
-            login_password.text.toString()
-        )
-            .addOnCompleteListener(requireActivity) { task ->
-                when {
-                    task.isSuccessful -> {
-                        // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
-                        updateUI(user, controlNavigation, context, FIRSTLOGIN)
-                    }
-                    else -> {
-                        // If sign in fails, display a message to the user.
-                        showToast(context, R.string.login_failed.toString())
-                        updateUI(null, controlNavigation, context, FIRSTLOGIN)
-                    }
-                }
-            }
-    }
-
-    fun forgotPassword(userEmail: EditText, context: Context?, auth: FirebaseAuth) {
+        /*here you will authenticate your email and password*/
         when {
-            userEmail.text.toString().isEmpty() -> {
-                showToast(context, R.string.please_enter_email.toString())
+            loginUserId.text.toString().isEmpty() -> {
+                loginUserId.error = context.getString(R.string.please_enter_email)
+                loginUserId.requestFocus()
+                return
             }
-            !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
-                showToast(context, R.string.please_enter_valid_email.toString())
+            !Patterns.EMAIL_ADDRESS.matcher(loginUserId.text.toString()).matches() -> {
+                loginUserId.error = context.getString(R.string.please_enter_valid_email)
+                loginUserId.requestFocus()
+                return
             }
-            else -> {
-                auth.sendPasswordResetEmail(userEmail.text.toString())
-                    .addOnCompleteListener { task ->
-                        when {
-                            task.isSuccessful -> {
-                                showToast(context, R.string.email_sent.toString())
-                            }
-                            !task.isSuccessful -> {
-                                showToast(context, R.string.unregistered_email.toString())
-                            }
-                        }
-                    }
+            loginPassword.text.toString().isEmpty() -> {
+                loginPassword.error = context.getString(R.string.please_enter_password)
+                loginPassword.requestFocus()
+                return
             }
         }
+        signInWithEmailAndPassword(
+            loginUserId,
+            loginPassword,
+            controlNavigation,
+            FragmentActivity()
+        )
+    }
+
+    fun alertDialogForgotPassword(context: Context?, layoutInflater: LayoutInflater) {
+        /*Alert Dialog Forgot the password*/
+        val builder = context?.let { AlertDialog.Builder(it, R.style.MyDialogTheme) }
+        builder?.setTitle(context.getString(R.string.what_is_your_email))
+        val view = layoutInflater.inflate(R.layout.dialog_forgot_password, null)
+        val userEmail = view.findViewById<EditText>(R.id.edit_text_email_confirm)
+        builder?.setView(view)
+        builder?.setPositiveButton(context.getString(R.string.ok)) { _, _ ->
+            FirebaseLogout.forgotPassword(userEmail, context)
+        }
+        builder?.setNegativeButton(context.getString(R.string.cancel)) { _, _ -> }
+        builder?.show()
     }
 }

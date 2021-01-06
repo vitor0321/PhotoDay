@@ -5,10 +5,10 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/edit_text_email_confirm"
+        android:id="@+id/edit_text_new_name"
         android:layout_width="match_parent"
         android:textColor="@color/orange"
         android:textColorHint="@color/orange_light"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_the_your_email"/>
+        android:hint="@string/new_user_name"/>
 </LinearLayout>
