@@ -11,25 +11,24 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
-import com.example.photoday.navigation.Navigation.navFragmentSplashGoodbyeToLogin
-import com.example.photoday.stateBarNavigation.Components
+import com.example.photoday.databinding.FragmentSplashGoodbyeBinding
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
+import com.example.photoday.ui.navigation.Navigation.navFragmentSplashGoodbyeToLogin
+import com.example.photoday.ui.stateBarNavigation.Components
 
 class SplashGoodbyeFragment : BaseFragment() {
 
+    private var _binding: FragmentSplashGoodbyeBinding? = null
+    private val binding: FragmentSplashGoodbyeBinding get() = _binding!!
     private val controlNavigation by lazy { findNavController() }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {}
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_splash_goodbye, container, false)
+    ): View {
+        _binding = FragmentSplashGoodbyeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

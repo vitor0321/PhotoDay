@@ -11,26 +11,24 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
-import com.example.photoday.navigation.Navigation.navFragmentSplashIntroToLogin
-import com.example.photoday.stateBarNavigation.Components
+import com.example.photoday.databinding.FragmentSplashIntroBinding
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
+import com.example.photoday.ui.navigation.Navigation.navFragmentSplashIntroToLogin
+import com.example.photoday.ui.stateBarNavigation.Components
 
 class SplashIntroFragment : BaseFragment() {
 
+    private var _binding: FragmentSplashIntroBinding? = null
+    private val binding: FragmentSplashIntroBinding get() = _binding!!
     private val controlNavigation by lazy { findNavController() }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {}
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_splash_intro, container, false)
+    ): View {
+        _binding = FragmentSplashIntroBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,5 +56,10 @@ class SplashIntroFragment : BaseFragment() {
         activity?.window?.statusBarColor = ContextCompat.getColor(
             requireContext(), R.color.white
         )
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }

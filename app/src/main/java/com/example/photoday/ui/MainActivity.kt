@@ -4,21 +4,23 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
-import com.example.photoday.stateBarNavigation.Components
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.photoday.databinding.ActivityMainBinding
+import com.example.photoday.ui.stateBarNavigation.Components
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val controlNavigation by lazy { findNavController(R.id.main_activity_nav_host) }
+    private var _binding: ActivityMainBinding? = null
+    private val binding: ActivityMainBinding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         init()
     }
 
@@ -28,45 +30,52 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun statusBarNavigation() {
-        // all components start with HIDE and then each fragment decides what appears or not
-        supportActionBar?.hide()
-        main_activity_nav_bottom?.visibility = View.INVISIBLE
-        bottom_app_bar?.visibility = View.INVISIBLE
-        fab_bottom_add?.visibility = View.INVISIBLE
-
-        //background menu navigation
-        main_activity_nav_bottom.background = null
-
-        controlNavigation
-            .addOnDestinationChangedListener { controller, destination, arguments ->
-                /* change the fragment title as it is in the nav_graph Label */
-                title = null
-            }
-        /* control all bottom navigation navigation */
-        main_activity_nav_bottom.setupWithNavController(controlNavigation)
+        binding.apply {
+            val navHostFragment =
+                supportFragmentManager.findFragmentById(R.id.main_activity_nav_host) as NavHostFragment
+            val navController: NavController = navHostFragment.navController
+            // all components start with HIDE and then each fragment decides what appears or not
+            supportActionBar?.hide()
+            bottomAppBar.visibility = View.INVISIBLE
+            buttonFabAdd.visibility = View.INVISIBLE
+            bottomNavMainActivity.visibility = View.INVISIBLE
+            //background menu navigation
+            bottomNavMainActivity.background = null
+            /* control all bottom navigation navigation */
+            bottomNavMainActivity.setupWithNavController(navController)
+            navController
+                .addOnDestinationChangedListener { controller, destination, arguments ->
+                    /* change the fragment title as it is in the nav_graph Label */
+                    title = null
+                }
+        }
     }
 
     private fun initButton() {
-        fab_bottom_add.setOnClickListener { datePicker() }
+        binding.apply {
+            buttonFabAdd.setOnClickListener { datePicker() }
+        }
     }
 
     fun statusAppBarNavigation(stateComponents: Components) {
-        when {
-            /* here will activate or not the actionBar */
-            stateComponents.appBar -> supportActionBar?.show()
-            !stateComponents.appBar -> supportActionBar?.hide()
-        }
-        when {
-            /*here will activate or not the Bottom navegation*/
-            stateComponents.bottomNavigation -> {
-                main_activity_nav_bottom?.visibility = View.VISIBLE
-                bottom_app_bar?.visibility = View.VISIBLE
-                fab_bottom_add?.visibility = View.VISIBLE
+        binding.apply {
+            when {
+                /* here will activate or not the actionBar */
+                stateComponents.appBar -> supportActionBar?.show()
+                !stateComponents.appBar -> supportActionBar?.hide()
             }
-            !stateComponents.bottomNavigation -> {
-                main_activity_nav_bottom?.visibility = View.INVISIBLE
-                bottom_app_bar?.visibility = View.INVISIBLE
-                fab_bottom_add?.visibility = View.INVISIBLE
+            when {
+                /*here will activate or not the Bottom navegation*/
+                stateComponents.bottomNavigation -> {
+                    bottomNavMainActivity.visibility = View.VISIBLE
+                    bottomAppBar.visibility = View.VISIBLE
+                    buttonFabAdd.visibility = View.VISIBLE
+                }
+                !stateComponents.bottomNavigation -> {
+                    bottomNavMainActivity.visibility = View.INVISIBLE
+                    bottomAppBar.visibility = View.INVISIBLE
+                    buttonFabAdd.visibility = View.INVISIBLE
+                }
             }
         }
     }

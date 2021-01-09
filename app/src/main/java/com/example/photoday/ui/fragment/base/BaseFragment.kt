@@ -7,18 +7,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.navigation.Navigation.navFragmentConfigurationToTimeline
-import com.example.photoday.navigation.Navigation.navFragmentGalleryToConfiguration
-import com.example.photoday.navigation.Navigation.navFragmentTimelineToConfiguration
+import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToTimeline
+import com.example.photoday.ui.navigation.Navigation.navFragmentGalleryToConfiguration
+import com.example.photoday.ui.navigation.Navigation.navFragmentTimelineToConfiguration
 
 abstract class BaseFragment : Fragment() {
 
     private val viewModel by lazy { ViewModelInjector.providerBaseViewModel() }
     private val navFragment by lazy { findNavController() }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         statusBarNavigation()
     }
 

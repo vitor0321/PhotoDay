@@ -10,9 +10,9 @@ import com.example.photoday.R
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.Utils.toast
-import com.example.photoday.navigation.Navigation
-import com.example.photoday.navigation.Navigation.navFragmentLoginToSplashLogin
-import com.example.photoday.navigation.Navigation.navFragmentLoginToTimeline
+import com.example.photoday.ui.navigation.Navigation
+import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToSplashLogin
+import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToTimeline
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

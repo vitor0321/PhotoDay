@@ -18,7 +18,7 @@
         app:lottie_rawRes="@raw/login_security" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/register_user_id"
+        android:id="@+id/edit_text_user_email"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
 
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/register_user_password"
+        android:id="@+id/edit_text_user_password"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -49,14 +49,14 @@
         android:textColorHint="@color/orange_light"
         android:textSize="18sp"
         android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        app:layout_constraintEnd_toEndOf="@id/register_user_id"
-        app:layout_constraintStart_toStartOf="@id/register_user_id"
-        app:layout_constraintTop_toBottomOf="@id/register_user_id"
+        app:layout_constraintEnd_toEndOf="@id/edit_text_user_email"
+        app:layout_constraintStart_toStartOf="@id/edit_text_user_email"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_user_email"
         app:layout_constraintVertical_bias="0.0"
         app:passwordToggleEnabled="true" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/register_user_confirm_password"
+        android:id="@+id/edit_text_user_confirm_password"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -67,14 +67,14 @@
         android:textSize="18sp"
         android:textColor="@color/orange"
         android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        app:layout_constraintEnd_toEndOf="@id/register_user_password"
-        app:layout_constraintStart_toStartOf="@id/register_user_password"
-        app:layout_constraintTop_toBottomOf="@id/register_user_password"
+        app:layout_constraintEnd_toEndOf="@id/edit_text_user_password"
+        app:layout_constraintStart_toStartOf="@id/edit_text_user_password"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_user_password"
         app:layout_constraintVertical_bias="0.0"
         app:passwordToggleEnabled="true" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/register_user_button"
+        android:id="@+id/button_register_user"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -83,8 +83,8 @@
         android:text="@string/register"
         android:textColor="@color/white"
         android:textSize="@dimen/text_button_size"
-        app:layout_constraintEnd_toEndOf="@id/register_user_confirm_password"
-        app:layout_constraintStart_toStartOf="@id/register_user_confirm_password"
-        app:layout_constraintTop_toBottomOf="@id/register_user_confirm_password" />
+        app:layout_constraintEnd_toEndOf="@id/edit_text_user_confirm_password"
+        app:layout_constraintStart_toStartOf="@id/edit_text_user_confirm_password"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_user_confirm_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

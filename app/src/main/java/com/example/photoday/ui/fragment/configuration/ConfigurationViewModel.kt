@@ -20,17 +20,17 @@ class ConfigurationViewModel : ViewModel() {
         userName: AppCompatTextView,
         userEmail: AppCompatTextView,
         image_user: CircleImageView,
-        context: ConfigurationFragment
+        context: Context,
     ) {
         val user = auth.currentUser
         when {
             user != null -> {
-                auth?.let {
-                    editUserName(user?.displayName, userName)
-                    userEmail.text = user?.email
+                auth.let {
+                    editUserName(user.displayName, userName)
+                    userEmail.text = user.email
 
                         Glide.with(context)
-                            .load(user?.photoUrl)
+                            .load(user.photoUrl)
                             .fitCenter()
                             .placeholder(R.drawable.com_facebook_profile_picture_blank_square)
                             .into(image_user)

@@ -19,7 +19,7 @@
         app:lottie_rawRes="@raw/register_security" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/login_user_id"
+        android:id="@+id/edit_text_login_user_id"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/login_password"
+        android:id="@+id/edit_text_login_password"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -48,13 +48,13 @@
         android:textColorHint="@color/orange_light"
         android:textSize="18sp"
         android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        app:layout_constraintEnd_toEndOf="@id/login_user_id"
-        app:layout_constraintStart_toStartOf="@id/login_user_id"
-        app:layout_constraintTop_toBottomOf="@id/login_user_id"
+        app:layout_constraintEnd_toEndOf="@id/edit_text_login_user_id"
+        app:layout_constraintStart_toStartOf="@id/edit_text_login_user_id"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_login_user_id"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_button_log"
+        android:id="@+id/button_login_log"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_8dp"
@@ -63,21 +63,21 @@
         android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="@dimen/text_button_size"
-        app:layout_constraintEnd_toEndOf="@id/login_password"
-        app:layout_constraintStart_toStartOf="@id/login_password"
-        app:layout_constraintTop_toBottomOf="@id/login_password" />
+        app:layout_constraintEnd_toEndOf="@id/edit_text_login_password"
+        app:layout_constraintStart_toStartOf="@id/edit_text_login_password"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_login_password" />
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/login_button_google"
+        android:id="@+id/button_login_google"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_button_log" />
+        app:layout_constraintTop_toBottomOf="@id/button_login_log" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_button_forgot_password"
+        android:id="@+id/button_login_forgot_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_8dp"
@@ -86,12 +86,12 @@
         android:fontFamily="@font/allerta"
         android:text="@string/forgot_password"
         android:textColor="@color/orange"
-        app:layout_constraintBottom_toTopOf="@id/login_button_register"
+        app:layout_constraintBottom_toTopOf="@id/button_login_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_button_register"
+        android:id="@+id/button_login_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_8dp"

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     app:startDestination="@id/main_activity_nav_host">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/main_activity_nav_host"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
         app:fabCradleVerticalOffset="@dimen/fab_cradle_vertical_offset_10dp">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/main_activity_nav_bottom"
+            android:id="@+id/bottom_nav_main_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/layout_margin_end_16dp"
@@ -37,12 +37,12 @@
     </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_bottom_add"
+        android:id="@+id/button_fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/orange"
         android:contentDescription="@string/add_photo"
         android:src="@drawable/ic_add_photo"
-        app:layout_anchor="@id/main_activity_nav_bottom" />
+        app:layout_anchor="@id/bottom_nav_main_activity" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

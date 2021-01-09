@@ -11,22 +11,25 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
-import com.example.photoday.navigation.Navigation.navFragmentSplashLoginToTimeline
-import com.example.photoday.stateBarNavigation.Components
+import com.example.photoday.databinding.FragmentSplashLoginBinding
+import com.example.photoday.ui.navigation.Navigation.navFragmentSplashLoginToTimeline
+import com.example.photoday.ui.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 
 class SplashLogin : BaseFragment() {
 
+    private var _binding : FragmentSplashLoginBinding? = null
+    private val binding: FragmentSplashLoginBinding get() = _binding!!
     private val controlNavigation by lazy { findNavController() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        requireActivity()
-        return inflater.inflate(R.layout.fragment_splash_login, container, false)
+    ): View {
+        _binding = FragmentSplashLoginBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,5 +57,10 @@ class SplashLogin : BaseFragment() {
         activity?.window?.statusBarColor = ContextCompat.getColor(
             requireContext(), R.color.white
         )
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }

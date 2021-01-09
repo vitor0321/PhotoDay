@@ -8,15 +8,17 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
+import com.example.photoday.databinding.FragmentRegisterUserBinding
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.stateBarNavigation.Components
+import com.example.photoday.ui.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.fragment_register_user.*
 
 class Register : BaseFragment() {
 
+    private var _binding: FragmentRegisterUserBinding? = null
+    private val binding: FragmentRegisterUserBinding get() = _binding!!
     private val viewModel by lazy { ViewModelInjector.providerRegisterViewModel() }
     private val controlNavigation by lazy { findNavController() }
     private lateinit var auth: FirebaseAuth
@@ -25,11 +27,11 @@ class Register : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_register_user, container, false)
+    ): View {
+        _binding = FragmentRegisterUserBinding.inflate(inflater, container, false)
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,17 +55,24 @@ class Register : BaseFragment() {
     }
 
     private fun initButton() {
-        register_user_button.setOnClickListener {
-            context?.let { context ->
-                viewModel.signUpUser(
-                    register_user_id,
-                    register_user_password,
-                    register_user_confirm_password,
-                    context,
-                    controlNavigation
-                )
+        binding.apply {
+            buttonRegisterUser.setOnClickListener {
+                context?.let { context ->
+                    viewModel.signUpUser(
+                        editTextUserEmail,
+                        editTextUserPassword,
+                        editTextUserConfirmPassword,
+                        context,
+                        controlNavigation
+                    )
+                }
             }
         }
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }
 

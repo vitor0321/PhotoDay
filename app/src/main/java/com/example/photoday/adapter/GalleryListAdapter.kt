@@ -4,18 +4,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.photoday.R
 import com.example.photoday.adapter.modelAdapter.GalleryAdapter
-import com.example.photoday.adapter.modelAdapter.TimelineAdapter
 import kotlinx.android.synthetic.main.item_gallery_fragment.view.*
-import kotlinx.android.synthetic.main.item_timeline_fragment.view.*
-import java.util.ArrayList
+import java.util.*
 
-class GalleryListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GalleryListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<GalleryAdapter> = ArrayList()
 

@@ -13,22 +13,23 @@ import com.example.photoday.constants.DEFAULT_WEB_CLIENT_ID
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.RC_SIGN_IN
-import com.example.photoday.constants.Utils.toast
+import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.repository.firebase.FirebaseLogout.firebaseAuthWithGoogle
 import com.example.photoday.repository.firebase.FirebaseLogout.updateUI
-import com.example.photoday.stateBarNavigation.Components
 import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToRegister
+import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
 
+    private var _binding: FragmentLoginBinding? = null
+    private val binding: FragmentLoginBinding get() = _binding!!
     private val viewModel by lazy { ViewModelInjector.providerLoginViewModel() }
     private val controlNavigation by lazy { findNavController() }
     private lateinit var auth: FirebaseAuth
@@ -38,10 +39,10 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
+    ): View {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,27 +65,29 @@ class LoginFragment : Fragment() {
     }
 
     private fun initButton() {
-        //Button to login
-        login_button_log.setOnClickListener {
-            context?.let { context ->
-                viewModel.doLogin(
-                    login_user_id,
-                    login_password,
-                    requireActivity(),
-                    context,
-                    controlNavigation
-                )
+        binding.apply {
+            //Button to login
+            buttonLoginLog.setOnClickListener {
+                context?.let { context ->
+                    viewModel.doLogin(
+                        editTextLoginUserId,
+                        editTextLoginPassword,
+                        requireActivity(),
+                        context,
+                        controlNavigation
+                    )
+                }
             }
+
+            //Button register
+            buttonLoginRegister.setOnClickListener { navFragmentLoginToRegister(controlNavigation) }
+
+            //Button Login Google
+            buttonLoginGoogle.setOnClickListener { signIn() }
+
+            //Button forgot Password
+            buttonLoginForgotPassword.setOnClickListener { alertDialogForgotPassword() }
         }
-
-        //Button register
-        login_button_register.setOnClickListener { navFragmentLoginToRegister(controlNavigation) }
-
-        //Button Login Google
-        login_button_google.setOnClickListener { signIn() }
-
-        //Button forgot Password
-        login_button_forgot_password.setOnClickListener { alertDialogForgotPassword() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -110,6 +113,11 @@ class LoginFragment : Fragment() {
         }
     }
 
+    private fun signIn() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
     private fun createRequestLoginGoogle() {
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -118,11 +126,6 @@ class LoginFragment : Fragment() {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-    }
-
-    private fun signIn() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
     private fun alertDialogForgotPassword() {
@@ -137,5 +140,10 @@ class LoginFragment : Fragment() {
 
         /*change color statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }
