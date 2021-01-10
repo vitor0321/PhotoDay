@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.example.photoday.R
+import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -48,7 +49,7 @@ class ConfigurationViewModel : ViewModel() {
         val builder = context?.let { AlertDialog.Builder(it, R.style.MyDialogTheme) }
         builder?.setTitle("What's your name?")
         val view = layoutInflater.inflate(R.layout.dialog_fragment_user_name, null)
-        val newUserName = view.findViewById<EditText>(R.id.edit_text_new_name)
+        val newUserName =  view.findViewById<EditText>(R.id.edit_text_new_name)
         builder?.setView(view)
         builder?.setPositiveButton(context.getString(R.string.ok)) { _, _ ->
             editUserName(newUserName.toString(), userName)

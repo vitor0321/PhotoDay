@@ -2,7 +2,7 @@
     <string name="app_name">PhotoDay</string>
     <string name="photo_day">Photo Day</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="password">Password</string>
+    <string name="password">  Password</string>
     <string name="logout">logout</string>
     <string name="register_new_user">Register New User</string>
     <string name="Email">Email</string>
@@ -19,7 +19,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="user_name">User name</string>
-    <string name="email_user">User Email</string>
+    <string name="email_user">Email</string>
     <string name="phone">Phone</string>
     <string name="configuration">Configuration</string>
     <string name="login">Login</string>
@@ -30,7 +30,7 @@
     <string name="successfully_logged">Logged successfully</string>
     <string name="version_less_23">Version less than 23</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="enter_the_your_email">Enter the your Email</string>
+    <string name="email">Email</string>
     <string name="what_is_your_email">What\'s your email?</string>
     <string name="ok">OK</string>
     <string name="email_sent">Email sent</string>

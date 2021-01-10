@@ -18,40 +18,48 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/register_security" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edit_text_login_user_id"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_text_login_user_id"
+        style="@style/LoginTextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_top_8dp"
-        android:hint="@string/email_user"
-        android:inputType="textEmailAddress"
-        android:textColorHint="@color/orange_light"
-        android:textSize="18sp"
-        android:textColor="@color/orange"
-        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lottie_login_security"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edit_text_login_password"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_login_user_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            android:drawableStart="@drawable/ic_email"
+            android:hint="@string/email_user"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edit_text_input_login_password"
+        style="@style/LoginTextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_8dp"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:textColor="@color/orange"
-        android:textColorHint="@color/orange_light"
-        android:textSize="18sp"
-        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        app:layout_constraintEnd_toEndOf="@id/edit_text_login_user_id"
-        app:layout_constraintStart_toStartOf="@id/edit_text_login_user_id"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_login_user_id"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/input_text_login_user_id"
+        app:layout_constraintVertical_bias="0.0"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/orange">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_login_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            android:drawableStart="@drawable/ic_lock"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_login_log"
@@ -63,9 +71,9 @@
         android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="@dimen/text_button_size"
-        app:layout_constraintEnd_toEndOf="@id/edit_text_login_password"
-        app:layout_constraintStart_toStartOf="@id/edit_text_login_password"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_login_password" />
+        app:layout_constraintEnd_toEndOf="@id/edit_text_input_login_password"
+        app:layout_constraintStart_toStartOf="@id/edit_text_input_login_password"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_input_login_password" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/button_login_google"

@@ -1,7 +1,5 @@
 <resources>
-    <!-- Main application theme. -->
     <style name="AppThemeActionBar" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryDark">@color/orange</item>
         <item name="colorAccent">@color/orange_light</item>
@@ -12,8 +10,28 @@
         <item name="colorAccent">@color/orange</item>
     </style>
 
+    <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="colorAccent">@color/orange_light</item>
+        <item name="android:editTextColor">@color/orange</item>
+        <item name="hintTextColor">@color/orange_light</item>
+        <item name="android:textColorHint">@color/orange_light</item>
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:textSize">18sp</item>
+        <item name="boxStrokeColor">@color/mtrl_textinput_default_box_stroke_color</item>
+        <item name="boxStrokeWidth">0.5dp</item>
+        <item name="android:layout_margin">@dimen/margin_top_8dp</item>
+        <item name="android:drawablePadding">@dimen/drawable_padding_8dp</item>
+        <item name="android:text">@color/orange_light</item>
+    </style>
+
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:textColor">@color/orange</item>
-        <item name="android:textColorHint">@color/colorNavigationItemDefault</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="boxStrokeColor">@color/orange_light</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="windowFixedWidthMajor">98%</item>
+        <item name="windowFixedWidthMinor">90%</item>
+        <item name="android:textColorHint">@color/orange_light</item>
     </style>
+
 </resources>
