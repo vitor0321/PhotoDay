@@ -1,11 +1,8 @@
 package com.example.photoday.ui.fragment.login
 
-import android.app.Dialog
 import android.content.Context
 import android.util.Patterns
 import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
@@ -54,7 +51,7 @@ class LoginViewModel : ViewModel() {
 
     fun alertDialogForgotPassword(context: Context?, layoutInflater: LayoutInflater) {
         /*Alert Dialog Forgot the password*/
-        val builder = context?.let { context -> AlertDialog.Builder(context, R.style.MyDialogTheme) }
+        val builder = context?.let { context -> AlertDialog.Builder(context, R.style.DialogTheme) }
         builder?.setTitle(context.getString(R.string.what_is_your_email))
         val view = layoutInflater.inflate(R.layout.dialog_forgot_password, null)
         val userEmail = view.findViewById<EditText>(R.id.edit_text_email_confirm)
