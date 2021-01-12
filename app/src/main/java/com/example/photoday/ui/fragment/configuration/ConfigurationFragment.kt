@@ -2,7 +2,9 @@ package com.example.photoday.ui.fragment.configuration
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.ADD_PHOTO_DIALOG
@@ -11,19 +13,24 @@ import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.example.photoday.dialog.AddPhotoDialog
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.repository.firebase.FirebaseLogout.logout
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 class ConfigurationFragment : BaseFragment() {
 
     private var _binding: FragmentConfigurationBinding? = null
     private val binding: FragmentConfigurationBinding get() = _binding!!
-    private val viewModel by lazy { ViewModelInjector.providerConfigurationViewModel() }
     private val navFragment by lazy { findNavController() }
+    private val viewModel by lazy {
+        ViewModelInjector.providerConfigurationViewModel(
+            context,
+            layoutInflater
+        )
+    }
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
@@ -43,11 +50,11 @@ class ConfigurationFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        getDataStoreUser()
     }
 
     private fun init() {
         initButton()
-        googleSingIn()
         statusBarNavigation()
     }
 
@@ -56,7 +63,7 @@ class ConfigurationFragment : BaseFragment() {
             /*Button logout*/
             btnLogout.setOnClickListener {
                 /*logout with Firebase*/
-                context?.let { context -> logout(context) }
+                viewModel.logout()
                 navFragmentConfigurationToSplashGoodbye(navFragment)
             }
 
@@ -70,21 +77,16 @@ class ConfigurationFragment : BaseFragment() {
 
             /*Button edit user name */
             btnEditNameUser.setOnClickListener {
-                viewModel.alertDialogNewUserName(context, layoutInflater, textViewUserName)
+                viewModel.alertDialogNewUserName(textViewUserName)
             }
         }
     }
 
-    private fun googleSingIn() {
-        val context = context
+    private fun getDataStoreUser() {
         /*set name,email and photo of user*/
         binding.apply {
-            context?.let { context ->
-                viewModel.googleSingIn(
-                    textViewUserName,
-                    textViewUserEmail,
-                    imageUser, context
-                )
+            lifecycleScope.launch {
+                viewModel.getDataStoreUser(textViewUserName, textViewUserEmail, imageUser)
             }
         }
     }
@@ -108,3 +110,4 @@ class ConfigurationFragment : BaseFragment() {
         super.onDestroy()
     }
 }
+

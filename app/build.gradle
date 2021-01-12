@@ -134,4 +134,10 @@ dependencies {
     //Material Dialogs
     implementation 'com.afollestad.material-dialogs:datetime:3.2.1'
 
+    // Lifecycle Scope
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
+
+    // Preferences DataStore
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha05"
+
 }

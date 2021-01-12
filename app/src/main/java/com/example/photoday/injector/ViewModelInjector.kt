@@ -1,5 +1,9 @@
 package com.example.photoday.injector
 
+import android.content.Context
+import android.view.LayoutInflater
+import androidx.fragment.app.FragmentActivity
+import androidx.navigation.NavController
 import com.example.photoday.ui.fragment.base.BaseViewModel
 import com.example.photoday.ui.fragment.base.BaseViewModelFactory
 import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
@@ -15,18 +19,28 @@ import com.example.photoday.ui.fragment.timeline.TimelineViewModelFatory
 
 object ViewModelInjector {
 
-    fun providerConfigurationViewModel(): ConfigurationViewModel {
-        return ConfigurationViewModelFactory()
+    fun providerConfigurationViewModel(
+        context: Context?,
+        layoutInflater: LayoutInflater
+    ): ConfigurationViewModel {
+        return ConfigurationViewModelFactory(context, layoutInflater)
             .create(ConfigurationViewModel::class.java)
     }
 
-    fun providerRegisterViewModel(): RegisterViewModel {
-        return RegisterViewModelFactory()
+    fun providerRegisterViewModel(
+        context: Context?,
+        controlNavigation: NavController
+    ): RegisterViewModel {
+        return RegisterViewModelFactory(context, controlNavigation)
             .create(RegisterViewModel::class.java)
     }
 
-    fun providerLoginViewModel(): LoginViewModel {
-        return LoginViewModelFactory()
+    fun providerLoginViewModel(
+        controlNavigation: NavController,
+        context: Context?,
+        requireActivity: FragmentActivity
+    ): LoginViewModel {
+        return LoginViewModelFactory(controlNavigation, context, requireActivity)
             .create(LoginViewModel::class.java)
     }
 

@@ -56,4 +56,5 @@
     <string name="cannot_access_gallery">Cannot access the gallery</string>
     <string name="new_user_name">New Name</string>
     <string name="camera">Camera</string>
+    <string name="login_is_success">Login is Success</string>
 </resources>

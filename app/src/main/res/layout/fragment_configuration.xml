@@ -61,6 +61,7 @@
         android:layout_marginTop="18dp"
         android:textSize="@dimen/text_button_size"
         android:textColor="@color/orange"
+        android:textColorHint="@color/orange_light"
         app:layout_constraintBottom_toTopOf="@id/btn_logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,15 +1,17 @@
 package com.example.photoday.repository.firebase
 
 import android.content.Context
+import android.net.Uri
 import android.util.Patterns
 import android.widget.EditText
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.example.photoday.R
-import com.example.photoday.constants.FIRST_LOGIN
-import com.example.photoday.constants.ON_START
+import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
+import com.example.photoday.repository.dataStore.DataStoreUser
 import com.example.photoday.ui.navigation.Navigation
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToSplashLogin
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToTimeline
@@ -17,16 +19,17 @@ import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.coroutines.launch
+import kotlin.coroutines.suspendCoroutine
 
 object FirebaseLogout {
 
     var auth = FirebaseAuth.getInstance()
 
-    fun logout(context: Context) {
+    fun logoutFirebase(context: Context) {
         AuthUI.getInstance()
             .signOut(context)
             .addOnSuccessListener {
-
                 toast(context,R.string.successfully_logged)
             }
     }
@@ -156,14 +159,26 @@ object FirebaseLogout {
                             }
                             FIRST_LOGIN -> {
                                 navFragmentLoginToSplashLogin(controlNavigation)
+                                toast(context, R.string.login_is_success)
                             }
                         }
                     }
                     else -> {
-                        toast(context,R.string.verify_your_email_address)
+                        toast(context, R.string.verify_your_email_address)
                     }
                 }
             }
         }
+    }
+
+    private suspend fun saveDataStoreUser(
+        context: Context,
+        name: String?,
+        email: String?,
+        image: Uri?
+    ) {
+        DataStoreUser(context).saveData(name.toString(), NAME_USER)
+        DataStoreUser(context).saveData(email.toString(), EMAIL_USER)
+        DataStoreUser(context).saveData(image.toString(), IMAGE_USER)
     }
 }

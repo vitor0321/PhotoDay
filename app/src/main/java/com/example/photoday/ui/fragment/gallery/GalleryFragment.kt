@@ -47,7 +47,6 @@ class GalleryFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         binding.apply {
-
             recycleViewListGallery.apply {
                 layoutManager = LinearLayoutManager(context)
                 galleryAdapter = GalleryListAdapter()

@@ -15,7 +15,6 @@ import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.repository.firebase.FirebaseLogout.firebaseAuthWithGoogle
 import com.example.photoday.repository.firebase.FirebaseLogout.updateUI
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToRegister
@@ -30,8 +29,14 @@ class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding: FragmentLoginBinding get() = _binding!!
-    private val viewModel by lazy { ViewModelInjector.providerLoginViewModel() }
     private val controlNavigation by lazy { findNavController() }
+    private val viewModel by lazy {
+        ViewModelInjector.providerLoginViewModel(
+            controlNavigation,
+            context,
+            requireActivity()
+        )
+    }
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
@@ -68,15 +73,7 @@ class LoginFragment : Fragment() {
         binding.apply {
             //Button to login
             buttonLoginLog.setOnClickListener {
-                context?.let { context ->
-                    viewModel.doLogin(
-                        editTextLoginUserId,
-                        editTextLoginPassword,
-                        requireActivity(),
-                        context,
-                        controlNavigation
-                    )
-                }
+                viewModel.doLogin(editTextLoginUserId, editTextLoginPassword)
             }
 
             //Button register
@@ -99,13 +96,7 @@ class LoginFragment : Fragment() {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
-                    context?.let { context ->
-                        firebaseAuthWithGoogle(
-                            account.idToken!!,
-                            controlNavigation,
-                            context
-                        )
-                    }
+                    viewModel.authWithGoogle(account)
                 } catch (e: ApiException) {
                     e.printStackTrace()
                 }
@@ -129,7 +120,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun alertDialogForgotPassword() {
-        viewModel.alertDialogForgotPassword(context,layoutInflater)
+        viewModel.alertDialogForgotPassword(layoutInflater)
     }
 
     private fun statusBarNavigation() {
