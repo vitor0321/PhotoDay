@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
-import com.example.photoday.injector.ViewModelInjector
+import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToTimeline
 import com.example.photoday.ui.navigation.Navigation.navFragmentGalleryToConfiguration
 import com.example.photoday.ui.navigation.Navigation.navFragmentTimelineToConfiguration

@@ -1,8 +1,9 @@
-package com.example.photoday.injector
+package com.example.photoday.ui.injector
 
 import android.content.Context
 import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.navigation.NavController
 import com.example.photoday.ui.fragment.base.BaseViewModel
 import com.example.photoday.ui.fragment.base.BaseViewModelFactory
@@ -38,9 +39,10 @@ object ViewModelInjector {
     fun providerLoginViewModel(
         controlNavigation: NavController,
         context: Context?,
-        requireActivity: FragmentActivity
+        requireActivity: FragmentActivity,
+        lifecycleScope: LifecycleCoroutineScope
     ): LoginViewModel {
-        return LoginViewModelFactory(controlNavigation, context, requireActivity)
+        return LoginViewModelFactory(controlNavigation, context, requireActivity, lifecycleScope)
             .create(LoginViewModel::class.java)
     }
 

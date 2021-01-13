@@ -1,6 +1,7 @@
 package com.example.photoday.repository.dataStore
 
 import android.content.Context
+import android.net.Uri
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -25,6 +26,12 @@ class DataStoreUser(context: Context) {
 
     suspend fun readData(key: String): String? {
         val preferencesKey = preferencesKey<String>(key)
+        val preferences = dataStore.data.first()
+        return preferences[preferencesKey]
+    }
+
+    suspend fun readDataImage(key: String): Int? {
+        val preferencesKey = preferencesKey<Int>(key)
         val preferences = dataStore.data.first()
         return preferences[preferencesKey]
     }

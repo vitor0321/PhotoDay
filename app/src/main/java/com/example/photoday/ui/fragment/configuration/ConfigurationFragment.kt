@@ -2,17 +2,14 @@ package com.example.photoday.ui.fragment.configuration
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
-import com.example.photoday.constants.ADD_PHOTO_DIALOG
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentConfigurationBinding
-import com.example.photoday.dialog.AddPhotoDialog
-import com.example.photoday.injector.ViewModelInjector
+import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
@@ -39,6 +36,7 @@ class ConfigurationFragment : BaseFragment() {
     ): View {
         _binding = FragmentConfigurationBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
+        getDataStoreUser()
         return binding.root
     }
 
@@ -50,7 +48,6 @@ class ConfigurationFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        getDataStoreUser()
     }
 
     private fun init() {
@@ -68,12 +65,7 @@ class ConfigurationFragment : BaseFragment() {
             }
 
             /*Button edit user photo*/
-            btnEditPhotoUser.setOnClickListener {
-                activity?.let { activity ->
-                    AddPhotoDialog.newInstance()
-                        .show(activity.supportFragmentManager, ADD_PHOTO_DIALOG)
-                }
-            }
+            btnEditPhotoUser.setOnClickListener { viewModel.photoDialog(activity) }
 
             /*Button edit user name */
             btnEditNameUser.setOnClickListener {

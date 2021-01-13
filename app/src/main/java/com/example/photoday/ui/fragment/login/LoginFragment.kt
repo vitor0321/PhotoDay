@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.DEFAULT_WEB_CLIENT_ID
@@ -14,9 +15,9 @@ import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.databinding.FragmentLoginBinding
-import com.example.photoday.injector.ViewModelInjector
 import com.example.photoday.repository.firebase.FirebaseLogout.updateUI
 import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -34,7 +35,8 @@ class LoginFragment : Fragment() {
         ViewModelInjector.providerLoginViewModel(
             controlNavigation,
             context,
-            requireActivity()
+            requireActivity(),
+            lifecycleScope
         )
     }
     private lateinit var auth: FirebaseAuth
@@ -53,13 +55,13 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+
     }
 
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        context?.let { context -> updateUI(currentUser, controlNavigation, ON_START, context) }
+        context?.let { context -> updateUI(controlNavigation, ON_START, context, lifecycleScope) }
     }
 
     private fun init() {
@@ -80,7 +82,9 @@ class LoginFragment : Fragment() {
             buttonLoginRegister.setOnClickListener { navFragmentLoginToRegister(controlNavigation) }
 
             //Button Login Google
-            buttonLoginGoogle.setOnClickListener { signIn() }
+            buttonLoginGoogle.setOnClickListener {
+                signIn()
+            }
 
             //Button forgot Password
             buttonLoginForgotPassword.setOnClickListener { alertDialogForgotPassword() }

@@ -8,12 +8,10 @@ import com.example.photoday.R
 import com.example.photoday.adapter.GalleryListAdapter
 import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentGalleryBinding
-import com.example.photoday.injector.ViewModelInjector
+import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
-import kotlinx.android.synthetic.main.fragment_configuration.view.*
-import kotlinx.android.synthetic.main.item_gallery_fragment.view.*
 
 class GalleryFragment : BaseFragment() {
 

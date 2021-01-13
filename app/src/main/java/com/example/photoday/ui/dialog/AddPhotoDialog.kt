@@ -1,4 +1,4 @@
-package com.example.photoday.dialog
+package com.example.photoday.ui.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater

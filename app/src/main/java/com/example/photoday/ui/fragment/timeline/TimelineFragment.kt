@@ -8,7 +8,7 @@ import com.example.photoday.R
 import com.example.photoday.adapter.TimelineListAdapter
 import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentTimelineBinding
-import com.example.photoday.injector.ViewModelInjector
+import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components

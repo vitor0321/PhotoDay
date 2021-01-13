@@ -1,15 +1,17 @@
 package com.example.photoday.repository.firebase
 
 import android.content.Context
-import android.net.Uri
 import android.util.Patterns
 import android.widget.EditText
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.navigation.NavController
 import com.example.photoday.R
-import com.example.photoday.constants.*
+import com.example.photoday.constants.EMAIL_USER
+import com.example.photoday.constants.FIRST_LOGIN
+import com.example.photoday.constants.NAME_USER
+import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.repository.dataStore.DataStoreUser
 import com.example.photoday.ui.navigation.Navigation
@@ -17,14 +19,12 @@ import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToSplashLog
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToTimeline
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.launch
-import kotlin.coroutines.suspendCoroutine
 
 object FirebaseLogout {
 
-    var auth = FirebaseAuth.getInstance()
+    private var auth = FirebaseAuth.getInstance()
 
     fun logoutFirebase(context: Context) {
         AuthUI.getInstance()
@@ -61,7 +61,8 @@ object FirebaseLogout {
     fun firebaseAuthWithGoogle(
         idToken: String,
         controlNavigation: NavController,
-        context: Context
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
     ) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -69,8 +70,7 @@ object FirebaseLogout {
                 when {
                     task.isSuccessful -> {
                         // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
-                        updateUI(user, controlNavigation, FIRST_LOGIN, context)
+                        updateUI(controlNavigation, FIRST_LOGIN, context, lifecycleScope)
                     }
                     else -> {
                         toast(context, R.string.auth_failed)
@@ -117,7 +117,8 @@ object FirebaseLogout {
         login_password: AppCompatEditText,
         requireActivity: FragmentActivity,
         controlNavigation: NavController,
-        context: Context
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope
     ) {
         /*checking if the user exists*/
         auth.signInWithEmailAndPassword(
@@ -128,24 +129,24 @@ object FirebaseLogout {
                 when {
                     task.isSuccessful -> {
                         // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
-                        updateUI(user, controlNavigation, FIRST_LOGIN, context)
+                        updateUI(controlNavigation, FIRST_LOGIN, context, lifecycleScope)
                     }
                     else -> {
                         // If sign in fails, display a message to the user.
                         toast(context, R.string.login_failed)
-                        updateUI(null, controlNavigation, FIRST_LOGIN, context)
+                        updateUI(controlNavigation, FIRST_LOGIN, context, lifecycleScope)
                     }
                 }
             }
     }
 
     fun updateUI(
-        currentUser: FirebaseUser?,
         controlNavigation: NavController,
         onStart: Int,
-        context: Context
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope
     ) {
+        val currentUser = auth.currentUser
         /*if the user is different from null, then he exists and can log in*/
         when {
             currentUser != null -> {
@@ -167,18 +168,15 @@ object FirebaseLogout {
                         toast(context, R.string.verify_your_email_address)
                     }
                 }
+                lifecycleScope.launch {
+                    val name = currentUser.displayName
+                    val email = currentUser.email
+                    val image = currentUser.photoUrl
+                    val saveData = DataStoreUser(context)
+                    saveData.saveData(name.toString(), NAME_USER)
+                    saveData.saveData(email.toString(), EMAIL_USER)
+                }
             }
         }
-    }
-
-    private suspend fun saveDataStoreUser(
-        context: Context,
-        name: String?,
-        email: String?,
-        image: Uri?
-    ) {
-        DataStoreUser(context).saveData(name.toString(), NAME_USER)
-        DataStoreUser(context).saveData(email.toString(), EMAIL_USER)
-        DataStoreUser(context).saveData(image.toString(), IMAGE_USER)
     }
 }

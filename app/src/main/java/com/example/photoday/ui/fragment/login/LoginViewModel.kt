@@ -7,6 +7,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.R
@@ -17,7 +18,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 class LoginViewModel(
     private val controlNavigation: NavController,
     private val context: Context?,
-    private val requireActivity: FragmentActivity
+    private val requireActivity: FragmentActivity,
+    private val lifecycleScope: LifecycleCoroutineScope
 ) : ViewModel() {
 
     fun doLogin(
@@ -48,7 +50,8 @@ class LoginViewModel(
                 loginPassword,
                 requireActivity,
                 controlNavigation,
-                context
+                context,
+                lifecycleScope
             )
         }
     }
@@ -58,7 +61,8 @@ class LoginViewModel(
             FirebaseLogout.firebaseAuthWithGoogle(
                 account.idToken!!,
                 controlNavigation,
-                context
+                context,
+                lifecycleScope
             )
         }
     }
