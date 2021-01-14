@@ -9,7 +9,7 @@ import com.example.photoday.adapter.TimelineListAdapter
 import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.ui.injector.ViewModelInjector
-import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.PhotoDayActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 
@@ -46,7 +46,7 @@ class TimelineFragment : BaseFragment() {
     private fun statusBarNavigation() {
         /*Sending status AppBar and Bottom Navigation to the Activity*/
         val statusAppBarNavigation = Components(TRUE, TRUE)
-        val mainActivity = requireActivity() as MainActivity
+        val mainActivity = requireActivity() as PhotoDayActivity
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
         /*change color of statusBar*/

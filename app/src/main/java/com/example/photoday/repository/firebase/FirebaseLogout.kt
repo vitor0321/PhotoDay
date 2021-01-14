@@ -8,19 +8,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.navigation.NavController
 import com.example.photoday.R
-import com.example.photoday.constants.EMAIL_USER
 import com.example.photoday.constants.FIRST_LOGIN
-import com.example.photoday.constants.NAME_USER
 import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.Utils.toast
-import com.example.photoday.repository.dataStore.DataStoreUser
+import com.example.photoday.repository.dataStore.SaveDataStore.saveUser
 import com.example.photoday.ui.navigation.Navigation
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToSplashLogin
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToTimeline
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.coroutines.launch
 
 object FirebaseLogout {
 
@@ -142,7 +139,7 @@ object FirebaseLogout {
 
     fun updateUI(
         controlNavigation: NavController,
-        onStart: Int,
+        startLog: Int,
         context: Context,
         lifecycleScope: LifecycleCoroutineScope
     ) {
@@ -153,13 +150,15 @@ object FirebaseLogout {
                 when {
                     currentUser.isEmailVerified -> {
                         /*if you are already logged in go to Timeline,
-                        if you are going to log in for the first time go to Splash*/
-                        when (onStart) {
+                        if you are going to log in for the first time go to Login*/
+                        when (startLog) {
                             ON_START -> {
                                 navFragmentLoginToTimeline(controlNavigation)
+                                saveUser(lifecycleScope, context, currentUser)
                             }
                             FIRST_LOGIN -> {
                                 navFragmentLoginToSplashLogin(controlNavigation)
+                                saveUser(lifecycleScope, context, currentUser)
                                 toast(context, R.string.login_is_success)
                             }
                         }
@@ -167,14 +166,6 @@ object FirebaseLogout {
                     else -> {
                         toast(context, R.string.verify_your_email_address)
                     }
-                }
-                lifecycleScope.launch {
-                    val name = currentUser.displayName
-                    val email = currentUser.email
-                    val image = currentUser.photoUrl
-                    val saveData = DataStoreUser(context)
-                    saveData.saveData(name.toString(), NAME_USER)
-                    saveData.saveData(email.toString(), EMAIL_USER)
                 }
             }
         }

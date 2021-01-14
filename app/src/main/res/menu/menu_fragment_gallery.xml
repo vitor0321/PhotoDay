@@ -4,6 +4,6 @@
     <item
         android:id="@+id/menu_fragment_gallery_app_bar"
         android:icon="@drawable/ic_configuration_app"
-        android:title="@string/configuration_gallery"
+        android:title="@string/configuration_gallery_menu"
         app:showAsAction="always" />
 </menu>

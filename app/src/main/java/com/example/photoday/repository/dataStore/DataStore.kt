@@ -5,8 +5,9 @@ import android.net.Uri
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.preferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.createDataStore
+import com.example.photoday.constants.DATA_USER
 import kotlinx.coroutines.flow.first
 
 class DataStoreUser(context: Context) {
@@ -14,25 +15,27 @@ class DataStoreUser(context: Context) {
     private val dataStore: DataStore<Preferences>
 
     init {
-        dataStore = applicationContext.createDataStore(name = "data_user")
+        dataStore = applicationContext.createDataStore(name = DATA_USER)
     }
 
-    suspend fun saveData(value: String, key: String) {
-        val preferencesKey = preferencesKey<String>(key)
-        dataStore.edit { setting ->
-            setting[preferencesKey] = value
+    suspend fun saveData(value: String?, key: String) {
+        when{
+            value !=null ->{
+                val preferencesKey = stringPreferencesKey(key)
+                dataStore.edit { setting ->
+                    setting[preferencesKey] = value
+                }
+            }
         }
     }
 
     suspend fun readData(key: String): String? {
-        val preferencesKey = preferencesKey<String>(key)
+        val preferencesKey = stringPreferencesKey(key)
         val preferences = dataStore.data.first()
         return preferences[preferencesKey]
     }
+}                  
+                   
+                   
+                   
 
-    suspend fun readDataImage(key: String): Int? {
-        val preferencesKey = preferencesKey<Int>(key)
-        val preferences = dataStore.data.first()
-        return preferences[preferencesKey]
-    }
-}

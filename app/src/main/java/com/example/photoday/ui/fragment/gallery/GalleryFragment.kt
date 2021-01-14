@@ -9,7 +9,7 @@ import com.example.photoday.adapter.GalleryListAdapter
 import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.ui.injector.ViewModelInjector
-import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.PhotoDayActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 
@@ -56,7 +56,7 @@ class GalleryFragment : BaseFragment() {
     private fun statusBarNavigation() {
         /*Sending status AppBar and Bottom Navigation to the Activity*/
         val statusAppBarNavigation = Components(TRUE, TRUE)
-        val mainActivity = requireActivity() as MainActivity
+        val mainActivity = requireActivity() as PhotoDayActivity
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
         /*change color statusBar*/

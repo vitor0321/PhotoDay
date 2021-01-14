@@ -3,6 +3,10 @@
         <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryDark">@color/orange</item>
         <item name="colorAccent">@color/orange_light</item>
+
+        <!-- Set colorSecondary to change background of FAB (backgroundTint) -->
+        <item name="colorSecondary">@color/orange</item>
+        <item name="colorOnSecondary">@android:color/white</item>
     </style>
 
     <style name="DatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
@@ -38,4 +42,5 @@
     <style name="DialogButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/orange</item>
     </style>
+
 </resources>

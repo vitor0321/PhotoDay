@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_email"
-            android:hint="@string/email_user"
+            android:hint="@string/email_user_register"
             android:inputType="textEmailAddress"
             android:textColor="@color/orange"
             android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense" />
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_lock"
-            android:hint="@string/password"
+            android:hint="@string/password_register"
             android:inputType="textPassword"
             android:textColor="@color/orange" />
     </com.google.android.material.textfield.TextInputLayout>

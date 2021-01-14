@@ -13,10 +13,10 @@ import com.example.photoday.constants.REQUEST_IMAGE_CAPTURE
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.exhibition.Exhibition.dispatchTakeExhibition
 import com.example.photoday.exhibition.Exhibition.galleryExhibition
-import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.PhotoDayActivity
 
 object CheckVersionPermission {
-    fun galleryPermission(context: Context, activity: MainActivity) {
+    fun galleryPermission(context: Context, activity: PhotoDayActivity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             when {
                 PermissionChecker.checkSelfPermission(
@@ -38,7 +38,7 @@ object CheckVersionPermission {
     fun dispatchTakePermission(
         context: Context,
         packageManage: PackageManager,
-        activity: MainActivity
+        activity: PhotoDayActivity
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             when {

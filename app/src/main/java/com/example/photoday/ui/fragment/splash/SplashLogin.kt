@@ -14,7 +14,7 @@ import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.databinding.FragmentSplashLoginBinding
 import com.example.photoday.ui.navigation.Navigation.navFragmentSplashLoginToTimeline
 import com.example.photoday.ui.stateBarNavigation.Components
-import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.PhotoDayActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
 
 class SplashLogin : BaseFragment() {
@@ -50,7 +50,7 @@ class SplashLogin : BaseFragment() {
     private fun statusBarNavigation() {
         /*Sending status AppBar and Bottom Navigation to the Activity*/
         val statusAppBarNavigation = Components(FALSE, FALSE)
-        val mainActivity = requireActivity() as MainActivity
+        val mainActivity = requireActivity() as PhotoDayActivity
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
         /*change color of statusBar*/

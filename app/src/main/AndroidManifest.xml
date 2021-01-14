@@ -29,7 +29,7 @@
         tools:targetApi="p">
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.PhotoDayActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

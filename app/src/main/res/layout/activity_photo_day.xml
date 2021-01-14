@@ -44,12 +44,8 @@
         android:src="@drawable/ic_add_photo"
         android:layout_margin="@dimen/fab_margin"
         android:background="@drawable/button_fab"
-        app:backgroundTint="@android:color/white"
-        app:borderWidth="1dp"
-        app:elevation="1dp"
-        app:fabSize="normal"
         app:layout_anchor="@id/bottom_nav_main_activity"
         app:pressedTranslationZ="12dp"
-        app:rippleColor="@color/orange" />
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

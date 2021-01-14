@@ -16,7 +16,7 @@ import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.repository.firebase.FirebaseLogout.updateUI
-import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.PhotoDayActivity
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -130,7 +130,7 @@ class LoginFragment : Fragment() {
     private fun statusBarNavigation() {
         /*Sending status AppBar and Bottom Navigation to the Activity*/
         val statusAppBarNavigation = Components(FALSE, FALSE)
-        val mainActivity = requireActivity() as MainActivity
+        val mainActivity = requireActivity() as PhotoDayActivity
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
         /*change color statusBar*/

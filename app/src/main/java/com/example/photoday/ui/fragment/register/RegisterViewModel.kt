@@ -21,17 +21,17 @@ class RegisterViewModel(
         /*here you will authenticate your email and password*/
         when {
             registerUser.text.toString().isEmpty() -> {
-                registerUser.error = context?.getString(R.string.please_enter_email)
+                registerUser.error = context?.getString(R.string.please_enter_email_register)
                 registerUser.requestFocus()
                 return
             }
             !Patterns.EMAIL_ADDRESS.matcher(registerUser.text.toString()).matches() -> {
-                registerUser.error = context?.getString(R.string.please_enter_valid_email)
+                registerUser.error = context?.getString(R.string.please_enter_valid_email_register)
                 registerUser.requestFocus()
                 return
             }
             registerUserPassword.text.toString().isEmpty() -> {
-                registerUserPassword.error = context?.getString(R.string.please_enter_password)
+                registerUserPassword.error = context?.getString(R.string.please_enter_password_register)
                 registerUserPassword.requestFocus()
                 return
             }

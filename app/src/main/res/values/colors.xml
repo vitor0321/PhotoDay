@@ -17,5 +17,6 @@
     <color name="colorItemTexto">#47525E</color>
     <color name="colorItemTextoPequeno">#777</color>
 
+    <!-- Stroke color Text Input -->
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#F3B965</color>
 </resources>

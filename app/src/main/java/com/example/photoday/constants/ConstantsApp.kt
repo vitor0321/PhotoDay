@@ -24,4 +24,7 @@ const val NAME_USER = "NAME USER"
 const val EMAIL_USER = "EMAIL USER"
 const val IMAGE_USER = "IMAGE USER"
 
+/*Data Store*/
+const val DATA_USER = "data_user"
+
 

@@ -9,13 +9,12 @@ import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentConfigurationBinding
-import com.example.photoday.ui.injector.ViewModelInjector
-import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.PhotoDayActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
+import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.launch
 
 class ConfigurationFragment : BaseFragment() {
 
@@ -36,7 +35,6 @@ class ConfigurationFragment : BaseFragment() {
     ): View {
         _binding = FragmentConfigurationBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
-        getDataStoreUser()
         return binding.root
     }
 
@@ -52,6 +50,7 @@ class ConfigurationFragment : BaseFragment() {
 
     private fun init() {
         initButton()
+        getDataStoreUser()
         statusBarNavigation()
     }
 
@@ -69,7 +68,8 @@ class ConfigurationFragment : BaseFragment() {
 
             /*Button edit user name */
             btnEditNameUser.setOnClickListener {
-                viewModel.alertDialogNewUserName(textViewUserName)
+                viewModel.alertDialogNewUserName(lifecycleScope
+                )
             }
         }
     }
@@ -77,9 +77,13 @@ class ConfigurationFragment : BaseFragment() {
     private fun getDataStoreUser() {
         /*set name,email and photo of user*/
         binding.apply {
-            lifecycleScope.launch {
-                viewModel.getDataStoreUser(textViewUserName, textViewUserEmail, imageUser)
-            }
+            viewModel.getDataStoreUser(
+                textViewUserName,
+                textViewUserEmail,
+                imageUser,
+                context,
+                lifecycleScope
+            )
         }
     }
 
@@ -90,7 +94,7 @@ class ConfigurationFragment : BaseFragment() {
 
         /*Sending status AppBar and Bottom Navigation to the Activity*/
         val statusAppBarNavigation = Components(TRUE, FALSE)
-        val mainActivity = requireActivity() as MainActivity
+        val mainActivity = requireActivity() as PhotoDayActivity
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
         /*change color statusBar*/

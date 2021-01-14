@@ -29,12 +29,12 @@ class LoginViewModel(
         /*here you will authenticate your email and password*/
         when {
             loginUserId.text.toString().isEmpty() -> {
-                loginUserId.error = context?.getString(R.string.please_enter_email)
+                loginUserId.error = context?.getString(R.string.please_enter_email_login)
                 loginUserId.requestFocus()
                 return
             }
             !Patterns.EMAIL_ADDRESS.matcher(loginUserId.text.toString()).matches() -> {
-                loginUserId.error = context?.getString(R.string.please_enter_valid_email)
+                loginUserId.error = context?.getString(R.string.please_enter_valid_email_login)
                 loginUserId.requestFocus()
                 return
             }

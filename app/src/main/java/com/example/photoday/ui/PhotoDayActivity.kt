@@ -8,18 +8,18 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
-import com.example.photoday.databinding.ActivityMainBinding
+import com.example.photoday.databinding.ActivityPhotoDayBinding
 import com.example.photoday.ui.stateBarNavigation.Components
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class PhotoDayActivity : AppCompatActivity() {
 
-    private var _binding: ActivityMainBinding? = null
-    private val binding: ActivityMainBinding get() = _binding!!
+    private var _binding: ActivityPhotoDayBinding? = null
+    private val binding: ActivityPhotoDayBinding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityPhotoDayBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
     }

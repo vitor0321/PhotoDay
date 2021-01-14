@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/orange"
             android:drawableStart="@drawable/ic_email"
-            android:hint="@string/email_user"
+            android:hint="@string/email_user_login"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
