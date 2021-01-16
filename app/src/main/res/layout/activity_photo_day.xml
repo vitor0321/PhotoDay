@@ -22,9 +22,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:fabCradleMargin="@dimen/fab_cradle_margin_20dp"
-        app:fabCradleRoundedCornerRadius="@dimen/fab_cradle_counded_corner_radius_20dp"
-        app:fabCradleVerticalOffset="@dimen/fab_cradle_vertical_offset_10dp">
+        app:fabCradleMargin="@dimen/bar_cradle_margin_20dp"
+        app:fabCradleRoundedCornerRadius="@dimen/bar_cradle_counded_corner_radius_20dp"
+        app:fabCradleVerticalOffset="@dimen/bar_cradle_vertical_offset_10dp">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_main_activity"
@@ -44,8 +44,6 @@
         android:src="@drawable/ic_add_photo"
         android:layout_margin="@dimen/fab_margin"
         android:background="@drawable/button_fab"
-        app:layout_anchor="@id/bottom_nav_main_activity"
-        app:pressedTranslationZ="12dp"
-        />
+        app:layout_anchor="@id/bottom_nav_main_activity" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -134,7 +134,7 @@ class LoginFragment : Fragment() {
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
         /*change color statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white_status_bar)
     }
 
     override fun onDestroy() {

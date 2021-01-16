@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
-        app:lottie_colorFilter="@color/orange"
+        app:lottie_colorFilter="@color/orange_lottie_animation_view"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/login_security" />
 
@@ -35,7 +35,7 @@
             android:drawableStart="@drawable/ic_email"
             android:hint="@string/email_user_register"
             android:inputType="textEmailAddress"
-            android:textColor="@color/orange"
+            android:textColor="@color/orange_input_edit_text"
             android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@id/edit_text_input_user_email"
         app:layout_constraintVertical_bias="0.0"
         app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/orange">
+        app:passwordToggleTint="@color/orange_input_layout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_user_password"
@@ -59,7 +59,7 @@
             android:drawableStart="@drawable/ic_lock"
             android:hint="@string/password_register"
             android:inputType="textPassword"
-            android:textColor="@color/orange" />
+            android:textColor="@color/orange_input_edit_text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -72,7 +72,7 @@
         app:layout_constraintTop_toBottomOf="@id/edit_text_input_user_password"
         app:passwordToggleEnabled="true"
         app:layout_constraintVertical_bias="0.0"
-        app:passwordToggleTint="@color/orange">
+        app:passwordToggleTint="@color/orange_input_layout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_user_confirm_password"
@@ -81,18 +81,18 @@
             android:drawableStart="@drawable/ic_lock"
             android:hint="@string/confirm_password"
             android:inputType="textPassword"
-            android:textColor="@color/orange" />
+            android:textColor="@color/orange_input_edit_text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_register_user"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_8dp"
+        android:layout_marginTop="@dimen/margin_top_8dp_button"
         android:background="@drawable/round_button"
-        android:fontFamily="@font/allerta"
+        android:fontFamily="@font/button_font_allerta"
         android:text="@string/register"
-        android:textColor="@color/white"
+        android:textColor="@color/white_button"
         android:textSize="@dimen/text_button_size"
         app:layout_constraintEnd_toEndOf="@id/edit_text_input_user_confirm_password"
         app:layout_constraintStart_toStartOf="@id/edit_text_input_user_confirm_password"

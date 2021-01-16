@@ -1,6 +1,6 @@
 <resources>
     <!-- Manifest -->
-    <string name="app_name">PhotoDay</string>
+    <string name="app_name_manifest">Photo Day</string>
 
     <!-- Photo Day Activity -->
     <string name="add_photo">ADD Photo</string>
@@ -37,6 +37,7 @@
     <string name="register">Register</string>
 
     <!-- Timeline Fragment -->
+    <string name="text_view_tools_date">01/01/2021</string>
 
     <!-- Splash Fragment -->
     <string name="photo_day">Photo Day</string>
@@ -77,6 +78,14 @@
     <string name="configuration">Configuration</string>
     <string name="configuration_gallery_menu">Configuration Gallery</string>
 
-    <!-- Common -->
+    <!-- Nav Graph -->
+    <string name="nav_graph_label_timeline">Timeline</string>
+    <string name="nav_graph_label_gallery">Gallery</string>
+    <string name="nav_graph_label_login">Login</string>
+    <string name="nav_graph_label_register">Register</string>
+    <string name="nav_graph_label_splash_login">Splash Login</string>
+    <string name="nav_graph_label_configuration">Configuration</string>
+    <string name="nav_graph_label_splash_goodbye">Splash GoodBye</string>
+    <string name="nav_graph_label_splash_intro">Splash Intro</string>
 
 </resources>

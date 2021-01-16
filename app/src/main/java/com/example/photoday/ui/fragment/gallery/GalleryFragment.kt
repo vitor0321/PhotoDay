@@ -60,7 +60,7 @@ class GalleryFragment : BaseFragment() {
         mainActivity.statusAppBarNavigation(statusAppBarNavigation)
 
         /*change color statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange_status_bar)
     }
 
     override fun onDestroy() {

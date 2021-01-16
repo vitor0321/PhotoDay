@@ -53,7 +53,7 @@ class SplashGoodbyeFragment : BaseFragment() {
 
         /*change color of statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(
-            requireContext(), R.color.white
+            requireContext(), R.color.white_status_bar
         )
     }
 }

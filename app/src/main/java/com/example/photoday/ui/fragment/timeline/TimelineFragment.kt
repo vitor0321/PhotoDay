@@ -8,9 +8,9 @@ import com.example.photoday.R
 import com.example.photoday.adapter.TimelineListAdapter
 import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentTimelineBinding
-import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.PhotoDayActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
+import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 
 class TimelineFragment : BaseFragment() {
@@ -51,7 +51,7 @@ class TimelineFragment : BaseFragment() {
 
         /*change color of statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(
-            requireContext(), R.color.orange
+                requireContext(), R.color.orange_status_bar
         )
     }
 

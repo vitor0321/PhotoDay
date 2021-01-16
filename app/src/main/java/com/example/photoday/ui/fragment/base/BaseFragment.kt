@@ -43,6 +43,6 @@ abstract class BaseFragment : Fragment() {
         arguments?.let {}
 
         /*mudar a cor do statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange_status_bar)
     }
 }

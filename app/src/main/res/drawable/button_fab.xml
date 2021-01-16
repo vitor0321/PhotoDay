@@ -10,7 +10,7 @@
     <stroke
         android:width="3dp"
         android:color="@android:color/white"
-        app:backgroundTint="@color/orange"
+        app:backgroundTint="@color/orange_input_layout"
         app:borderWidth="1dp"
         app:elevation="1dp"
         app:fabSize="normal"/>

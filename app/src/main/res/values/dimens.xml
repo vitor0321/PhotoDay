@@ -1,33 +1,59 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="margin_top_16dp">16dp</dimen>
-    <dimen name="layout_margin_16dp">16dp</dimen>
-    <dimen name="text_button_size">20sp</dimen>
-    <dimen name="margin_top_8dp">8dp</dimen>
 
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="nav_header_vertical_spacing">8dp</dimen>
-    <dimen name="nav_header_height">176dp</dimen>
-    <dimen name="app_bar_height">220dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
+    <!--Text Input Layout Style-->
+    <dimen name="drawable_padding_8dp">8dp</dimen>
+
+    <!--Button-->
+    <dimen name="text_button_size">20sp</dimen>
+    <dimen name="layout_margin_16dp">16dp</dimen>
+    <dimen name="margin_top_8dp_button">8dp</dimen>
+    <dimen name="margin_button_8dp">8dp</dimen>
+
+    <!--Bottom App Bar-->
+    <dimen name="bar_cradle_margin_20dp">20dp</dimen>
+    <dimen name="bar_cradle_counded_corner_radius_20dp">20dp</dimen>
+    <dimen name="bar_cradle_vertical_offset_10dp">10dp</dimen>
+
+    <!--Bottom Fab-->
+    <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_cradle_margin_20dp">20dp</dimen>
     <dimen name="fab_cradle_vertical_offset_10dp">10dp</dimen>
     <dimen name="fab_cradle_counded_corner_radius_20dp">20dp</dimen>
-    <dimen name="layout_margin_end_16dp">16dp</dimen>
-    <dimen name="radius_button">8dp</dimen>
+
+    <!--Round Button-->
     <dimen name="margin_in_button">1dp</dimen>
-    <dimen name="radius_edit_text">8dp</dimen>
-    <dimen name="stroke_edit_tex">1dp</dimen>
-    <dimen name="margin_bottom">8dp</dimen>
-    <dimen name="stroke_width_round_toast">4dp</dimen>
-    <dimen name="corners_round_toast_100dp">100dp</dimen>
-    <dimen name="text_size_toast">16sp</dimen>
-    <dimen name="margin_start_toast_image">8dp</dimen>
-    <dimen name="padding_toast">8dp</dimen>
-    <dimen name="layout_margin_8dp">8dp</dimen>
-    <dimen name="layout_margin_top_8dp">8dp</dimen>
+    <dimen name="radius_button">8dp</dimen>
+
+    <!--Bottom Navigation View-->
+    <dimen name="layout_margin_end_16dp">16dp</dimen>
+
+    <!--Text View-->
+    <dimen name="layout_margin_top_8dp_text_view">8dp</dimen>
+    <dimen name="text_view_size">20sp</dimen>
+    <dimen name="text_view_size_20sp">20sp</dimen>
+    <dimen name="text_view_margin_start_16dp">16dp</dimen>
+    <dimen name="text_view_size_24sp">24sp</dimen>
+
+    <!--Image View-->
     <dimen name="layout_margin_start_16dp">16dp</dimen>
+    <dimen name="layout_margin_top_8dp">8dp</dimen>
+
+    <!--Lottie Animation View-->
+    <dimen name="layout_height_animation_view">200dp</dimen>
+    <dimen name="margin_top_8dp_animation_view">8dp</dimen>
+    <dimen name="margin_top_16dp">16dp</dimen>
+    <dimen name="layout_margin_bottom_40dp">40dp</dimen>
+
+    <!--Constraint Layout-->
     <dimen name="padding_dialog">24dp</dimen>
-    <dimen name="drawable_padding_8dp">8dp</dimen>
+
+    <!--Card View-->
+    <dimen name="card_corner_radios_2dp">2dp</dimen>
+    <dimen name="card_elevation_10dp">10dp</dimen>
+
+    <!--Toast-->
+    <dimen name="corners_round_toast_100dp">100dp</dimen>
+    <dimen name="padding_toast">8dp</dimen>
+    <dimen name="margin_start_toast_image">8dp</dimen>
+    <dimen name="text_size_toast">16sp</dimen>
 </resources>

@@ -49,16 +49,6 @@ class Register : BaseFragment() {
         initButton()
     }
 
-    private fun statusBarNavigation() {
-        /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val statusAppBarNavigation = Components(FALSE, FALSE)
-        val mainActivity = requireActivity() as PhotoDayActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
-
-        /*change color statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
-    }
-
     private fun initButton() {
         binding.apply {
             buttonRegisterUser.setOnClickListener {
@@ -69,6 +59,16 @@ class Register : BaseFragment() {
                 )
             }
         }
+    }
+
+    private fun statusBarNavigation() {
+        /*Sending status AppBar and Bottom Navigation to the Activity*/
+        val statusAppBarNavigation = Components(FALSE, FALSE)
+        val mainActivity = requireActivity() as PhotoDayActivity
+        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
+
+        /*change color statusBar*/
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white_status_bar)
     }
 
     override fun onDestroy() {
