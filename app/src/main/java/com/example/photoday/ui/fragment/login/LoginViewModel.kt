@@ -11,8 +11,12 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.R
+import com.example.photoday.constants.ADD_PHOTO_DIALOG
+import com.example.photoday.constants.FORGOT_PASSWORD
 import com.example.photoday.repository.firebase.FirebaseLogout
 import com.example.photoday.repository.firebase.FirebaseLogout.signInWithEmailAndPassword
+import com.example.photoday.ui.dialog.AddPhotoDialog
+import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 
 class LoginViewModel(
@@ -67,17 +71,10 @@ class LoginViewModel(
         }
     }
 
-    fun alertDialogForgotPassword(layoutInflater: LayoutInflater) {
-        /*Alert Dialog Forgot the password*/
-        val builder = context?.let { context -> AlertDialog.Builder(context, R.style.DialogTheme) }
-        builder?.setTitle(context?.getString(R.string.what_is_your_email))
-        val view = layoutInflater.inflate(R.layout.dialog_forgot_password, null)
-        val userEmail = view.findViewById<EditText>(R.id.edit_text_email_confirm)
-        builder?.setView(view)
-        builder?.setPositiveButton(context?.getString(R.string.ok)) { _, _ ->
-            context?.let { context -> FirebaseLogout.forgotPassword(context, userEmail) }
+    fun forgotPassword(activity: FragmentActivity?) {
+        activity?.let { activity ->
+            ForgotPasswordDialog.newInstance()
+                .show(activity.supportFragmentManager, FORGOT_PASSWORD)
         }
-        builder?.setNegativeButton(context?.getString(R.string.cancel)) { _, _ -> }
-        builder?.show()
     }
 }

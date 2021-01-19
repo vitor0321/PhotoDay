@@ -33,7 +33,6 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
-
         <item name="windowFixedWidthMajor">98%</item>
         <item name="windowFixedWidthMinor">90%</item>
         <item name="android:textColorHint">@color/orange_light_text_view</item>

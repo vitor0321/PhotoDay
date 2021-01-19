@@ -48,6 +48,9 @@
     <string name="ok">OK</string>
     <string name="what_is_your_email">What\'s your email?</string>
     <string name="what_is_your_name">What\'s your name?</string>
+    <string name="enter_valid_name">Enter a valid name</string>
+    <string name="please_enter_email_dialog">Please enter email</string>
+    <string name="please_enter_valid_email_dialog">Please Enter Valid Email</string>
     <string name="email">Email</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>

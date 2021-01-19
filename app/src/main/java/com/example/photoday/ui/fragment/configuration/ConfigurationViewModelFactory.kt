@@ -7,10 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 
 class ConfigurationViewModelFactory(
-    private val context: Context?,
-    private val layoutInflater: LayoutInflater
+    private val context: Context?
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return ConfigurationViewModel( context, layoutInflater) as T
+        return ConfigurationViewModel( context) as T
     }
 }

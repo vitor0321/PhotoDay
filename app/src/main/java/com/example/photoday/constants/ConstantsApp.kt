@@ -17,12 +17,15 @@ const val FIRST_LOGIN = 200
 
 const val DEFAULT_WEB_CLIENT_ID = "49062301467-3v2h2s5hk33aic1a1g86j05rdbhqb3af.apps.googleusercontent.com"
 
-const val ADD_PHOTO_DIALOG = "ADD_PHOTO_DIALOG"
-const val ADD_NAME_DIALOG = "ADD_NAME_DIALOG"
-
 const val NAME_USER = "NAME USER"
+
 const val EMAIL_USER = "EMAIL USER"
 const val IMAGE_USER = "IMAGE USER"
+
+/*Dialog*/
+const val ADD_PHOTO_DIALOG = "ADD_PHOTO_DIALOG"
+const val FORGOT_PASSWORD = "FORGOT_PASSWORD"
+const val NEW_USER_NAME = "NEW_USER_NAME"
 
 /*Data Store*/
 const val DATA_USER = "data_user"

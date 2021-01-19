@@ -21,10 +21,9 @@ import com.example.photoday.ui.fragment.timeline.TimelineViewModelFatory
 object ViewModelInjector {
 
     fun providerConfigurationViewModel(
-        context: Context?,
-        layoutInflater: LayoutInflater
+        context: Context?
     ): ConfigurationViewModel {
-        return ConfigurationViewModelFactory(context, layoutInflater)
+        return ConfigurationViewModelFactory(context)
             .create(ConfigurationViewModel::class.java)
     }
 

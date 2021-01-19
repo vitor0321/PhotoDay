@@ -22,10 +22,7 @@ class ConfigurationFragment : BaseFragment() {
     private val binding: FragmentConfigurationBinding get() = _binding!!
     private val navFragment by lazy { findNavController() }
     private val viewModel by lazy {
-        ViewModelInjector.providerConfigurationViewModel(
-            context,
-            layoutInflater
-        )
+        ViewModelInjector.providerConfigurationViewModel(context)
     }
     private lateinit var auth: FirebaseAuth
 
@@ -68,8 +65,7 @@ class ConfigurationFragment : BaseFragment() {
 
             /*Button edit user name */
             btnEditNameUser.setOnClickListener {
-                viewModel.alertDialogNewUserName(lifecycleScope
-                )
+                viewModel.newUserName(activity)
             }
         }
     }

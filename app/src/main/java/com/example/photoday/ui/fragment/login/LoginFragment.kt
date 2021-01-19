@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
@@ -17,6 +18,7 @@ import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.repository.firebase.FirebaseLogout.updateUI
 import com.example.photoday.ui.PhotoDayActivity
+import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -87,7 +89,7 @@ class LoginFragment : Fragment() {
             }
 
             //Button forgot Password
-            buttonLoginForgotPassword.setOnClickListener { alertDialogForgotPassword() }
+            buttonLoginForgotPassword.setOnClickListener { viewModel.forgotPassword(activity) }
         }
     }
 
@@ -121,10 +123,6 @@ class LoginFragment : Fragment() {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-    }
-
-    private fun alertDialogForgotPassword() {
-        viewModel.alertDialogForgotPassword(layoutInflater)
     }
 
     private fun statusBarNavigation() {

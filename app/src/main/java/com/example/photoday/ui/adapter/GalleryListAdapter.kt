@@ -1,4 +1,4 @@
-package com.example.photoday.adapter
+package com.example.photoday.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,24 +8,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.photoday.R
-import com.example.photoday.adapter.modelAdapter.GalleryAdapter
-import kotlinx.android.synthetic.main.item_gallery_fragment.view.*
+import com.example.photoday.data.modelAdapter.GalleryAdapter
+import com.example.photoday.databinding.ItemGalleryFragmentBinding
 import java.util.*
 
-class GalleryListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GalleryListAdapter(private var items: List<GalleryAdapter>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var items: List<GalleryAdapter> = ArrayList()
+    private var _binding: ItemGalleryFragmentBinding? = null
+    private val binding: ItemGalleryFragmentBinding get() = _binding!!
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return TimelineListAdapter.TimelineViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_gallery_fragment, parent, false)
-        )
+
+        _binding = ItemGalleryFragmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return GalleryViewHolder(binding.root, binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is GalleryAdapterViewHolder -> {
+            is GalleryViewHolder -> {
                 holder.bind(items[position])
             }
         }
@@ -35,8 +35,8 @@ class GalleryListAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return items.size
     }
 
-    class GalleryAdapterViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val photoGallery: AppCompatImageView = itemView.image_gallery
+    class GalleryViewHolder(itemView: View, binding: ItemGalleryFragmentBinding) : RecyclerView.ViewHolder(itemView) {
+        private val photoGallery = binding.imageGallery
 
         fun bind(galleryAdapter : GalleryAdapter) {
 

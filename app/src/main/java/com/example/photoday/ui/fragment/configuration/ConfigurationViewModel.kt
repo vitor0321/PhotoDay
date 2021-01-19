@@ -10,17 +10,18 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModel
 import com.example.photoday.R
 import com.example.photoday.constants.ADD_PHOTO_DIALOG
+import com.example.photoday.constants.FORGOT_PASSWORD
+import com.example.photoday.constants.NEW_USER_NAME
 import com.example.photoday.repository.dataStore.SaveDataStore.editName
 import com.example.photoday.repository.dataStore.SaveDataStore.getUser
 import com.example.photoday.repository.firebase.FirebaseLogout
 import com.example.photoday.ui.dialog.AddPhotoDialog
+import com.example.photoday.ui.dialog.ForgotPasswordDialog
+import com.example.photoday.ui.dialog.NewUserNameDialog
 import de.hdodenhof.circleimageview.CircleImageView
 
 
-class ConfigurationViewModel(
-    private val context: Context?,
-    private val layoutInflater: LayoutInflater
-) : ViewModel() {
+class ConfigurationViewModel(private val context: Context?) : ViewModel() {
 
     /*set name, email and photo of the user*/
     fun getDataStoreUser(
@@ -39,28 +40,23 @@ class ConfigurationViewModel(
         )
     }
 
-    fun alertDialogNewUserName(lifecycleScope: LifecycleCoroutineScope) {
-        /*Alert Dialog Forgot the password*/
-        val builder = context?.let { AlertDialog.Builder(it, R.style.DialogTheme) }
-        builder?.setTitle("What's your name?")
-        val view = layoutInflater.inflate(R.layout.dialog_fragment_user_name, null)
-        val newUserName = view.findViewById<EditText>(R.id.edit_text_new_name)
-        builder?.setView(view)
-        builder?.setPositiveButton(context?.getString(R.string.ok)) { _, _ ->
-            context?.let { context -> editName(newUserName.toString(), lifecycleScope, context) }
-        }
-        builder?.setNegativeButton(context?.getString(R.string.cancel)) { _, _ -> }
-        builder?.show()
-    }
-
     fun logout() {
         context?.let { context -> FirebaseLogout.logoutFirebase(context) }
     }
 
     fun photoDialog(activity: FragmentActivity?) {
+        /*open AddPhotoDialog*/
         activity?.let { activity ->
             AddPhotoDialog.newInstance()
                 .show(activity.supportFragmentManager, ADD_PHOTO_DIALOG)
+        }
+    }
+
+    fun newUserName(activity: FragmentActivity?) {
+        /*open NewUserNameDialog*/
+        activity?.let { activity ->
+            NewUserNameDialog.newInstance()
+                .show(activity.supportFragmentManager, NEW_USER_NAME)
         }
     }
 }
