@@ -1,21 +1,19 @@
 package com.example.photoday.ui.fragment.timeline
 
-import android.icu.util.TimeUnit.values
 import android.os.Bundle
 import android.view.*
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.constants.TRUE
-import com.example.photoday.data.modelAdapter.TimelineAdapter
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.ui.PhotoDayActivity
-import com.example.photoday.ui.adapter.GalleryListAdapter
 import com.example.photoday.ui.adapter.TimelineListAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
-import java.time.chrono.JapaneseEra.values
 
 class TimelineFragment : BaseFragment() {
 
@@ -42,31 +40,21 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun init() {
+        viewModel.getPhotos()
         statusBarNavigation()
-        initRecyclerView()
+        initObservers()
     }
 
-    private fun initRecyclerView() {
+    private fun initObservers() {
         binding.apply {
-            recycleViewListTimeline.apply {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = TimelineListAdapter(getPhotos())
-            }
+            viewModel.photosLiveData.observe( viewLifecycleOwner, Observer {
+                recycleViewListTimeline.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    adapter = TimelineListAdapter(it)
+                }
+            })
         }
-    }
-
-    //isso é profissório para teste, pois vamos pegar essa lista do nosso BD
-    private fun getPhotos(): List<TimelineAdapter>{
-        return listOf(
-                TimelineAdapter("01/01/2020", R.drawable.ic_item_photo),
-                TimelineAdapter("01/01/2020", R.drawable.ic_item_photo),
-                TimelineAdapter("01/01/2020", R.drawable.ic_item_photo),
-                TimelineAdapter("01/01/2020", R.drawable.ic_item_photo),
-                TimelineAdapter("01/01/2020", R.drawable.ic_item_photo),
-                TimelineAdapter("01/01/2020", R.drawable.ic_item_photo),
-                TimelineAdapter("01/01/2020", R.drawable.ic_item_photo)
-        )
     }
 
     private fun statusBarNavigation() {

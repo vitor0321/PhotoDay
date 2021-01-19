@@ -1,7 +1,6 @@
 package com.example.photoday.ui.injector
 
 import android.content.Context
-import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.navigation.NavController
@@ -16,7 +15,7 @@ import com.example.photoday.ui.fragment.login.LoginViewModelFactory
 import com.example.photoday.ui.fragment.register.RegisterViewModel
 import com.example.photoday.ui.fragment.register.RegisterViewModelFactory
 import com.example.photoday.ui.fragment.timeline.TimelineViewModel
-import com.example.photoday.ui.fragment.timeline.TimelineViewModelFatory
+import com.example.photoday.ui.fragment.timeline.TimelineViewModelFactory
 
 object ViewModelInjector {
 
@@ -56,7 +55,7 @@ object ViewModelInjector {
     }
 
     fun providerTimelineViewModel(): TimelineViewModel {
-        return TimelineViewModelFatory()
+        return TimelineViewModelFactory()
             .create(TimelineViewModel::class.java)
     }
 }

@@ -1,23 +1,16 @@
 package com.example.photoday.ui.fragment.login
 
 import android.content.Context
-import android.util.Patterns
-import android.view.LayoutInflater
-import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.photoday.R
-import com.example.photoday.constants.ADD_PHOTO_DIALOG
 import com.example.photoday.constants.FORGOT_PASSWORD
 import com.example.photoday.repository.firebase.FirebaseLogout
 import com.example.photoday.repository.firebase.FirebaseLogout.signInWithEmailAndPassword
-import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.material.textfield.TextInputEditText
 
 class LoginViewModel(
     private val controlNavigation: NavController,
@@ -26,55 +19,34 @@ class LoginViewModel(
     private val lifecycleScope: LifecycleCoroutineScope
 ) : ViewModel() {
 
-    fun doLogin(
-        loginUserId: AppCompatEditText,
-        loginPassword: AppCompatEditText
-    ) {
-        /*here you will authenticate your email and password*/
-        when {
-            loginUserId.text.toString().isEmpty() -> {
-                loginUserId.error = context?.getString(R.string.please_enter_email_login)
-                loginUserId.requestFocus()
-                return
-            }
-            !Patterns.EMAIL_ADDRESS.matcher(loginUserId.text.toString()).matches() -> {
-                loginUserId.error = context?.getString(R.string.please_enter_valid_email_login)
-                loginUserId.requestFocus()
-                return
-            }
-            loginPassword.text.toString().isEmpty() -> {
-                loginPassword.error = context?.getString(R.string.please_enter_password)
-                loginPassword.requestFocus()
-                return
-            }
-        }
-        context?.let { context ->
+    fun doLogin(editTextLoginUser: TextInputEditText, editTextLoginPassword: TextInputEditText) {
+        context?.let {
             signInWithEmailAndPassword(
-                loginUserId,
-                loginPassword,
+                editTextLoginUser,
+                editTextLoginPassword,
                 requireActivity,
                 controlNavigation,
-                context,
+                it,
                 lifecycleScope
             )
         }
     }
 
     fun authWithGoogle(account: GoogleSignInAccount) {
-        context?.let { context ->
+        context?.let {
             FirebaseLogout.firebaseAuthWithGoogle(
                 account.idToken!!,
                 controlNavigation,
-                context,
+                it,
                 lifecycleScope
             )
         }
     }
 
     fun forgotPassword(activity: FragmentActivity?) {
-        activity?.let { activity ->
+        activity?.let {
             ForgotPasswordDialog.newInstance()
-                .show(activity.supportFragmentManager, FORGOT_PASSWORD)
+                .show(it.supportFragmentManager, FORGOT_PASSWORD)
         }
     }
 }

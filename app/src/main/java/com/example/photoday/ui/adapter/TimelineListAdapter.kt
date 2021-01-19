@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.photoday.R
-import com.example.photoday.data.modelAdapter.TimelineAdapter
+import com.example.photoday.data.modelAdapter.TimelineItemPhotos
 import com.example.photoday.databinding.ItemTimelineFragmentBinding
 
-class TimelineListAdapter(private var items: List<TimelineAdapter>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TimelineListAdapter(private var items: List<TimelineItemPhotos>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var _binding: ItemTimelineFragmentBinding? = null
     private val binding: ItemTimelineFragmentBinding get() = _binding!!
@@ -37,7 +37,7 @@ class TimelineListAdapter(private var items: List<TimelineAdapter>) : RecyclerVi
         private val dateTimeline = binding.datePhotoTextView
         private val photoTimeline = binding.imageTimeline
 
-        fun bind(timelineAdapter: TimelineAdapter) {
+        fun bind(timelineAdapter: TimelineItemPhotos) {
             dateTimeline.text = timelineAdapter.date
 
             val requestOptions = RequestOptions()

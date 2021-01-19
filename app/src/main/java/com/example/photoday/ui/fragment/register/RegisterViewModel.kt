@@ -15,40 +15,9 @@ class RegisterViewModel(
 
     fun signUpUser(
         registerUser: AppCompatEditText,
-        registerUserPassword: AppCompatEditText,
-        registerConfirmPassword: AppCompatEditText
+        registerUserPassword: AppCompatEditText
     ) {
-        /*here you will authenticate your email and password*/
-        when {
-            registerUser.text.toString().isEmpty() -> {
-                registerUser.error = context?.getString(R.string.please_enter_email_register)
-                registerUser.requestFocus()
-                return
-            }
-            !Patterns.EMAIL_ADDRESS.matcher(registerUser.text.toString()).matches() -> {
-                registerUser.error = context?.getString(R.string.please_enter_valid_email_register)
-                registerUser.requestFocus()
-                return
-            }
-            registerUserPassword.text.toString().isEmpty() -> {
-                registerUserPassword.error = context?.getString(R.string.please_enter_password_register)
-                registerUserPassword.requestFocus()
-                return
-            }
-            registerConfirmPassword.text.toString().isEmpty() -> {
-                registerUserPassword.error =
-                    context?.getString(R.string.please_enter_password_confirm)
-                registerUserPassword.requestFocus()
-                return
-            }
-            registerConfirmPassword.text.toString() != registerUserPassword.text.toString() -> {
-                registerUserPassword.error = context?.getString(R.string.password_are_not_the_same)
-                registerUserPassword.requestFocus()
-                return
-            }
-        }
-
-        context?.let { context ->
+        context?.let {
             createUserWithEmailAndPassword(
                 registerUser,
                 registerUserPassword,

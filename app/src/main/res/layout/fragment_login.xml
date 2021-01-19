@@ -30,7 +30,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_login_user_id"
+            android:id="@+id/edit_text_login_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/orange_edit_view"

@@ -3,15 +3,13 @@ package com.example.photoday.ui.fragment.gallery
 import android.os.Bundle
 import android.view.*
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.constants.TRUE
-import com.example.photoday.data.modelAdapter.GalleryAdapter
-import com.example.photoday.data.modelAdapter.TimelineAdapter
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.ui.PhotoDayActivity
 import com.example.photoday.ui.adapter.GalleryListAdapter
-import com.example.photoday.ui.adapter.TimelineListAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -41,31 +39,21 @@ class GalleryFragment : BaseFragment() {
     }
 
     private fun init(){
+        viewModel.getPhotos()
         statusBarNavigation()
-        initRecyclerView()
+        initObservers()
     }
 
-    private fun initRecyclerView() {
+    private fun initObservers() {
         binding.apply {
-            recycleViewListGallery.apply {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = GalleryListAdapter(getPhotos())
-            }
+            viewModel.photosLiveData.observe(viewLifecycleOwner, Observer {
+                recycleViewListGallery.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    adapter = GalleryListAdapter(it)
+                }
+            })
         }
-    }
-
-    //isso é profissório para teste, pois vamos pegar essa lista do nosso BD
-    private fun getPhotos(): List<GalleryAdapter>{
-        return listOf(
-                GalleryAdapter(R.drawable.ic_item_photo),
-                GalleryAdapter(R.drawable.ic_item_photo),
-                GalleryAdapter(R.drawable.ic_item_photo),
-                GalleryAdapter(R.drawable.ic_item_photo),
-                GalleryAdapter(R.drawable.ic_item_photo),
-                GalleryAdapter(R.drawable.ic_item_photo),
-                GalleryAdapter(R.drawable.ic_item_photo)
-        )
     }
 
     private fun statusBarNavigation() {

@@ -1,7 +1,5 @@
 package com.example.photoday.data.modelAdapter
 
-import android.graphics.Bitmap
-
-data class GalleryAdapter(
+data class GalleryItemPhotos(
         val photo: Int
 )

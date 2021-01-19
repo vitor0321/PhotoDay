@@ -41,12 +41,12 @@ class ConfigurationViewModel(private val context: Context?) : ViewModel() {
     }
 
     fun logout() {
-        context?.let { context -> FirebaseLogout.logoutFirebase(context) }
+        context?.let { FirebaseLogout.logoutFirebase(context) }
     }
 
     fun photoDialog(activity: FragmentActivity?) {
         /*open AddPhotoDialog*/
-        activity?.let { activity ->
+        activity?.let {
             AddPhotoDialog.newInstance()
                 .show(activity.supportFragmentManager, ADD_PHOTO_DIALOG)
         }
@@ -54,7 +54,7 @@ class ConfigurationViewModel(private val context: Context?) : ViewModel() {
 
     fun newUserName(activity: FragmentActivity?) {
         /*open NewUserNameDialog*/
-        activity?.let { activity ->
+        activity?.let {
             NewUserNameDialog.newInstance()
                 .show(activity.supportFragmentManager, NEW_USER_NAME)
         }

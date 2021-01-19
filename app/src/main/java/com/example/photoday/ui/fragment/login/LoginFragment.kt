@@ -2,12 +2,12 @@ package com.example.photoday.ui.fragment.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
@@ -18,7 +18,6 @@ import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.repository.firebase.FirebaseLogout.updateUI
 import com.example.photoday.ui.PhotoDayActivity
-import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -57,13 +56,12 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-
     }
 
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        context?.let { context -> updateUI(controlNavigation, ON_START, context, lifecycleScope) }
+        context?.let { updateUI(controlNavigation, ON_START, it, lifecycleScope) }
     }
 
     private fun init() {
@@ -77,16 +75,32 @@ class LoginFragment : Fragment() {
         binding.apply {
             //Button to login
             buttonLoginLog.setOnClickListener {
-                viewModel.doLogin(editTextLoginUserId, editTextLoginPassword)
+                /*here you will authenticate your email and password*/
+                when {
+                    editTextLoginUser.text.toString().isEmpty() -> {
+                        editTextLoginUser.error = context?.getString(R.string.please_enter_email_login)
+                        editTextLoginUser.requestFocus()
+                        return@setOnClickListener
+                    }
+                    !Patterns.EMAIL_ADDRESS.matcher(editTextLoginUser.text.toString()).matches() -> {
+                        editTextLoginUser.error = context?.getString(R.string.please_enter_valid_email_login)
+                        editTextLoginUser.requestFocus()
+                        return@setOnClickListener
+                    }
+                    editTextLoginPassword.text.toString().isEmpty() -> {
+                        editTextLoginPassword.error = context?.getString(R.string.please_enter_password)
+                        editTextLoginPassword.requestFocus()
+                        return@setOnClickListener
+                    }
+                }
+                viewModel.doLogin(editTextLoginUser, editTextLoginPassword)
             }
 
             //Button register
             buttonLoginRegister.setOnClickListener { navFragmentLoginToRegister(controlNavigation) }
 
             //Button Login Google
-            buttonLoginGoogle.setOnClickListener {
-                signIn()
-            }
+            buttonLoginGoogle.setOnClickListener { signIn() }
 
             //Button forgot Password
             buttonLoginForgotPassword.setOnClickListener { viewModel.forgotPassword(activity) }

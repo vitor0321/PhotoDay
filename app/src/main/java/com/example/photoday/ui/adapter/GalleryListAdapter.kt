@@ -3,16 +3,14 @@ package com.example.photoday.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.photoday.R
-import com.example.photoday.data.modelAdapter.GalleryAdapter
+import com.example.photoday.data.modelAdapter.GalleryItemPhotos
 import com.example.photoday.databinding.ItemGalleryFragmentBinding
-import java.util.*
 
-class GalleryListAdapter(private var items: List<GalleryAdapter>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GalleryListAdapter(private var items: List<GalleryItemPhotos>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var _binding: ItemGalleryFragmentBinding? = null
     private val binding: ItemGalleryFragmentBinding get() = _binding!!
@@ -38,7 +36,7 @@ class GalleryListAdapter(private var items: List<GalleryAdapter>) : RecyclerView
     class GalleryViewHolder(itemView: View, binding: ItemGalleryFragmentBinding) : RecyclerView.ViewHolder(itemView) {
         private val photoGallery = binding.imageGallery
 
-        fun bind(galleryAdapter : GalleryAdapter) {
+        fun bind(galleryAdapter : GalleryItemPhotos) {
 
             val requestOptions = RequestOptions()
                 .placeholder(R.drawable.ic_item_photo)
