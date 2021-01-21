@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.example.photoday.R
 import com.example.photoday.databinding.DialogFragmentUserNameBinding
+import com.example.photoday.repository.dataStore.DataStoreService.editName
 
 class NewUserNameDialog : DialogFragment() {
 
@@ -47,6 +49,8 @@ class NewUserNameDialog : DialogFragment() {
                         return@setOnClickListener
                     }
                 }
+                val name = editTextNewName.text.toString()
+                context?.let { editName(name, lifecycleScope, it) }
                 dialog?.dismiss()
             }
             buttonCancel.setOnClickListener {

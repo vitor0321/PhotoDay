@@ -19,7 +19,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_input_user_email"
-        style="@style/LoginTextInputLayoutStyle"
+        style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,15 +34,13 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_email"
             android:hint="@string/email_user_register"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/orange_input_edit_text"
-            android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense" />
+            android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_input_user_password"
-        style="@style/LoginTextInputLayoutStyle"
+        style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,13 +56,12 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_lock"
             android:hint="@string/password_register"
-            android:inputType="textPassword"
-            android:textColor="@color/orange_input_edit_text" />
+            android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_input_user_confirm_password"
-        style="@style/LoginTextInputLayoutStyle"
+        style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,8 +77,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_lock"
             android:hint="@string/confirm_password"
-            android:inputType="textPassword"
-            android:textColor="@color/orange_input_edit_text" />
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -89,11 +85,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_8dp_button"
-        android:background="@drawable/round_button"
-        android:fontFamily="@font/button_font_allerta"
         android:text="@string/register"
-        android:textColor="@color/white_button"
-        android:textSize="@dimen/text_button_size"
         app:layout_constraintEnd_toEndOf="@id/edit_text_input_user_confirm_password"
         app:layout_constraintStart_toStartOf="@id/edit_text_input_user_confirm_password"
         app:layout_constraintTop_toBottomOf="@id/edit_text_input_user_confirm_password" />

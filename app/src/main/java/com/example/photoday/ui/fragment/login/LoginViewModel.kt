@@ -6,8 +6,8 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.constants.FORGOT_PASSWORD
-import com.example.photoday.repository.firebase.FirebaseLogout
-import com.example.photoday.repository.firebase.FirebaseLogout.signInWithEmailAndPassword
+import com.example.photoday.repository.firebase.FirebaseLog
+import com.example.photoday.repository.firebase.FirebaseLog.signInWithEmailAndPassword
 import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.textfield.TextInputEditText
@@ -34,7 +34,7 @@ class LoginViewModel(
 
     fun authWithGoogle(account: GoogleSignInAccount) {
         context?.let {
-            FirebaseLogout.firebaseAuthWithGoogle(
+            FirebaseLog.firebaseAuthWithGoogle(
                 account.idToken!!,
                 controlNavigation,
                 it,

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <!--Common-->
+    <color name="orange">#FF9800</color>
+    <color name="orange_light">#F3B965</color>
+    <color name="white">#FFFFFFFF</color>
+
     <!--Status Bar-->
     <color name="orange_status_bar">#FF9800</color>
     <color name="white_status_bar">#FFFFFFFF</color>
@@ -34,7 +39,7 @@
     <color name="orange_input_layout">#FF9800</color>
 
     <!-- Toast -->
-    <color name="white">#FFFFFFFF</color>
+    <color name="white_toast">#FFFFFFFF</color>
 
     <!-- Stroke color Text Input -->
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#F3B965</color>

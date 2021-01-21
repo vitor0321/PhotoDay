@@ -20,7 +20,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_text_login_user_id"
-        style="@style/LoginTextInputLayoutStyle"
+        style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,7 +33,6 @@
             android:id="@+id/edit_text_login_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/orange_edit_view"
             android:drawableStart="@drawable/ic_email"
             android:hint="@string/email_user_login"
             android:inputType="textEmailAddress" />
@@ -41,7 +40,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_input_login_password"
-        style="@style/LoginTextInputLayoutStyle"
+        style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +54,6 @@
             android:id="@+id/edit_text_login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/orange_edit_view"
             android:drawableStart="@drawable/ic_lock"
             android:hint="@string/password"
             android:inputType="textPassword" />
@@ -66,11 +64,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_8dp_button"
-        android:background="@drawable/round_button"
-        android:fontFamily="@font/button_font_allerta"
         android:text="@string/login"
-        android:textColor="@color/white_button"
-        android:textSize="@dimen/text_button_size"
         app:layout_constraintEnd_toEndOf="@id/edit_text_input_login_password"
         app:layout_constraintStart_toStartOf="@id/edit_text_input_login_password"
         app:layout_constraintTop_toBottomOf="@id/edit_text_input_login_password" />
@@ -88,12 +82,10 @@
         android:id="@+id/button_login_forgot_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/AppCompatButtonTransparent"
         android:layout_marginTop="@dimen/margin_top_8dp_button"
         android:layout_marginBottom="@dimen/margin_button_8dp"
-        android:background="@color/transparent_button"
-        android:fontFamily="@font/button_font_allerta"
         android:text="@string/forgot_password"
-        android:textColor="@color/orange_button"
         app:layout_constraintBottom_toTopOf="@id/button_login_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -102,12 +94,10 @@
         android:id="@+id/button_login_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/AppCompatButtonTransparent"
         android:layout_marginTop="@dimen/margin_top_8dp_button"
         android:layout_marginBottom="@dimen/margin_button_8dp"
-        android:background="@color/transparent_button"
-        android:fontFamily="@font/button_font_allerta"
         android:text="@string/register_new_user"
-        android:textColor="@color/orange_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

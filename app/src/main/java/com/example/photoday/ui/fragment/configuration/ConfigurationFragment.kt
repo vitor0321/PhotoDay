@@ -3,13 +3,18 @@ package com.example.photoday.ui.fragment.configuration
 import android.os.Bundle
 import android.view.*
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
+import com.example.photoday.constants.ADD_PHOTO_DIALOG
 import com.example.photoday.constants.FALSE
+import com.example.photoday.constants.NEW_USER_NAME
 import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.example.photoday.ui.PhotoDayActivity
+import com.example.photoday.ui.dialog.AddPhotoDialog
+import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
@@ -47,8 +52,9 @@ class ConfigurationFragment : BaseFragment() {
 
     private fun init() {
         initButton()
-        getDataStoreUser()
+        initObservers()
         statusBarNavigation()
+        context?.let { viewModel.getDataStoreUser(it, lifecycleScope) }
     }
 
     private fun initButton() {
@@ -61,25 +67,35 @@ class ConfigurationFragment : BaseFragment() {
             }
 
             /*Button edit user photo*/
-            btnEditPhotoUser.setOnClickListener { viewModel.photoDialog(activity) }
+            btnEditPhotoUser.setOnClickListener { photoDialog() }
 
             /*Button edit user name */
-            btnEditNameUser.setOnClickListener {
-                viewModel.newUserName(activity)
-            }
+            btnEditNameUser.setOnClickListener { newUserName() }
         }
     }
 
-    private fun getDataStoreUser() {
-        /*set name,email and photo of user*/
-        binding.apply {
-            viewModel.getDataStoreUser(
-                textViewUserName,
-                textViewUserEmail,
-                imageUser,
-                context,
-                lifecycleScope
-            )
+    private fun initObservers() {
+        viewModel.getUserLiveData.observe(viewLifecycleOwner, Observer {
+            binding.apply {
+                textViewUserName.text = it.name
+                textViewUserEmail.text = it.email
+            }
+        })
+    }
+
+    private fun photoDialog() {
+        /*open AddPhotoDialog*/
+        activity?.let {
+            AddPhotoDialog.newInstance()
+                    .show(it.supportFragmentManager, ADD_PHOTO_DIALOG)
+        }
+    }
+
+    private fun newUserName() {
+        /*open NewUserNameDialog*/
+        activity?.let {
+            NewUserNameDialog.newInstance()
+                    .show(it.supportFragmentManager, NEW_USER_NAME)
         }
     }
 

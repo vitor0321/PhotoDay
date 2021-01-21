@@ -11,7 +11,7 @@ import com.example.photoday.R
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.Utils.toast
-import com.example.photoday.repository.dataStore.SaveDataStore.saveUser
+import com.example.photoday.repository.dataStore.DataStoreService.saveUser
 import com.example.photoday.ui.navigation.Navigation
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToSplashLogin
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToTimeline
@@ -19,7 +19,7 @@ import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
-object FirebaseLogout {
+object FirebaseLog {
 
     private var auth = FirebaseAuth.getInstance()
 
@@ -154,7 +154,6 @@ object FirebaseLogout {
                         when (startLog) {
                             ON_START -> {
                                 navFragmentLoginToTimeline(controlNavigation)
-                                saveUser(lifecycleScope, context, currentUser)
                             }
                             FIRST_LOGIN -> {
                                 navFragmentLoginToSplashLogin(controlNavigation)

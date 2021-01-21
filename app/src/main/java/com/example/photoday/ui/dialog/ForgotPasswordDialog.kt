@@ -10,7 +10,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
 import com.example.photoday.databinding.DialogForgotPasswordBinding
-import com.example.photoday.repository.firebase.FirebaseLogout
+import com.example.photoday.repository.firebase.FirebaseLog
 
 
 class ForgotPasswordDialog : DialogFragment() {
@@ -58,7 +58,7 @@ class ForgotPasswordDialog : DialogFragment() {
                         return@setOnClickListener
                     }
                 }
-                context?.let { context -> FirebaseLogout.forgotPassword(context, userEmail) }
+                context?.let { context -> FirebaseLog.forgotPassword(context, userEmail) }
                 dialog?.dismiss()
             }
             buttonCancel.setOnClickListener {

@@ -14,8 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/image_user"
         android:src="@drawable/ic_add_photo_camera"
-        android:background="@color/fui_transparent_image_button"
-        />
+        android:background="@color/fui_transparent_image_button" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image_user"
@@ -36,8 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/text_view_user_name"
         android:src="@drawable/ic_edit_pencil"
-        android:background="@color/fui_transparent_image_button"
-        />
+        android:background="@color/fui_transparent_image_button" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_view_user_name"
@@ -45,9 +43,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/layout_margin_top_8dp_text_view"
         android:hint="@string/user_name"
-        android:textColor="@color/orange_input_layout_text_view"
-        android:textSize="@dimen/text_view_size"
-        android:textColorHint="@color/orange_light_text_view"
         app:layout_constraintBottom_toTopOf="@id/text_view_user_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,9 +54,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/layout_margin_top_8dp_text_view"
-        android:textSize="@dimen/text_view_size"
-        android:textColor="@color/orange_input_layout_text_view"
-        android:textColorHint="@color/orange_light_text_view"
         app:layout_constraintBottom_toTopOf="@id/btn_logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,11 +66,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/layout_margin_16dp"
-        android:background="@drawable/round_button"
-        android:fontFamily="@font/button_font_allerta"
         android:text="@string/logout"
-        android:textSize="@dimen/text_button_size"
-        android:textColor="@color/white_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_view_user_email" />

@@ -16,7 +16,7 @@ import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.RC_SIGN_IN
 import com.example.photoday.databinding.FragmentLoginBinding
-import com.example.photoday.repository.firebase.FirebaseLogout.updateUI
+import com.example.photoday.repository.firebase.FirebaseLog.updateUI
 import com.example.photoday.ui.PhotoDayActivity
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToRegister

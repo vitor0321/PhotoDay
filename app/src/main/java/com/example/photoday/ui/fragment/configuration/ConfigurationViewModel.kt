@@ -1,62 +1,36 @@
 package com.example.photoday.ui.fragment.configuration
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.photoday.R
-import com.example.photoday.constants.ADD_PHOTO_DIALOG
-import com.example.photoday.constants.FORGOT_PASSWORD
-import com.example.photoday.constants.NEW_USER_NAME
-import com.example.photoday.repository.dataStore.SaveDataStore.editName
-import com.example.photoday.repository.dataStore.SaveDataStore.getUser
-import com.example.photoday.repository.firebase.FirebaseLogout
-import com.example.photoday.ui.dialog.AddPhotoDialog
-import com.example.photoday.ui.dialog.ForgotPasswordDialog
-import com.example.photoday.ui.dialog.NewUserNameDialog
-import de.hdodenhof.circleimageview.CircleImageView
+import com.example.photoday.constants.EMAIL_USER
+import com.example.photoday.constants.NAME_USER
+import com.example.photoday.repository.dataStore.DataStoreUser
+import com.example.photoday.repository.dataStore.UserDataStore
+import com.example.photoday.repository.firebase.FirebaseLog
+import kotlinx.coroutines.launch
 
 
 class ConfigurationViewModel(private val context: Context?) : ViewModel() {
 
-    /*set name, email and photo of the user*/
+    val getUserLiveData: MutableLiveData<UserDataStore> = MutableLiveData()
+
+    /*get name and email of the user*/
     fun getDataStoreUser(
-        userName: AppCompatTextView,
-        userEmail: AppCompatTextView,
-        userImage: CircleImageView,
-        context: Context?,
+        context: Context,
         lifecycleScope: LifecycleCoroutineScope
     ) {
-        getUser(
-            userName,
-            userEmail,
-            userImage,
-            context,
-            lifecycleScope
-        )
+        lifecycleScope.launch {
+            val userDataStore = UserDataStore()
+            userDataStore.name = DataStoreUser(context).readData(NAME_USER)
+            userDataStore.email = DataStoreUser(context).readData(EMAIL_USER)
+
+            getUserLiveData.value = userDataStore
+        }
     }
 
     fun logout() {
-        context?.let { FirebaseLogout.logoutFirebase(context) }
-    }
-
-    fun photoDialog(activity: FragmentActivity?) {
-        /*open AddPhotoDialog*/
-        activity?.let {
-            AddPhotoDialog.newInstance()
-                .show(activity.supportFragmentManager, ADD_PHOTO_DIALOG)
-        }
-    }
-
-    fun newUserName(activity: FragmentActivity?) {
-        /*open NewUserNameDialog*/
-        activity?.let {
-            NewUserNameDialog.newInstance()
-                .show(activity.supportFragmentManager, NEW_USER_NAME)
-        }
+        context?.let { FirebaseLog.logoutFirebase(context) }
     }
 }

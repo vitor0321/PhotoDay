@@ -1,12 +1,10 @@
 package com.example.photoday.ui.fragment.register
 
 import android.content.Context
-import android.util.Patterns
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.photoday.R
-import com.example.photoday.repository.firebase.FirebaseLogout.createUserWithEmailAndPassword
+import com.example.photoday.repository.firebase.FirebaseLog.createUserWithEmailAndPassword
 
 class RegisterViewModel(
     private val context: Context?,
