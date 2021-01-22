@@ -5,8 +5,10 @@
         <item name="colorPrimaryDark">@color/orange</item>
         <item name="colorAccent">@color/orange_light</item>
         <item name="android:buttonStyle">@style/AppCompatButtonOrange</item>
-        <item name="android:editTextStyle">@style/TextInputEditText</item>
         <item name="android:textViewStyle">@style/AppCompatTextView</item>
+        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
+        <item name="editTextStyle">@style/TextInputEditText</item>
+        <item name="alertDialogStyle">@style/DialogButtonStyle</item>
 
         <!-- Set colorSecondary to change background of FAB (backgroundTint) -->
         <item name="colorSecondary">@color/orange</item>
@@ -20,6 +22,8 @@
 
     <style name="TextInputEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="android:textColor">@color/orange_input_edit_text</item>
+        <item name="editTextColor">@color/orange_input_edit_text</item>
+        <item name="errorTextColor">@color/red_error_input_edit_text</item>
     </style>
 
     <style name="AppCompatTextView" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
@@ -47,14 +51,13 @@
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="colorAccent">@color/orange_light</item>
-        <item name="android:editTextColor">@color/orange</item>
+        <item name="editTextColor">@color/orange</item>
         <item name="hintTextColor">@color/orange_light</item>
         <item name="android:textColorHint">@color/orange_light</item>
         <item name="android:textColor">@color/orange</item>
         <item name="android:textSize">18sp</item>
         <item name="boxStrokeColor">@color/mtrl_textinput_default_box_stroke_color</item>
         <item name="boxStrokeWidth">1dp</item>
-        <item name="android:layout_margin">@dimen/margin_top_8dp_animation_view</item>
         <item name="android:drawablePadding">@dimen/drawable_padding_8dp</item>
         <item name="android:text">@color/orange_light</item>
     </style>

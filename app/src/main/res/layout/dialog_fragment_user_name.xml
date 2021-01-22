@@ -7,10 +7,10 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tex_input_new_name"
-        style="@style/TextInputLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
+        android:layout_margin="@dimen/margin_text_input_8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,6 +20,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_new_name"
             android:layout_width="match_parent"
+            android:textColor="@color/orange_input_edit_text"
             android:layout_height="wrap_content"
             android:hint="@string/new_user_name" />
     </com.google.android.material.textfield.TextInputLayout>

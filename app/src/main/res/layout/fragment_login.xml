@@ -20,9 +20,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_text_login_user_id"
-        style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_text_input_8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +33,7 @@
             android:id="@+id/edit_text_login_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/orange_input_edit_text"
             android:drawableStart="@drawable/ic_email"
             android:hint="@string/email_user_login"
             android:inputType="textEmailAddress" />
@@ -40,10 +41,10 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_input_login_password"
-        style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/margin_text_input_8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/input_text_login_user_id"
         app:layout_constraintVertical_bias="0.0"
@@ -54,6 +55,7 @@
             android:id="@+id/edit_text_login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/orange_input_edit_text"
             android:drawableStart="@drawable/ic_lock"
             android:hint="@string/password"
             android:inputType="textPassword" />

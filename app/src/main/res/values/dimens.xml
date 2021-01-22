@@ -2,6 +2,7 @@
 
     <!--Text Input Layout Style-->
     <dimen name="drawable_padding_8dp">8dp</dimen>
+    <dimen name="margin_text_input_8dp">8dp</dimen>
 
     <!--Button-->
     <dimen name="text_button_size_orange">18sp</dimen>

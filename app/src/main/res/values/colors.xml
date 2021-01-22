@@ -34,6 +34,7 @@
 
     <!-- Text Input Edit Text  -->
     <color name="orange_input_edit_text">#FF9800</color>
+    <color name="red_error_input_edit_text">#FF0015</color>
 
     <!-- Text Input Layout  -->
     <color name="orange_input_layout">#FF9800</color>
