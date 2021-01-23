@@ -17,9 +17,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/text_view_margin_start_16dp"
-            android:gravity="center"
-            android:textColor="@color/color_text_date_view"
-            android:textSize="@dimen/text_view_size_24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/text_view_tools_date" />

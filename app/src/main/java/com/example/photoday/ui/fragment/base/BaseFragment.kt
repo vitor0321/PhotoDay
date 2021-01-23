@@ -1,6 +1,5 @@
 package com.example.photoday.ui.fragment.base
 
-import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -18,11 +17,6 @@ abstract class BaseFragment : Fragment() {
 
     private val viewModel by lazy { ViewModelInjector.providerBaseViewModel() }
     private val navFragment by lazy { findNavController() }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        statusBarNavigation()
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -78,14 +72,5 @@ abstract class BaseFragment : Fragment() {
 
         /*change color statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), barColor)
-    }
-
-    private fun statusBarNavigation() {
-        /*para aparecer o menu quando for inflado*/
-        setHasOptionsMenu(true)
-        arguments?.let {}
-
-        /*mudar a cor do statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange_status_bar)
     }
 }
