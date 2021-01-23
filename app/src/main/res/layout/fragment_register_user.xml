@@ -6,33 +6,24 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_register_security"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="@dimen/margin_top_16dp"
+        android:layout_height="@dimen/layout_height_animation_view"
+        style="@style/LottieAnimationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_colorFilter="@color/orange_lottie_animation_view"
-        app:lottie_loop="true"
         app:lottie_rawRes="@raw/login_security" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_input_user_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/TextInputLayoutStyle"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="@dimen/margin_text_input_8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lottie_register_security"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@id/lottie_register_security">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_user_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/orange_input_edit_text"
+            style="@style/TextInputEditText"
             android:drawableStart="@drawable/ic_email"
             android:hint="@string/email_user_register"
             android:inputType="textEmailAddress" />
@@ -41,21 +32,15 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_input_user_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/margin_text_input_8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_input_user_email"
-        app:layout_constraintVertical_bias="0.0"
+        style="@style/TextInputLayoutStyle"
         app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/orange_input_layout">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_input_user_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_user_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/orange_input_edit_text"
+            style="@style/TextInputEditText"
             android:drawableStart="@drawable/ic_lock"
             android:hint="@string/password_register"
             android:inputType="textPassword"/>
@@ -63,21 +48,15 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_input_user_confirm_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/margin_text_input_8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_input_user_password"
+        style="@style/TextInputLayoutStyle"
         app:passwordToggleEnabled="true"
-        app:layout_constraintVertical_bias="0.0"
-        app:passwordToggleTint="@color/orange_input_layout">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_input_user_password" >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_user_confirm_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/orange_input_edit_text"
+            style="@style/TextInputEditText"
             android:drawableStart="@drawable/ic_lock"
             android:hint="@string/confirm_password"
             android:inputType="textPassword" />
@@ -85,12 +64,10 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_register_user"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_8dp_button"
+        style="@style/AppCompatButtonOrange"
         android:text="@string/register"
-        app:layout_constraintEnd_toEndOf="@id/edit_text_input_user_confirm_password"
-        app:layout_constraintStart_toStartOf="@id/edit_text_input_user_confirm_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_text_input_user_confirm_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,8 +8,9 @@
     <dimen name="text_button_size_orange">18sp</dimen>
     <dimen name="text_button_size">14sp</dimen>
     <dimen name="layout_margin_16dp">16dp</dimen>
-    <dimen name="margin_top_8dp_button">8dp</dimen>
+    <dimen name="layout_margin_8dp">8dp</dimen>
     <dimen name="margin_button_8dp">8dp</dimen>
+    <dimen name="margin_top_8dp_button">8dp</dimen>
     <dimen name="padding_button_8dp">8dp</dimen>
 
     <!--Bottom App Bar-->
