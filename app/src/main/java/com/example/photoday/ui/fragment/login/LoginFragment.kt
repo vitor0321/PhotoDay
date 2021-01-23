@@ -11,13 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
-import com.example.photoday.constants.DEFAULT_WEB_CLIENT_ID
-import com.example.photoday.constants.FALSE
-import com.example.photoday.constants.ON_START
-import com.example.photoday.constants.RC_SIGN_IN
+import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.repository.firebase.FirebaseLog.updateUI
 import com.example.photoday.ui.PhotoDayActivity
+import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -27,7 +25,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment(){
 
     private var _binding: FragmentLoginBinding? = null
     private val binding: FragmentLoginBinding get() = _binding!!
@@ -139,15 +137,7 @@ class LoginFragment : Fragment() {
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
     }
 
-    private fun statusBarNavigation() {
-        /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val statusAppBarNavigation = Components(FALSE, FALSE)
-        val mainActivity = requireActivity() as PhotoDayActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
-
-        /*change color statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white_status_bar)
-    }
+    private fun statusBarNavigation() { statusAppBarNavigationBase(FRAG_LOGIN)}
 
     override fun onDestroy() {
         _binding = null

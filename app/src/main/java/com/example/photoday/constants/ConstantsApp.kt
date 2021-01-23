@@ -30,4 +30,16 @@ const val NEW_USER_NAME = "NEW_USER_NAME"
 /*Data Store*/
 const val DATA_USER = "data_user"
 
+/*Status Fragment*/
+const val FRAG_CONFIGURATION = "FRAG_CONFIGURATION"
+const val FRAG_GALLERY = "FRAG_GALLERY"
+const val FRAG_LOGIN = "FRAG_LOGIN"
+const val FRAG_REGISTER = "FRAG_REGISTER"
+const val FRAG_TIMELINE = "FRAG_TIMELINE"
+const val FRAG_SPLASH_GOODBYE = "FRAG_SPLASH_GOODBYE"
+const val FRAG_SPLASH_INTRO = "FRAG_SPLASH_INTRO"
+const val FRAG_SPLASH_LOGIN = "FRAG_SPLASH_LOGIN"
+
+
+
 

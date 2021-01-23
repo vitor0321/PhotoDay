@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
+import com.example.photoday.constants.FRAG_SPLASH_LOGIN
 import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.databinding.FragmentSplashLoginBinding
 import com.example.photoday.ui.navigation.Navigation.navFragmentSplashLoginToTimeline
@@ -47,17 +48,7 @@ class SplashLogin : BaseFragment() {
         }, SPLASH_TIME_OUT)
     }
 
-    private fun statusBarNavigation() {
-        /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val statusAppBarNavigation = Components(FALSE, FALSE)
-        val mainActivity = requireActivity() as PhotoDayActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
-
-        /*change color of statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(
-            requireContext(), R.color.white
-        )
-    }
+    private fun statusBarNavigation() {statusAppBarNavigationBase(FRAG_SPLASH_LOGIN) }
 
     override fun onDestroy() {
         _binding = null

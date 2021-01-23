@@ -2,23 +2,19 @@ package com.example.photoday.ui.fragment.configuration
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.ADD_PHOTO_DIALOG
-import com.example.photoday.constants.FALSE
+import com.example.photoday.constants.FRAG_CONFIGURATION
 import com.example.photoday.constants.NEW_USER_NAME
-import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentConfigurationBinding
-import com.example.photoday.ui.PhotoDayActivity
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
-import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.firebase.auth.FirebaseAuth
 
 class ConfigurationFragment : BaseFragment() {
@@ -70,7 +66,7 @@ class ConfigurationFragment : BaseFragment() {
             btnEditPhotoUser.setOnClickListener { photoDialog() }
 
             /*Button edit user name */
-            btnEditNameUser.setOnClickListener { newUserName() }
+            btnEditNameUser.setOnClickListener { newUserNameDialog() }
         }
     }
 
@@ -91,7 +87,7 @@ class ConfigurationFragment : BaseFragment() {
         }
     }
 
-    private fun newUserName() {
+    private fun newUserNameDialog() {
         /*open NewUserNameDialog*/
         activity?.let {
             NewUserNameDialog.newInstance()
@@ -99,19 +95,7 @@ class ConfigurationFragment : BaseFragment() {
         }
     }
 
-    private fun statusBarNavigation() {
-        /*show OptionsMenu when inflate*/
-        setHasOptionsMenu(true)
-        arguments?.let {}
-
-        /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val statusAppBarNavigation = Components(TRUE, FALSE)
-        val mainActivity = requireActivity() as PhotoDayActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
-
-        /*change color statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange_status_bar)
-    }
+    private fun statusBarNavigation() { statusAppBarNavigationBase(FRAG_CONFIGURATION) }
 
     override fun onDestroy() {
         _binding = null

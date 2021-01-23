@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
+import com.example.photoday.constants.FRAG_GALLERY
 import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.ui.PhotoDayActivity
@@ -56,15 +57,7 @@ class GalleryFragment : BaseFragment() {
         }
     }
 
-    private fun statusBarNavigation() {
-        /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val statusAppBarNavigation = Components(TRUE, TRUE)
-        val mainActivity = requireActivity() as PhotoDayActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
-
-        /*change color statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange_status_bar)
-    }
+    private fun statusBarNavigation() { statusAppBarNavigationBase(FRAG_GALLERY) }
 
     override fun onDestroy() {
         _binding = null

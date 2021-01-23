@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
+import com.example.photoday.constants.FRAG_REGISTER
 import com.example.photoday.databinding.FragmentRegisterUserBinding
 import com.example.photoday.ui.PhotoDayActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
@@ -95,15 +96,7 @@ class Register : BaseFragment() {
         }
     }
 
-    private fun statusBarNavigation() {
-        /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val statusAppBarNavigation = Components(FALSE, FALSE)
-        val mainActivity = requireActivity() as PhotoDayActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
-
-        /*change color statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white_status_bar)
-    }
+    private fun statusBarNavigation() {statusAppBarNavigationBase(FRAG_REGISTER)}
 
     override fun onDestroy() {
         _binding = null
