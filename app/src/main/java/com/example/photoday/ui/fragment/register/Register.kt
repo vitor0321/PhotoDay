@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
-import com.example.photoday.constants.FRAG_REGISTER
+import com.example.photoday.constants.FALSE
 import com.example.photoday.databinding.FragmentRegisterUserBinding
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
+import com.example.photoday.ui.stateBarNavigation.Components
 
 class Register : BaseFragment() {
 
@@ -89,7 +90,7 @@ class Register : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FRAG_REGISTER)
+        statusAppBarNavigationBase(false, Components(FALSE, FALSE), R.color.white_status_bar)
     }
 
     override fun onDestroy() {

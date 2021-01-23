@@ -15,6 +15,7 @@ import com.example.photoday.repository.firebase.FirebaseLog.updateUI
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToRegister
+import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -134,7 +135,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FRAG_LOGIN)
+        statusAppBarNavigationBase(false, Components(FALSE, FALSE), R.color.white_status_bar)
     }
 
     override fun onDestroy() {

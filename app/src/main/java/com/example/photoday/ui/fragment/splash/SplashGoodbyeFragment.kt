@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.photoday.constants.FRAG_SPLASH_GOODBYE
+import com.example.photoday.R
+import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.databinding.FragmentSplashGoodbyeBinding
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.navigation.Navigation.navFragmentSplashGoodbyeToLogin
+import com.example.photoday.ui.stateBarNavigation.Components
 
 class SplashGoodbyeFragment : BaseFragment() {
 
@@ -42,6 +44,6 @@ class SplashGoodbyeFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FRAG_SPLASH_GOODBYE)
+        statusAppBarNavigationBase(false, Components(FALSE, FALSE), R.color.white_status_bar)
     }
 }

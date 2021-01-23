@@ -7,15 +7,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.ADD_PHOTO_DIALOG
-import com.example.photoday.constants.FRAG_CONFIGURATION
+import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.NEW_USER_NAME
+import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
-import com.google.firebase.auth.FirebaseAuth
+import com.example.photoday.ui.stateBarNavigation.Components
 
 class ConfigurationFragment : BaseFragment() {
 
@@ -25,15 +26,12 @@ class ConfigurationFragment : BaseFragment() {
     private val viewModel by lazy {
         ViewModelInjector.providerConfigurationViewModel(context)
     }
-    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-
     ): View {
         _binding = FragmentConfigurationBinding.inflate(inflater, container, false)
-        auth = FirebaseAuth.getInstance()
         return binding.root
     }
 
@@ -98,7 +96,7 @@ class ConfigurationFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FRAG_CONFIGURATION)
+        statusAppBarNavigationBase(true, Components(TRUE, FALSE), R.color.orange_status_bar)
     }
 
     override fun onDestroy() {

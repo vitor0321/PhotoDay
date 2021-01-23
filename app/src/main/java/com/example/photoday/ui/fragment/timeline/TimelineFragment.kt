@@ -5,11 +5,12 @@ import android.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
-import com.example.photoday.constants.FRAG_TIMELINE
+import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.ui.adapter.TimelineListAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
+import com.example.photoday.ui.stateBarNavigation.Components
 
 class TimelineFragment : BaseFragment() {
 
@@ -54,7 +55,7 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FRAG_TIMELINE)
+        statusAppBarNavigationBase(true, Components(TRUE, TRUE), R.color.orange_status_bar)
     }
 
     override fun onDestroy() {

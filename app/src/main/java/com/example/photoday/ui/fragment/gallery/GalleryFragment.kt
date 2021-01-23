@@ -5,11 +5,12 @@ import android.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
-import com.example.photoday.constants.FRAG_GALLERY
+import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.ui.adapter.GalleryListAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
+import com.example.photoday.ui.stateBarNavigation.Components
 
 class GalleryFragment : BaseFragment() {
 
@@ -54,7 +55,7 @@ class GalleryFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FRAG_GALLERY)
+        statusAppBarNavigationBase(true, Components(TRUE, TRUE), R.color.orange_status_bar)
     }
 
     override fun onDestroy() {

@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.photoday.constants.FRAG_SPLASH_INTRO
+import com.example.photoday.R
+import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.databinding.FragmentSplashIntroBinding
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.navigation.Navigation.navFragmentSplashIntroToLogin
+import com.example.photoday.ui.stateBarNavigation.Components
 
 class SplashIntroFragment : BaseFragment() {
 
@@ -42,7 +44,7 @@ class SplashIntroFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FRAG_SPLASH_INTRO)
+        statusAppBarNavigationBase(false, Components(FALSE, FALSE), R.color.white_status_bar)
     }
 
     override fun onDestroy() {
