@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Patterns
 import android.widget.EditText
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.navigation.NavController
 import com.example.photoday.R
@@ -110,18 +111,19 @@ object FirebaseLog {
     }
 
     fun signInWithEmailAndPassword(
-        loginUserId: AppCompatEditText,
-        loginPassword: AppCompatEditText,
-        controlNavigation: NavController,
-        context: Context,
-        lifecycleScope: LifecycleCoroutineScope
+            loginUserId: AppCompatEditText,
+            loginPassword: AppCompatEditText,
+            requireActivity: FragmentActivity,
+            controlNavigation: NavController,
+            context: Context,
+            lifecycleScope: LifecycleCoroutineScope
     ) {
         /*checking if the user exists*/
         auth.signInWithEmailAndPassword(
             loginUserId.text.toString(),
             loginPassword.text.toString()
         )
-            .addOnCompleteListener(context) { task ->
+            .addOnCompleteListener(requireActivity) { task ->
                 when {
                     task.isSuccessful -> {
                         // Sign in success, update UI with the signed-in user's information

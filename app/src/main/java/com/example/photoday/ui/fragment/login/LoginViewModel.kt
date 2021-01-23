@@ -24,6 +24,7 @@ class LoginViewModel(
             signInWithEmailAndPassword(
                     editTextLoginUser,
                     editTextLoginPassword,
+                    requireActivity,
                     controlNavigation,
                     it,
                     lifecycleScope

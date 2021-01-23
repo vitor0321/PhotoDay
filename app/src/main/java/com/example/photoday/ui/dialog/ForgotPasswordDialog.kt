@@ -58,7 +58,7 @@ class ForgotPasswordDialog : DialogFragment() {
                         return@setOnClickListener
                     }
                 }
-                context?.let { context -> FirebaseLog.forgotPassword(context, userEmail) }
+                context?.let { context -> FirebaseLog.forgotPassword( userEmail, context) }
                 dialog?.dismiss()
             }
             buttonCancel.setOnClickListener {
