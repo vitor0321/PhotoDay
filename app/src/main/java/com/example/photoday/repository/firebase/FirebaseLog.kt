@@ -16,7 +16,6 @@ import com.example.photoday.ui.navigation.Navigation
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToSplashLogin
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToTimeline
 import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
