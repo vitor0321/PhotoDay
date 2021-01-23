@@ -7,99 +7,74 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_login_security"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_marginTop="@dimen/margin_top_8dp"
+        style="@style/LottieAnimationView"
+        android:layout_height="@dimen/layout_height_animation_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_colorFilter="@color/orange"
-        app:lottie_loop="true"
         app:lottie_rawRes="@raw/register_security" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/login_user_id"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_top_8dp"
-        android:hint="@string/email_user"
-        android:inputType="textEmailAddress"
-        android:textColorHint="@color/orange_light"
-        android:textSize="18sp"
-        android:textColor="@color/orange"
-        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_text_login_user_id"
+        style="@style/TextInputLayoutStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lottie_login_security"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/lottie_login_security">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/login_password"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_8dp"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:textColor="@color/orange"
-        android:textColorHint="@color/orange_light"
-        android:textSize="18sp"
-        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        app:layout_constraintEnd_toEndOf="@id/login_user_id"
-        app:layout_constraintStart_toStartOf="@id/login_user_id"
-        app:layout_constraintTop_toBottomOf="@id/login_user_id"
-        app:layout_constraintVertical_bias="0.0" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_login_user"
+            style="@style/TextInputEditText"
+            android:drawableStart="@drawable/ic_email"
+            android:hint="@string/email_user_login"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_button_log"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_8dp"
-        android:background="@drawable/round_button"
-        android:fontFamily="@font/allerta"
-        android:text="@string/login"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_button_size"
-        app:layout_constraintEnd_toEndOf="@id/login_password"
-        app:layout_constraintStart_toStartOf="@id/login_password"
-        app:layout_constraintTop_toBottomOf="@id/login_password" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/login_button_google"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_8dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edit_text_input_login_password"
+        style="@style/TextInputLayoutStyle"
+        app:passwordToggleEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_button_log" />
+        app:layout_constraintTop_toBottomOf="@id/input_text_login_user_id">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_login_password"
+            style="@style/TextInputEditText"
+            android:drawableStart="@drawable/ic_lock"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_button_forgot_password"
+        android:id="@+id/button_login_log"
+        style="@style/AppCompatButtonOrange"
+        android:text="@string/login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_input_login_password" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/button_login_google"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_8dp"
-        android:layout_marginBottom="@dimen/margin_bottom"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/allerta"
+        android:layout_marginTop="@dimen/margin_top_8dp_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_login_log" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_login_forgot_password"
+        style="@style/AppCompatButtonTransparent"
         android:text="@string/forgot_password"
-        android:textColor="@color/orange"
-        app:layout_constraintBottom_toTopOf="@id/login_button_register"
+        app:layout_constraintBottom_toTopOf="@id/button_login_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_button_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_8dp"
-        android:layout_marginBottom="@dimen/margin_bottom"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/allerta"
+        android:id="@+id/button_login_register"
+        style="@style/AppCompatButtonTransparent"
         android:text="@string/register_new_user"
-        android:textColor="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

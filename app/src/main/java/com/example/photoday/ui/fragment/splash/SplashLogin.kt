@@ -6,35 +6,30 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
-import com.example.photoday.R
-import com.example.photoday.constants.FALSE
+import com.example.photoday.constants.FRAG_SPLASH_LOGIN
 import com.example.photoday.constants.SPLASH_TIME_OUT
-import com.example.photoday.databinding.FragmentSplashIntroBinding
 import com.example.photoday.databinding.FragmentSplashLoginBinding
-import com.example.photoday.navigation.Navigation.navFragmentSplashLoginToTimeline
-import com.example.photoday.stateBarNavigation.Components
-import com.example.photoday.ui.MainActivity
 import com.example.photoday.ui.fragment.base.BaseFragment
+import com.example.photoday.ui.navigation.Navigation.navFragmentSplashLoginToTimeline
 
 class SplashLogin : BaseFragment() {
 
+    private var _binding: FragmentSplashLoginBinding? = null
+    private val binding: FragmentSplashLoginBinding get() = _binding!!
     private val controlNavigation by lazy { findNavController() }
-    private lateinit var binding: FragmentSplashLoginBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        requireActivity()
-        return inflater.inflate(R.layout.fragment_splash_login, container, false)
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSplashLoginBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSplashLoginBinding.bind(view)
         init()
     }
 
@@ -49,14 +44,11 @@ class SplashLogin : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val statusAppBarNavigation = Components(FALSE, FALSE)
-        val mainActivity = requireActivity() as MainActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
+        statusAppBarNavigationBase(FRAG_SPLASH_LOGIN)
+    }
 
-        /*change color of statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(
-            requireContext(), R.color.white
-        )
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }

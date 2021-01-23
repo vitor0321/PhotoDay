@@ -2,34 +2,31 @@ package com.example.photoday.ui.fragment.timeline
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
-import com.example.photoday.adapter.TimelineListAdapter
-import com.example.photoday.constants.TRUE
+import com.example.photoday.constants.FRAG_TIMELINE
 import com.example.photoday.databinding.FragmentTimelineBinding
-import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.stateBarNavigation.Components
-import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.adapter.TimelineListAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_timeline.*
+import com.example.photoday.ui.injector.ViewModelInjector
 
 class TimelineFragment : BaseFragment() {
 
+    private var _binding: FragmentTimelineBinding? = null
+    private val binding: FragmentTimelineBinding get() = _binding!!
     private val viewModel by lazy { ViewModelInjector.providerTimelineViewModel() }
-    private lateinit var timelineAdapter: TimelineListAdapter
-    private lateinit var binding: FragmentTimelineBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_timeline, container, false)
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentTimelineBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentTimelineBinding.bind(view)
         init()
     }
 
@@ -39,29 +36,29 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun init() {
+        viewModel.getPhotos()
         statusBarNavigation()
-        initRecyclerView()
+        initObservers()
+    }
+
+    private fun initObservers() {
+        binding.apply {
+            viewModel.photosLiveData.observe(viewLifecycleOwner, Observer {
+                recycleViewListTimeline.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    adapter = TimelineListAdapter(it)
+                }
+            })
+        }
     }
 
     private fun statusBarNavigation() {
-        /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val statusAppBarNavigation = Components(TRUE, TRUE)
-        val mainActivity = requireActivity() as MainActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
-
-        /*change color of statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(
-            requireContext(), R.color.orange
-        )
+        statusAppBarNavigationBase(FRAG_TIMELINE)
     }
 
-    private fun initRecyclerView() {
-        binding.run {
-            recycleViewListTimeline.apply {
-                layoutManager = LinearLayoutManager(context)
-                timelineAdapter = TimelineListAdapter()
-                adapter = timelineAdapter
-            }
-        }
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }

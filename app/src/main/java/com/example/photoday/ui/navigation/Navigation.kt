@@ -1,4 +1,4 @@
-package com.example.photoday.navigation
+package com.example.photoday.ui.navigation
 
 import androidx.navigation.NavController
 import com.example.photoday.ui.fragment.configuration.ConfigurationFragmentDirections

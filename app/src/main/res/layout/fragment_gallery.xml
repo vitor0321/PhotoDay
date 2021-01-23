@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orange_light"
+    android:background="@color/orange_light_layout_background"
     tools:context=".ui.fragment.gallery.GalleryFragment">
 
     <androidx.recyclerview.widget.RecyclerView

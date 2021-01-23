@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_timelineFragment"
         android:name="com.example.photoday.ui.fragment.timeline.TimelineFragment"
-        android:label="Timeline"
+        android:label="@string/nav_graph_label_timeline"
         android:layout="@layout/fragment_timeline"
         tools:layout="@layout/fragment_timeline">
         <action
@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/nav_galleryFragment"
         android:name="com.example.photoday.ui.fragment.gallery.GalleryFragment"
-        android:label="Gallery"
+        android:label="@string/nav_graph_label_gallery"
         android:layout="@layout/fragment_gallery"
         tools:layout="@layout/fragment_gallery" >
         <action
@@ -41,7 +41,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.photoday.ui.fragment.login.LoginFragment"
-        android:label="Login"
+        android:label="@string/nav_graph_label_login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_register"
@@ -73,7 +73,7 @@
     <fragment
         android:id="@+id/register"
         android:name="com.example.photoday.ui.fragment.register.Register"
-        android:label="Register"
+        android:label="@string/nav_graph_label_register"
         tools:layout="@layout/fragment_register_user">
         <action
             android:id="@+id/action_register_to_loginFragment"
@@ -88,7 +88,7 @@
     <fragment
         android:id="@+id/splashLogin"
         android:name="com.example.photoday.ui.fragment.splash.SplashLogin"
-        android:label="fragment_splash_login"
+        android:label="@string/nav_graph_label_splash_login"
         tools:layout="@layout/fragment_splash_login">
         <action
             android:id="@+id/action_splashLogin_to_timelineFragment"
@@ -112,7 +112,7 @@
     <fragment
         android:id="@+id/configurationFragment"
         android:name="com.example.photoday.ui.fragment.configuration.ConfigurationFragment"
-        android:label="Configuration"
+        android:label="@string/nav_graph_label_configuration"
         tools:layout="@layout/fragment_configuration">
         <action
             android:id="@+id/action_configurationFragment_to_splashGoodbyeFragment"
@@ -137,7 +137,7 @@
     <fragment
         android:id="@+id/splashGoodbyeFragment"
         android:name="com.example.photoday.ui.fragment.splash.SplashGoodbyeFragment"
-        android:label="Splash GoodBye"
+        android:label="@string/nav_graph_label_splash_goodbye"
         tools:layout="@layout/fragment_splash_goodbye">
 
         <action
@@ -154,7 +154,7 @@
     <fragment
         android:id="@+id/splashIntroFragment"
         android:name="com.example.photoday.ui.fragment.splash.SplashIntroFragment"
-        android:label="Splash Intro"
+        android:label="@string/nav_graph_label_splash_intro"
         tools:layout="@layout/fragment_splash_intro" >
         <action
             android:id="@+id/action_splashIntroFragment_to_loginFragment"

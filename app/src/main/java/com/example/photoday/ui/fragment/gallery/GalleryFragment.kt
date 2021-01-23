@@ -2,37 +2,31 @@ package com.example.photoday.ui.fragment.gallery
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
-import com.example.photoday.adapter.GalleryListAdapter
-import com.example.photoday.constants.TRUE
-import com.example.photoday.databinding.FragmentConfigurationBinding
+import com.example.photoday.constants.FRAG_GALLERY
 import com.example.photoday.databinding.FragmentGalleryBinding
-import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.stateBarNavigation.Components
-import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.adapter.GalleryListAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_gallery.*
+import com.example.photoday.ui.injector.ViewModelInjector
 
 class GalleryFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentGalleryBinding
+    private var _binding: FragmentGalleryBinding? = null
+    private val binding: FragmentGalleryBinding get() = _binding!!
     private val viewModel by lazy { ViewModelInjector.providerGalleryViewModel() }
-    private lateinit var galleryAdapter: GalleryListAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_gallery, container, false)
-        return view
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentGalleryBinding.bind(view)
         init()
     }
 
@@ -41,28 +35,30 @@ class GalleryFragment : BaseFragment() {
         inflater.inflate(R.menu.menu_fragment_gallery, menu)
     }
 
-    private fun init(){
+    private fun init() {
+        viewModel.getPhotos()
         statusBarNavigation()
-        initRecyclerView()
+        initObservers()
     }
 
-    private fun initRecyclerView() {
-        binding.run {
-            recycleViewListGallery.apply {
-                layoutManager = LinearLayoutManager(context)
-                galleryAdapter = GalleryListAdapter()
-                adapter = galleryAdapter
-            }
+    private fun initObservers() {
+        binding.apply {
+            viewModel.photosLiveData.observe(viewLifecycleOwner, Observer {
+                recycleViewListGallery.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    adapter = GalleryListAdapter(it)
+                }
+            })
         }
     }
 
     private fun statusBarNavigation() {
-        /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val statusAppBarNavigation = Components(TRUE, TRUE)
-        val mainActivity = requireActivity() as MainActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
+        statusAppBarNavigationBase(FRAG_GALLERY)
+    }
 
-        /*change color statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }

@@ -7,11 +7,11 @@ import androidx.core.app.ActivityCompat
 import com.example.photoday.constants.GALLERY_TYPE
 import com.example.photoday.constants.REQUEST_GALLERY
 import com.example.photoday.constants.REQUEST_IMAGE_CAPTURE
-import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.PhotoDayActivity
 
 object Exhibition {
 
-    fun galleryExhibition(activity: MainActivity) {
+    fun galleryExhibition(activity: PhotoDayActivity) {
         val intentGallery = Intent(Intent.ACTION_PICK)
         intentGallery.type = GALLERY_TYPE
         ActivityCompat.startActivityForResult(
@@ -20,7 +20,7 @@ object Exhibition {
         )
     }
 
-    fun dispatchTakeExhibition(packageManage: PackageManager, activity: MainActivity) {
+    fun dispatchTakeExhibition(packageManage: PackageManager, activity: PhotoDayActivity) {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(packageManage)?.also {
                 ActivityCompat.startActivityForResult(

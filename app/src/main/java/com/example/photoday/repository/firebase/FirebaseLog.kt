@@ -4,29 +4,30 @@ import android.content.Context
 import android.util.Patterns
 import android.widget.EditText
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.navigation.NavController
 import com.example.photoday.R
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.Utils.toast
-import com.example.photoday.navigation.Navigation
-import com.example.photoday.navigation.Navigation.navFragmentLoginToSplashLogin
-import com.example.photoday.navigation.Navigation.navFragmentLoginToTimeline
+import com.example.photoday.repository.dataStore.DataStoreService.saveUser
+import com.example.photoday.ui.navigation.Navigation
+import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToSplashLogin
+import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToTimeline
 import com.firebase.ui.auth.AuthUI
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
-object FirebaseLogout {
+object FirebaseLog {
 
     private var auth = FirebaseAuth.getInstance()
 
-    fun logout(context: Context) {
+    fun logoutFirebase(context: Context) {
         AuthUI.getInstance()
             .signOut(context)
             .addOnSuccessListener {
-                toast(context, R.string.successfully_logged)
+                toast(context,R.string.successfully_logged)
             }
     }
 
@@ -55,9 +56,10 @@ object FirebaseLogout {
     }
 
     fun firebaseAuthWithGoogle(
-        context: Context,
         idToken: String,
-        controlNavigation: NavController
+        controlNavigation: NavController,
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope,
     ) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -65,8 +67,7 @@ object FirebaseLogout {
                 when {
                     task.isSuccessful -> {
                         // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
-                        updateUI(context,user, controlNavigation, FIRST_LOGIN)
+                        updateUI(controlNavigation, FIRST_LOGIN, context, lifecycleScope)
                     }
                     else -> {
                         toast(context, R.string.auth_failed)
@@ -112,7 +113,8 @@ object FirebaseLogout {
         loginUserId: AppCompatEditText,
         loginPassword: AppCompatEditText,
         controlNavigation: NavController,
-        context: FragmentActivity,
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope
     ) {
         /*checking if the user exists*/
         auth.signInWithEmailAndPassword(
@@ -123,42 +125,44 @@ object FirebaseLogout {
                 when {
                     task.isSuccessful -> {
                         // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
-                        updateUI(context, user, controlNavigation, FIRST_LOGIN)
+                        updateUI(controlNavigation, FIRST_LOGIN, context, lifecycleScope)
                     }
                     else -> {
                         // If sign in fails, display a message to the user.
                         toast(context, R.string.login_failed)
-                        updateUI(context, null, controlNavigation, FIRST_LOGIN)
+                        updateUI(controlNavigation, FIRST_LOGIN, context, lifecycleScope)
                     }
                 }
             }
     }
 
     fun updateUI(
-        context: Context,
-        currentUser: FirebaseUser?,
         controlNavigation: NavController,
-        onStart: Int,
+        startLog: Int,
+        context: Context,
+        lifecycleScope: LifecycleCoroutineScope
     ) {
+        val currentUser = auth.currentUser
         /*if the user is different from null, then he exists and can log in*/
         when {
             currentUser != null -> {
                 when {
                     currentUser.isEmailVerified -> {
                         /*if you are already logged in go to Timeline,
-                        if you are going to log in for the first time go to Splash*/
-                        when (onStart) {
+                        if you are going to log in for the first time go to Login*/
+                        when (startLog) {
                             ON_START -> {
                                 navFragmentLoginToTimeline(controlNavigation)
                             }
                             FIRST_LOGIN -> {
                                 navFragmentLoginToSplashLogin(controlNavigation)
+                                saveUser(lifecycleScope, context, currentUser)
+                                toast(context, R.string.login_is_success)
                             }
                         }
                     }
                     else -> {
-                        toast(context,R.string.verify_your_email_address)
+                        toast(context, R.string.verify_your_email_address)
                     }
                 }
             }

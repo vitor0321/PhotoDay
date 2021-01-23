@@ -6,25 +6,20 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/view_take_photo_splash"
-        android:layout_width="match_parent"
+        style="@style/LottieAnimationView"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_colorFilter="@color/orange"
-        app:lottie_loop="true"
         app:lottie_rawRes="@raw/intro_take_photo" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_view_name_photo_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:fontFamily="@font/autour_one"
+        android:layout_marginBottom="@dimen/layout_margin_bottom_40dp"
         android:text="@string/photo_day"
-        android:textColor="@color/orange"
-        android:textSize="40sp"
+        android:textSize="@dimen/text_view_size_20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

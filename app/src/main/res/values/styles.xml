@@ -1,19 +1,102 @@
 <resources>
-    <!-- Main application theme. -->
     <style name="AppThemeActionBar" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <!-- Set Style components android  -->
         <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryDark">@color/orange</item>
         <item name="colorAccent">@color/orange_light</item>
+        <item name="android:buttonStyle">@style/AppCompatButtonOrange</item>
+        <item name="android:textViewStyle">@style/AppCompatTextView</item>
+        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
+        <item name="editTextStyle">@style/TextInputEditText</item>
+        <item name="alertDialogStyle">@style/DialogButtonStyle</item>
+
+        <!-- Set colorSecondary to change background of FAB (backgroundTint) -->
+        <item name="colorSecondary">@color/orange</item>
+        <item name="colorOnSecondary">@color/white</item>
     </style>
 
-    <style name="MyDatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+    <style name="DatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:headerBackground">@color/orange</item>
         <item name="colorAccent">@color/orange</item>
     </style>
 
-    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:textColor">@color/orange</item>
-        <item name="android:textColorHint">@color/colorNavigationItemDefault</item>
+    <style name="TextInputEditText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textColor">@color/orange_input_edit_text</item>
+        <item name="editTextColor">@color/orange_input_edit_text</item>
+        <item name="errorTextColor">@color/red_error_input_edit_text</item>
     </style>
+
+    <style name="LottieAnimationView" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_top_8dp_animation_view</item>
+        <item name="lottie_autoPlay">true</item>
+        <item name="lottie_colorFilter">@color/orange_lottie_animation_view</item>
+        <item name="lottie_loop">true</item>
+        <item name="lottie_speed">2</item>
+    </style>
+
+    <style name="AppCompatTextView" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:textColorHint">@color/orange_light_text_view</item>
+        <item name="android:textColor">@color/orange_input_layout_text_view</item>
+        <item name="android:textSize">@dimen/text_view_size</item>
+        <item name="android:fontFamily">@font/autour_one</item>
+    </style>
+
+    <style name="AppCompatButtonOrange" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:fontFamily">@font/button_font_allerta</item>
+        <item name="android:background">@drawable/round_button</item>
+        <item name="android:textColor">@color/white_button</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_button_size_orange</item>
+        <item name="android:padding">@dimen/padding_button_8dp</item>
+    </style>
+
+    <style name="AppCompatButtonTransparent" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_margin">@dimen/layout_margin_8dp</item>
+        <item name="android:fontFamily">@font/button_font_allerta</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@color/orange_button</item>
+        <item name="android:textSize">@dimen/text_button_size</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="colorAccent">@color/orange_light</item>
+        <item name="editTextColor">@color/orange</item>
+        <item name="hintTextColor">@color/orange_light</item>
+        <item name="android:textColorHint">@color/orange_light</item>
+        <item name="android:layout_margin">@dimen/margin_text_input_8dp</item>
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="passwordToggleTint">@color/orange_input_layout</item>
+        <item name="android:textSize">18sp</item>
+        <item name="layout_constraintVertical_bias">0.0</item>
+        <item name="boxStrokeColor">@color/mtrl_textinput_default_box_stroke_color</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="android:drawablePadding">@dimen/drawable_padding_8dp</item>
+        <item name="android:text">@color/orange_light</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
+        <item name="windowFixedWidthMajor">98%</item>
+        <item name="windowFixedWidthMinor">90%</item>
+        <item name="android:textColorHint">@color/orange_light</item>
+    </style>
+
+    <style name="DialogButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
 </resources>

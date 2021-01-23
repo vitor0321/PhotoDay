@@ -2,39 +2,39 @@ package com.example.photoday.ui.fragment.configuration
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.ADD_PHOTO_DIALOG
-import com.example.photoday.constants.FALSE
-import com.example.photoday.constants.TRUE
+import com.example.photoday.constants.FRAG_CONFIGURATION
+import com.example.photoday.constants.NEW_USER_NAME
 import com.example.photoday.databinding.FragmentConfigurationBinding
-import com.example.photoday.dialog.AddPhotoDialog
-import com.example.photoday.injector.ViewModelInjector
-import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
-import com.example.photoday.repository.firebase.FirebaseLogout.logout
-import com.example.photoday.stateBarNavigation.Components
-import com.example.photoday.ui.MainActivity
+import com.example.photoday.ui.dialog.AddPhotoDialog
+import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_configuration.*
+import com.example.photoday.ui.injector.ViewModelInjector
+import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
+import com.google.firebase.auth.FirebaseAuth
 
 class ConfigurationFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentConfigurationBinding
-    private val viewModel by lazy { ViewModelInjector.providerConfigurationViewModel() }
+    private var _binding: FragmentConfigurationBinding? = null
+    private val binding: FragmentConfigurationBinding get() = _binding!!
     private val navFragment by lazy { findNavController() }
+    private val viewModel by lazy {
+        ViewModelInjector.providerConfigurationViewModel(context)
+    }
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_configuration, container, false)
-    }
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding = FragmentConfigurationBinding.bind(view)
-        init()
+    ): View {
+        _binding = FragmentConfigurationBinding.inflate(inflater, container, false)
+        auth = FirebaseAuth.getInstance()
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -42,51 +42,68 @@ class ConfigurationFragment : BaseFragment() {
         inflater.inflate(R.menu.menu_fragment_configuration, menu)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+    }
+
     private fun init() {
         initButton()
-        firebaseLogin()
+        initObservers()
         statusBarNavigation()
+        context?.let { viewModel.getDataStoreUser(it, lifecycleScope) }
     }
 
     private fun initButton() {
-        binding.run {
+
+        binding.apply {
             /*Button logout*/
             btnLogout.setOnClickListener {
                 /*logout with Firebase*/
-                context?.let { context -> logout(context) }
+                viewModel.logout()
                 navFragmentConfigurationToSplashGoodbye(navFragment)
             }
+
             /*Button edit user photo*/
-            btnEditPhotoUser.setOnClickListener {
-                activity?.let { activity ->
-                    AddPhotoDialog.newInstance()
-                        .show(activity.supportFragmentManager, ADD_PHOTO_DIALOG)
-                }
-            }
+            btnEditPhotoUser.setOnClickListener { photoDialog() }
+
             /*Button edit user name */
-            btnEditNameUser.setOnClickListener {
-                viewModel.alertDialogNewUserName(context, layoutInflater, text_view_user_name)
-            }
+            btnEditNameUser.setOnClickListener { newUserNameDialog() }
         }
     }
 
-    private fun firebaseLogin(){
-        binding.run {
-            viewModel.firebaseSingIn(textViewUserName, textViewUserEmail, imageUser, context)
+    private fun initObservers() {
+        viewModel.getUserLiveData.observe(viewLifecycleOwner, Observer {
+            binding.apply {
+                textViewUserName.text = it.name
+                textViewUserEmail.text = it.email
+            }
+        })
+    }
+
+    private fun photoDialog() {
+        /*open AddPhotoDialog*/
+        activity?.let {
+            AddPhotoDialog.newInstance()
+                    .show(it.supportFragmentManager, ADD_PHOTO_DIALOG)
+        }
+    }
+
+    private fun newUserNameDialog() {
+        /*open NewUserNameDialog*/
+        activity?.let {
+            NewUserNameDialog.newInstance()
+                    .show(it.supportFragmentManager, NEW_USER_NAME)
         }
     }
 
     private fun statusBarNavigation() {
-        /*show OptionsMenu when inflate*/
-        setHasOptionsMenu(true)
-        arguments?.let {}
+        statusAppBarNavigationBase(FRAG_CONFIGURATION)
+    }
 
-        /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val statusAppBarNavigation = Components(TRUE, FALSE)
-        val mainActivity = requireActivity() as MainActivity
-        mainActivity.statusAppBarNavigation(statusAppBarNavigation)
-
-        /*change color statusBar*/
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), R.color.orange)
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }
+
