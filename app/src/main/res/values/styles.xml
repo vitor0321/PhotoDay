@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="AppThemeActionBar" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Set Style components android  -->
         <item name="colorPrimary">@color/orange</item>
@@ -95,7 +95,7 @@
         <item name="android:textColorHint">@color/orange_light</item>
     </style>
 
-    <style name="DialogButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+    <style name="DialogButtonStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColor">@color/orange</item>
     </style>
 

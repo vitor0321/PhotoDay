@@ -37,10 +37,9 @@ object ViewModelInjector {
     fun providerLoginViewModel(
         controlNavigation: NavController,
         context: Context?,
-        requireActivity: FragmentActivity,
-        lifecycleScope: LifecycleCoroutineScope
+        requireActivity: FragmentActivity
     ): LoginViewModel {
-        return LoginViewModelFactory(controlNavigation, context, requireActivity, lifecycleScope)
+        return LoginViewModelFactory(controlNavigation, context, requireActivity)
             .create(LoginViewModel::class.java)
     }
 

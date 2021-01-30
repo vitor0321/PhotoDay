@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
-import com.example.photoday.R
 import com.example.photoday.databinding.DialogFragmentAddPhotoBinding
-import com.example.photoday.databinding.ItemGalleryFragmentBinding
-import com.example.photoday.ui.adapter.GalleryListAdapter
+import com.example.photoday.permission.CheckVersionPermission.dispatchTakePermission
+import com.example.photoday.permission.CheckVersionPermission.galleryPermission
+import com.example.photoday.ui.PhotoDayActivity
 
 class AddPhotoDialog : DialogFragment() {
 
     private var _binding: DialogFragmentAddPhotoBinding? = null
     private val binding: DialogFragmentAddPhotoBinding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,12 +42,15 @@ class AddPhotoDialog : DialogFragment() {
 
     private fun initButton() {
         binding.apply {
-            imageUploadCamera.setOnClickListener {
-
+            val activity = requireActivity() as PhotoDayActivity
+            imageUploadGallery.setOnClickListener {
+                galleryPermission(activity)
+                dialog?.dismiss()
             }
 
-            imageUploadGallery.setOnClickListener {
-
+            imageUploadCamera.setOnClickListener {
+                dispatchTakePermission(activity)
+                dialog?.dismiss()
             }
         }
     }

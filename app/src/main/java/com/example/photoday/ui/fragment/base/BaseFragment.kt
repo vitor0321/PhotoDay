@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
+import com.example.photoday.constants.Utils
 import com.example.photoday.ui.PhotoDayActivity
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToTimeline
@@ -18,16 +19,20 @@ abstract class BaseFragment : Fragment() {
     private val navFragment by lazy { findNavController() }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_fragment_timeline_app_bar -> {
-                navFragmentTimelineToConfiguration(navFragment)
+        try {
+            when (item.itemId) {
+                R.id.menu_fragment_timeline_app_bar -> {
+                    navFragmentTimelineToConfiguration(navFragment)
+                }
+                R.id.menu_fragment_gallery_app_bar -> {
+                    navFragmentGalleryToConfiguration(navFragment)
+                }
+                R.id.menu_fragment_configuration_app_bar -> {
+                    navFragmentConfigurationToTimeline(navFragment)
+                }
             }
-            R.id.menu_fragment_gallery_app_bar -> {
-                navFragmentGalleryToConfiguration(navFragment)
-            }
-            R.id.menu_fragment_configuration_app_bar -> {
-                navFragmentConfigurationToTimeline(navFragment)
-            }
+        }catch (e: Exception) {
+            e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -37,8 +42,8 @@ abstract class BaseFragment : Fragment() {
         setHasOptionsMenu(menu)
 
         /*Sending status AppBar and Bottom Navigation to the Activity*/
-        val mainActivity = requireActivity() as PhotoDayActivity
-        mainActivity.statusAppBarNavigation(components)
+        val photoActivity = requireActivity() as PhotoDayActivity
+        photoActivity.statusAppBarNavigation(components)
 
         /*change color statusBar*/
         activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(), barColor)

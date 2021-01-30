@@ -1,9 +1,6 @@
 package com.example.photoday.permission
 
 import android.Manifest
-import android.app.Activity
-import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker
@@ -15,47 +12,55 @@ import com.example.photoday.exhibition.Exhibition.dispatchTakeExhibition
 import com.example.photoday.exhibition.Exhibition.galleryExhibition
 import com.example.photoday.ui.PhotoDayActivity
 
+
 object CheckVersionPermission {
-    fun galleryPermission(context: Context, activity: PhotoDayActivity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            when {
-                PermissionChecker.checkSelfPermission(
-                    context,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PermissionChecker.PERMISSION_DENIED -> {
-                    val permisoArchivos = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    ActivityCompat.requestPermissions(
-                        Activity(),
-                        permisoArchivos,
-                        REQUEST_GALLERY
-                    )
+    fun galleryPermission(activity: PhotoDayActivity) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                when (PermissionChecker.PERMISSION_DENIED) {
+                    PermissionChecker.checkSelfPermission(
+                            activity,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) -> {
+                        ActivityCompat.requestPermissions(
+                                activity,
+                                arrayOf(
+                                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                ),
+                                REQUEST_GALLERY
+                        )
+                    }
+                    else -> galleryExhibition(activity)
                 }
-                else -> galleryExhibition(activity)
-            }
-        } else toast(context, R.string.version_less_23)
+            } else toast(activity, R.string.version_less_23)
+        } catch (e: Exception) {
+            e.message?.let { toast(activity, it.toInt()) }
+        }
     }
 
     fun dispatchTakePermission(
-        context: Context,
-        packageManage: PackageManager,
-        activity: PhotoDayActivity
+            activity: PhotoDayActivity
     ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            when {
-                PermissionChecker.checkSelfPermission(
-                    context,
-                    Manifest.permission.CAMERA
-                ) == PermissionChecker.PERMISSION_DENIED -> {
-                    val permisoArchivos = arrayOf(Manifest.permission.CAMERA)
-                    ActivityCompat.requestPermissions(
-                        Activity(),
-                        permisoArchivos,
-                        REQUEST_IMAGE_CAPTURE
-                    )
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                when (PermissionChecker.PERMISSION_DENIED) {
+                    PermissionChecker.checkSelfPermission(
+                            activity,
+                            Manifest.permission.CAMERA
+                    ) -> {
+                        ActivityCompat.requestPermissions(
+                                activity,
+                                arrayOf(Manifest.permission.CAMERA),
+                                REQUEST_IMAGE_CAPTURE
+                        )
+                    }
+                    else -> dispatchTakeExhibition(activity)
                 }
-                else -> dispatchTakeExhibition(packageManage, activity)
-            }
-        } else
-        toast(context, R.string.version_less_23)
+            } else
+                toast(activity, R.string.version_less_23)
+        } catch (e: Exception) {
+            e.message?.let { toast(activity, it.toInt()) }
+        }
     }
 }

@@ -2,12 +2,11 @@ package com.example.photoday.ui.fragment.login
 
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.constants.FORGOT_PASSWORD
-import com.example.photoday.repository.firebase.FirebaseLog
-import com.example.photoday.repository.firebase.FirebaseLog.signInWithEmailAndPassword
+import com.example.photoday.repository.firebase.LogFirebase
+import com.example.photoday.repository.firebase.LogFirebase.signInWithEmailAndPassword
 import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.textfield.TextInputEditText
@@ -16,7 +15,6 @@ class LoginViewModel(
         private val controlNavigation: NavController,
         private val context: Context?,
         private val requireActivity: FragmentActivity,
-        private val lifecycleScope: LifecycleCoroutineScope
 ) : ViewModel() {
 
     fun doLogin(editTextLoginUser: TextInputEditText, editTextLoginPassword: TextInputEditText) {
@@ -26,19 +24,17 @@ class LoginViewModel(
                     editTextLoginPassword,
                     requireActivity,
                     controlNavigation,
-                    it,
-                    lifecycleScope
+                    it
             )
         }
     }
 
     fun authWithGoogle(account: GoogleSignInAccount) {
         context?.let {
-            FirebaseLog.firebaseAuthWithGoogle(
+            LogFirebase.firebaseAuthWithGoogle(
                     account.idToken!!,
                     controlNavigation,
-                    it,
-                    lifecycleScope
+                    it
             )
         }
     }

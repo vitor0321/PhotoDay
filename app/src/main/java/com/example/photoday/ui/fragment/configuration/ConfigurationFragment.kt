@@ -1,22 +1,27 @@
 package com.example.photoday.ui.fragment.configuration
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.provider.MediaStore
 import android.view.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
-import com.example.photoday.constants.ADD_PHOTO_DIALOG
-import com.example.photoday.constants.FALSE
-import com.example.photoday.constants.NEW_USER_NAME
-import com.example.photoday.constants.TRUE
+import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentConfigurationBinding
+import com.example.photoday.repository.firebase.ChangeUserFirebase.changeImageUser
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
 import com.example.photoday.ui.stateBarNavigation.Components
+import java.io.ByteArrayOutputStream
+
 
 class ConfigurationFragment : BaseFragment() {
 
@@ -45,11 +50,17 @@ class ConfigurationFragment : BaseFragment() {
         init()
     }
 
+    override fun onResume() {
+        binding.apply {
+            context?.let { viewModel.getDataStoreUser(it, textViewUserName, textViewUserEmail, imageUser) }
+            super.onResume()
+        }
+    }
+
     private fun init() {
         initButton()
         initObservers()
         statusBarNavigation()
-        context?.let { viewModel.getDataStoreUser(it, lifecycleScope) }
     }
 
     private fun initButton() {
@@ -66,17 +77,41 @@ class ConfigurationFragment : BaseFragment() {
             btnEditPhotoUser.setOnClickListener { photoDialog() }
 
             /*Button edit user name */
-            btnEditNameUser.setOnClickListener { newUserNameDialog() }
+            btnEditNameUser.setOnClickListener {
+                newUserNameDialog()
+            }
         }
     }
 
     private fun initObservers() {
         viewModel.getUserLiveData.observe(viewLifecycleOwner, Observer {
             binding.apply {
-                textViewUserName.text = it.name
-                textViewUserEmail.text = it.email
+                textViewUserName.text = it
             }
         })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        try {
+            when {
+                requestCode == REQUEST_GALLERY && resultCode == RESULT_OK -> {
+                    data?.data?.let {
+                        context?.let { context -> changeImageUser(context, it) }
+                    }
+                }
+                requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK -> {
+                    val imageBitmap = data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
+                    val bytes = ByteArrayOutputStream()
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+                    val path: String = MediaStore.Images.Media.insertImage(
+                            context?.contentResolver, imageBitmap, getString(R.string.change_image_user), null)
+                    context?.let { context -> changeImageUser(context, Uri.parse(path)) }
+                }
+            }
+        } catch (e: Exception) {
+            e.message?.let { context?.let { context -> Utils.toast(context, it.toInt()) } }
+        }
     }
 
     private fun photoDialog() {

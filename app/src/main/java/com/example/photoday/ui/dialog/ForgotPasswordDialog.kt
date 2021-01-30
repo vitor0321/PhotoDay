@@ -9,8 +9,10 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
+import com.example.photoday.constants.Utils
 import com.example.photoday.databinding.DialogForgotPasswordBinding
-import com.example.photoday.repository.firebase.FirebaseLog
+import com.example.photoday.repository.firebase.ChangeUserFirebase.forgotPassword
+import com.example.photoday.repository.firebase.LogFirebase
 
 
 class ForgotPasswordDialog : DialogFragment() {
@@ -43,23 +45,26 @@ class ForgotPasswordDialog : DialogFragment() {
         binding.apply {
             val userEmail = editTextEmailConfirm
             buttonOk.setOnClickListener {
-
-                /*here you will authenticate your email and password*/
-                when {
-                    userEmail.text.toString().isEmpty() -> {
-                        userEmail.error = context?.getString(R.string.please_enter_email_dialog)
-                        userEmail.requestFocus()
-                        return@setOnClickListener
+                try {
+                    /*here you will authenticate your email and password*/
+                    when {
+                        userEmail.text.toString().isEmpty() -> {
+                            userEmail.error = context?.getString(R.string.please_enter_email_dialog)
+                            userEmail.requestFocus()
+                            return@setOnClickListener
+                        }
+                        !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
+                            userEmail.error =
+                                    context?.getString(R.string.please_enter_valid_email_dialog)
+                            userEmail.requestFocus()
+                            return@setOnClickListener
+                        }
                     }
-                    !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
-                        userEmail.error =
-                            context?.getString(R.string.please_enter_valid_email_dialog)
-                        userEmail.requestFocus()
-                        return@setOnClickListener
-                    }
+                    context?.let { context -> forgotPassword( userEmail, context) }
+                    dialog?.dismiss()
+                }catch (e: Exception) {
+                    e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }
                 }
-                context?.let { context -> FirebaseLog.forgotPassword( userEmail, context) }
-                dialog?.dismiss()
             }
             buttonCancel.setOnClickListener {
                 dialog?.dismiss()

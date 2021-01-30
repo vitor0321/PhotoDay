@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.photoday.repository.firebase.FirebaseLog.createUserWithEmailAndPassword
+import com.example.photoday.repository.firebase.LogFirebase.createUserWithEmailAndPassword
 
 class RegisterViewModel(
         private val context: Context?,

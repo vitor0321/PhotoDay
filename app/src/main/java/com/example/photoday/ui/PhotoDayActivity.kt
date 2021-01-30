@@ -1,6 +1,7 @@
 package com.example.photoday.ui
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
+import com.example.photoday.constants.Utils
 import com.example.photoday.databinding.ActivityPhotoDayBinding
 import com.example.photoday.ui.stateBarNavigation.Components
 import java.util.*
@@ -25,30 +27,8 @@ class PhotoDayActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        statusBarNavigation()
+        initializeControl()
         initButton()
-    }
-
-    private fun statusBarNavigation() {
-        binding.apply {
-            val navHostFragment =
-                supportFragmentManager.findFragmentById(R.id.main_activity_nav_host) as NavHostFragment
-            val navController: NavController = navHostFragment.navController
-            // all components start with HIDE and then each fragment decides what appears or not
-            supportActionBar?.hide()
-            bottomAppBar.visibility = View.INVISIBLE
-            buttonFabAdd.visibility = View.INVISIBLE
-            bottomNavMainActivity.visibility = View.INVISIBLE
-            //background menu navigation
-            bottomNavMainActivity.background = null
-            /* control all bottom navigation navigation */
-            bottomNavMainActivity.setupWithNavController(navController)
-            navController
-                .addOnDestinationChangedListener { controller, destination, arguments ->
-                    /* change the fragment title as it is in the nav_graph Label */
-                    title = null
-                }
-        }
     }
 
     private fun initButton() {
@@ -57,27 +37,66 @@ class PhotoDayActivity : AppCompatActivity() {
         }
     }
 
-    fun statusAppBarNavigation(stateComponents: Components) {
-        binding.apply {
-            when {
-                /* here will activate or not the actionBar */
-                stateComponents.appBar -> supportActionBar?.show()
-                !stateComponents.appBar -> supportActionBar?.hide()
-            }
-            when {
-                /*here will activate or not the Bottom navegation*/
-                stateComponents.bottomNavigation -> {
-                    bottomNavMainActivity.visibility = View.VISIBLE
-                    bottomAppBar.visibility = View.VISIBLE
-                    buttonFabAdd.visibility = View.VISIBLE
-                }
-                !stateComponents.bottomNavigation -> {
-                    bottomNavMainActivity.visibility = View.INVISIBLE
-                    bottomAppBar.visibility = View.INVISIBLE
-                    buttonFabAdd.visibility = View.INVISIBLE
-                }
-            }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        supportFragmentManager.primaryNavigationFragment?.childFragmentManager?.fragments?.forEach { fragment ->
+            fragment.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    private fun initializeControl() {
+        binding.apply {
+            try {
+                val navHostFragment =
+                        supportFragmentManager.findFragmentById(R.id.main_activity_nav_host) as NavHostFragment
+                val navController: NavController = navHostFragment.navController
+                // all components start with HIDE and then each fragment decides what appears or not
+                supportActionBar?.hide()
+                bottomAppBar.visibility = View.INVISIBLE
+                buttonFabAdd.visibility = View.INVISIBLE
+                bottomNavMainActivity.visibility = View.INVISIBLE
+                //background menu navigation
+                bottomNavMainActivity.background = null
+                /* control all bottom navigation navigation */
+                bottomNavMainActivity.setupWithNavController(navController)
+                navController
+                        .addOnDestinationChangedListener { controller, destination, arguments ->
+                            /* change the fragment title as it is in the nav_graph Label */
+                            title = null
+                        }
+            } catch (e: Exception) {
+                e.message?.let { Utils.toast(this@PhotoDayActivity, it.toInt()) }
+            }
+
+        }
+    }
+
+    fun statusAppBarNavigation(stateComponents: Components) {
+        try {
+            binding.apply {
+                when {
+                    /* here will activate or not the actionBar */
+                    stateComponents.appBar -> supportActionBar?.show()
+                    !stateComponents.appBar -> supportActionBar?.hide()
+                }
+                when {
+                    /*here will activate or not the Bottom navegation*/
+                    stateComponents.bottomNavigation -> {
+                        bottomNavMainActivity.visibility = View.VISIBLE
+                        bottomAppBar.visibility = View.VISIBLE
+                        buttonFabAdd.visibility = View.VISIBLE
+                    }
+                    !stateComponents.bottomNavigation -> {
+                        bottomNavMainActivity.visibility = View.INVISIBLE
+                        bottomAppBar.visibility = View.INVISIBLE
+                        buttonFabAdd.visibility = View.INVISIBLE
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.message?.let { Utils.toast(this@PhotoDayActivity, it.toInt()) }
+        }
+
     }
 
     private fun datePicker() {
@@ -87,14 +106,18 @@ class PhotoDayActivity : AppCompatActivity() {
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        DatePickerDialog(
-            this,
-            R.style.DatePickerDialogTheme,
-            { view, year, monthOfYear, dayOfMonth ->
-            },
-            year,
-            month,
-            day
-        ).show()
+        try {
+            DatePickerDialog(
+                    this,
+                    R.style.DatePickerDialogTheme,
+                    { view, year, monthOfYear, dayOfMonth ->
+                    },
+                    year,
+                    month,
+                    day
+            ).show()
+        } catch (e: Exception) {
+            e.message?.let { Utils.toast(this@PhotoDayActivity, it.toInt()) }
+        }
     }
 }

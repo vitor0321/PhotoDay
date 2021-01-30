@@ -11,6 +11,7 @@
     <string name="user_name">User name</string>
     <string name="email_user">Email</string>
     <string name="logout">logout</string>
+    <string name="change_image_user">Image User</string>
 
     <!-- Gallery Fragment -->
     <string name="configuration_gallery">Configuration Gallery</string>
@@ -50,6 +51,7 @@
     <string name="what_is_your_name">What\'s your name?</string>
     <string name="enter_valid_name">Enter a valid name</string>
     <string name="please_enter_email_dialog">Please enter email</string>
+    <string name="cannot_access_gallery">Cannot Access Gallery</string>
     <string name="please_enter_valid_email_dialog">Please Enter Valid Email</string>
     <string name="email">Email</string>
     <string name="camera">Camera</string>
@@ -64,6 +66,8 @@
     <string name="successfully_logged">Logged successfully</string>
     <string name="please_enter_email">Please enter email</string>
     <string name="email_sent">Email sent</string>
+    <string name="name_change_successful">Name change Successful</string>
+    <string name="image_change_successful">Image change Successful</string>
     <string name="please_enter_valid_email">Please Enter Valid Email</string>
     <string name="unregistered_email">Unregistered Email</string>
     <string name="auth_failed">Sorry, auth failed.</string>

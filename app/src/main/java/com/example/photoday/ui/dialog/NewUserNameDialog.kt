@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.lifecycleScope
 import com.example.photoday.R
+import com.example.photoday.constants.Utils
 import com.example.photoday.databinding.DialogFragmentUserNameBinding
-import com.example.photoday.repository.dataStore.DataStoreService.editName
+import com.example.photoday.repository.firebase.ChangeUserFirebase.changeNameUser
 
 class NewUserNameDialog : DialogFragment() {
 
@@ -41,17 +41,21 @@ class NewUserNameDialog : DialogFragment() {
     private fun init() {
         binding.apply {
             buttonOk.setOnClickListener {
-                /*here you will authenticate your email and password*/
-                when {
-                    editTextNewName.text.toString().isEmpty() -> {
-                        editTextNewName.error = getString(R.string.enter_valid_name)
-                        editTextNewName.requestFocus()
-                        return@setOnClickListener
+                try {
+                    /*here you will authenticate your email and password*/
+                    when {
+                        editTextNewName.text.toString().isEmpty() -> {
+                            editTextNewName.error = getString(R.string.enter_valid_name)
+                            editTextNewName.requestFocus()
+                            return@setOnClickListener
+                        }
                     }
+                    val name = editTextNewName.text.toString()
+                    context?.let { context -> changeNameUser(context, name) }
+                    dialog?.dismiss()
+                } catch (e: Exception) {
+                    e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }
                 }
-                val name = editTextNewName.text.toString()
-                context?.let { editName(name, lifecycleScope, it) }
-                dialog?.dismiss()
             }
             buttonCancel.setOnClickListener {
                 dialog?.dismiss()

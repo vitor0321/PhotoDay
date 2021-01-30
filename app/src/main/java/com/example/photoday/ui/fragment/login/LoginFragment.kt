@@ -6,12 +6,11 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentLoginBinding
-import com.example.photoday.repository.firebase.FirebaseLog.updateUI
+import com.example.photoday.repository.firebase.CheckUserFirebase.updateUI
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToRegister
@@ -31,8 +30,7 @@ class LoginFragment : BaseFragment() {
         ViewModelInjector.providerLoginViewModel(
                 controlNavigation,
                 context,
-                requireActivity(),
-                lifecycleScope
+                requireActivity()
         )
     }
     private lateinit var auth: FirebaseAuth
@@ -56,7 +54,7 @@ class LoginFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        context?.let { updateUI(controlNavigation, ON_START, it, lifecycleScope) }
+        context?.let { updateUI(controlNavigation, ON_START, it) }
     }
 
     private fun init() {
@@ -70,25 +68,30 @@ class LoginFragment : BaseFragment() {
         binding.apply {
             //Button to login
             buttonLoginLog.setOnClickListener {
-                /*here you will authenticate your email and password*/
-                when {
-                    editTextLoginUser.text.toString().isEmpty() -> {
-                        editTextLoginUser.error = context?.getString(R.string.please_enter_email_login)
-                        editTextLoginUser.requestFocus()
-                        return@setOnClickListener
+                try {
+                    /*here you will authenticate your email and password*/
+                    when {
+                        editTextLoginUser.text.toString().isEmpty() -> {
+                            editTextLoginUser.error = context?.getString(R.string.please_enter_email_login)
+                            editTextLoginUser.requestFocus()
+                            return@setOnClickListener
+                        }
+                        !Patterns.EMAIL_ADDRESS.matcher(editTextLoginUser.text.toString()).matches() -> {
+                            editTextLoginUser.error = context?.getString(R.string.please_enter_valid_email_login)
+                            editTextLoginUser.requestFocus()
+                            return@setOnClickListener
+                        }
+                        editTextLoginPassword.text.toString().isEmpty() -> {
+                            editTextLoginPassword.error = context?.getString(R.string.please_enter_password)
+                            editTextLoginPassword.requestFocus()
+                            return@setOnClickListener
+                        }
                     }
-                    !Patterns.EMAIL_ADDRESS.matcher(editTextLoginUser.text.toString()).matches() -> {
-                        editTextLoginUser.error = context?.getString(R.string.please_enter_valid_email_login)
-                        editTextLoginUser.requestFocus()
-                        return@setOnClickListener
-                    }
-                    editTextLoginPassword.text.toString().isEmpty() -> {
-                        editTextLoginPassword.error = context?.getString(R.string.please_enter_password)
-                        editTextLoginPassword.requestFocus()
-                        return@setOnClickListener
-                    }
+                    viewModel.doLogin(editTextLoginUser, editTextLoginPassword)
+                } catch (e: Exception) {
+                    e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }
                 }
-                viewModel.doLogin(editTextLoginUser, editTextLoginPassword)
+
             }
 
             //Button register

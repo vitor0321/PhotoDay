@@ -10,11 +10,10 @@ import androidx.navigation.NavController
 class LoginViewModelFactory(
     private val controlNavigation: NavController,
     private val context: Context?,
-    private val requireActivity: FragmentActivity,
-    private val lifecycleScope: LifecycleCoroutineScope
+    private val requireActivity: FragmentActivity
 ) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return LoginViewModel(controlNavigation, context, requireActivity, lifecycleScope) as T
+        return LoginViewModel(controlNavigation, context, requireActivity) as T
     }
 }
