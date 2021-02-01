@@ -12,7 +12,6 @@ import com.example.photoday.exhibition.Exhibition.dispatchTakeExhibition
 import com.example.photoday.exhibition.Exhibition.galleryExhibition
 import com.example.photoday.ui.PhotoDayActivity
 
-
 object CheckVersionPermission {
     fun galleryPermission(activity: PhotoDayActivity) {
         try {

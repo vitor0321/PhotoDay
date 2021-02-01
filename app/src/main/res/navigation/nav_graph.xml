@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/register"
-        android:name="com.example.photoday.ui.fragment.register.Register"
+        android:name="com.example.photoday.ui.fragment.register.RegisterFragment"
         android:label="@string/nav_graph_label_register"
         tools:layout="@layout/fragment_register_user">
         <action

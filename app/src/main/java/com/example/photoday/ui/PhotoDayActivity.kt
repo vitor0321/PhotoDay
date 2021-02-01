@@ -40,6 +40,7 @@ class PhotoDayActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         supportFragmentManager.primaryNavigationFragment?.childFragmentManager?.fragments?.forEach { fragment ->
+            //Here sent Result to Fragment
             fragment.onActivityResult(requestCode, resultCode, data)
         }
     }

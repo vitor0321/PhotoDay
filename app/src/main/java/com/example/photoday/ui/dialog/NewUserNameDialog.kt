@@ -8,7 +8,7 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
-import com.example.photoday.constants.Utils
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.DialogFragmentUserNameBinding
 import com.example.photoday.repository.firebase.ChangeUserFirebase.changeNameUser
 
@@ -16,6 +16,7 @@ class NewUserNameDialog : DialogFragment() {
 
     private var _binding: DialogFragmentUserNameBinding? = null
     private val binding: DialogFragmentUserNameBinding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,7 +28,6 @@ class NewUserNameDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init()
     }
 
@@ -54,7 +54,7 @@ class NewUserNameDialog : DialogFragment() {
                     context?.let { context -> changeNameUser(context, name) }
                     dialog?.dismiss()
                 } catch (e: Exception) {
-                    e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }
+                    e.message?.let { context?.let { it1 -> toast(it1, it.toInt()) } }
                 }
             }
             buttonCancel.setOnClickListener {

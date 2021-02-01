@@ -12,7 +12,7 @@ import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.databinding.FragmentSplashLoginBinding
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.navigation.Navigation.navFragmentSplashLoginToTimeline
+import com.example.photoday.navigation.Navigation.navFragmentSplashLoginToTimeline
 import com.example.photoday.ui.stateBarNavigation.Components
 
 class SplashLogin : BaseFragment() {

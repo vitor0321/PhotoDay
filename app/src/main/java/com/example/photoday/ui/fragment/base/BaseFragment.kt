@@ -8,9 +8,9 @@ import com.example.photoday.R
 import com.example.photoday.constants.Utils
 import com.example.photoday.ui.PhotoDayActivity
 import com.example.photoday.ui.injector.ViewModelInjector
-import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToTimeline
-import com.example.photoday.ui.navigation.Navigation.navFragmentGalleryToConfiguration
-import com.example.photoday.ui.navigation.Navigation.navFragmentTimelineToConfiguration
+import com.example.photoday.navigation.Navigation.navFragmentConfigurationToTimeline
+import com.example.photoday.navigation.Navigation.navFragmentGalleryToConfiguration
+import com.example.photoday.navigation.Navigation.navFragmentTimelineToConfiguration
 import com.example.photoday.ui.stateBarNavigation.Components
 
 abstract class BaseFragment : Fragment() {

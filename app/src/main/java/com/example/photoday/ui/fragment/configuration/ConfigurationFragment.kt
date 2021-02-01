@@ -8,17 +8,16 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.view.*
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentConfigurationBinding
-import com.example.photoday.repository.firebase.ChangeUserFirebase.changeImageUser
+import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
-import com.example.photoday.ui.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
 import com.example.photoday.ui.stateBarNavigation.Components
 import java.io.ByteArrayOutputStream
 
@@ -27,6 +26,7 @@ class ConfigurationFragment : BaseFragment() {
 
     private var _binding: FragmentConfigurationBinding? = null
     private val binding: FragmentConfigurationBinding get() = _binding!!
+
     private val navFragment by lazy { findNavController() }
     private val viewModel by lazy {
         ViewModelInjector.providerConfigurationViewModel(context)
@@ -51,20 +51,16 @@ class ConfigurationFragment : BaseFragment() {
     }
 
     override fun onResume() {
-        binding.apply {
-            context?.let { viewModel.getDataStoreUser(it, textViewUserName, textViewUserEmail, imageUser) }
-            super.onResume()
-        }
+        getUser()
+        super.onResume()
     }
 
     private fun init() {
         initButton()
-        initObservers()
         statusBarNavigation()
     }
 
     private fun initButton() {
-
         binding.apply {
             /*Button logout*/
             btnLogout.setOnClickListener {
@@ -72,32 +68,21 @@ class ConfigurationFragment : BaseFragment() {
                 viewModel.logout()
                 navFragmentConfigurationToSplashGoodbye(navFragment)
             }
-
             /*Button edit user photo*/
             btnEditPhotoUser.setOnClickListener { photoDialog() }
-
             /*Button edit user name */
-            btnEditNameUser.setOnClickListener {
-                newUserNameDialog()
-            }
+            btnEditNameUser.setOnClickListener { newUserNameDialog() }
         }
-    }
-
-    private fun initObservers() {
-        viewModel.getUserLiveData.observe(viewLifecycleOwner, Observer {
-            binding.apply {
-                textViewUserName.text = it
-            }
-        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         try {
+            //here get the image of ChangeUserFirebase
             when {
                 requestCode == REQUEST_GALLERY && resultCode == RESULT_OK -> {
                     data?.data?.let {
-                        context?.let { context -> changeImageUser(context, it) }
+                        context?.let { context -> viewModel.imageUser(context, it) }
                     }
                 }
                 requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK -> {
@@ -106,11 +91,18 @@ class ConfigurationFragment : BaseFragment() {
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
                     val path: String = MediaStore.Images.Media.insertImage(
                             context?.contentResolver, imageBitmap, getString(R.string.change_image_user), null)
-                    context?.let { context -> changeImageUser(context, Uri.parse(path)) }
+                    context?.let { context -> viewModel.imageUser(context, Uri.parse(path)) }
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { context?.let { context -> Utils.toast(context, it.toInt()) } }
+            e.message?.let { context?.let { context -> toast(context, it.toInt()) } }
+        }
+    }
+
+    private fun getUser() {
+        binding.apply {
+            //get user current Firebase
+            context?.let { viewModel.getUserFirebase(it, textViewUserName, textViewUserEmail, imageUser) }
         }
     }
 

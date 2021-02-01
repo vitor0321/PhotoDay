@@ -5,12 +5,12 @@ import android.net.Uri
 import android.util.Patterns
 import android.widget.EditText
 import com.example.photoday.R
-import com.example.photoday.constants.Utils
+import com.example.photoday.constants.Utils.toast
+import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 
 object ChangeUserFirebase {
-
     private var auth = FirebaseAuth.getInstance()
 
     fun changeNameUser(context: Context, newName: String) {
@@ -22,11 +22,11 @@ object ChangeUserFirebase {
             user!!.updateProfile(profileUpdates)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            Utils.toast(context, R.string.name_change_successful)
+                            toast(context, R.string.name_change_successful)
                         }
                     }
         } catch (e: Exception) {
-            e.message?.let { Utils.toast(context, it.toInt()) }
+            e.message?.let { toast(context, it.toInt()) }
         }
     }
 
@@ -39,11 +39,11 @@ object ChangeUserFirebase {
             user!!.updateProfile(profileUpdates)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            Utils.toast(context, R.string.image_change_successful)
+                            toast(context, R.string.image_change_successful)
                         }
                     }
         } catch (e: Exception) {
-            e.message?.let { Utils.toast(context, it.toInt()) }
+            e.message?.let { toast(context, it.toInt()) }
         }
     }
 
@@ -51,27 +51,29 @@ object ChangeUserFirebase {
         try {
             when {
                 userEmail.text.toString().isEmpty() -> {
-                    Utils.toast(context, R.string.please_enter_email)
+                    toast(context, R.string.please_enter_email)
                 }
                 !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
-                    Utils.toast(context, R.string.please_enter_valid_email)
+                    toast(context, R.string.please_enter_valid_email)
                 }
                 else -> {
                     auth.sendPasswordResetEmail(userEmail.text.toString())
                             .addOnCompleteListener { task ->
                                 when {
                                     task.isSuccessful -> {
-                                        Utils.toast(context, R.string.email_sent)
+                                        toast(context, R.string.email_sent)
                                     }
                                     else -> {
-                                        Utils.toast(context, R.string.unregistered_email)
+                                        toast(context, R.string.unregistered_email)
                                     }
                                 }
                             }
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { Utils.toast(context, it.toInt()) }
+            e.message?.let {
+                toast(context, it.toInt())
+            }
         }
     }
 }

@@ -1,39 +1,32 @@
 package com.example.photoday.ui.fragment.configuration
 
 import android.content.Context
+import android.net.Uri
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.photoday.repository.firebase.CheckUserFirebase.getCurrentUser
-import com.example.photoday.repository.firebase.LogFirebase
-import com.google.firebase.auth.FirebaseAuth
+import com.example.photoday.repository.firebase.ChangeUserFirebase.changeImageUser
+import com.example.photoday.repository.firebase.CheckUserFirebase.getCurrentUserFirebase
+import com.example.photoday.repository.firebase.LogFirebase.logoutFirebase
 import de.hdodenhof.circleimageview.CircleImageView
 
 
 class ConfigurationViewModel(private val context: Context?) : ViewModel() {
 
-    val getUserLiveData: MutableLiveData<String> = MutableLiveData()
-
-    init {
-        getUserLiveData()
-    }
-
-    private fun getUserLiveData() {
-        val auth = FirebaseAuth.getInstance().currentUser
-        getUserLiveData.value = auth?.displayName
-    }
-
     /*get name and email of the user*/
-    fun getDataStoreUser(
+    fun getUserFirebase(
             context: Context,
             textViewUserName: AppCompatTextView,
             textViewUserEmail: AppCompatTextView,
             imageUser: CircleImageView
     ) {
-        getCurrentUser(context, textViewUserName, textViewUserEmail, imageUser)
+        getCurrentUserFirebase(context, textViewUserName, textViewUserEmail, imageUser)
+    }
+
+    fun imageUser(context: Context, image: Uri) {
+        changeImageUser(context, image)
     }
 
     fun logout() {
-        context?.let { LogFirebase.logoutFirebase(context) }
+        context?.let { logoutFirebase(context) }
     }
 }

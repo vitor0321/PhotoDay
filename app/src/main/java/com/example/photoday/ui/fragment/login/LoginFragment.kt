@@ -13,7 +13,7 @@ import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.repository.firebase.CheckUserFirebase.updateUI
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
-import com.example.photoday.ui.navigation.Navigation.navFragmentLoginToRegister
+import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

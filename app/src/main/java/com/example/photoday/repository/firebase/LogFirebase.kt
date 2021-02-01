@@ -1,17 +1,14 @@
 package com.example.photoday.repository.firebase
 
 import android.content.Context
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import com.bumptech.glide.Glide
 import com.example.photoday.R
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.repository.firebase.CheckUserFirebase.updateUI
-import com.example.photoday.ui.navigation.Navigation
+import com.example.photoday.navigation.Navigation
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider

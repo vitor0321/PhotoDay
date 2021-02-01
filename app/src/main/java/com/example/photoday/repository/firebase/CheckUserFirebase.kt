@@ -8,8 +8,9 @@ import com.bumptech.glide.Glide
 import com.example.photoday.R
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.ON_START
-import com.example.photoday.constants.Utils
-import com.example.photoday.ui.navigation.Navigation
+import com.example.photoday.constants.Utils.toast
+import com.example.photoday.navigation.Navigation.navFragmentLoginToSplashLogin
+import com.example.photoday.navigation.Navigation.navFragmentLoginToTimeline
 import com.google.firebase.auth.FirebaseAuth
 
 object CheckUserFirebase {
@@ -31,26 +32,26 @@ object CheckUserFirebase {
                             if you are going to log in for the first time go to Login*/
                             when (startLog) {
                                 ON_START -> {
-                                    Navigation.navFragmentLoginToTimeline(controlNavigation)
+                                    navFragmentLoginToTimeline(controlNavigation)
                                 }
                                 FIRST_LOGIN -> {
-                                    Navigation.navFragmentLoginToSplashLogin(controlNavigation)
-                                    Utils.toast(context, R.string.login_is_success)
+                                    navFragmentLoginToSplashLogin(controlNavigation)
+                                    toast(context, R.string.login_is_success)
                                 }
                             }
                         }
                         else -> {
-                            Utils.toast(context, R.string.verify_your_email_address)
+                            toast(context, R.string.verify_your_email_address)
                         }
                     }
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { Utils.toast(context, it.toInt()) }
+            e.message?.let { toast(context, it.toInt()) }
         }
     }
 
-    fun getCurrentUser(
+    fun getCurrentUserFirebase(
             context: Context,
             textName: TextView,
             textEmail: TextView,
@@ -69,7 +70,7 @@ object CheckUserFirebase {
                         .into(imageUser)
             }
         } catch (e: Exception) {
-            e.message?.let { Utils.toast(context, it.toInt()) }
+            e.message?.let { toast(context, it.toInt()) }
         }
     }
 }

@@ -13,7 +13,7 @@ import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 
-class Register : BaseFragment() {
+class RegisterFragment : BaseFragment() {
 
     private var _binding: FragmentRegisterUserBinding? = null
     private val binding: FragmentRegisterUserBinding get() = _binding!!
