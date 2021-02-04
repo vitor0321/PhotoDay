@@ -12,16 +12,16 @@ import com.example.photoday.permission.CheckVersionPermission.dispatchTakePermis
 import com.example.photoday.permission.CheckVersionPermission.galleryPermission
 import com.example.photoday.ui.PhotoDayActivity
 
-class AddPhotoDialog : DialogFragment() {
+class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
 
     private var _binding: DialogFragmentAddPhotoBinding? = null
     private val binding: DialogFragmentAddPhotoBinding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View{
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
         _binding = DialogFragmentAddPhotoBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -31,7 +31,6 @@ class AddPhotoDialog : DialogFragment() {
 
         initButton()
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -44,18 +43,18 @@ class AddPhotoDialog : DialogFragment() {
         binding.apply {
             val activity = requireActivity() as PhotoDayActivity
             imageUploadGallery.setOnClickListener {
-                galleryPermission(activity)
+                galleryPermission(activity, valueDate)
                 dialog?.dismiss()
             }
 
             imageUploadCamera.setOnClickListener {
-                dispatchTakePermission(activity)
+                dispatchTakePermission(activity, valueDate)
                 dialog?.dismiss()
             }
         }
     }
 
     companion object {
-        fun newInstance() = AddPhotoDialog()
+        fun newInstance(valueDate: String?) = AddPhotoDialog(valueDate)
     }
 }

@@ -4,20 +4,27 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
+import com.example.photoday.constants.ADD_PHOTO_DIALOG
 import com.example.photoday.constants.Utils
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.ActivityPhotoDayBinding
+import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.stateBarNavigation.Components
+import java.text.SimpleDateFormat
 import java.util.*
 
-class PhotoDayActivity : AppCompatActivity() {
+class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     private var _binding: ActivityPhotoDayBinding? = null
     private val binding: ActivityPhotoDayBinding get() = _binding!!
+
+    private val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,7 +102,7 @@ class PhotoDayActivity : AppCompatActivity() {
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { Utils.toast(this@PhotoDayActivity, it.toInt()) }
+            e.message?.let { toast(this@PhotoDayActivity, it.toInt()) }
         }
 
     }
@@ -108,17 +115,23 @@ class PhotoDayActivity : AppCompatActivity() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         try {
-            DatePickerDialog(
-                    this,
-                    R.style.DatePickerDialogTheme,
-                    { view, year, monthOfYear, dayOfMonth ->
-                    },
-                    year,
-                    month,
-                    day
-            ).show()
+            DatePickerDialog(this, this, year, month, day ).show()
         } catch (e: Exception) {
-            e.message?.let { Utils.toast(this@PhotoDayActivity, it.toInt()) }
+            e.message?.let { toast(this@PhotoDayActivity, it.toInt()) }
         }
+    }
+
+    override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, dayOfMonth)
+        val value = simpleDateFormat.format(calendar.time)
+        //get select date and send to photoDialog
+        photoDialog(value)
+    }
+
+    private fun photoDialog(value: String) {
+        /*open AddPhotoDialog*/
+        AddPhotoDialog.newInstance(value)
+                .show(supportFragmentManager, ADD_PHOTO_DIALOG)
     }
 }

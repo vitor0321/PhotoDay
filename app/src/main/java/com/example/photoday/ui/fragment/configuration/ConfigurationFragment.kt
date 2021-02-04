@@ -9,6 +9,7 @@ import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.view.*
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
@@ -19,6 +20,7 @@ import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
+import com.google.firebase.auth.FirebaseAuth
 import java.io.ByteArrayOutputStream
 
 
@@ -31,6 +33,7 @@ class ConfigurationFragment : BaseFragment() {
     private val viewModel by lazy {
         ViewModelInjector.providerConfigurationViewModel(context)
     }
+    private var auth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -50,14 +53,10 @@ class ConfigurationFragment : BaseFragment() {
         init()
     }
 
-    override fun onResume() {
-        getUser()
-        super.onResume()
-    }
-
     private fun init() {
         initButton()
         statusBarNavigation()
+        initObserver()
     }
 
     private fun initButton() {
@@ -75,17 +74,40 @@ class ConfigurationFragment : BaseFragment() {
         }
     }
 
+    private fun initObserver() {
+        viewModel.userFirebase.observe(viewLifecycleOwner, { userFirebase ->
+            binding.run {
+                val auth = auth.currentUser
+                textViewUserName.text = userFirebase.name
+                textViewUserEmail.text = userFirebase.email
+                userFirebase.image?.let {
+                    context?.let { context ->
+                        if (auth != null) {
+                            Glide.with(context)
+                                    .load(auth.photoUrl)
+                                    .fitCenter()
+                                    .placeholder(R.drawable.ic_photo_edit)
+                                    .into(imageUser)
+                        }
+                    }
+                }
+                textViewUserName.invalidate()
+                imageUser.invalidate()
+            }
+        })
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         try {
             //here get the image of ChangeUserFirebase
             when {
-                requestCode == REQUEST_GALLERY && resultCode == RESULT_OK -> {
+                requestCode == REQUEST_GALLERY_USER && resultCode == RESULT_OK -> {
                     data?.data?.let {
                         context?.let { context -> viewModel.imageUser(context, it) }
                     }
                 }
-                requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK -> {
+                requestCode == REQUEST_IMAGE_CAPTURE_USER && resultCode == RESULT_OK -> {
                     val imageBitmap = data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
                     val bytes = ByteArrayOutputStream()
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
@@ -99,17 +121,10 @@ class ConfigurationFragment : BaseFragment() {
         }
     }
 
-    private fun getUser() {
-        binding.apply {
-            //get user current Firebase
-            context?.let { viewModel.getUserFirebase(it, textViewUserName, textViewUserEmail, imageUser) }
-        }
-    }
-
     private fun photoDialog() {
         /*open AddPhotoDialog*/
         activity?.let {
-            AddPhotoDialog.newInstance()
+            AddPhotoDialog.newInstance(null)
                     .show(it.supportFragmentManager, ADD_PHOTO_DIALOG)
         }
     }

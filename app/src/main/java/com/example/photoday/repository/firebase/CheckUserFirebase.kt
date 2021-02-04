@@ -1,8 +1,6 @@
 package com.example.photoday.repository.firebase
 
 import android.content.Context
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.example.photoday.R
@@ -11,6 +9,7 @@ import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.navigation.Navigation.navFragmentLoginToSplashLogin
 import com.example.photoday.navigation.Navigation.navFragmentLoginToTimeline
+import com.example.photoday.repository.user.UserFirebase
 import com.google.firebase.auth.FirebaseAuth
 
 object CheckUserFirebase {
@@ -51,26 +50,14 @@ object CheckUserFirebase {
         }
     }
 
-    fun getCurrentUserFirebase(
-            context: Context,
-            textName: TextView,
-            textEmail: TextView,
-            imageUser: ImageView
-    ) {
-        try {
-            val user = auth.currentUser
-            auth?.let {
-                textName.text = user?.displayName
-                textEmail.text = user?.email
-
-                Glide.with(context)
-                        .load(user?.photoUrl)
-                        .fitCenter()
-                        .placeholder(R.drawable.ic_photo_edit)
-                        .into(imageUser)
-            }
-        } catch (e: Exception) {
-            e.message?.let { toast(context, it.toInt()) }
+    fun getCurrentUserFirebase(): UserFirebase {
+        val user = UserFirebase()
+        val auth = auth.currentUser
+        auth?.let {
+            user.name = auth.displayName
+            user.email = auth.email.toString()
+            user.image = auth.photoUrl
         }
+        return user
     }
 }
