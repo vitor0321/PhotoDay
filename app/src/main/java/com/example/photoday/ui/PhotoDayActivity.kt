@@ -21,14 +21,13 @@ import java.util.*
 
 class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
-    private var _binding: ActivityPhotoDayBinding? = null
-    private val binding: ActivityPhotoDayBinding get() = _binding!!
+    private lateinit var binding: ActivityPhotoDayBinding
 
     private val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityPhotoDayBinding.inflate(layoutInflater)
+        binding = ActivityPhotoDayBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
     }
@@ -133,5 +132,10 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         /*open AddPhotoDialog*/
         AddPhotoDialog.newInstance(value)
                 .show(supportFragmentManager, ADD_PHOTO_DIALOG)
+    }
+
+    override fun onDestroy() {
+        binding
+        super.onDestroy()
     }
 }

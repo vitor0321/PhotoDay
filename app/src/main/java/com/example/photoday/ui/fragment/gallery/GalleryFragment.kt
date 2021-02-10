@@ -14,15 +14,14 @@ import com.example.photoday.ui.stateBarNavigation.Components
 
 class GalleryFragment : BaseFragment() {
 
-    private var _binding: FragmentGalleryBinding? = null
-    private val binding: FragmentGalleryBinding get() = _binding!!
+    private lateinit var binding: FragmentGalleryBinding
     private val viewModel by lazy { ViewModelInjector.providerGalleryViewModel() }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        binding = FragmentGalleryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -59,7 +58,7 @@ class GalleryFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        _binding = null
+        binding
         super.onDestroy()
     }
 }

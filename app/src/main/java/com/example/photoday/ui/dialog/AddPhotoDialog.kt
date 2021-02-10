@@ -14,15 +14,14 @@ import com.example.photoday.ui.PhotoDayActivity
 
 class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
 
-    private var _binding: DialogFragmentAddPhotoBinding? = null
-    private val binding: DialogFragmentAddPhotoBinding get() = _binding!!
+    private lateinit var binding: DialogFragmentAddPhotoBinding
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = DialogFragmentAddPhotoBinding.inflate(inflater, container, false)
+        binding = DialogFragmentAddPhotoBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -52,6 +51,11 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
                 dialog?.dismiss()
             }
         }
+    }
+
+    override fun onDestroy() {
+        binding
+        super.onDestroy()
     }
 
     companion object {

@@ -17,8 +17,7 @@ import com.example.photoday.ui.stateBarNavigation.Components
 
 class SplashLogin : BaseFragment() {
 
-    private var _binding: FragmentSplashLoginBinding? = null
-    private val binding: FragmentSplashLoginBinding get() = _binding!!
+    private lateinit var binding: FragmentSplashLoginBinding
     private val controlNavigation by lazy { findNavController() }
 
     override fun onCreateView(
@@ -26,7 +25,7 @@ class SplashLogin : BaseFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSplashLoginBinding.inflate(inflater, container, false)
+        binding = FragmentSplashLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -50,7 +49,7 @@ class SplashLogin : BaseFragment() {
     }
 
     override fun onDestroy() {
-        _binding = null
+        binding
         super.onDestroy()
     }
 }

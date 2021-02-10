@@ -23,8 +23,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LoginFragment : BaseFragment() {
 
-    private var _binding: FragmentLoginBinding? = null
-    private val binding: FragmentLoginBinding get() = _binding!!
+    private lateinit var binding: FragmentLoginBinding
     private val controlNavigation by lazy { findNavController() }
     private val viewModel by lazy {
         ViewModelInjector.providerLoginViewModel(
@@ -41,7 +40,7 @@ class LoginFragment : BaseFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         return binding.root
     }
@@ -142,7 +141,7 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        _binding = null
+        binding
         super.onDestroy()
     }
 }

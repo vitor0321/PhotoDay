@@ -14,15 +14,14 @@ import com.example.photoday.repository.firebase.ChangeUserFirebase.changeNameUse
 
 class NewUserNameDialog : DialogFragment() {
 
-    private var _binding: DialogFragmentUserNameBinding? = null
-    private val binding: DialogFragmentUserNameBinding get() = _binding!!
+    private lateinit var binding: DialogFragmentUserNameBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogFragmentUserNameBinding.inflate(inflater, container, false)
+        binding = DialogFragmentUserNameBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -61,6 +60,11 @@ class NewUserNameDialog : DialogFragment() {
                 dialog?.dismiss()
             }
         }
+    }
+
+    override fun onDestroy() {
+        binding
+        super.onDestroy()
     }
 
     companion object {

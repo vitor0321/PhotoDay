@@ -12,12 +12,10 @@ import com.example.photoday.databinding.ItemTimelineFragmentBinding
 
 class TimelineListAdapter(private var items: List<TimelineItemPhotos>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var _binding: ItemTimelineFragmentBinding? = null
-    private val binding: ItemTimelineFragmentBinding get() = _binding!!
+    private lateinit var binding: ItemTimelineFragmentBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
-        _binding = ItemTimelineFragmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding = ItemTimelineFragmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TimelineViewHolder(binding.root, binding)
     }
 

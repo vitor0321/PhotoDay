@@ -15,8 +15,7 @@ import com.example.photoday.ui.stateBarNavigation.Components
 
 class RegisterFragment : BaseFragment() {
 
-    private var _binding: FragmentRegisterUserBinding? = null
-    private val binding: FragmentRegisterUserBinding get() = _binding!!
+    private lateinit var binding: FragmentRegisterUserBinding
     private val viewModel by lazy {
         ViewModelInjector.providerRegisterViewModel(
                 context,
@@ -30,7 +29,7 @@ class RegisterFragment : BaseFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRegisterUserBinding.inflate(inflater, container, false)
+        binding = FragmentRegisterUserBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -94,7 +93,7 @@ class RegisterFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        _binding = null
+        binding
         super.onDestroy()
     }
 }

@@ -26,8 +26,7 @@ import java.io.ByteArrayOutputStream
 
 class ConfigurationFragment : BaseFragment() {
 
-    private var _binding: FragmentConfigurationBinding? = null
-    private val binding: FragmentConfigurationBinding get() = _binding!!
+    private lateinit var binding: FragmentConfigurationBinding
 
     private val navFragment by lazy { findNavController() }
     private val viewModel by lazy {
@@ -39,7 +38,7 @@ class ConfigurationFragment : BaseFragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentConfigurationBinding.inflate(inflater, container, false)
+        binding = FragmentConfigurationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -91,8 +90,6 @@ class ConfigurationFragment : BaseFragment() {
                         }
                     }
                 }
-                textViewUserName.invalidate()
-                imageUser.invalidate()
             }
         })
     }
@@ -142,7 +139,7 @@ class ConfigurationFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        _binding = null
+        binding
         super.onDestroy()
     }
 }

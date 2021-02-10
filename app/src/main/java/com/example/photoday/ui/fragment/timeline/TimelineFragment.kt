@@ -24,15 +24,14 @@ import java.io.ByteArrayOutputStream
 
 class TimelineFragment : BaseFragment() {
 
-    private var _binding: FragmentTimelineBinding? = null
-    private val binding: FragmentTimelineBinding get() = _binding!!
+    private lateinit var binding: FragmentTimelineBinding
     private val viewModel by lazy { ViewModelInjector.providerTimelineViewModel() }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTimelineBinding.inflate(inflater, container, false)
+        binding = FragmentTimelineBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -95,7 +94,7 @@ class TimelineFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        _binding = null
+        binding
         super.onDestroy()
     }
 }

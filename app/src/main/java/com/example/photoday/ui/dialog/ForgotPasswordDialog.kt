@@ -17,14 +17,14 @@ import com.example.photoday.repository.firebase.LogFirebase
 
 class ForgotPasswordDialog : DialogFragment() {
 
-    private var _binding: DialogForgotPasswordBinding? = null
-    private val binding: DialogForgotPasswordBinding get() = _binding!!
+    private lateinit var binding: DialogForgotPasswordBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogForgotPasswordBinding.inflate(inflater, container, false)
+        binding = DialogForgotPasswordBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -70,6 +70,11 @@ class ForgotPasswordDialog : DialogFragment() {
                 dialog?.dismiss()
             }
         }
+    }
+
+    override fun onDestroy() {
+        binding
+        super.onDestroy()
     }
 
     companion object {

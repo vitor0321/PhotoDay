@@ -12,12 +12,11 @@ import com.example.photoday.databinding.ItemGalleryFragmentBinding
 
 class GalleryListAdapter(private var items: List<GalleryItemPhotos>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var _binding: ItemGalleryFragmentBinding? = null
-    private val binding: ItemGalleryFragmentBinding get() = _binding!!
+    private lateinit var binding: ItemGalleryFragmentBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        _binding = ItemGalleryFragmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding = ItemGalleryFragmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return GalleryViewHolder(binding.root, binding)
     }
 

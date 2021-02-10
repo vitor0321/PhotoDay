@@ -17,15 +17,14 @@ import com.example.photoday.ui.stateBarNavigation.Components
 
 class SplashGoodbyeFragment : BaseFragment() {
 
-    private var _binding: FragmentSplashGoodbyeBinding? = null
-    private val binding: FragmentSplashGoodbyeBinding get() = _binding!!
+    private lateinit var binding: FragmentSplashGoodbyeBinding
     private val controlNavigation by lazy { findNavController() }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSplashGoodbyeBinding.inflate(inflater, container, false)
+        binding = FragmentSplashGoodbyeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -45,5 +44,10 @@ class SplashGoodbyeFragment : BaseFragment() {
 
     private fun statusBarNavigation() {
         statusAppBarNavigationBase(false, Components(FALSE, FALSE), R.color.white_status_bar)
+    }
+
+    override fun onDestroy() {
+        binding
+        super.onDestroy()
     }
 }
