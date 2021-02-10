@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.view.*
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.photoday.R
@@ -23,14 +24,13 @@ import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.firebase.auth.FirebaseAuth
 import java.io.ByteArrayOutputStream
 
-
 class ConfigurationFragment : BaseFragment() {
 
     private lateinit var binding: FragmentConfigurationBinding
 
     private val navFragment by lazy { findNavController() }
     private val viewModel by lazy {
-        ViewModelInjector.providerConfigurationViewModel(context)
+        ViewModelInjector.providerConfigurationViewModel()
     }
     private var auth = FirebaseAuth.getInstance()
 
@@ -53,9 +53,10 @@ class ConfigurationFragment : BaseFragment() {
     }
 
     private fun init() {
+        viewModel.getUserDBFirebase()
         initButton()
         statusBarNavigation()
-        initObserver()
+        initStateFlowObserve()
     }
 
     private fun initButton() {
@@ -63,7 +64,7 @@ class ConfigurationFragment : BaseFragment() {
             /*Button logout*/
             btnLogout.setOnClickListener {
                 /*logout with Firebase*/
-                viewModel.logout()
+                context?.let { context -> viewModel.logout(context) }
                 navFragmentConfigurationToSplashGoodbye(navFragment)
             }
             /*Button edit user photo*/
@@ -73,8 +74,8 @@ class ConfigurationFragment : BaseFragment() {
         }
     }
 
-    private fun initObserver() {
-        viewModel.userFirebase.observe(viewLifecycleOwner, { userFirebase ->
+    private fun initStateFlowObserve() {
+        viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { userFirebase ->
             binding.run {
                 val auth = auth.currentUser
                 textViewUserName.text = userFirebase.name
@@ -83,15 +84,15 @@ class ConfigurationFragment : BaseFragment() {
                     context?.let { context ->
                         if (auth != null) {
                             Glide.with(context)
-                                    .load(auth.photoUrl)
-                                    .fitCenter()
-                                    .placeholder(R.drawable.ic_photo_edit)
-                                    .into(imageUser)
+                                .load(auth.photoUrl)
+                                .fitCenter()
+                                .placeholder(R.drawable.ic_photo_edit)
+                                .into(imageUser)
                         }
                     }
                 }
             }
-        })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -105,12 +106,17 @@ class ConfigurationFragment : BaseFragment() {
                     }
                 }
                 requestCode == REQUEST_IMAGE_CAPTURE_USER && resultCode == RESULT_OK -> {
-                    val imageBitmap = data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
+                    val imageBitmap =
+                        data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
                     val bytes = ByteArrayOutputStream()
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
                     val path: String = MediaStore.Images.Media.insertImage(
-                            context?.contentResolver, imageBitmap, getString(R.string.change_image_user), null)
-                    context?.let { context -> viewModel.imageUser(context, Uri.parse(path)) }
+                        context?.contentResolver,
+                        imageBitmap,
+                        getString(R.string.change_image_user),
+                        null
+                    )
+                    context?.let { viewModel.imageUser(it, Uri.parse(path)) }
                 }
             }
         } catch (e: Exception) {

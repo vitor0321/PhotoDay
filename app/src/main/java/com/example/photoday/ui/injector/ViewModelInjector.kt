@@ -2,7 +2,6 @@ package com.example.photoday.ui.injector
 
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.navigation.NavController
 import com.example.photoday.ui.fragment.base.BaseViewModel
 import com.example.photoday.ui.fragment.base.BaseViewModelFactory
@@ -19,10 +18,8 @@ import com.example.photoday.ui.fragment.timeline.TimelineViewModelFactory
 
 object ViewModelInjector {
 
-    fun providerConfigurationViewModel(
-        context: Context?
-    ): ConfigurationViewModel {
-        return ConfigurationViewModelFactory(context)
+    fun providerConfigurationViewModel(): ConfigurationViewModel {
+        return ConfigurationViewModelFactory()
             .create(ConfigurationViewModel::class.java)
     }
 
