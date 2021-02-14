@@ -52,7 +52,7 @@ class TimelineFragment : BaseFragment() {
 
     private fun initObservers() {
         binding.apply {
-            viewModel.photosLiveData.observe(viewLifecycleOwner, Observer {
+            viewModel.photosLiveData.observe(viewLifecycleOwner, {
                 recycleViewListTimeline.apply {
                     layoutManager = LinearLayoutManager(context)
                     setHasFixedSize(true)

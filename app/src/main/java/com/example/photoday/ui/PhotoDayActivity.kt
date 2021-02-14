@@ -123,14 +123,14 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
         calendar.set(year, month, dayOfMonth)
-        val value = simpleDateFormat.format(calendar.time)
+        val valueDate = simpleDateFormat.format(calendar.time)
         //get select date and send to photoDialog
-        photoDialog(value)
+        photoDialog(valueDate)
     }
 
-    private fun photoDialog(value: String) {
+    private fun photoDialog(valueDate: String) {
         /*open AddPhotoDialog*/
-        AddPhotoDialog.newInstance(value)
+        AddPhotoDialog.newInstance(valueDate)
                 .show(supportFragmentManager, ADD_PHOTO_DIALOG)
     }
 

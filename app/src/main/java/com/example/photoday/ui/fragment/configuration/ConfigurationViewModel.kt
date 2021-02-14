@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
 class ConfigurationViewModel : ViewModel() {
 
     private val _uiStateFlow = MutableStateFlow(UserFirebase())
-
     val uiStateFlow: StateFlow<UserFirebase> get() = _uiStateFlow
+
     fun getUserDBFirebase() = viewModelScope.launch {
         val userFirebase = getCurrentUserFirebase()
         _uiStateFlow.value = userFirebase
