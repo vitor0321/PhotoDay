@@ -5,8 +5,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.constants.FORGOT_PASSWORD
-import com.example.photoday.repository.BaseRepository.baseRepositoryFirebaseAuthWithGoogle
-import com.example.photoday.repository.BaseRepository.baseRepositorySignInWithEmailAndPassword
+import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryFirebaseAuthWithGoogle
+import com.example.photoday.repository.BaseRepositoryUser.baseRepositorySignInWithEmailAndPassword
 import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.textfield.TextInputEditText

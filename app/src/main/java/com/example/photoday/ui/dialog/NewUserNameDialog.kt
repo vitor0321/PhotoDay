@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.DialogFragmentUserNameBinding
-import com.example.photoday.repository.BaseRepository.baseRepositoryChangeNameUser
+import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryChangeNameUser
 
 class NewUserNameDialog : DialogFragment() {
 

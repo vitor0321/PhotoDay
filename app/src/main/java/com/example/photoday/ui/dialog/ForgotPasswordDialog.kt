@@ -11,7 +11,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
 import com.example.photoday.constants.Utils
 import com.example.photoday.databinding.DialogForgotPasswordBinding
-import com.example.photoday.repository.BaseRepository.baseRepositoryForgotPassword
+import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryForgotPassword
 
 
 class ForgotPasswordDialog : DialogFragment() {

@@ -79,6 +79,10 @@
     <string name="login_is_success">Login Success</string>
     <string name="verify_your_email_address">Please verify your email address</string>
 
+    <!-- Repository Firebase Photo  -->
+    <string name="successfully_upload_image">Successfully upload image</string>
+    <string name="successfully_delete_image">Successfully delete Image</string>
+
     <!-- Menu  -->
     <string name="timeline">Timeline</string>
     <string name="gallery_bottom">Gallery</string>

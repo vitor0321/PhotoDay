@@ -17,7 +17,7 @@ import com.example.photoday.repository.firebaseUser.LogFirebase.logoutFirebase
 import com.example.photoday.repository.firebaseUser.LogFirebase.signInWithEmailAndPassword
 import com.example.photoday.repository.firebaseUser.user.UserFirebase
 
-object BaseRepository {
+object BaseRepositoryUser {
     fun baseRepositoryChangeNameUser(context: Context, name: String) {
         changeNameUser(context, name)
     }

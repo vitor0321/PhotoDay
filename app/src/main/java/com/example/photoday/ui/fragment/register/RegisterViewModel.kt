@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.photoday.repository.BaseRepository.baseRepositoryCreateUserWithEmailAndPassword
+import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryCreateUserWithEmailAndPassword
 
 class RegisterViewModel(
         private val context: Context?,

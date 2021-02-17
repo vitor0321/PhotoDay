@@ -8,7 +8,7 @@ import com.example.photoday.R
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.navigation.Navigation
-import com.example.photoday.repository.BaseRepository.baseRepositoryUpdateUI
+import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryUpdateUI
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider

@@ -11,7 +11,7 @@ import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
-import com.example.photoday.repository.BaseRepository.baseRepositoryUpdateUI
+import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryUpdateUI
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
