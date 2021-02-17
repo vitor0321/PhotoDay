@@ -1,26 +1,25 @@
 package com.example.photoday.ui.fragment.timeline
 
+import android.R.attr
 import android.app.Activity
 import android.content.Intent
+import android.content.Intent.getIntent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.view.*
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
-import com.example.photoday.constants.REQUEST_GALLERY_TIMELINE
-import com.example.photoday.constants.REQUEST_IMAGE_CAPTURE_TIMELINE
-import com.example.photoday.constants.TRUE
-import com.example.photoday.constants.Utils
+import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.ui.adapter.TimelineListAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import java.io.ByteArrayOutputStream
+
 
 class TimelineFragment : BaseFragment() {
 
@@ -65,11 +64,13 @@ class TimelineFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         try {
-            //here get the image of Exhibition
+            //here get the image from Exhibition
             when {
                 requestCode == REQUEST_GALLERY_TIMELINE && resultCode == Activity.RESULT_OK -> {
+                    val bundle :Bundle ?= data?.extras
+                    val date = bundle?.get(BUNDLE_DATE).toString()
                     data?.data?.let {
-                        viewModel.createPushPhotos(it)
+                        viewModel.createPushPhotos(date, it)
                     }
                 }
                 requestCode == REQUEST_IMAGE_CAPTURE_TIMELINE && resultCode == Activity.RESULT_OK -> {
@@ -81,7 +82,9 @@ class TimelineFragment : BaseFragment() {
                             imageBitmap,
                             getString(R.string.change_image_user),
                             null)
-                    viewModel.createPushPhotos(Uri.parse(path))
+                    val bundle :Bundle ?= data?.extras
+                    val date = bundle?.get(BUNDLE_DATE).toString()
+                    viewModel.createPushPhotos(date, Uri.parse(path))
                 }
             }
         } catch (e: Exception) {

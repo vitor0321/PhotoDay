@@ -1,4 +1,4 @@
-package com.example.photoday.repository.firebase
+package com.example.photoday.repository.firebaseUser
 
 import android.content.Context
 import android.net.Uri
@@ -6,7 +6,6 @@ import android.util.Patterns
 import android.widget.EditText
 import com.example.photoday.R
 import com.example.photoday.constants.Utils.toast
-import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 

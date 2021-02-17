@@ -1,4 +1,4 @@
-package com.example.photoday.repository.user
+package com.example.photoday.repository.firebaseUser.user
 
 import android.net.Uri
 

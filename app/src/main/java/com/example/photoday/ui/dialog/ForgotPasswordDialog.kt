@@ -11,8 +11,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
 import com.example.photoday.constants.Utils
 import com.example.photoday.databinding.DialogForgotPasswordBinding
-import com.example.photoday.repository.firebase.ChangeUserFirebase.forgotPassword
-import com.example.photoday.repository.firebase.LogFirebase
+import com.example.photoday.repository.BaseRepository.baseRepositoryForgotPassword
 
 
 class ForgotPasswordDialog : DialogFragment() {
@@ -60,7 +59,7 @@ class ForgotPasswordDialog : DialogFragment() {
                             return@setOnClickListener
                         }
                     }
-                    context?.let { context -> forgotPassword( userEmail, context) }
+                    context?.let { context -> baseRepositoryForgotPassword(userEmail, context) }
                     dialog?.dismiss()
                 }catch (e: Exception) {
                     e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }

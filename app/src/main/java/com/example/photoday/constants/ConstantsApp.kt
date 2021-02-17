@@ -22,6 +22,9 @@ const val REQUEST_GALLERY_USER = 1002
 const val REQUEST_IMAGE_CAPTURE_TIMELINE = 1011
 const val REQUEST_GALLERY_TIMELINE = 1012
 
+/*Exhibition bundle*/
+const val BUNDLE_DATE = "BUNDLE_DATE"
+
 
 
 

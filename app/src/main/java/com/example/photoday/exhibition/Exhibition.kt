@@ -1,6 +1,7 @@
 package com.example.photoday.exhibition
 
 import android.content.Intent
+import android.os.Bundle
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import com.example.photoday.constants.*
@@ -20,9 +21,13 @@ object Exhibition {
                     )
                 }
                 else -> {
+                    val dateBundle = Bundle()
+                    dateBundle.putString(BUNDLE_DATE, valueDate)
+                    intentGallery.putExtras(dateBundle)
+                    intentGallery.putExtra(BUNDLE_DATE, valueDate)
                     ActivityCompat.startActivityForResult(
                             activity, intentGallery,
-                            REQUEST_GALLERY_TIMELINE, null
+                            REQUEST_GALLERY_TIMELINE, dateBundle
                     )
                 }
             }

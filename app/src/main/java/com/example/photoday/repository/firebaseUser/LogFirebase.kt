@@ -1,4 +1,4 @@
-package com.example.photoday.repository.firebase
+package com.example.photoday.repository.firebaseUser
 
 import android.content.Context
 import androidx.appcompat.widget.AppCompatEditText
@@ -7,8 +7,8 @@ import androidx.navigation.NavController
 import com.example.photoday.R
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.Utils.toast
-import com.example.photoday.repository.firebase.CheckUserFirebase.updateUI
 import com.example.photoday.navigation.Navigation
+import com.example.photoday.repository.BaseRepository.baseRepositoryUpdateUI
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -42,7 +42,7 @@ object LogFirebase {
                         when {
                             task.isSuccessful -> {
                                 // Sign in success, update UI with the signed-in user's information
-                                updateUI(controlNavigation, FIRST_LOGIN, context)
+                                baseRepositoryUpdateUI(controlNavigation, FIRST_LOGIN, context)
                             }
                             else -> {
                                 toast(context, R.string.auth_failed)
@@ -107,12 +107,12 @@ object LogFirebase {
                         when {
                             task.isSuccessful -> {
                                 // Sign in success, update UI with the signed-in user's information
-                                updateUI(controlNavigation, FIRST_LOGIN, context)
+                                baseRepositoryUpdateUI(controlNavigation, FIRST_LOGIN, context)
                             }
                             else -> {
                                 // If sign in fails, display a message to the user.
                                 toast(context, R.string.login_failed)
-                                updateUI(controlNavigation, FIRST_LOGIN, context)
+                                baseRepositoryUpdateUI(controlNavigation, FIRST_LOGIN, context)
                             }
                         }
                     }

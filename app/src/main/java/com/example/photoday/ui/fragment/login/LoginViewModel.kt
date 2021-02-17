@@ -5,8 +5,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.constants.FORGOT_PASSWORD
-import com.example.photoday.repository.firebase.LogFirebase
-import com.example.photoday.repository.firebase.LogFirebase.signInWithEmailAndPassword
+import com.example.photoday.repository.BaseRepository.baseRepositoryFirebaseAuthWithGoogle
+import com.example.photoday.repository.BaseRepository.baseRepositorySignInWithEmailAndPassword
 import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.textfield.TextInputEditText
@@ -19,7 +19,7 @@ class LoginViewModel(
 
     fun doLogin(editTextLoginUser: TextInputEditText, editTextLoginPassword: TextInputEditText) {
         context?.let {
-            signInWithEmailAndPassword(
+            baseRepositorySignInWithEmailAndPassword(
                     editTextLoginUser,
                     editTextLoginPassword,
                     requireActivity,
@@ -31,7 +31,7 @@ class LoginViewModel(
 
     fun authWithGoogle(account: GoogleSignInAccount) {
         context?.let {
-            LogFirebase.firebaseAuthWithGoogle(
+            baseRepositoryFirebaseAuthWithGoogle(
                     account.idToken!!,
                     controlNavigation,
                     it

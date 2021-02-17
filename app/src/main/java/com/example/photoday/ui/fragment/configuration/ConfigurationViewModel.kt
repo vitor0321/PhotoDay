@@ -4,10 +4,10 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.photoday.repository.firebase.ChangeUserFirebase.changeImageUser
-import com.example.photoday.repository.firebase.CheckUserFirebase.getCurrentUserFirebase
-import com.example.photoday.repository.firebase.LogFirebase.logoutFirebase
-import com.example.photoday.repository.user.UserFirebase
+import com.example.photoday.repository.BaseRepository.baseRepositoryChangeImageUser
+import com.example.photoday.repository.BaseRepository.baseRepositoryGetCurrentUserFirebase
+import com.example.photoday.repository.BaseRepository.baseRepositoryLogoutFirebase
+import com.example.photoday.repository.firebaseUser.user.UserFirebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -18,15 +18,15 @@ class ConfigurationViewModel : ViewModel() {
     val uiStateFlow: StateFlow<UserFirebase> get() = _uiStateFlow
 
     fun getUserDBFirebase() = viewModelScope.launch {
-        val userFirebase = getCurrentUserFirebase()
+        val userFirebase = baseRepositoryGetCurrentUserFirebase()
         _uiStateFlow.value = userFirebase
     }
 
     fun imageUser(context: Context, image: Uri) {
-        changeImageUser(context, image)
+        baseRepositoryChangeImageUser(context, image)
     }
 
     fun logout(context: Context) {
-        logoutFirebase(context)
+        baseRepositoryLogoutFirebase(context)
     }
 }

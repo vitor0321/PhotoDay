@@ -1,15 +1,14 @@
-package com.example.photoday.repository.firebase
+package com.example.photoday.repository.firebaseUser
 
 import android.content.Context
 import androidx.navigation.NavController
-import com.bumptech.glide.Glide
 import com.example.photoday.R
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.ON_START
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.navigation.Navigation.navFragmentLoginToSplashLogin
 import com.example.photoday.navigation.Navigation.navFragmentLoginToTimeline
-import com.example.photoday.repository.user.UserFirebase
+import com.example.photoday.repository.firebaseUser.user.UserFirebase
 import com.google.firebase.auth.FirebaseAuth
 
 object CheckUserFirebase {

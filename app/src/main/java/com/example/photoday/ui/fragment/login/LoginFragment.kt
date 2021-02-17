@@ -10,10 +10,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentLoginBinding
-import com.example.photoday.repository.firebase.CheckUserFirebase.updateUI
+import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
+import com.example.photoday.repository.BaseRepository.baseRepositoryUpdateUI
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
-import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -53,7 +53,7 @@ class LoginFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        context?.let { updateUI(controlNavigation, ON_START, it) }
+        context?.let { baseRepositoryUpdateUI(controlNavigation, ON_START, it) }
     }
 
     private fun init() {

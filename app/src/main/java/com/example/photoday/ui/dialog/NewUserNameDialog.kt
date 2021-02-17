@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.DialogFragmentUserNameBinding
-import com.example.photoday.repository.firebase.ChangeUserFirebase.changeNameUser
+import com.example.photoday.repository.BaseRepository.baseRepositoryChangeNameUser
 
 class NewUserNameDialog : DialogFragment() {
 
@@ -50,7 +50,7 @@ class NewUserNameDialog : DialogFragment() {
                         }
                     }
                     val name = editTextNewName.text.toString()
-                    context?.let { context -> changeNameUser(context, name) }
+                    context?.let { context -> baseRepositoryChangeNameUser(context, name) }
                     dialog?.dismiss()
                 } catch (e: Exception) {
                     e.message?.let { context?.let { it1 -> toast(it1, it.toInt()) } }
