@@ -42,12 +42,12 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
         binding.apply {
             val activity = requireActivity() as PhotoDayActivity
             imageUploadGallery.setOnClickListener {
-                galleryPermission(activity, valueDate)
+                valueDate?.let { valueDate -> galleryPermission(activity, valueDate) }
                 dialog?.dismiss()
             }
 
             imageUploadCamera.setOnClickListener {
-                dispatchTakePermission(activity, valueDate)
+                valueDate?.let { valueDate -> dispatchTakePermission(activity, valueDate) }
                 dialog?.dismiss()
             }
         }

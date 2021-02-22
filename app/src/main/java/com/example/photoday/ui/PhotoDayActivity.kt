@@ -1,8 +1,13 @@
 package com.example.photoday.ui
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.provider.MediaStore
 import android.view.View
 import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
@@ -10,12 +15,12 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
-import com.example.photoday.constants.ADD_PHOTO_DIALOG
-import com.example.photoday.constants.Utils
+import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.ActivityPhotoDayBinding
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.stateBarNavigation.Components
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 

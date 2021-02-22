@@ -3,6 +3,7 @@ package com.example.photoday.repository.firebasePhotos
 import android.content.Context
 import android.net.Uri
 import com.example.photoday.R
+import com.example.photoday.constants.IMAGE
 import com.example.photoday.constants.Utils.toast
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -14,7 +15,7 @@ object FirebasePhoto {
     fun uploadImageToStorage(context: Context, date: String, curFile: Uri?) = CoroutineScope(Dispatchers.IO).launch {
         try {
             curFile?.let {
-                imageRef.child("images/$date").putFile(it)
+                imageRef.child("$IMAGE/$date").putFile(it)
                 withContext(Dispatchers.Main) {
                     toast(context, R.string.successfully_upload_image)
                 }
@@ -28,7 +29,7 @@ object FirebasePhoto {
 
     fun deleteImage(context: Context, date: String) = CoroutineScope(Dispatchers.IO).launch {
         try {
-            imageRef.child("images/$date").delete()
+            imageRef.child("$IMAGE/$date").delete()
             withContext(Dispatchers.Main) {
                 toast(context, R.string.successfully_delete_image)
             }
@@ -43,7 +44,7 @@ object FirebasePhoto {
 
     fun listFileDownload(context: Context) = CoroutineScope(Dispatchers.IO).launch {
         try {
-            val images = imageRef.child("images/").listAll()
+            val images = imageRef.child("$IMAGE/").listAll()
 
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
