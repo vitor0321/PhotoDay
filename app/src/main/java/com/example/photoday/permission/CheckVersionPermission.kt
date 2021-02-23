@@ -13,7 +13,7 @@ import com.example.photoday.exhibition.Exhibition.galleryExhibition
 import com.example.photoday.ui.PhotoDayActivity
 
 object CheckVersionPermission {
-    fun galleryPermission(activity: PhotoDayActivity, valueDate: String) {
+    fun galleryPermission(activity: PhotoDayActivity, valueDate: String?) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 when (PermissionChecker.PERMISSION_DENIED) {
@@ -40,7 +40,7 @@ object CheckVersionPermission {
 
     fun dispatchTakePermission(
             activity: PhotoDayActivity,
-            valueDate: String
+            valueDate: String?
     ) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

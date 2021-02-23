@@ -8,10 +8,9 @@ import com.example.photoday.eventBus.MessageEvent
 import com.example.photoday.ui.PhotoDayActivity
 import org.greenrobot.eventbus.EventBus
 
-
 object Exhibition {
 
-    fun galleryExhibition(activity: PhotoDayActivity, valueDate: String) {
+    fun galleryExhibition(activity: PhotoDayActivity, valueDate: String?) {
         try {
             val intentGallery = Intent(Intent.ACTION_PICK)
             intentGallery.type = GALLERY_TYPE
@@ -39,7 +38,7 @@ object Exhibition {
         }
     }
 
-    fun dispatchTakeExhibition(activity: PhotoDayActivity, valueDate: String) {
+    fun dispatchTakeExhibition(activity: PhotoDayActivity, valueDate: String?) {
         try {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intentTakePicture ->
                 val packageManager = activity.packageManager
