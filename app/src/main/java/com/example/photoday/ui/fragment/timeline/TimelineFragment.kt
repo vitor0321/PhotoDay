@@ -10,10 +10,14 @@ import android.provider.MediaStore
 import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
-import com.example.photoday.constants.*
+import com.example.photoday.adapter.TimelineAdapter
+import com.example.photoday.adapter.modelAdapter.ItemPhoto
+import com.example.photoday.constants.REQUEST_GALLERY_TIMELINE
+import com.example.photoday.constants.REQUEST_IMAGE_CAPTURE_TIMELINE
+import com.example.photoday.constants.TRUE
+import com.example.photoday.constants.Utils
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.eventBus.MessageEvent
-import com.example.photoday.ui.adapter.TimelineListAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -21,7 +25,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.ByteArrayOutputStream
-
 
 class TimelineFragment : BaseFragment() {
 
@@ -54,27 +57,19 @@ class TimelineFragment : BaseFragment() {
         }
     }
 
+    private fun init() {
+        statusBarNavigation()
+        initObservers()
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(datePhoto: MessageEvent) {
         /*The Event Bus get date that Exhibition send*/
         datePhotoEventBus = datePhoto.message
     }
 
-    private fun init() {
-        statusBarNavigation()
-        initObservers()
-    }
-
     private fun initObservers() {
-        binding.apply {
-            viewModel.photosLiveData.observe(viewLifecycleOwner, {
-                recycleViewListTimeline.apply {
-                    layoutManager = LinearLayoutManager(context)
-                    setHasFixedSize(true)
-                    adapter = TimelineListAdapter(it)
-                }
-            })
-        }
+        viewModel.data.observe(viewLifecycleOwner, { photosList -> getPhotoList(photosList) })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -119,6 +114,17 @@ class TimelineFragment : BaseFragment() {
             }
         } catch (e: Exception) {
             e.message?.let { context?.let { context -> Utils.toast(context, it.toInt()) } }
+        }
+    }
+
+    private fun getPhotoList(photosList: List<ItemPhoto>) = photosList.let { photosList ->
+        binding.recycleViewListTimeline.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = TimelineAdapter(photosList) { itemPhoto ->
+                /**
+                 * quando clicar na photo, vai fazer o que ?
+                 */
+            }
         }
     }
 

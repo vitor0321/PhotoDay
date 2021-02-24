@@ -2,12 +2,12 @@ package com.example.photoday.ui.fragment.gallery
 
 import android.os.Bundle
 import android.view.*
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
+import com.example.photoday.adapter.GalleryAdapter
+import com.example.photoday.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentGalleryBinding
-import com.example.photoday.ui.adapter.GalleryListAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -36,20 +36,24 @@ class GalleryFragment : BaseFragment() {
     }
 
     private fun init() {
-        viewModel.getPhotos()
         statusBarNavigation()
         initObservers()
     }
 
     private fun initObservers() {
-        binding.apply {
-            viewModel.photosLiveData.observe(viewLifecycleOwner, Observer {
-                recycleViewListGallery.apply {
-                    layoutManager = LinearLayoutManager(context)
-                    setHasFixedSize(true)
-                    adapter = GalleryListAdapter(it)
-                }
-            })
+        viewModel.data.observe(viewLifecycleOwner, { photoList ->
+            getPhotoList(photoList)
+        })
+    }
+
+    private fun getPhotoList(photosList: List<ItemPhoto>) = photosList.let { photosList ->
+        binding.recycleViewListGallery.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = GalleryAdapter(photosList) { itemPhoto ->
+                /**
+                 * quando clicar na photo, vai fazer o que ?
+                 */
+            }
         }
     }
 

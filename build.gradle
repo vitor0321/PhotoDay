@@ -15,7 +15,6 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
         // plugin para mandar os dados de uma forma segura
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 

@@ -1,28 +1,32 @@
 package com.example.photoday.ui.fragment.gallery
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.photoday.R
-import com.example.photoday.data.modelAdapter.GalleryItemPhotos
+import com.example.photoday.adapter.modelAdapter.ItemPhoto
 
 class GalleryViewModel : ViewModel() {
 
-    val photosLiveData: MutableLiveData<List<GalleryItemPhotos>> = MutableLiveData()
+    private val mutableLiveData = MutableLiveData<List<ItemPhoto>>()
+    val data: LiveData<List<ItemPhoto>> = mutableLiveData
 
-    fun getPhotos(){
-        photosLiveData.value = fakeCreateGetPhotos()
+    init {
+        loadData(createPullPhotos())
     }
 
-    //isso é profissório para teste, pois vamos pegar essa lista do nosso BD
-    private fun fakeCreateGetPhotos(): List<GalleryItemPhotos>{
+    private fun loadData(data: List<ItemPhoto>) = mutableLiveData.postValue(data)
+
+    private fun createPullPhotos(): List<ItemPhoto> {
         return listOf(
-            GalleryItemPhotos(R.drawable.ic_item_photo),
-            GalleryItemPhotos(R.drawable.ic_item_photo),
-            GalleryItemPhotos(R.drawable.ic_item_photo),
-            GalleryItemPhotos(R.drawable.ic_item_photo),
-            GalleryItemPhotos(R.drawable.ic_item_photo),
-            GalleryItemPhotos(R.drawable.ic_item_photo),
-            GalleryItemPhotos(R.drawable.ic_item_photo)
+            ItemPhoto("21/01/2021", R.drawable.ic_item_photo),
+            ItemPhoto("22/01/2021", R.drawable.ic_item_photo),
+            ItemPhoto("23/01/2021", R.drawable.ic_item_photo),
+            ItemPhoto("24/01/2021", R.drawable.ic_item_photo),
+            ItemPhoto("25/01/2021", R.drawable.ic_item_photo),
+            ItemPhoto("26/01/2021", R.drawable.ic_item_photo),
+            ItemPhoto("27/01/2021", R.drawable.ic_item_photo)
         )
     }
+
 }
