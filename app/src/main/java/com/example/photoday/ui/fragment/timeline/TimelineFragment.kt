@@ -1,30 +1,14 @@
 package com.example.photoday.ui.fragment.timeline
 
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.provider.MediaStore
 import android.view.*
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
-import com.example.photoday.adapter.TimelineAdapter
-import com.example.photoday.adapter.modelAdapter.ItemPhoto
-import com.example.photoday.constants.REQUEST_GALLERY_TIMELINE
-import com.example.photoday.constants.REQUEST_IMAGE_CAPTURE_TIMELINE
 import com.example.photoday.constants.TRUE
-import com.example.photoday.constants.Utils
 import com.example.photoday.databinding.FragmentTimelineBinding
-import com.example.photoday.eventBus.MessageEvent
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
-import java.io.ByteArrayOutputStream
 
 class TimelineFragment : BaseFragment() {
 

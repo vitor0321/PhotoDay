@@ -3,6 +3,8 @@ package com.example.photoday.ui.injector
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import com.example.photoday.ui.activity.PhotoDayViewModel
+import com.example.photoday.ui.activity.PhotoDayViewModelFactory
 import com.example.photoday.ui.fragment.base.BaseViewModel
 import com.example.photoday.ui.fragment.base.BaseViewModelFactory
 import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
@@ -53,5 +55,10 @@ object ViewModelInjector {
     fun providerTimelineViewModel(): TimelineViewModel {
         return TimelineViewModelFactory()
             .create(TimelineViewModel::class.java)
+    }
+
+    fun providerPhotoDayViewModel(): PhotoDayViewModel{
+        return PhotoDayViewModelFactory()
+            .create(PhotoDayViewModel::class.java)
     }
 }

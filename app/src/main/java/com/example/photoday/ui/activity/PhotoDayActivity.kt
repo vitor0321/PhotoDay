@@ -22,6 +22,7 @@ import com.example.photoday.databinding.ActivityPhotoDayBinding
 import com.example.photoday.eventBus.MessageEvent
 import com.example.photoday.repository.BaseRepositoryPhoto.baseRepositoryUploadImageToStorage
 import com.example.photoday.ui.dialog.AddPhotoDialog
+import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -37,6 +38,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
+    private val viewModel by lazy { ViewModelInjector.providerPhotoDayViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +77,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                 requestCode == REQUEST_GALLERY_TIMELINE && resultCode == Activity.RESULT_OK -> {
                     data?.data?.let { photo ->
                             datePhotoEventBus?.let { dateCalendar ->
-                                baseRepositoryUploadImageToStorage(
+                                viewModel.createPushPhoto(
                                     this,
                                     dateCalendar,
                                     photo
@@ -95,7 +97,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         null
                     )
                         datePhotoEventBus?.let { dateCalendar ->
-                            baseRepositoryUploadImageToStorage(
+                            viewModel.createPushPhoto(
                                 this,
                                 dateCalendar,
                                 Uri.parse(path)
