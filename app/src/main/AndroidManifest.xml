@@ -28,7 +28,7 @@
         tools:replace="android:appComponentFactory"
         tools:targetApi="p">
         <activity
-            android:name=".ui.PhotoDayActivity"
+            android:name=".ui.activity.PhotoDayActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

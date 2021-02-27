@@ -5,7 +5,7 @@ import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import com.example.photoday.constants.*
 import com.example.photoday.eventBus.MessageEvent
-import com.example.photoday.ui.PhotoDayActivity
+import com.example.photoday.ui.activity.PhotoDayActivity
 import org.greenrobot.eventbus.EventBus
 
 object Exhibition {

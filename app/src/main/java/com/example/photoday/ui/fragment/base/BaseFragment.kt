@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.Utils
-import com.example.photoday.ui.PhotoDayActivity
+import com.example.photoday.ui.activity.PhotoDayActivity
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.navigation.Navigation.navFragmentConfigurationToTimeline
 import com.example.photoday.navigation.Navigation.navFragmentGalleryToConfiguration

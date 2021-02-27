@@ -23,7 +23,7 @@ const val REQUEST_IMAGE_CAPTURE_TIMELINE = 1011
 const val REQUEST_GALLERY_TIMELINE = 1012
 
 /*Firebase Photo*/
-const val IMAGE= "IMAGE"
+const val IMAGES= "images/"
 
 
 

@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.photoday.databinding.DialogFragmentAddPhotoBinding
 import com.example.photoday.permission.CheckVersionPermission.dispatchTakePermission
 import com.example.photoday.permission.CheckVersionPermission.galleryPermission
-import com.example.photoday.ui.PhotoDayActivity
+import com.example.photoday.ui.activity.PhotoDayActivity
 
 class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
 

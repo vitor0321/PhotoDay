@@ -1,5 +1,6 @@
-package com.example.photoday.ui
+package com.example.photoday.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -18,8 +19,13 @@ import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.ActivityPhotoDayBinding
+import com.example.photoday.eventBus.MessageEvent
+import com.example.photoday.repository.BaseRepositoryPhoto.baseRepositoryUploadImageToStorage
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.stateBarNavigation.Components
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,14 +33,23 @@ import java.util.*
 class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: ActivityPhotoDayBinding
+    private var datePhotoEventBus: String? = null
 
-    private val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+    @SuppressLint("SimpleDateFormat")
+    private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPhotoDayBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
     }
 
     private fun init() {
@@ -54,6 +69,49 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
             //Here sent Result to Fragment
             fragment.onActivityResult(requestCode, resultCode, data)
         }
+        try {
+            //here get the image from Exhibition
+            when {
+                requestCode == REQUEST_GALLERY_TIMELINE && resultCode == Activity.RESULT_OK -> {
+                    data?.data?.let { photo ->
+                            datePhotoEventBus?.let { dateCalendar ->
+                                baseRepositoryUploadImageToStorage(
+                                    this,
+                                    dateCalendar,
+                                    photo
+                                )
+                            }
+                    }
+                }
+                requestCode == REQUEST_IMAGE_CAPTURE_TIMELINE && resultCode == Activity.RESULT_OK -> {
+                    val imageBitmap =
+                        data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
+                    val bytes = ByteArrayOutputStream()
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+                    val path: String = MediaStore.Images.Media.insertImage(
+                        this.contentResolver,
+                        imageBitmap,
+                        getString(R.string.change_image_user),
+                        null
+                    )
+                        datePhotoEventBus?.let { dateCalendar ->
+                            baseRepositoryUploadImageToStorage(
+                                this,
+                                dateCalendar,
+                                Uri.parse(path)
+                            )
+                        }
+                }
+            }
+        } catch (e: Exception) {
+            e.message?.let {toast(this, it.toInt()) }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(datePhoto: MessageEvent) {
+        /*The Event Bus get date that Exhibition send*/
+        datePhotoEventBus = datePhoto.message
     }
 
     private fun initializeControl() {

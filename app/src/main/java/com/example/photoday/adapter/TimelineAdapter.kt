@@ -4,10 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photoday.R
 import com.example.photoday.adapter.modelAdapter.ItemPhoto
-import com.example.photoday.databinding.ItemGalleryFragmentBinding
 import com.example.photoday.databinding.ItemTimelineFragmentBinding
+import com.squareup.picasso.Picasso
 
 class TimelineAdapter(
     private val items: List<ItemPhoto>,
@@ -22,17 +21,15 @@ class TimelineAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
+        val item = items[position]
+        Picasso.get().load(item.photo).into(holder.imageView)
+
     }
 
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(item: ItemPhoto) {
-            binding.run {
-                imageTimeline.setImageResource(item.photo)
-                datePhotoTextView.text = item.date
-            }
-        }
+        val imageView = binding.imageTimeline
+        val dateCalendar = binding.datePhotoTextView
     }
 }

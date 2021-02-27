@@ -28,7 +28,6 @@ import java.io.ByteArrayOutputStream
 
 class TimelineFragment : BaseFragment() {
 
-    private var datePhotoEventBus: String? = null
     private lateinit var binding: FragmentTimelineBinding
     private val viewModel by lazy { ViewModelInjector.providerTimelineViewModel() }
 
@@ -50,82 +49,13 @@ class TimelineFragment : BaseFragment() {
         inflater.inflate(R.menu.menu_fragment_timeline, menu)
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
-        }
-    }
-
     private fun init() {
         statusBarNavigation()
         initObservers()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(datePhoto: MessageEvent) {
-        /*The Event Bus get date that Exhibition send*/
-        datePhotoEventBus = datePhoto.message
-    }
-
     private fun initObservers() {
-        viewModel.data.observe(viewLifecycleOwner, { photosList -> getPhotoList(photosList) })
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        try {
-            //here get the image from Exhibition
-            when {
-                requestCode == REQUEST_GALLERY_TIMELINE && resultCode == Activity.RESULT_OK -> {
-                    data?.data?.let { photo ->
-                        context?.let { context ->
-                            datePhotoEventBus?.let { date ->
-                                viewModel.createPushPhoto(
-                                    context,
-                                    date,
-                                    photo
-                                )
-                            }
-                        }
-                    }
-                }
-                requestCode == REQUEST_IMAGE_CAPTURE_TIMELINE && resultCode == Activity.RESULT_OK -> {
-                    val imageBitmap =
-                        data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
-                    val bytes = ByteArrayOutputStream()
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-                    val path: String = MediaStore.Images.Media.insertImage(
-                        context?.contentResolver,
-                        imageBitmap,
-                        getString(R.string.change_image_user),
-                        null
-                    )
-                    context?.let { context ->
-                        datePhotoEventBus?.let { date ->
-                            viewModel.createPushPhoto(
-                                context,
-                                date,
-                                Uri.parse(path)
-                            )
-                        }
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            e.message?.let { context?.let { context -> Utils.toast(context, it.toInt()) } }
-        }
-    }
-
-    private fun getPhotoList(photosList: List<ItemPhoto>) = photosList.let { photosList ->
-        binding.recycleViewListTimeline.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = TimelineAdapter(photosList) { itemPhoto ->
-                /**
-                 * quando clicar na photo, vai fazer o que ?
-                 */
-            }
-        }
+        context?.let { context -> viewModel.createPullPhotos(null, context, binding) }
     }
 
     private fun statusBarNavigation() {

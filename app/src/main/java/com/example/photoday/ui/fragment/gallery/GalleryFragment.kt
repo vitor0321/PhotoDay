@@ -2,10 +2,7 @@ package com.example.photoday.ui.fragment.gallery
 
 import android.os.Bundle
 import android.view.*
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
-import com.example.photoday.adapter.GalleryAdapter
-import com.example.photoday.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.ui.fragment.base.BaseFragment
@@ -36,25 +33,13 @@ class GalleryFragment : BaseFragment() {
     }
 
     private fun init() {
+        binding.progressBar.visibility = View.VISIBLE
         statusBarNavigation()
         initObservers()
     }
 
     private fun initObservers() {
-        viewModel.data.observe(viewLifecycleOwner, { photoList ->
-            getPhotoList(photoList)
-        })
-    }
-
-    private fun getPhotoList(photosList: List<ItemPhoto>) = photosList.let { photosList ->
-        binding.recycleViewListGallery.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = GalleryAdapter(photosList) { itemPhoto ->
-                /**
-                 * quando clicar na photo, vai fazer o que ?
-                 */
-            }
-        }
+        context?.let { context -> viewModel.createPullPhotos(binding, context) }
     }
 
     private fun statusBarNavigation() {

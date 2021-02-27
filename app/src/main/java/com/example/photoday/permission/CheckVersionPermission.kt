@@ -10,7 +10,7 @@ import com.example.photoday.constants.REQUEST_IMAGE_CAPTURE_USER
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.exhibition.Exhibition.dispatchTakeExhibition
 import com.example.photoday.exhibition.Exhibition.galleryExhibition
-import com.example.photoday.ui.PhotoDayActivity
+import com.example.photoday.ui.activity.PhotoDayActivity
 
 object CheckVersionPermission {
     fun galleryPermission(activity: PhotoDayActivity, valueDate: String?) {
@@ -39,8 +39,8 @@ object CheckVersionPermission {
     }
 
     fun dispatchTakePermission(
-            activity: PhotoDayActivity,
-            valueDate: String?
+        activity: PhotoDayActivity,
+        valueDate: String?
     ) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

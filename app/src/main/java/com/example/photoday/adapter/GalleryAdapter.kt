@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.photoday.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.databinding.ItemGalleryFragmentBinding
+import com.squareup.picasso.Picasso
 
 class GalleryAdapter(
     private val items: List<ItemPhoto>,
@@ -20,14 +21,13 @@ class GalleryAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
+        val item = items[position]
+        Picasso.get().load(item.photo).into(holder.imageView)
     }
 
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(item: ItemPhoto) {
-            binding.imageGallery.setImageResource(item.photo)
-        }
+        val imageView = binding.imageGallery
     }
 }
