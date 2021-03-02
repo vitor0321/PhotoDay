@@ -26,10 +26,9 @@ object BaseRepositoryPhoto {
     }
 
     fun baseRepositoryListFileDownload(context: Context, callback: (imagesList:List<ItemPhoto>) -> Unit){
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             try {
                 listFileDownload(context){ imagesList ->
-                    imagesList
                     callback.invoke(imagesList)
                 }
             } catch (e: Exception) {

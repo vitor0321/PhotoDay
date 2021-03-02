@@ -52,7 +52,7 @@ object FirebasePhoto {
         }
 
     fun listFileDownload(context: Context, callback: (imagesList: List<ItemPhoto>) -> Unit) {
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             try {
                 val storageRef = imageRef.child("$IMAGES")
                 val imagesList: ArrayList<ItemPhoto> = ArrayList()
@@ -70,10 +70,8 @@ object FirebasePhoto {
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let {
-                        toast(context, it.toInt())
-                    }
+                e.message?.let {
+                    toast(context, it.toInt())
                 }
             }
         }

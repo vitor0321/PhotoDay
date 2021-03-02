@@ -19,24 +19,23 @@ object CheckUserFirebase {
     private var auth = FirebaseAuth.getInstance()
 
     fun updateUI(
-            controlNavigation: NavController,
-            startLog: Int,
-            context: Context
+        controlNavigation: NavController,
+        startLog: Int,
+        context: Context
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val currentUser = auth.currentUser
-                /*if the user is different from null, then he exists and can log in*/
-                when {
-                    currentUser != null -> {
-                        when {
-                            currentUser.isEmailVerified -> {
-                                /*if you are already logged in go to Timeline,
-                            if you are going to log in for the first time go to Login*/
-                                when (startLog) {
-                                    ON_START -> {
-                                        navFragmentLoginToTimeline(controlNavigation)
-                                    }
+        try {
+            val currentUser = auth.currentUser
+            /*if the user is different from null, then he exists and can log in*/
+            when {
+                currentUser != null -> {
+                    when {
+                        currentUser.isEmailVerified -> {
+                            /*if you are already logged in go to Timeline,
+                        if you are going to log in for the first time go to Login*/
+                            when (startLog) {
+                                ON_START -> {
+                                    navFragmentLoginToTimeline(controlNavigation)
+                                }
                                     FIRST_LOGIN -> {
                                         navFragmentLoginToSplashLogin(controlNavigation)
                                         toast(context, R.string.login_is_success)
@@ -44,19 +43,14 @@ object CheckUserFirebase {
                                 }
                             }
                             else -> {
-                                withContext(Dispatchers.Main) {
                                     toast(context, R.string.verify_your_email_address)
-                                }
                             }
                         }
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
                     e.message?.let { toast(context, it.toInt()) }
-                }
             }
-        }
     }
 
     fun getCurrentUserFirebase(context: Context, callback: (userFirebase: UserFirebase) -> Unit) {

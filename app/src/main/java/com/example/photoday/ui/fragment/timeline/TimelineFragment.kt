@@ -9,6 +9,7 @@ import com.example.photoday.adapter.TimelineAdapter
 import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.repository.BaseRepositoryPhoto
+import com.example.photoday.repository.firebasePhotos.FirebasePhoto.listFileDownload
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -55,15 +56,12 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun initObservers() {
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { imagesList ->
-                binding.recycleViewListTimeline.layoutManager = LinearLayoutManager(context)
-                imagesList
-                binding.recycleViewListTimeline.adapter = TimelineAdapter(imagesList) { itemPhoto ->
-                    /**
-                     * quando clicar na photo, vai fazer o que ?
-                     */
-                }
+        viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { imagesList ->
+            binding.recycleViewListTimeline.layoutManager = LinearLayoutManager(context)
+            binding.recycleViewListTimeline.adapter = TimelineAdapter(imagesList) { itemPhoto ->
+                /**
+                 * quando clicar na photo, vai fazer o que ?
+                 */
             }
         }
     }

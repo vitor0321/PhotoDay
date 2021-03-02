@@ -60,18 +60,14 @@ object BaseRepositoryUser {
     }
 
     fun baseRepositoryUpdateUI(
-            controlNavigation: NavController,
-            startLog: Int,
-            context: Context
+        controlNavigation: NavController,
+        startLog: Int,
+        context: Context
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                updateUI(controlNavigation, startLog, context)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
-            }
+        try {
+            updateUI(controlNavigation, startLog, context)
+        } catch (e: Exception) {
+            e.message?.let { Utils.toast(context, it.toInt()) }
         }
     }
 
