@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 object CheckUserFirebase {
     private var auth = FirebaseAuth.getInstance()
@@ -43,13 +44,17 @@ object CheckUserFirebase {
                                 }
                             }
                             else -> {
-                                toast(context, R.string.verify_your_email_address)
+                                withContext(Dispatchers.Main) {
+                                    toast(context, R.string.verify_your_email_address)
+                                }
                             }
                         }
                     }
                 }
             } catch (e: Exception) {
-                e.message?.let { toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -66,7 +71,9 @@ object CheckUserFirebase {
                 }
                 callback.invoke(user)
             } catch (e: Exception) {
-                e.message?.let { toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { toast(context, it.toInt()) }
+                }
             }
         }
     }

@@ -11,6 +11,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 object ChangeUserFirebase {
     private var auth = FirebaseAuth.getInstance()
@@ -29,7 +30,9 @@ object ChangeUserFirebase {
                             }
                         }
             } catch (e: Exception) {
-                e.message?.let { toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -48,7 +51,9 @@ object ChangeUserFirebase {
                             }
                         }
             } catch (e: Exception) {
-                e.message?.let { toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -78,8 +83,8 @@ object ChangeUserFirebase {
                     }
                 }
             } catch (e: Exception) {
-                e.message?.let {
-                    toast(context, it.toInt())
+                withContext(Dispatchers.Main) {
+                    e.message?.let { toast(context, it.toInt()) }
                 }
             }
         }

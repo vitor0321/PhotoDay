@@ -12,6 +12,9 @@ import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 
 class TimelineFragment : BaseFragment() {
@@ -41,7 +44,9 @@ class TimelineFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        context?.let { context -> viewModel.createPullPhotos(context) }
+        CoroutineScope(Dispatchers.Main).launch {
+            context?.let { context -> viewModel.createPullPhotos(context) }
+        }
     }
 
     private fun init() {
@@ -50,13 +55,16 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun initObservers() {
-        viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { imagesList ->
-            binding.recycleViewListTimeline.adapter = TimelineAdapter(imagesList) { itemPhoto ->
-                /**
-                 * quando clicar na photo, vai fazer o que ?
-                 */
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { imagesList ->
+                binding.recycleViewListTimeline.layoutManager = LinearLayoutManager(context)
+                imagesList
+                binding.recycleViewListTimeline.adapter = TimelineAdapter(imagesList) { itemPhoto ->
+                    /**
+                     * quando clicar na photo, vai fazer o que ?
+                     */
+                }
             }
-            binding.recycleViewListTimeline.layoutManager = LinearLayoutManager(context)
         }
     }
 

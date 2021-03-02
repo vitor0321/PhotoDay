@@ -15,6 +15,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 object LogFirebase {
     private var auth = FirebaseAuth.getInstance()
@@ -28,7 +29,9 @@ object LogFirebase {
                             toast(context, R.string.successfully_logged)
                         }
             } catch (e: Exception) {
-                e.message?.let { toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -54,7 +57,9 @@ object LogFirebase {
                             }
                         }
             } catch (e: Exception) {
-                e.message?.let { toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -92,7 +97,9 @@ object LogFirebase {
                             }
                         }
             } catch (e: Exception) {
-                e.message?.let { toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -125,7 +132,9 @@ object LogFirebase {
                             }
                         }
             } catch (e: Exception) {
-                e.message?.let { toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { toast(context, it.toInt()) }
+                }
             }
         }
     }

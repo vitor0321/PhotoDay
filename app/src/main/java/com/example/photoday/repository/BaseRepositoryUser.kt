@@ -20,6 +20,7 @@ import com.example.photoday.repository.firebaseUser.user.UserFirebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 object BaseRepositoryUser {
     fun baseRepositoryChangeNameUser(context: Context, name: String) {
@@ -27,7 +28,9 @@ object BaseRepositoryUser {
             try {
                 changeNameUser(context, name)
             } catch (e: Exception) {
-                e.message?.let { Utils.toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { Utils.toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -37,7 +40,9 @@ object BaseRepositoryUser {
             try {
                 changeImageUser(context, image)
             } catch (e: Exception) {
-                e.message?.let { Utils.toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { Utils.toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -47,7 +52,9 @@ object BaseRepositoryUser {
             try {
                 forgotPassword(userEmail, context)
             } catch (e: Exception) {
-                e.message?.let { Utils.toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { Utils.toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -61,7 +68,9 @@ object BaseRepositoryUser {
             try {
                 updateUI(controlNavigation, startLog, context)
             } catch (e: Exception) {
-                e.message?.let { Utils.toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { Utils.toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -73,7 +82,9 @@ object BaseRepositoryUser {
                     callback.invoke(userFirebase)
                 }
             } catch (e: Exception) {
-                e.message?.let { Utils.toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { Utils.toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -83,7 +94,9 @@ object BaseRepositoryUser {
             try {
                 logoutFirebase(context)
             } catch (e: Exception) {
-                e.message?.let { Utils.toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { Utils.toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -97,7 +110,9 @@ object BaseRepositoryUser {
             try {
                 firebaseAuthWithGoogle(idToken, controlNavigation, context)
             } catch (e: Exception) {
-                e.message?.let { Utils.toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { Utils.toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -112,7 +127,9 @@ object BaseRepositoryUser {
             try {
                 createUserWithEmailAndPassword(context, registerUser, registerUserPassword, controlNavigation)
             } catch (e: Exception) {
-                e.message?.let { Utils.toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { Utils.toast(context, it.toInt()) }
+                }
             }
         }
     }
@@ -134,7 +151,9 @@ object BaseRepositoryUser {
                         context
                 )
             } catch (e: Exception) {
-                e.message?.let { Utils.toast(context, it.toInt()) }
+                withContext(Dispatchers.Main) {
+                    e.message?.let { Utils.toast(context, it.toInt()) }
+                }
             }
         }
     }

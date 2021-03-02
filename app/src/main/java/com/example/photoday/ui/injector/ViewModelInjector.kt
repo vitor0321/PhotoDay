@@ -60,8 +60,8 @@ object ViewModelInjector {
                 .create(TimelineViewModel::class.java)
     }
 
-    fun providerPhotoDayViewModel(): PhotoDayViewModel {
-        return PhotoDayViewModelFactory()
+    fun providerPhotoDayViewModel(repository: BaseRepositoryPhoto): PhotoDayViewModel {
+        return PhotoDayViewModelFactory(repository)
             .create(PhotoDayViewModel::class.java)
     }
 }

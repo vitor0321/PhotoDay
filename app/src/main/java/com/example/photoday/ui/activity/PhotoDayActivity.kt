@@ -19,7 +19,9 @@ import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.ActivityPhotoDayBinding
+import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.eventBus.MessageEvent
+import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -32,16 +34,18 @@ import java.util.*
 
 class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
-    private lateinit var binding: ActivityPhotoDayBinding
+    private var _binding: ActivityPhotoDayBinding? = null
+    private val binding get() = _binding!!
+
     private var datePhotoEventBus: String? = null
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
-    private val viewModel by lazy { ViewModelInjector.providerPhotoDayViewModel() }
+    private val viewModel by lazy { ViewModelInjector.providerPhotoDayViewModel(BaseRepositoryPhoto) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPhotoDayBinding.inflate(layoutInflater)
+        _binding = ActivityPhotoDayBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
     }
@@ -199,7 +203,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     }
 
     override fun onDestroy() {
-        binding
         super.onDestroy()
+        _binding = null
     }
 }

@@ -5,10 +5,10 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.example.photoday.repository.BaseRepositoryPhoto
 
-class PhotoDayViewModel : ViewModel() {
+class PhotoDayViewModel(private val repository: BaseRepositoryPhoto) : ViewModel() {
 
     fun createPushPhoto(context: Context, dateCalendar: String, curFile: Uri?) {
-        BaseRepositoryPhoto.baseRepositoryUploadImageToStorage(context, dateCalendar, curFile)
+        repository.baseRepositoryUploadImageToStorage(context, dateCalendar, curFile)
     }
 
 }
