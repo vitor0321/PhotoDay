@@ -15,7 +15,9 @@ import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentConfigurationBinding
+import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
+import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
@@ -26,11 +28,12 @@ import java.io.ByteArrayOutputStream
 
 class ConfigurationFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentConfigurationBinding
+    private var _binding: FragmentConfigurationBinding? = null
+    private val binding get() = _binding!!
 
     private val navFragment by lazy { findNavController() }
     private val viewModel by lazy {
-        ViewModelInjector.providerConfigurationViewModel()
+        ViewModelInjector.providerConfigurationViewModel(BaseRepositoryUser)
     }
     private var auth = FirebaseAuth.getInstance()
 
@@ -38,7 +41,7 @@ class ConfigurationFragment : BaseFragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        binding = FragmentConfigurationBinding.inflate(inflater, container, false)
+        _binding = FragmentConfigurationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -52,8 +55,12 @@ class ConfigurationFragment : BaseFragment() {
         init()
     }
 
+    override fun onStart() {
+        super.onStart()
+        context?.let { context -> viewModel.getUserDBFirebase(context) }
+    }
+
     private fun init() {
-        viewModel.getUserDBFirebase()
         initButton()
         statusBarNavigation()
         initStateFlowObserve()
@@ -100,21 +107,21 @@ class ConfigurationFragment : BaseFragment() {
         try {
             //here get the image of ChangeUserFirebase
             when {
-                requestCode == REQUEST_GALLERY_USER && resultCode == RESULT_OK -> {
+                requestCode == REQUEST_IMAGE_GALLERY_USER && resultCode == RESULT_OK -> {
                     data?.data?.let {
                         context?.let { context -> viewModel.imageUser(context, it) }
                     }
                 }
                 requestCode == REQUEST_IMAGE_CAPTURE_USER && resultCode == RESULT_OK -> {
                     val imageBitmap =
-                        data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
+                            data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
                     val bytes = ByteArrayOutputStream()
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
                     val path: String = MediaStore.Images.Media.insertImage(
-                        context?.contentResolver,
-                        imageBitmap,
-                        getString(R.string.change_image_user),
-                        null
+                            context?.contentResolver,
+                            imageBitmap,
+                            getString(R.string.change_image_user),
+                            null
                     )
                     context?.let { viewModel.imageUser(it, Uri.parse(path)) }
                 }
@@ -145,8 +152,8 @@ class ConfigurationFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        binding
         super.onDestroy()
+        _binding = null
     }
 }
 

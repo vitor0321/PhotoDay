@@ -11,13 +11,15 @@ import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.databinding.FragmentSplashLoginBinding
-import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.navigation.Navigation.navFragmentSplashLoginToTimeline
+import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 
 class SplashLogin : BaseFragment() {
 
-    private lateinit var binding: FragmentSplashLoginBinding
+    private var _binding: FragmentSplashLoginBinding? = null
+    private val binding get() = _binding!!
+
     private val controlNavigation by lazy { findNavController() }
 
     override fun onCreateView(
@@ -25,7 +27,7 @@ class SplashLogin : BaseFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSplashLoginBinding.inflate(inflater, container, false)
+        _binding = FragmentSplashLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -49,7 +51,7 @@ class SplashLogin : BaseFragment() {
     }
 
     override fun onDestroy() {
-        binding
         super.onDestroy()
+        _binding = null
     }
 }

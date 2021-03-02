@@ -5,7 +5,7 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker
 import com.example.photoday.R
-import com.example.photoday.constants.REQUEST_GALLERY_USER
+import com.example.photoday.constants.REQUEST_IMAGE_GALLERY_USER
 import com.example.photoday.constants.REQUEST_IMAGE_CAPTURE_USER
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.exhibition.Exhibition.dispatchTakeExhibition
@@ -27,7 +27,7 @@ object CheckVersionPermission {
                                         Manifest.permission.READ_EXTERNAL_STORAGE,
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                                 ),
-                                REQUEST_GALLERY_USER
+                                REQUEST_IMAGE_GALLERY_USER
                         )
                     }
                     else -> galleryExhibition(activity, valueDate)

@@ -10,4 +10,5 @@ class PhotoDayViewModel : ViewModel() {
     fun createPushPhoto(context: Context, dateCalendar: String, curFile: Uri?) {
         BaseRepositoryPhoto.baseRepositoryUploadImageToStorage(context, dateCalendar, curFile)
     }
+
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
+import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryUpdateUI
@@ -23,7 +24,9 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LoginFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentLoginBinding
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
+
     private val controlNavigation by lazy { findNavController() }
     private val viewModel by lazy {
         ViewModelInjector.providerLoginViewModel(
@@ -40,7 +43,7 @@ class LoginFragment : BaseFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         return binding.root
     }
@@ -141,7 +144,7 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        binding
         super.onDestroy()
+        _binding = null
     }
 }

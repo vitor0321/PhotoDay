@@ -11,20 +11,22 @@ import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.databinding.FragmentSplashGoodbyeBinding
-import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.navigation.Navigation.navFragmentSplashGoodbyeToLogin
+import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 
 class SplashGoodbyeFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentSplashGoodbyeBinding
+    private var _binding: FragmentSplashGoodbyeBinding? = null
+    private val binding get() = _binding!!
+
     private val controlNavigation by lazy { findNavController() }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSplashGoodbyeBinding.inflate(inflater, container, false)
+        _binding = FragmentSplashGoodbyeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -47,7 +49,7 @@ class SplashGoodbyeFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        binding
         super.onDestroy()
+        _binding = null
     }
 }

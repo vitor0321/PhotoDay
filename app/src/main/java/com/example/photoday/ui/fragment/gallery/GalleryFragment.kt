@@ -2,23 +2,31 @@ package com.example.photoday.ui.fragment.gallery
 
 import android.os.Bundle
 import android.view.*
+import androidx.lifecycle.asLiveData
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
+import com.example.photoday.adapter.GalleryAdapter
 import com.example.photoday.constants.TRUE
+import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.example.photoday.databinding.FragmentGalleryBinding
+import com.example.photoday.repository.BaseRepositoryPhoto
+import com.example.photoday.repository.firebasePhotos.FirebasePhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 
 class GalleryFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentGalleryBinding
-    private val viewModel by lazy { ViewModelInjector.providerGalleryViewModel() }
+    private var _binding: FragmentGalleryBinding? = null
+    private val binding get() = _binding!!
+
+    private val viewModel by lazy { ViewModelInjector.providerGalleryViewModel(BaseRepositoryPhoto) }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -32,14 +40,25 @@ class GalleryFragment : BaseFragment() {
         inflater.inflate(R.menu.menu_fragment_gallery, menu)
     }
 
+    override fun onStart() {
+        super.onStart()
+        context?.let { context -> viewModel.createPullPhotos(context) }
+    }
+
     private fun init() {
-        binding.progressBar.visibility = View.VISIBLE
         statusBarNavigation()
         initObservers()
     }
 
     private fun initObservers() {
-        context?.let { context -> viewModel.createPullPhotos(binding, context) }
+        viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { imagesList ->
+            binding.recycleViewListGallery.layoutManager = LinearLayoutManager(context)
+            binding.recycleViewListGallery.adapter = GalleryAdapter(imagesList) { itemPhoto ->
+                /**
+                 * quando clicar na photo, vai fazer o que ?
+                 */
+            }
+        }
     }
 
     private fun statusBarNavigation() {
@@ -47,7 +66,7 @@ class GalleryFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        binding
         super.onDestroy()
+        _binding = null
     }
 }

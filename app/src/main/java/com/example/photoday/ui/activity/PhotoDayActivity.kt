@@ -20,7 +20,6 @@ import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.ActivityPhotoDayBinding
 import com.example.photoday.eventBus.MessageEvent
-import com.example.photoday.repository.BaseRepositoryPhoto.baseRepositoryUploadImageToStorage
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -37,7 +36,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private var datePhotoEventBus: String? = null
 
     @SuppressLint("SimpleDateFormat")
-    private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
+    private val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
     private val viewModel by lazy { ViewModelInjector.providerPhotoDayViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,18 +73,18 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         try {
             //here get the image from Exhibition
             when {
-                requestCode == REQUEST_GALLERY_TIMELINE && resultCode == Activity.RESULT_OK -> {
+                requestCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK -> {
                     data?.data?.let { photo ->
-                            datePhotoEventBus?.let { dateCalendar ->
-                                viewModel.createPushPhoto(
-                                    this,
-                                    dateCalendar,
-                                    photo
-                                )
-                            }
+                        datePhotoEventBus?.let { dateCalendar ->
+                            viewModel.createPushPhoto(
+                                this,
+                                dateCalendar,
+                                photo
+                            )
+                        }
                     }
                 }
-                requestCode == REQUEST_IMAGE_CAPTURE_TIMELINE && resultCode == Activity.RESULT_OK -> {
+                requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK -> {
                     val imageBitmap =
                         data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
                     val bytes = ByteArrayOutputStream()

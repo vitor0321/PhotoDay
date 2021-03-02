@@ -8,6 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.timeline.TimelineFragment">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_view_list_timeline"
         android:layout_width="0dp"
@@ -17,16 +18,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_timeline_fragment" />
-
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:indeterminate="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

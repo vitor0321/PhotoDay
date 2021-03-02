@@ -63,4 +63,11 @@
     <dimen name="padding_toast">8dp</dimen>
     <dimen name="margin_start_toast_image">8dp</dimen>
     <dimen name="text_size_toast">16sp</dimen>
+
+    <!--CardView-->
+    <dimen name="layout_marin_start_8dp">8dp</dimen>
+    <dimen name="layout_margin_cardView_top_8dp">8dp</dimen>
+    <dimen name="layout_margin_end_8dp">8dp</dimen>
+    <dimen name="card_corner_radius_18dp">18dp</dimen>
+    <dimen name="layout_height_250dp">250dp</dimen>
 </resources>

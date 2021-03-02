@@ -12,21 +12,24 @@ import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryUpdateUI
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 object LogFirebase {
-
     private var auth = FirebaseAuth.getInstance()
 
     fun logoutFirebase(context: Context) {
-        try {
-            AuthUI.getInstance()
-                    .signOut(context)
-                    .addOnSuccessListener {
-                        toast(context, R.string.successfully_logged)
-                    }
-        } catch (e: Exception) {
-            e.message?.let { toast(context, it.toInt()) }
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                AuthUI.getInstance()
+                        .signOut(context)
+                        .addOnSuccessListener {
+                            toast(context, R.string.successfully_logged)
+                        }
+            } catch (e: Exception) {
+                e.message?.let { toast(context, it.toInt()) }
+            }
         }
     }
 
@@ -35,22 +38,24 @@ object LogFirebase {
             controlNavigation: NavController,
             context: Context
     ) {
-        try {
-            val credential = GoogleAuthProvider.getCredential(idToken, null)
-            auth.signInWithCredential(credential)
-                    .addOnCompleteListener { task ->
-                        when {
-                            task.isSuccessful -> {
-                                // Sign in success, update UI with the signed-in user's information
-                                baseRepositoryUpdateUI(controlNavigation, FIRST_LOGIN, context)
-                            }
-                            else -> {
-                                toast(context, R.string.auth_failed)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val credential = GoogleAuthProvider.getCredential(idToken, null)
+                auth.signInWithCredential(credential)
+                        .addOnCompleteListener { task ->
+                            when {
+                                task.isSuccessful -> {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    baseRepositoryUpdateUI(controlNavigation, FIRST_LOGIN, context)
+                                }
+                                else -> {
+                                    toast(context, R.string.auth_failed)
+                                }
                             }
                         }
-                    }
-        } catch (e: Exception) {
-            e.message?.let { toast(context, it.toInt()) }
+            } catch (e: Exception) {
+                e.message?.let { toast(context, it.toInt()) }
+            }
         }
     }
 
@@ -60,33 +65,35 @@ object LogFirebase {
             registerUserPassword: AppCompatEditText,
             controlNavigation: NavController
     ) {
-        try {
-            /*Create New User */
-            auth.createUserWithEmailAndPassword(
-                    registerUser.text.toString(),
-                    registerUserPassword.text.toString()
-            )
-                    .addOnCompleteListener { task ->
-                        val user = auth.currentUser
-                        when {
-                            task.isSuccessful -> {
-                                user!!.sendEmailVerification()
-                                        .addOnCompleteListener {
-                                            Navigation.navFragmentRegisterToLogin(controlNavigation)
-                                        }
-                                toast(context, R.string.check_your_email_and_confirm)
-                            }
-                            !task.isSuccessful -> {
-                                Navigation.navFragmentRegisterToLogin(controlNavigation)
-                                toast(context, R.string.email_already_exists)
-                            }
-                            else -> {
-                                toast(context, R.string.authentication_failed_try_again)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                /*Create New User */
+                auth.createUserWithEmailAndPassword(
+                        registerUser.text.toString(),
+                        registerUserPassword.text.toString()
+                )
+                        .addOnCompleteListener { task ->
+                            val user = auth.currentUser
+                            when {
+                                task.isSuccessful -> {
+                                    user!!.sendEmailVerification()
+                                            .addOnCompleteListener {
+                                                Navigation.navFragmentRegisterToLogin(controlNavigation)
+                                            }
+                                    toast(context, R.string.check_your_email_and_confirm)
+                                }
+                                !task.isSuccessful -> {
+                                    Navigation.navFragmentRegisterToLogin(controlNavigation)
+                                    toast(context, R.string.email_already_exists)
+                                }
+                                else -> {
+                                    toast(context, R.string.authentication_failed_try_again)
+                                }
                             }
                         }
-                    }
-        } catch (e: Exception) {
-            e.message?.let { toast(context, it.toInt()) }
+            } catch (e: Exception) {
+                e.message?.let { toast(context, it.toInt()) }
+            }
         }
     }
 
@@ -97,27 +104,29 @@ object LogFirebase {
             controlNavigation: NavController,
             context: Context
     ) {
-        try {
-            /*checking if the user exists*/
-            auth.signInWithEmailAndPassword(
-                    loginUserId.text.toString(),
-                    loginPassword.text.toString()
-            )
-                    .addOnCompleteListener(requireActivity) { task ->
-                        when {
-                            task.isSuccessful -> {
-                                // Sign in success, update UI with the signed-in user's information
-                                baseRepositoryUpdateUI(controlNavigation, FIRST_LOGIN, context)
-                            }
-                            else -> {
-                                // If sign in fails, display a message to the user.
-                                toast(context, R.string.login_failed)
-                                baseRepositoryUpdateUI(controlNavigation, FIRST_LOGIN, context)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                /*checking if the user exists*/
+                auth.signInWithEmailAndPassword(
+                        loginUserId.text.toString(),
+                        loginPassword.text.toString()
+                )
+                        .addOnCompleteListener(requireActivity) { task ->
+                            when {
+                                task.isSuccessful -> {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    baseRepositoryUpdateUI(controlNavigation, FIRST_LOGIN, context)
+                                }
+                                else -> {
+                                    // If sign in fails, display a message to the user.
+                                    toast(context, R.string.login_failed)
+                                    baseRepositoryUpdateUI(controlNavigation, FIRST_LOGIN, context)
+                                }
                             }
                         }
-                    }
-        } catch (e: Exception) {
-            e.message?.let { toast(context, it.toInt()) }
+            } catch (e: Exception) {
+                e.message?.let { toast(context, it.toInt()) }
+            }
         }
     }
 }

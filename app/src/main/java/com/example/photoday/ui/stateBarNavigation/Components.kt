@@ -2,8 +2,10 @@ package com.example.photoday.ui.stateBarNavigation
 
 import com.example.photoday.constants.FALSE
 
-/*são os componentes que vão aparecer em cada fragment, cada uma vai dicir se aparece ou não
-* por padrão vai como falso, não vai aparecer*/
+/**
+ * are the components that will appear in each fragment,
+ * each one will decide whether or not it appears by default it will be false, it will not appear
+ * */
 
 data class Components(
     val appBar: Boolean = FALSE,

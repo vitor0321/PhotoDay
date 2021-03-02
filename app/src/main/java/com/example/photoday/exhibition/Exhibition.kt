@@ -1,5 +1,6 @@
 package com.example.photoday.exhibition
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
@@ -19,7 +20,7 @@ object Exhibition {
                     /*Here open the Gallery. Send the image to the user Configuration Fragment*/
                     ActivityCompat.startActivityForResult(
                         activity, intentGallery,
-                        REQUEST_GALLERY_USER, null
+                        REQUEST_IMAGE_GALLERY_USER, null
                     )
                 }
                 else -> {
@@ -29,7 +30,7 @@ object Exhibition {
                     /*Here open the Gallery. Send the image to the Timeline Fragment*/
                     ActivityCompat.startActivityForResult(
                         activity, intentGallery,
-                        REQUEST_GALLERY_TIMELINE, null
+                        REQUEST_IMAGE_GALLERY, null
                     )
                 }
             }
@@ -38,6 +39,7 @@ object Exhibition {
         }
     }
 
+    @SuppressLint("QueryPermissionsNeeded")
     fun dispatchTakeExhibition(activity: PhotoDayActivity, valueDate: String?) {
         try {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intentTakePicture ->
@@ -63,7 +65,7 @@ object Exhibition {
                             ActivityCompat.startActivityForResult(
                                 activity,
                                 intentTakePicture,
-                                REQUEST_IMAGE_CAPTURE_TIMELINE,
+                                REQUEST_IMAGE_CAPTURE,
                                 null
                             )
                         }

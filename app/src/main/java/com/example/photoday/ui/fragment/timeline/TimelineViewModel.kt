@@ -2,17 +2,21 @@ package com.example.photoday.ui.fragment.timeline
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import com.example.photoday.databinding.FragmentGalleryBinding
-import com.example.photoday.databinding.FragmentTimelineBinding
-import com.example.photoday.repository.BaseRepositoryPhoto.baseRepositoryListFileDownload
+import androidx.lifecycle.viewModelScope
+import com.example.photoday.adapter.modelAdapter.ItemPhoto
+import com.example.photoday.repository.BaseRepositoryPhoto
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class TimelineViewModel : ViewModel() {
+class TimelineViewModel(private val repository: BaseRepositoryPhoto) : ViewModel() {
 
-    fun createPullPhotos(
-        bindingGallery: FragmentGalleryBinding?,
-        context: Context,
-        bindingTimeline: FragmentTimelineBinding
-    ) {
-        baseRepositoryListFileDownload(bindingGallery, context, bindingTimeline)
+    private val _uiStateFlow = MutableStateFlow<List<ItemPhoto>>(emptyList())
+    val uiStateFlow: StateFlow<List<ItemPhoto>> get() = _uiStateFlow
+
+    fun createPullPhotos(context: Context) = viewModelScope.launch {
+        repository.baseRepositoryListFileDownload(context) { imagesList ->
+            _uiStateFlow.value = imagesList
+        }
     }
 }

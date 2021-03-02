@@ -2,11 +2,14 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CardView.Light"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/card_corner_radios_2dp"
-    app:cardElevation="@dimen/card_elevation_10dp"
-    app:cardPreventCornerOverlap="false">
+    android:layout_height="@dimen/layout_height_250dp"
+    android:layout_marginStart="@dimen/layout_marin_start_8dp"
+    android:layout_marginTop="@dimen/layout_margin_cardView_top_8dp"
+    android:layout_marginEnd="@dimen/layout_margin_end_8dp"
+    android:orientation="vertical"
+    app:cardCornerRadius="@dimen/card_corner_radius_18dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,6 +22,7 @@
             android:layout_marginStart="@dimen/text_view_margin_start_16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/image_timeline"
             tools:text="@string/text_view_tools_date" />
 
         <androidx.appcompat.widget.AppCompatImageView
