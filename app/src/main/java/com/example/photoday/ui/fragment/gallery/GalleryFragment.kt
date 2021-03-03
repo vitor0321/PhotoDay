@@ -2,18 +2,22 @@ package com.example.photoday.ui.fragment.gallery
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.lifecycle.asLiveData
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.photoday.R
 import com.example.photoday.adapter.GalleryAdapter
-import com.example.photoday.constants.TRUE
-import com.example.photoday.databinding.FragmentConfigurationBinding
+import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.repository.BaseRepositoryPhoto
-import com.example.photoday.repository.firebasePhotos.FirebasePhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 class GalleryFragment : BaseFragment() {
 
@@ -23,16 +27,19 @@ class GalleryFragment : BaseFragment() {
     private val viewModel by lazy { ViewModelInjector.providerGalleryViewModel(BaseRepositoryPhoto) }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
+        CoroutineScope(Dispatchers.Main).launch {
+            init()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -42,7 +49,9 @@ class GalleryFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        context?.let { context -> viewModel.createPullPhotos(context) }
+        CoroutineScope(Dispatchers.Main).launch {
+            context?.let { context -> viewModel.createPullPhotos(context) }
+        }
     }
 
     private fun init() {
@@ -52,11 +61,34 @@ class GalleryFragment : BaseFragment() {
 
     private fun initObservers() {
         viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { imagesList ->
-            binding.recycleViewListGallery.layoutManager = LinearLayoutManager(context)
-            binding.recycleViewListGallery.adapter = GalleryAdapter(imagesList) { itemPhoto ->
-                /**
-                 * quando clicar na photo, vai fazer o que ?
-                 */
+            val spanCount = SPAN_COUNT
+            val layoutManager = GridLayoutManager(context, spanCount)
+            binding.run {
+                recycleViewListGallery.layoutManager = layoutManager
+                recycleViewListGallery.adapter = GalleryAdapter(imagesList) { itemPhoto ->
+
+                }
+                viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
+            }
+        }
+    }
+
+    private fun viewFlipperControl(child: Int, visible: Boolean) {
+        when {
+            child == CHILD_FIRST && visible == PROGRESS_BAR_VISIBLE -> {
+                binding.run {
+                    viewFlipperGallery.displayedChild = CHILD_FIRST
+                    progressFlowGallery.isVisible = PROGRESS_BAR_VISIBLE
+                }
+            }
+            child == CHILD_SECOND && visible == PROGRESS_BAR_INVISIBLE -> {
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(DELAY_VIEW_FLIPPER)
+                    binding.run {
+                        viewFlipperGallery.displayedChild = CHILD_SECOND
+                        progressFlowGallery.isVisible = PROGRESS_BAR_INVISIBLE
+                    }
+                }
             }
         }
     }

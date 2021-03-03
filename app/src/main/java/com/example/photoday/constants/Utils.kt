@@ -6,7 +6,6 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.photoday.R
 
-
 object Utils {
      fun toast(context: Context, message: Int) {
          Toast(context).apply {

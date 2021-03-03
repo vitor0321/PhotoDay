@@ -16,7 +16,7 @@ class GalleryViewModel(private val repository: BaseRepositoryPhoto) : ViewModel(
     val uiStateFlow: StateFlow<List<ItemPhoto>> get() = _uiStateFlow
 
     fun createPullPhotos(context: Context) {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             repository.baseRepositoryListFileDownload(context) { imagesList ->
                 _uiStateFlow.value = imagesList
             }

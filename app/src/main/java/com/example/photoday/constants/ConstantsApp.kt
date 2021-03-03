@@ -25,6 +25,17 @@ const val REQUEST_IMAGE_GALLERY = 1012
 /*Firebase Photo*/
 const val IMAGES= "images/"
 
+/*Gallery Fragment*/
+const val SPAN_COUNT = 2
+
+/*View Flipper*/
+const val CHILD_FIRST = 0
+const val CHILD_SECOND = 1
+const val PROGRESS_BAR_VISIBLE = true
+const val PROGRESS_BAR_INVISIBLE = false
+const val DELAY_VIEW_FLIPPER = 1900L
+
+
 
 
 
