@@ -1,11 +1,9 @@
 package com.example.photoday.ui.injector
 
 import android.content.Context
-import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.repository.BaseRepositoryUser
-import com.example.photoday.repository.firebasePhotos.FirebasePhoto
 import com.example.photoday.ui.activity.PhotoDayViewModel
 import com.example.photoday.ui.activity.PhotoDayViewModelFactory
 import com.example.photoday.ui.fragment.base.BaseViewModel
@@ -29,20 +27,17 @@ object ViewModelInjector {
     }
 
     fun providerRegisterViewModel(
-            context: Context?,
             controlNavigation: NavController
     ): RegisterViewModel {
-        return RegisterViewModelFactory(context, controlNavigation)
+        return RegisterViewModelFactory( controlNavigation)
                 .create(RegisterViewModel::class.java)
     }
 
     fun providerLoginViewModel(
-            controlNavigation: NavController,
-            context: Context?,
-            requireActivity: FragmentActivity
+        controlNavigation: NavController,
     ): LoginViewModel {
-        return LoginViewModelFactory(controlNavigation, context, requireActivity)
-                .create(LoginViewModel::class.java)
+        return LoginViewModelFactory(controlNavigation)
+            .create(LoginViewModel::class.java)
     }
 
     fun providerBaseViewModel(): BaseViewModel {

@@ -1,16 +1,13 @@
 package com.example.photoday.navigation
 
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import com.example.photoday.ui.fragment.configuration.ConfigurationFragment
 import com.example.photoday.ui.fragment.configuration.ConfigurationFragmentDirections
 import com.example.photoday.ui.fragment.gallery.GalleryFragmentDirections
-import com.example.photoday.ui.fragment.login.LoginFragment
 import com.example.photoday.ui.fragment.login.LoginFragmentDirections
-import com.example.photoday.ui.fragment.register.RegisterFragment
 import com.example.photoday.ui.fragment.register.RegisterFragmentDirections
-import com.example.photoday.ui.fragment.splash.*
-import com.example.photoday.ui.fragment.timeline.TimelineFragment
+import com.example.photoday.ui.fragment.splash.SplashGoodbyeFragmentDirections
+import com.example.photoday.ui.fragment.splash.SplashIntroFragmentDirections
+import com.example.photoday.ui.fragment.splash.SplashLoginDirections
 import com.example.photoday.ui.fragment.timeline.TimelineFragmentDirections
 
 object Navigation {

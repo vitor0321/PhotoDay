@@ -9,10 +9,8 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
-import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryUpdateUI
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -29,11 +27,7 @@ class LoginFragment : BaseFragment() {
 
     private val controlNavigation by lazy { findNavController() }
     private val viewModel by lazy {
-        ViewModelInjector.providerLoginViewModel(
-                controlNavigation,
-                context,
-                requireActivity()
-        )
+        ViewModelInjector.providerLoginViewModel(controlNavigation)
     }
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -56,7 +50,7 @@ class LoginFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        context?.let { baseRepositoryUpdateUI(controlNavigation, ON_START, it) }
+        viewModel.repositoryUpdateUI(controlNavigation, ON_START, context)
     }
 
     private fun init() {
@@ -79,17 +73,22 @@ class LoginFragment : BaseFragment() {
                             return@setOnClickListener
                         }
                         !Patterns.EMAIL_ADDRESS.matcher(editTextLoginUser.text.toString()).matches() -> {
-                            editTextLoginUser.error = context?.getString(R.string.please_enter_valid_email_login)
+                            editTextLoginUser.error =
+                                context?.getString(R.string.please_enter_valid_email_login)
                             editTextLoginUser.requestFocus()
                             return@setOnClickListener
                         }
                         editTextLoginPassword.text.toString().isEmpty() -> {
-                            editTextLoginPassword.error = context?.getString(R.string.please_enter_password)
+                            editTextLoginPassword.error =
+                                context?.getString(R.string.please_enter_password)
                             editTextLoginPassword.requestFocus()
                             return@setOnClickListener
                         }
                     }
-                    viewModel.doLogin(editTextLoginUser, editTextLoginPassword)
+                    viewModel.doLogin(editTextLoginUser,
+                        editTextLoginPassword,
+                        context,
+                        requireActivity())
                 } catch (e: Exception) {
                     e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }
                 }
@@ -116,7 +115,7 @@ class LoginFragment : BaseFragment() {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
-                    viewModel.authWithGoogle(account)
+                    viewModel.authWithGoogle(account, context)
                 } catch (e: ApiException) {
                     e.printStackTrace()
                 }

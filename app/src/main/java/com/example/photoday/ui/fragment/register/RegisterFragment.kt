@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
-import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.example.photoday.databinding.FragmentRegisterUserBinding
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
@@ -19,12 +18,7 @@ class RegisterFragment : BaseFragment() {
     private var _binding: FragmentRegisterUserBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by lazy {
-        ViewModelInjector.providerRegisterViewModel(
-                context,
-                controlNavigation
-        )
-    }
+    private val viewModel by lazy { ViewModelInjector.providerRegisterViewModel(controlNavigation) }
     private val controlNavigation by lazy { findNavController() }
 
     override fun onCreateView(
@@ -84,8 +78,9 @@ class RegisterFragment : BaseFragment() {
                     }
                 }
                 viewModel.signUpUser(
-                        editTextUserEmail,
-                        editTextUserPassword
+                    editTextUserEmail,
+                    editTextUserPassword,
+                    context
                 )
             }
         }

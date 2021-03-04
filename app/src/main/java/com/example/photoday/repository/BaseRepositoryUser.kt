@@ -64,10 +64,12 @@ object BaseRepositoryUser {
         startLog: Int,
         context: Context
     ) {
-        try {
-            updateUI(controlNavigation, startLog, context)
-        } catch (e: Exception) {
-            e.message?.let { Utils.toast(context, it.toInt()) }
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                updateUI(controlNavigation, startLog, context)
+            } catch (e: Exception) {
+                e.message?.let { Utils.toast(context, it.toInt()) }
+            }
         }
     }
 
