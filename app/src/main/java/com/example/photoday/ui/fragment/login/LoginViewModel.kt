@@ -5,9 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.constants.FORGOT_PASSWORD
-import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryFirebaseAuthWithGoogle
-import com.example.photoday.repository.BaseRepositoryUser.baseRepositorySignInWithEmailAndPassword
-import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryUpdateUI
+import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.textfield.TextInputEditText
@@ -15,7 +13,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val controlNavigation: NavController) : ViewModel() {
+class LoginViewModel(
+    private val controlNavigation: NavController,
+    private val repository: BaseRepositoryUser,
+) : ViewModel() {
 
     fun doLogin(
         editTextLoginUser: TextInputEditText,
@@ -25,7 +26,7 @@ class LoginViewModel(private val controlNavigation: NavController) : ViewModel()
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             context?.let { context ->
-                baseRepositorySignInWithEmailAndPassword(
+                repository.baseRepositorySignInWithEmailAndPassword(
                     editTextLoginUser,
                     editTextLoginPassword,
                     requireActivity,
@@ -38,14 +39,18 @@ class LoginViewModel(private val controlNavigation: NavController) : ViewModel()
 
     fun repositoryUpdateUI(controlNavigation: NavController, ON_START: Int, context: Context?) {
         CoroutineScope(Dispatchers.IO).launch {
-            context?.let { context -> baseRepositoryUpdateUI(controlNavigation, ON_START, context) }
+            context?.let { context ->
+                repository.baseRepositoryUpdateUI(controlNavigation,
+                    ON_START,
+                    context)
+            }
         }
     }
 
     fun authWithGoogle(account: GoogleSignInAccount, context: Context?) {
         CoroutineScope(Dispatchers.IO).launch {
             context?.let { context ->
-                baseRepositoryFirebaseAuthWithGoogle(
+                repository.baseRepositoryFirebaseAuthWithGoogle(
                     account.idToken!!,
                     controlNavigation,
                     context

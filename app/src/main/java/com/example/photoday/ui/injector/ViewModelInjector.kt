@@ -1,6 +1,5 @@
 package com.example.photoday.ui.injector
 
-import android.content.Context
 import androidx.navigation.NavController
 import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.repository.BaseRepositoryUser
@@ -27,16 +26,18 @@ object ViewModelInjector {
     }
 
     fun providerRegisterViewModel(
-            controlNavigation: NavController
+        controlNavigation: NavController,
+        repository: BaseRepositoryUser,
     ): RegisterViewModel {
-        return RegisterViewModelFactory( controlNavigation)
-                .create(RegisterViewModel::class.java)
+        return RegisterViewModelFactory(controlNavigation, repository)
+            .create(RegisterViewModel::class.java)
     }
 
     fun providerLoginViewModel(
         controlNavigation: NavController,
+        repository: BaseRepositoryUser,
     ): LoginViewModel {
-        return LoginViewModelFactory(controlNavigation)
+        return LoginViewModelFactory(controlNavigation, repository)
             .create(LoginViewModel::class.java)
     }
 

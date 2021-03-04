@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.databinding.FragmentRegisterUserBinding
+import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -18,7 +19,10 @@ class RegisterFragment : BaseFragment() {
     private var _binding: FragmentRegisterUserBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by lazy { ViewModelInjector.providerRegisterViewModel(controlNavigation) }
+    private val viewModel by lazy {
+        ViewModelInjector.providerRegisterViewModel(controlNavigation,
+            BaseRepositoryUser)
+    }
     private val controlNavigation by lazy { findNavController() }
 
     override fun onCreateView(

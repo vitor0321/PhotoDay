@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryCreateUserWithEmailAndPassword
+import com.example.photoday.repository.BaseRepositoryUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class RegisterViewModel(private val controlNavigation: NavController) : ViewModel() {
+class RegisterViewModel(
+    private val controlNavigation: NavController,
+    private val repository: BaseRepositoryUser,
+) : ViewModel() {
 
     fun signUpUser(
         registerUser: AppCompatEditText,
@@ -18,7 +21,7 @@ class RegisterViewModel(private val controlNavigation: NavController) : ViewMode
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             context?.let {
-                baseRepositoryCreateUserWithEmailAndPassword(
+                repository.baseRepositoryCreateUserWithEmailAndPassword(
                     context,
                     registerUser,
                     registerUserPassword,
