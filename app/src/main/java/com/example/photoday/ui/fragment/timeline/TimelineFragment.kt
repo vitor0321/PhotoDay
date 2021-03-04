@@ -31,7 +31,6 @@ class TimelineFragment : BaseFragment() {
             savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTimelineBinding.inflate(inflater, container, false)
-       viewFlipperControl(CHILD_FIRST,PROGRESS_BAR_VISIBLE)
         return binding.root
     }
 
@@ -50,6 +49,7 @@ class TimelineFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         CoroutineScope(Dispatchers.Main).launch {
+            viewFlipperControl(CHILD_FIRST,PROGRESS_BAR_VISIBLE)
             context?.let { context -> viewModel.createPullPhotos(context) }
         }
     }
@@ -68,8 +68,8 @@ class TimelineFragment : BaseFragment() {
                      * quando clicar na photo, vai fazer o que ?
                      */
                 }
-                viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
             }
+            viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
         }
     }
 

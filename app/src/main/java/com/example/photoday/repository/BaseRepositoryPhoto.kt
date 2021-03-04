@@ -14,14 +14,10 @@ import kotlinx.coroutines.withContext
 
 object BaseRepositoryPhoto {
     fun baseRepositoryUploadImageToStorage(context: Context, dateCalendar: String, curFile: Uri?) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                uploadImageToStorage(context, dateCalendar, curFile)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
-            }
+        try {
+            uploadImageToStorage(context, dateCalendar, curFile)
+        } catch (e: Exception) {
+            e.message?.let { Utils.toast(context, it.toInt()) }
         }
     }
 

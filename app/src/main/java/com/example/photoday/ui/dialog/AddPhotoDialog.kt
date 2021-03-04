@@ -50,7 +50,7 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
             }
 
             imageUploadCamera.setOnClickListener {
-                when (valueDate){
+                when (valueDate) {
                     null -> dispatchTakePermission(activity, null)
                     else -> dispatchTakePermission(activity, valueDate)
                 }

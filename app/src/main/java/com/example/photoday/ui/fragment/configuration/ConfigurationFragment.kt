@@ -23,9 +23,6 @@ import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
 class ConfigurationFragment : BaseFragment() {
@@ -106,7 +103,6 @@ class ConfigurationFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        CoroutineScope(Dispatchers.IO).launch {
             try {
                 //here get the image of ChangeUserFirebase
                 when {
@@ -132,7 +128,6 @@ class ConfigurationFragment : BaseFragment() {
             } catch (e: Exception) {
                 e.message?.let { context?.let { context -> toast(context, it.toInt()) } }
             }
-        }
     }
 
     private fun photoDialog() {

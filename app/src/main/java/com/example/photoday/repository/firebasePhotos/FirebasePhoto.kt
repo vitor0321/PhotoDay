@@ -20,19 +20,13 @@ object FirebasePhoto {
     private val imageRef = Firebase.storage.reference
 
     fun uploadImageToStorage(context: Context, dateCalendar: String, curFile: Uri?) =
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                curFile?.let {
-                    imageRef.child("$IMAGES$dateCalendar").putFile(it)
-                    withContext(Dispatchers.Main) {
-                        toast(context, R.string.successfully_upload_image)
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { toast(context, it.toInt()) }
-                }
+        try {
+            curFile?.let {
+                imageRef.child("$IMAGES$dateCalendar").putFile(it)
+                toast(context, R.string.successfully_upload_image)
             }
+        } catch (e: Exception) {
+            e.message?.let { toast(context, it.toInt()) }
         }
 
     fun deleteImage(context: Context, dateCalendar: String) =
@@ -62,9 +56,10 @@ object FirebasePhoto {
                     //add cycle for add image url to list
                     items.forEachIndexed { _, item ->
                         item.downloadUrl.addOnSuccessListener { itemUri ->
+                            item.name
                             imagesList.add(ItemPhoto(item.name, itemUri.toString()))
                         }.addOnCompleteListener {
-                            imagesList.sortBy { it.photo }
+                            imagesList.sortBy { it.dateCalendar }
                             callback.invoke(imagesList)
                         }
                     }

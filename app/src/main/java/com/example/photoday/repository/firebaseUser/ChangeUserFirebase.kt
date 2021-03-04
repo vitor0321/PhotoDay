@@ -38,24 +38,20 @@ object ChangeUserFirebase {
     }
 
     fun changeImageUser(context: Context, image: Uri) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val user = FirebaseAuth.getInstance().currentUser
-                val profileUpdates = UserProfileChangeRequest.Builder()
-                        .setPhotoUri(image)
-                        .build()
-                user!!.updateProfile(profileUpdates)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                toast(context, R.string.image_change_successful)
-                            }
-                        }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { toast(context, it.toInt()) }
+        try {
+            val user = FirebaseAuth.getInstance().currentUser
+            val profileUpdates = UserProfileChangeRequest.Builder()
+                .setPhotoUri(image)
+                .build()
+            user!!.updateProfile(profileUpdates)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        toast(context, R.string.image_change_successful)
+                    }
                 }
+            } catch (e: Exception) {
+                    e.message?.let { toast(context, it.toInt()) }
             }
-        }
     }
 
     fun forgotPassword(userEmail: EditText, context: Context) {

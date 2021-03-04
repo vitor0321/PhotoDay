@@ -3,7 +3,6 @@ package com.example.photoday.ui.fragment.configuration
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.repository.firebaseUser.user.UserFirebase
 import kotlinx.coroutines.CoroutineScope
@@ -26,9 +25,7 @@ class ConfigurationViewModel(private val repository: BaseRepositoryUser) : ViewM
     }
 
     fun imageUser(context: Context, image: Uri) {
-        CoroutineScope(Dispatchers.IO).launch {
-            repository.baseRepositoryChangeImageUser(context, image)
-        }
+        repository.baseRepositoryChangeImageUser(context, image)
     }
 
     fun logout(context: Context) {

@@ -36,14 +36,10 @@ object BaseRepositoryUser {
     }
 
     fun baseRepositoryChangeImageUser(context: Context, image: Uri) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                changeImageUser(context, image)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
-            }
+        try {
+            changeImageUser(context, image)
+        } catch (e: Exception) {
+            e.message?.let { Utils.toast(context, it.toInt()) }
         }
     }
 

@@ -31,7 +31,6 @@ class GalleryFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
-        viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
         return binding.root
     }
 
@@ -50,6 +49,7 @@ class GalleryFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         CoroutineScope(Dispatchers.Main).launch {
+            viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
             context?.let { context -> viewModel.createPullPhotos(context) }
         }
     }
@@ -68,8 +68,8 @@ class GalleryFragment : BaseFragment() {
                 recycleViewListGallery.adapter = GalleryAdapter(imagesList) { itemPhoto ->
 
                 }
-                viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
             }
+            viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
         }
     }
 
