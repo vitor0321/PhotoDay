@@ -15,7 +15,6 @@ import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentConfigurationBinding
-import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
 import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.dialog.AddPhotoDialog
@@ -24,6 +23,9 @@ import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
 class ConfigurationFragment : BaseFragment() {
@@ -104,30 +106,32 @@ class ConfigurationFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        try {
-            //here get the image of ChangeUserFirebase
-            when {
-                requestCode == REQUEST_IMAGE_GALLERY_USER && resultCode == RESULT_OK -> {
-                    data?.data?.let {
-                        context?.let { context -> viewModel.imageUser(context, it) }
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                //here get the image of ChangeUserFirebase
+                when {
+                    requestCode == REQUEST_IMAGE_GALLERY_USER && resultCode == RESULT_OK -> {
+                        data?.data?.let {
+                            context?.let { context -> viewModel.imageUser(context, it) }
+                        }
                     }
-                }
-                requestCode == REQUEST_IMAGE_CAPTURE_USER && resultCode == RESULT_OK -> {
-                    val imageBitmap =
+                    requestCode == REQUEST_IMAGE_CAPTURE_USER && resultCode == RESULT_OK -> {
+                        val imageBitmap =
                             data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
-                    val bytes = ByteArrayOutputStream()
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-                    val path: String = MediaStore.Images.Media.insertImage(
+                        val bytes = ByteArrayOutputStream()
+                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+                        val path: String = MediaStore.Images.Media.insertImage(
                             context?.contentResolver,
                             imageBitmap,
                             getString(R.string.change_image_user),
                             null
-                    )
-                    context?.let { viewModel.imageUser(it, Uri.parse(path)) }
+                        )
+                        context?.let { viewModel.imageUser(it, Uri.parse(path)) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { context?.let { context -> toast(context, it.toInt()) } }
             }
-        } catch (e: Exception) {
-            e.message?.let { context?.let { context -> toast(context, it.toInt()) } }
         }
     }
 

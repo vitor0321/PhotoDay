@@ -26,7 +26,9 @@ class ConfigurationViewModel(private val repository: BaseRepositoryUser) : ViewM
     }
 
     fun imageUser(context: Context, image: Uri) {
-        repository.baseRepositoryChangeImageUser(context, image)
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.baseRepositoryChangeImageUser(context, image)
+        }
     }
 
     fun logout(context: Context) {
