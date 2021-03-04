@@ -38,7 +38,7 @@ class LoginViewModel(
     }
 
     fun repositoryUpdateUI(controlNavigation: NavController, ON_START: Int, context: Context?) {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             context?.let { context ->
                 repository.baseRepositoryUpdateUI(controlNavigation,
                     ON_START,

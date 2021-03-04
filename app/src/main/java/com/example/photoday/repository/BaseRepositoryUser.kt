@@ -64,7 +64,7 @@ object BaseRepositoryUser {
         startLog: Int,
         context: Context
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             try {
                 updateUI(controlNavigation, startLog, context)
             } catch (e: Exception) {

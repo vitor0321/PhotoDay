@@ -30,7 +30,7 @@ object LogFirebase {
                         }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
@@ -58,7 +58,7 @@ object LogFirebase {
                         }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
@@ -98,7 +98,7 @@ object LogFirebase {
                         }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
@@ -133,7 +133,7 @@ object LogFirebase {
                         }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }

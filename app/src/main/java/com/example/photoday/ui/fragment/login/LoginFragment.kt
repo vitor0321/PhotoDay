@@ -20,6 +20,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginFragment : BaseFragment() {
 
@@ -50,8 +53,10 @@ class LoginFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        viewModel.repositoryUpdateUI(controlNavigation, ON_START, context)
+        CoroutineScope(Dispatchers.Main).launch {
+            // Check if user is signed in (non-null) and update UI accordingly.
+            viewModel.repositoryUpdateUI(controlNavigation, ON_START, context)
+        }
     }
 
     private fun init() {
