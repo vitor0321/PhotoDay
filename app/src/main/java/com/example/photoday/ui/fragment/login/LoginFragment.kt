@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryUpdateUI
@@ -21,6 +20,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class LoginFragment : BaseFragment() {
 
@@ -44,6 +47,7 @@ class LoginFragment : BaseFragment() {
             savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        viewFlipperControl(CHILD_FIRST)
         auth = FirebaseAuth.getInstance()
         return binding.root
     }
@@ -55,8 +59,9 @@ class LoginFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
+        viewFlipperControl(CHILD_SECOND)
         // Check if user is signed in (non-null) and update UI accordingly.
-        context?.let { baseRepositoryUpdateUI(controlNavigation, ON_START, it) }
+        viewModel.repositoryUpdateUI(controlNavigation, ON_START, context)
     }
 
     private fun init() {
@@ -79,17 +84,25 @@ class LoginFragment : BaseFragment() {
                             return@setOnClickListener
                         }
                         !Patterns.EMAIL_ADDRESS.matcher(editTextLoginUser.text.toString()).matches() -> {
-                            editTextLoginUser.error = context?.getString(R.string.please_enter_valid_email_login)
+                            editTextLoginUser.error =
+                                context?.getString(R.string.please_enter_valid_email_login)
                             editTextLoginUser.requestFocus()
                             return@setOnClickListener
                         }
                         editTextLoginPassword.text.toString().isEmpty() -> {
-                            editTextLoginPassword.error = context?.getString(R.string.please_enter_password)
+                            editTextLoginPassword.error =
+                                context?.getString(R.string.please_enter_password)
                             editTextLoginPassword.requestFocus()
                             return@setOnClickListener
                         }
                     }
-                    viewModel.doLogin(editTextLoginUser, editTextLoginPassword)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.doLogin(editTextLoginUser,
+                            editTextLoginPassword,
+                            context,
+                            requireActivity())
+                        viewFlipperControl(CHILD_THIRD)
+                    }
                 } catch (e: Exception) {
                     e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }
                 }
@@ -114,9 +127,11 @@ class LoginFragment : BaseFragment() {
             RC_SIGN_IN -> {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 try {
-                    // Google Sign In was successful, authenticate with Firebase
-                    val account = task.getResult(ApiException::class.java)!!
-                    viewModel.authWithGoogle(account)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        // Google Sign In was successful, authenticate with Firebase
+                        val account = task.getResult(ApiException::class.java)!!
+                        viewModel.authWithGoogle(account, context)
+                    }
                 } catch (e: ApiException) {
                     e.printStackTrace()
                 }
@@ -127,16 +142,40 @@ class LoginFragment : BaseFragment() {
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
+        viewFlipperControl(CHILD_THIRD)
     }
 
     private fun createRequestLoginGoogle() {
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(DEFAULT_WEB_CLIENT_ID)
-                .requestEmail()
-                .build()
+            .requestIdToken(DEFAULT_WEB_CLIENT_ID)
+            .requestEmail()
+            .build()
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+    }
+
+    private fun viewFlipperControl(child: Int) {
+        when (child) {
+            CHILD_FIRST -> {
+                binding.run {
+                    viewFlipperLogin.displayedChild = CHILD_FIRST
+                }
+            }
+            CHILD_SECOND -> {
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(DELAY_VIEW_FLIPPER_ANIMATION)
+                    binding.run {
+                        viewFlipperLogin.displayedChild = CHILD_SECOND
+                    }
+                }
+            }
+            CHILD_THIRD -> {
+                binding.run {
+                    viewFlipperLogin.displayedChild = CHILD_THIRD
+                }
+            }
+        }
     }
 
     private fun statusBarNavigation() {

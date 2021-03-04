@@ -83,7 +83,7 @@ class GalleryFragment : BaseFragment() {
             }
             child == CHILD_SECOND && visible == PROGRESS_BAR_INVISIBLE -> {
                 CoroutineScope(Dispatchers.Main).launch {
-                    delay(DELAY_VIEW_FLIPPER)
+                    delay(DELAY_VIEW_FLIPPER_PROGRESS_BAR)
                     binding.run {
                         viewFlipperGallery.displayedChild = CHILD_SECOND
                         progressFlowGallery.isVisible = PROGRESS_BAR_INVISIBLE

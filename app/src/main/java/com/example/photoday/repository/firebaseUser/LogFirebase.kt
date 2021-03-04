@@ -5,7 +5,9 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.example.photoday.R
+import com.example.photoday.constants.FALSE_USER
 import com.example.photoday.constants.FIRST_LOGIN
+import com.example.photoday.constants.TRUE_USER
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.navigation.Navigation
 import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryUpdateUI
@@ -30,7 +32,7 @@ object LogFirebase {
                         }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
@@ -38,8 +40,8 @@ object LogFirebase {
 
     fun firebaseAuthWithGoogle(
             idToken: String,
-            controlNavigation: NavController,
-            context: Context
+            context: Context,
+            callback: (startLogin: Boolean) -> Unit,
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -49,7 +51,9 @@ object LogFirebase {
                             when {
                                 task.isSuccessful -> {
                                     // Sign in success, update UI with the signed-in user's information
-                                    baseRepositoryUpdateUI(controlNavigation, FIRST_LOGIN, context)
+                                    baseRepositoryUpdateUI( context){startLogin->
+                                        callback.invoke(startLogin)
+                                    }
                                 }
                                 else -> {
                                     toast(context, R.string.auth_failed)
@@ -58,7 +62,7 @@ object LogFirebase {
                         }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
@@ -108,8 +112,8 @@ object LogFirebase {
             loginUserId: AppCompatEditText,
             loginPassword: AppCompatEditText,
             requireActivity: FragmentActivity,
-            controlNavigation: NavController,
-            context: Context
+            context: Context,
+            callback: (startLogin: Boolean) -> Unit
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -122,18 +126,22 @@ object LogFirebase {
                             when {
                                 task.isSuccessful -> {
                                     // Sign in success, update UI with the signed-in user's information
-                                    baseRepositoryUpdateUI(controlNavigation, FIRST_LOGIN, context)
+                                    baseRepositoryUpdateUI( context){
+                                        callback.invoke(TRUE_USER)
+                                    }
                                 }
                                 else -> {
                                     // If sign in fails, display a message to the user.
                                     toast(context, R.string.login_failed)
-                                    baseRepositoryUpdateUI(controlNavigation, FIRST_LOGIN, context)
+                                    baseRepositoryUpdateUI(context){
+                                        callback.invoke(FALSE_USER)
+                                    }
                                 }
                             }
                         }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }

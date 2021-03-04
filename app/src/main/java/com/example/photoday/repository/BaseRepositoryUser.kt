@@ -6,7 +6,7 @@ import android.widget.EditText
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import com.example.photoday.constants.Utils
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.repository.firebaseUser.ChangeUserFirebase.changeImageUser
 import com.example.photoday.repository.firebaseUser.ChangeUserFirebase.changeNameUser
 import com.example.photoday.repository.firebaseUser.ChangeUserFirebase.forgotPassword
@@ -29,7 +29,7 @@ object BaseRepositoryUser {
                 changeNameUser(context, name)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
@@ -41,7 +41,7 @@ object BaseRepositoryUser {
                 changeImageUser(context, image)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
@@ -53,21 +53,22 @@ object BaseRepositoryUser {
                 forgotPassword(userEmail, context)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
     }
 
     fun baseRepositoryUpdateUI(
-        controlNavigation: NavController,
-        startLog: Int,
-        context: Context
+        context: Context,
+        callback: (startLogin: Boolean) -> Unit,
     ) {
         try {
-            updateUI(controlNavigation, startLog, context)
+            updateUI(context) { startLogin ->
+                callback.invoke(startLogin)
+            }
         } catch (e: Exception) {
-            e.message?.let { Utils.toast(context, it.toInt()) }
+            e.message?.let { message -> toast(context, message.toInt()) }
         }
     }
 
@@ -79,7 +80,7 @@ object BaseRepositoryUser {
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
@@ -91,7 +92,7 @@ object BaseRepositoryUser {
                 logoutFirebase(context)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
@@ -99,15 +100,17 @@ object BaseRepositoryUser {
 
     fun baseRepositoryFirebaseAuthWithGoogle(
             idToken: String,
-            controlNavigation: NavController,
-            context: Context
+            context: Context,
+            callback: (startLogin: Boolean) -> Unit,
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                firebaseAuthWithGoogle(idToken, controlNavigation, context)
+                firebaseAuthWithGoogle(idToken, context){startLogin->
+                    callback.invoke(startLogin)
+                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
@@ -124,31 +127,30 @@ object BaseRepositoryUser {
                 createUserWithEmailAndPassword(context, registerUser, registerUserPassword, controlNavigation)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
     }
 
     fun baseRepositorySignInWithEmailAndPassword(
-            loginUserId: AppCompatEditText,
-            loginPassword: AppCompatEditText,
-            requireActivity: FragmentActivity,
-            controlNavigation: NavController,
-            context: Context
+        loginUserId: AppCompatEditText,
+        loginPassword: AppCompatEditText,
+        requireActivity: FragmentActivity,
+        context: Context,
+        callback: (startLogin: Boolean) -> Unit
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                signInWithEmailAndPassword(
-                        loginUserId,
-                        loginPassword,
-                        requireActivity,
-                        controlNavigation,
-                        context
-                )
+                signInWithEmailAndPassword(loginUserId,
+                    loginPassword,
+                    requireActivity,
+                    context) { startLogin ->
+                    callback.invoke(startLogin)
+                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }

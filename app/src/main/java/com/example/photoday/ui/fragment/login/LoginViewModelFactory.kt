@@ -14,6 +14,6 @@ class LoginViewModelFactory(
 ) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return LoginViewModel(controlNavigation, context, requireActivity) as T
+        return LoginViewModel(controlNavigation) as T
     }
 }

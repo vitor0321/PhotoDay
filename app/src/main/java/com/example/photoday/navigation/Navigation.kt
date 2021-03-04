@@ -15,12 +15,6 @@ import com.example.photoday.ui.fragment.timeline.TimelineFragmentDirections
 
 object Navigation {
 
-    fun navFragmentLoginToSplashLogin(navFragment: NavController) {
-        /*Navigation between fragments Directions Login and Splash Login*/
-        val direction = LoginFragmentDirections.actionLoginFragmentToSplashLogin()
-        navFragment.navigate(direction)
-    }
-
     fun navFragmentLoginToTimeline(navFragment: NavController) {
         /*Navigation between fragments Directions Login and Timeline*/
         val direction = LoginFragmentDirections.actionLoginFragmentToTimelineFragment()
@@ -49,18 +43,6 @@ object Navigation {
         /*Navigation between fragments Directions*/
         val direction =
             SplashGoodbyeFragmentDirections.actionSplashGoodbyeFragmentToLoginFragment()
-        navFragment.navigate(direction)
-    }
-
-    fun navFragmentSplashIntroToLogin(navFragment: NavController){
-        val direction =
-            SplashIntroFragmentDirections.actionSplashIntroFragmentToLoginFragment()
-        navFragment.navigate(direction)
-    }
-
-    fun navFragmentSplashLoginToTimeline(navFragment: NavController){
-        val direction =
-            SplashLoginDirections.actionSplashLoginToTimelineFragment()
         navFragment.navigate(direction)
     }
 

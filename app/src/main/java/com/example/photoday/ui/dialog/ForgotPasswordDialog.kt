@@ -12,6 +12,9 @@ import com.example.photoday.R
 import com.example.photoday.constants.Utils
 import com.example.photoday.databinding.DialogForgotPasswordBinding
 import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryForgotPassword
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class ForgotPasswordDialog : DialogFragment() {
@@ -54,13 +57,15 @@ class ForgotPasswordDialog : DialogFragment() {
                         }
                         !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
                             userEmail.error =
-                                    context?.getString(R.string.please_enter_valid_email_dialog)
+                                context?.getString(R.string.please_enter_valid_email_dialog)
                             userEmail.requestFocus()
                             return@setOnClickListener
                         }
                     }
-                    context?.let { context -> baseRepositoryForgotPassword(userEmail, context) }
-                    dialog?.dismiss()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        context?.let { context -> baseRepositoryForgotPassword(userEmail, context) }
+                        dialog?.dismiss()
+                    }
                 }catch (e: Exception) {
                     e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }
                 }

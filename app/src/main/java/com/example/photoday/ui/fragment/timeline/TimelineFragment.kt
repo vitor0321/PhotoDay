@@ -83,7 +83,7 @@ class TimelineFragment : BaseFragment() {
             }
             child == CHILD_SECOND && visible == PROGRESS_BAR_INVISIBLE ->{
                 CoroutineScope(Dispatchers.Main).launch {
-                    delay(DELAY_VIEW_FLIPPER)
+                    delay(DELAY_VIEW_FLIPPER_PROGRESS_BAR)
                     binding.run {
                         viewFlipperTimeline.displayedChild = CHILD_SECOND
                         progressFlowTimeline.isVisible = PROGRESS_BAR_INVISIBLE

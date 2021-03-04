@@ -31,9 +31,16 @@ const val SPAN_COUNT = 2
 /*View Flipper*/
 const val CHILD_FIRST = 0
 const val CHILD_SECOND = 1
+const val CHILD_THIRD = 2
 const val PROGRESS_BAR_VISIBLE = true
 const val PROGRESS_BAR_INVISIBLE = false
-const val DELAY_VIEW_FLIPPER = 1900L
+const val DELAY_VIEW_FLIPPER_PROGRESS_BAR = 1900L
+const val DELAY_VIEW_FLIPPER_ANIMATION = 1500L
+
+/*User Firebase*/
+const val FALSE_USER = false
+const val TRUE_USER = true
+
 
 
 
