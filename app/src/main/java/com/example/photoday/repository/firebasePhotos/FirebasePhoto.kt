@@ -63,7 +63,8 @@ object FirebasePhoto {
                         imagesList.add(ItemPhoto(item.name, itemUri.toString()))
                     }.addOnCompleteListener {
                         imagesList.sortBy { it.dateCalendar }
-                        callback.invoke(imagesList)
+                        val listReversed = imagesList.asReversed()
+                        callback.invoke(listReversed)
                     }
                 }
             }
