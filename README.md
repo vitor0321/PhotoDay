@@ -14,15 +14,15 @@ Toda a estrutura do projeto foi desenvolvida com a linguagem Kotlin, tanto a par
 ### Como ele é dividido?
 
 Ele foi dividido em três partes:
-1. A area de login, que está incluida a de registro do usuário, recuperação de password e a validação do usuário.
-2. A area central do APP, a onde o usuário vai disfrutar dele. Onde estão apresentada as suas fotos divididas por dias e a parte da galeria, que possui as fotos em um formato, para facilitar a sua procura.
-3. Por fim temos a area de configuração, onde o usuário pode alterar a sua imagem de perfil e o seu nome. Nessa pagina também se encontra o botão para deslogar do APP e poder logar com um usuário diferente.
+1. A área de login, que está incluida a de registro do usuário, recuperação de password e a validação do usuário.
+2. A área central do APP, a onde o usuário vai desfrutar dele. Onde estão apresentadas as suas fotos divididas por dias e a parte da galeria, que possui as fotos em um formato, para facilitar a sua procura.
+3. Por fim temos a área de configuração, onde o usuário pode alterar a sua imagem de perfil e o seu nome. Nessa pagina também se encontra o botão para logout do APP e poder logar com um usuário diferente.
 
 ### O que foi usado?
 
-* No login foi usado o Authentication do Firebase, muito util para o registro do usuário, da validação e até mesmo na hora de logar com a conta Google como foi usado nesse nosso APP.
-* Quardar as fotos foi usado o Storage do Firebase, simples de usar e fácil de implementar.
-* Na estrura do APP com a linguagem Kotlin foi usado algumas funções específica dela, e outras que já vem de mais tempo no desenvolvimento do Android:
+* No login foi usado o Authentication do Firebase, muito útil para o registro do usuário, da validação e até mesmo na hora do login com a conta Google como foi usado nesse nosso APP.
+* Guardar as fotos foi usado o Storage do Firebase, simples de usar e fácil de implementar.
+* Na estrutura do APP com a linguagem Kotlin foi usado algumas funções específicas dela, e outras que já vem de mais tempo no desenvolvimento do Android:
 - [x] Fragment
 - [x] Jetpack Architecture Components;
 - [x] Containers
