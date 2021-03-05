@@ -40,7 +40,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private var datePhotoEventBus: String? = null
 
     @SuppressLint("SimpleDateFormat")
-    private val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy")
+    private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
     private val viewModel by lazy { ViewModelInjector.providerPhotoDayViewModel(BaseRepositoryPhoto) }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -33,16 +33,6 @@ object BaseRepositoryUser {
         }
     }
 
-    suspend fun baseRepositoryChangeImageUser(context: Context, image: Uri) {
-        try {
-            changeImageUser(context, image)
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message.toInt()) }
-            }
-        }
-    }
-
     suspend fun baseRepositoryForgotPassword(userEmail: EditText, context: Context) {
         try {
             forgotPassword(userEmail, context)
@@ -77,6 +67,16 @@ object BaseRepositoryUser {
             getCurrentUserFirebase(context) { userFirebase ->
                 callback.invoke(userFirebase)
             }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                e.message?.let { message -> toast(context, message.toInt()) }
+            }
+        }
+    }
+
+    suspend fun baseRepositoryChangeImageUser(context: Context, image: Uri) {
+        try {
+            changeImageUser(context, image)
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
                 e.message?.let { message -> toast(context, message.toInt()) }
