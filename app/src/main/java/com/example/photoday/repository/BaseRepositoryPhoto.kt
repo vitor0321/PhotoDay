@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.example.photoday.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.constants.Utils
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.repository.firebasePhotos.FirebasePhoto.deleteImage
 import com.example.photoday.repository.firebasePhotos.FirebasePhoto.listFileDownload
 import com.example.photoday.repository.firebasePhotos.FirebasePhoto.uploadImageToStorage
@@ -13,38 +14,38 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 object BaseRepositoryPhoto {
-    fun baseRepositoryUploadImageToStorage(context: Context, dateCalendar: String, curFile: Uri?) {
+    suspend fun baseRepositoryUploadImageToStorage(context: Context, dateCalendar: String, curFile: Uri?) {
         try {
             uploadImageToStorage(context, dateCalendar, curFile)
         } catch (e: Exception) {
-            e.message?.let { Utils.toast(context, it.toInt()) }
-        }
-    }
-
-    fun baseRepositoryListFileDownload(context: Context, callback: (imagesList:List<ItemPhoto>) -> Unit){
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                listFileDownload(context){ imagesList ->
-                    callback.invoke(imagesList)
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
+            withContext(Dispatchers.Main) {
+                e.message?.let { message -> toast(context, message.toInt()) }
             }
         }
     }
 
-    fun baseRepositoryDeleteImage(context: Context, date: String) {
-        CoroutineScope(Dispatchers.IO).launch {
+    suspend fun baseRepositoryListFileDownload(
+        context: Context,
+        callback: (imagesList: List<ItemPhoto>) -> Unit,
+    ) {
+        try {
+            listFileDownload(context) { imagesList ->
+                callback.invoke(imagesList)
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                e.message?.let { message -> toast(context, message.toInt()) }
+            }
+        }
+    }
+
+    suspend fun baseRepositoryDeleteImage(context: Context, date: String) {
             try {
                 deleteImage(context, date)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
-        }
     }
-
 }

@@ -11,6 +11,9 @@ import com.example.photoday.R
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.DialogFragmentUserNameBinding
 import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryChangeNameUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class NewUserNameDialog : DialogFragment() {
 
@@ -50,7 +53,9 @@ class NewUserNameDialog : DialogFragment() {
                         }
                     }
                     val name = editTextNewName.text.toString()
-                    context?.let { context -> baseRepositoryChangeNameUser(context, name) }
+                    CoroutineScope(Dispatchers.IO).launch{
+                        context?.let { context -> baseRepositoryChangeNameUser(context, name) }
+                    }
                     dialog?.dismiss()
                 } catch (e: Exception) {
                     e.message?.let { context?.let { it1 -> toast(it1, it.toInt()) } }

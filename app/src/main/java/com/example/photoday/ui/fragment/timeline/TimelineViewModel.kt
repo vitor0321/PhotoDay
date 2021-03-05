@@ -18,7 +18,7 @@ class TimelineViewModel(private val repository: BaseRepositoryPhoto) : ViewModel
     val uiStateFlow: StateFlow<List<ItemPhoto>> get() = _uiStateFlow
 
     fun createPullPhotos(context: Context) {
-        CoroutineScope(Dispatchers.Main).launch {
+        viewModelScope.launch {
             repository.baseRepositoryListFileDownload(context) { imagesList ->
                 _uiStateFlow.value = imagesList
             }

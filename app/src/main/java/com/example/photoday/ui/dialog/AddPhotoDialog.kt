@@ -27,8 +27,7 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initButton()
+            initButton()
     }
 
     override fun onResume() {
@@ -48,7 +47,6 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
                 }
                 dialog?.dismiss()
             }
-
             imageUploadCamera.setOnClickListener {
                 when (valueDate) {
                     null -> dispatchTakePermission(activity, null)

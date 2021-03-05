@@ -3,6 +3,7 @@ package com.example.photoday.ui.fragment.register
 import android.content.Context
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.photoday.repository.BaseRepositoryUser
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +20,7 @@ class RegisterViewModel(
         registerUserPassword: AppCompatEditText,
         context: Context?,
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             context?.let {
                 repository.baseRepositoryCreateUserWithEmailAndPassword(
                     context,

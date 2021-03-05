@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.repository.BaseRepositoryUser
@@ -53,10 +54,8 @@ class LoginFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        CoroutineScope(Dispatchers.Main).launch {
-            // Check if user is signed in (non-null) and update UI accordingly.
-            viewModel.repositoryUpdateUI(controlNavigation, ON_START, context)
-        }
+        // Check if user is signed in (non-null) and update UI accordingly.
+        viewModel.repositoryUpdateUI(controlNavigation, ON_START, context)
     }
 
     private fun init() {
@@ -96,7 +95,14 @@ class LoginFragment : BaseFragment() {
                         context,
                         requireActivity())
                 } catch (e: Exception) {
-                    e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }
+                    CoroutineScope(Dispatchers.Main).launch {
+                        e.message?.let { message ->
+                            context?.let { context ->
+                                toast(context,
+                                    message.toInt())
+                            }
+                        }
+                    }
                 }
 
             }

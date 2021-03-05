@@ -11,17 +11,19 @@ import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
 import com.example.photoday.constants.Utils
 import com.example.photoday.databinding.DialogForgotPasswordBinding
-import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryForgotPassword
+import com.example.photoday.repository.BaseRepositoryUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-
-class ForgotPasswordDialog : DialogFragment() {
+class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogFragment() {
 
     private lateinit var binding: DialogForgotPasswordBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DialogForgotPasswordBinding.inflate(inflater, container, false)
         return binding.root
@@ -54,15 +56,25 @@ class ForgotPasswordDialog : DialogFragment() {
                         }
                         !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
                             userEmail.error =
-                                    context?.getString(R.string.please_enter_valid_email_dialog)
+                                context?.getString(R.string.please_enter_valid_email_dialog)
                             userEmail.requestFocus()
                             return@setOnClickListener
                         }
                     }
-                    context?.let { context -> baseRepositoryForgotPassword(userEmail, context) }
+                    CoroutineScope(Dispatchers.IO).launch {
+                        context?.let { context ->
+                            repository.baseRepositoryForgotPassword(userEmail,
+                                context)
+                        }
+                    }
                     dialog?.dismiss()
                 }catch (e: Exception) {
-                    e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }
+                    e.message?.let { message ->
+                        context?.let { context ->
+                            Utils.toast(context,
+                                message.toInt())
+                        }
+                    }
                 }
             }
             buttonCancel.setOnClickListener {
@@ -77,6 +89,6 @@ class ForgotPasswordDialog : DialogFragment() {
     }
 
     companion object {
-        fun newInstance() = ForgotPasswordDialog()
+        fun newInstance() = ForgotPasswordDialog(BaseRepositoryUser)
     }
 }

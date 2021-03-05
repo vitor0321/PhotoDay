@@ -48,10 +48,8 @@ class GalleryFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        CoroutineScope(Dispatchers.Main).launch {
-            viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
-            context?.let { context -> viewModel.createPullPhotos(context) }
-        }
+        viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
+        context?.let { context -> viewModel.createPullPhotos(context) }
     }
 
     private fun init() {

@@ -3,6 +3,7 @@ package com.example.photoday.ui.fragment.login
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.photoday.constants.FORGOT_PASSWORD
 import com.example.photoday.repository.BaseRepositoryUser
@@ -24,7 +25,7 @@ class LoginViewModel(
         context: Context?,
         requireActivity: FragmentActivity,
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             context?.let { context ->
                 repository.baseRepositorySignInWithEmailAndPassword(
                     editTextLoginUser,
@@ -38,7 +39,7 @@ class LoginViewModel(
     }
 
     fun repositoryUpdateUI(controlNavigation: NavController, ON_START: Int, context: Context?) {
-        CoroutineScope(Dispatchers.Main).launch {
+        viewModelScope.launch {
             context?.let { context ->
                 repository.baseRepositoryUpdateUI(controlNavigation,
                     ON_START,
@@ -48,7 +49,7 @@ class LoginViewModel(
     }
 
     fun authWithGoogle(account: GoogleSignInAccount, context: Context?) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             context?.let { context ->
                 repository.baseRepositoryFirebaseAuthWithGoogle(
                     account.idToken!!,
@@ -60,9 +61,9 @@ class LoginViewModel(
     }
 
     fun forgotPassword(activity: FragmentActivity?) {
-        activity?.let {
+        activity?.let { activity ->
             ForgotPasswordDialog.newInstance()
-                    .show(it.supportFragmentManager, FORGOT_PASSWORD)
+                    .show(activity.supportFragmentManager, FORGOT_PASSWORD)
         }
     }
 }

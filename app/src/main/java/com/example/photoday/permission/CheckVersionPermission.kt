@@ -11,31 +11,39 @@ import com.example.photoday.constants.Utils.toast
 import com.example.photoday.exhibition.Exhibition.dispatchTakeExhibition
 import com.example.photoday.exhibition.Exhibition.galleryExhibition
 import com.example.photoday.ui.activity.PhotoDayActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 object CheckVersionPermission {
     fun galleryPermission(activity: PhotoDayActivity, valueDate: String?) {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                when (PermissionChecker.PERMISSION_DENIED) {
-                    PermissionChecker.checkSelfPermission(
-                        activity,
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                    ),
-                    -> {
-                        ActivityCompat.requestPermissions(
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    when (PermissionChecker.PERMISSION_DENIED) {
+                        PermissionChecker.checkSelfPermission(
                             activity,
-                            arrayOf(
-                                Manifest.permission.READ_EXTERNAL_STORAGE,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE
-                            ),
-                            REQUEST_IMAGE_GALLERY_USER
-                        )
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        ),
+                        -> {
+                            ActivityCompat.requestPermissions(
+                                activity,
+                                arrayOf(
+                                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                ),
+                                REQUEST_IMAGE_GALLERY_USER
+                            )
+                        }
+                        else -> galleryExhibition(activity, valueDate)
                     }
-                    else -> galleryExhibition(activity, valueDate)
+                } else toast(activity, R.string.version_less_23)
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    e.message?.let { message -> toast(activity, message.toInt()) }
                 }
-            } else toast(activity, R.string.version_less_23)
-        } catch (e: Exception) {
-            e.message?.let { toast(activity, it.toInt()) }
+            }
         }
     }
 
@@ -43,26 +51,30 @@ object CheckVersionPermission {
         activity: PhotoDayActivity,
         valueDate: String?
     ) {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                when (PermissionChecker.PERMISSION_DENIED) {
-                    PermissionChecker.checkSelfPermission(
-                        activity,
-                        Manifest.permission.CAMERA
-                    ),
-                    -> {
-                        ActivityCompat.requestPermissions(
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    when (PermissionChecker.PERMISSION_DENIED) {
+                        PermissionChecker.checkSelfPermission(
                             activity,
-                            arrayOf(Manifest.permission.CAMERA),
-                            REQUEST_IMAGE_CAPTURE_USER
-                        )
+                            Manifest.permission.CAMERA
+                        ),
+                        -> {
+                            ActivityCompat.requestPermissions(
+                                activity,
+                                arrayOf(Manifest.permission.CAMERA),
+                                REQUEST_IMAGE_CAPTURE_USER
+                            )
+                        }
+                        else -> dispatchTakeExhibition(activity, valueDate)
                     }
-                    else -> dispatchTakeExhibition(activity, valueDate)
+                } else
+                    toast(activity, R.string.version_less_23)
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    e.message?.let { message -> toast(activity, message.toInt()) }
                 }
-            } else
-                toast(activity, R.string.version_less_23)
-        } catch (e: Exception) {
-            e.message?.let { toast(activity, it.toInt()) }
+            }
         }
-        }
+    }
 }

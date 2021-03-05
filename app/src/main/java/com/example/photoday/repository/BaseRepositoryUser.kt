@@ -6,7 +6,7 @@ import android.widget.EditText
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import com.example.photoday.constants.Utils
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.repository.firebaseUser.ChangeUserFirebase.changeImageUser
 import com.example.photoday.repository.firebaseUser.ChangeUserFirebase.changeNameUser
 import com.example.photoday.repository.firebaseUser.ChangeUserFirebase.forgotPassword
@@ -23,34 +23,32 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 object BaseRepositoryUser {
-    fun baseRepositoryChangeNameUser(context: Context, name: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                changeNameUser(context, name)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
+    suspend fun baseRepositoryChangeNameUser(context: Context, name: String) {
+        try {
+            changeNameUser(context, name)
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                e.message?.let { message -> toast(context, message.toInt()) }
             }
         }
     }
 
-    fun baseRepositoryChangeImageUser(context: Context, image: Uri) {
+    suspend fun baseRepositoryChangeImageUser(context: Context, image: Uri) {
         try {
             changeImageUser(context, image)
         } catch (e: Exception) {
-            e.message?.let { Utils.toast(context, it.toInt()) }
+            withContext(Dispatchers.Main) {
+                e.message?.let { message -> toast(context, message.toInt()) }
+            }
         }
     }
 
-    fun baseRepositoryForgotPassword(userEmail: EditText, context: Context) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                forgotPassword(userEmail, context)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
+    suspend fun baseRepositoryForgotPassword(userEmail: EditText, context: Context) {
+        try {
+            forgotPassword(userEmail, context)
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                e.message?.let { message -> toast(context, message.toInt()) }
             }
         }
     }
@@ -58,96 +56,94 @@ object BaseRepositoryUser {
     fun baseRepositoryUpdateUI(
         controlNavigation: NavController,
         startLog: Int,
-        context: Context
+        context: Context,
     ) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 updateUI(controlNavigation, startLog, context)
             } catch (e: Exception) {
-                e.message?.let { Utils.toast(context, it.toInt()) }
-            }
-        }
-    }
-
-    fun baseRepositoryGetCurrentUserFirebase(context: Context, callback: (userFirebase: UserFirebase) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                getCurrentUserFirebase(context) { userFirebase ->
-                    callback.invoke(userFirebase)
-                }
-            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
+                    e.message?.let { message -> toast(context, message.toInt()) }
                 }
             }
         }
     }
 
-    fun baseRepositoryLogoutFirebase(context: Context) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                logoutFirebase(context)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
-            }
-        }
-    }
-
-    fun baseRepositoryFirebaseAuthWithGoogle(
-            idToken: String,
-            controlNavigation: NavController,
-            context: Context
+    suspend fun baseRepositoryGetCurrentUserFirebase(
+        context: Context,
+        callback: (userFirebase: UserFirebase) -> Unit,
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                firebaseAuthWithGoogle(idToken, controlNavigation, context)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
+        try {
+            getCurrentUserFirebase(context) { userFirebase ->
+                callback.invoke(userFirebase)
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                e.message?.let { message -> toast(context, message.toInt()) }
             }
         }
     }
 
-    fun baseRepositoryCreateUserWithEmailAndPassword(
-            context: Context,
-            registerUser: AppCompatEditText,
-            registerUserPassword: AppCompatEditText,
-            controlNavigation: NavController
-    ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                createUserWithEmailAndPassword(context, registerUser, registerUserPassword, controlNavigation)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
+    suspend fun baseRepositoryLogoutFirebase(context: Context) {
+        try {
+            logoutFirebase(context)
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                e.message?.let { message -> toast(context, message.toInt()) }
             }
         }
     }
 
-    fun baseRepositorySignInWithEmailAndPassword(
-            loginUserId: AppCompatEditText,
-            loginPassword: AppCompatEditText,
-            requireActivity: FragmentActivity,
-            controlNavigation: NavController,
-            context: Context
+    suspend fun baseRepositoryFirebaseAuthWithGoogle(
+        idToken: String,
+        controlNavigation: NavController,
+        context: Context,
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                signInWithEmailAndPassword(
-                        loginUserId,
-                        loginPassword,
-                        requireActivity,
-                        controlNavigation,
-                        context
-                )
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
+        try {
+            firebaseAuthWithGoogle(idToken, controlNavigation, context)
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                e.message?.let { message -> toast(context, message.toInt()) }
+            }
+        }
+    }
+
+    suspend fun baseRepositoryCreateUserWithEmailAndPassword(
+        context: Context,
+        registerUser: AppCompatEditText,
+        registerUserPassword: AppCompatEditText,
+        controlNavigation: NavController,
+    ) {
+        try {
+            createUserWithEmailAndPassword(context,
+                registerUser,
+                registerUserPassword,
+                controlNavigation)
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                e.message?.let { message -> toast(context, message.toInt()) }
+            }
+        }
+    }
+
+    suspend fun baseRepositorySignInWithEmailAndPassword(
+        loginUserId: AppCompatEditText,
+        loginPassword: AppCompatEditText,
+        requireActivity: FragmentActivity,
+        controlNavigation: NavController,
+        context: Context,
+    ) {
+        try {
+            signInWithEmailAndPassword(
+                loginUserId,
+                loginPassword,
+                requireActivity,
+                controlNavigation,
+                context
+            )
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                e.message?.let { message -> toast(context, message.toInt()) }
             }
         }
     }
