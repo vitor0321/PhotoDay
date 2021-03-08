@@ -41,11 +41,6 @@ class GalleryFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_fragment_gallery, menu)
-    }
-
     override fun onStart() {
         super.onStart()
         viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
@@ -92,7 +87,7 @@ class GalleryFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(true, Components(TRUE, TRUE), R.color.orange_status_bar)
+        statusAppBarNavigationBase(FALSE_MENU, Components(FALSE_MENU, TRUE), R.color.orange_status_bar)
     }
 
     override fun onDestroy() {

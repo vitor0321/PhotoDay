@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/CardView.Light"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/layout_height_250dp"
+    android:layout_height="@dimen/layout_height_180dp"
     android:layout_marginStart="@dimen/layout_marin_start_8dp"
     android:layout_marginTop="@dimen/layout_margin_cardView_top_8dp"
     android:layout_marginEnd="@dimen/layout_margin_end_8dp"
@@ -22,6 +22,7 @@
             android:layout_marginStart="@dimen/text_view_margin_start_16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:textSize="@dimen/text_size_16sp"
             app:layout_constraintBottom_toTopOf="@id/image_timeline"
             tools:text="@string/text_view_tools_date" />
 

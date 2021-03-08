@@ -28,6 +28,10 @@ const val IMAGES= "images/"
 /*Gallery Fragment*/
 const val SPAN_COUNT = 2
 
+/*Menu*/
+const val FALSE_MENU = false
+const val TRUE_MENU = true
+
 /*View Flipper*/
 const val CHILD_FIRST = 0
 const val CHILD_SECOND = 1

@@ -36,12 +36,6 @@ object Navigation {
         navFragment.navigate(direction)
     }
 
-    fun navFragmentConfigurationToTimeline(navFragment: NavController) {
-        val direction =
-            ConfigurationFragmentDirections.actionConfigurationFragmentToTimelineFragment()
-        navFragment.navigate(direction)
-    }
-
     fun navFragmentSplashGoodbyeToLogin(navFragment: NavController){
         /*Navigation between fragments Directions*/
         val direction =
@@ -64,18 +58,6 @@ object Navigation {
     fun navFragmentRegisterToLogin(navFragment: NavController){
         val direction =
             RegisterFragmentDirections.actionRegisterToLoginFragment()
-        navFragment.navigate(direction)
-    }
-
-    fun navFragmentTimelineToConfiguration(navFragment: NavController) {
-        val direction =
-            TimelineFragmentDirections.actionTimelineFragmentToConfigurationFragment()
-        navFragment.navigate(direction)
-    }
-
-    fun navFragmentGalleryToConfiguration(navFragment: NavController){
-        val direction =
-            GalleryFragmentDirections.actionNavGalleryFragmentToConfigurationFragment()
         navFragment.navigate(direction)
     }
 }

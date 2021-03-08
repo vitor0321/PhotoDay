@@ -69,5 +69,6 @@
     <dimen name="layout_margin_cardView_top_8dp">8dp</dimen>
     <dimen name="layout_margin_end_8dp">8dp</dimen>
     <dimen name="card_corner_radius_18dp">18dp</dimen>
-    <dimen name="layout_height_250dp">250dp</dimen>
+    <dimen name="layout_height_180dp">180dp</dimen>
+    <dimen name="text_size_16sp">16sp</dimen>
 </resources>

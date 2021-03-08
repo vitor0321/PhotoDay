@@ -151,7 +151,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(false, Components(FALSE, FALSE), R.color.white_status_bar)
+        statusAppBarNavigationBase(FALSE_MENU, Components(FALSE, FALSE), R.color.white_status_bar)
     }
 
     override fun onDestroy() {

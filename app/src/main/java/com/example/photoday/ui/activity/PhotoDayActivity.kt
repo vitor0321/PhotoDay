@@ -25,6 +25,7 @@ import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
+import kotlinx.coroutines.CoroutineScope
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -37,11 +38,11 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private var _binding: ActivityPhotoDayBinding? = null
     private val binding get() = _binding!!
 
-    private var datePhotoEventBus: String? = null
+    private val viewModel by lazy { ViewModelInjector.providerPhotoDayViewModel(BaseRepositoryPhoto) }
 
+    private var datePhotoEventBus: String? = null
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
-    private val viewModel by lazy { ViewModelInjector.providerPhotoDayViewModel(BaseRepositoryPhoto) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,8 +122,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
     private fun initializeControl() {
         binding.apply {
-            try {
-                val navHostFragment =
+            try { val navHostFragment =
                         supportFragmentManager.findFragmentById(R.id.main_activity_nav_host) as NavHostFragment
                 val navController: NavController = navHostFragment.navController
                 // all components start with HIDE and then each fragment decides what appears or not

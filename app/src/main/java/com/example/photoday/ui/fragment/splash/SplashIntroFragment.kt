@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
+import com.example.photoday.constants.FALSE_MENU
 import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.databinding.FragmentSplashGoodbyeBinding
 import com.example.photoday.databinding.FragmentSplashIntroBinding
@@ -46,7 +47,7 @@ class SplashIntroFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(false, Components(FALSE, FALSE), R.color.white_status_bar)
+        statusAppBarNavigationBase(FALSE_MENU, Components(FALSE, FALSE), R.color.white_status_bar)
     }
 
     override fun onDestroy() {
