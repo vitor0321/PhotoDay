@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.photoday.R
 import com.example.photoday.adapter.GalleryAdapter
 import com.example.photoday.constants.*
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.navigation.Navigation
 import com.example.photoday.repository.BaseRepositoryPhoto
@@ -50,15 +51,15 @@ class GalleryFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
-        context?.let { context -> viewModel.createPullPhotos(context) }
+        context?.let { context -> viewModel.createPullPhotos() }
     }
 
     private fun init() {
         statusBarNavigation()
-        initObservers()
+        initStateFlowObserve()
     }
 
-    private fun initObservers() {
+    private fun initStateFlowObserve() {
         viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { imagesList ->
             val spanCount = SPAN_COUNT
             val layoutManager = GridLayoutManager(context, spanCount)
@@ -72,7 +73,7 @@ class GalleryFragment : BaseFragment() {
             viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
 
             viewModel.uiStateFlowError.asLiveData().observe(viewLifecycleOwner) { message ->
-                context?.let { context -> Utils.toast(context, message) }
+                context?.let { context -> toast(context, message) }
             }
         }
     }

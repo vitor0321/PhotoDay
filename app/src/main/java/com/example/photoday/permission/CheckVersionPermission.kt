@@ -1,6 +1,7 @@
 package com.example.photoday.permission
 
 import android.Manifest
+import android.content.res.Resources.getSystem
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker
@@ -17,7 +18,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 object CheckVersionPermission {
-    fun galleryPermission(activity: PhotoDayActivity, valueDate: String?) {
+    fun galleryPermission(
+        activity: PhotoDayActivity,
+        valueDate: String?,
+        callbackMessage: (message: String) -> Unit,
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -36,20 +41,20 @@ object CheckVersionPermission {
                                 REQUEST_IMAGE_GALLERY_USER
                             )
                         }
-                        else -> galleryExhibition(activity, valueDate)
+                        else -> galleryExhibition(activity, valueDate,
+                            callbackMessage = { message -> callbackMessage.invoke(message) })
                     }
-                } else toast(activity, R.string.version_less_23.toString())
+                } else callbackMessage.invoke(getSystem().getString(R.string.version_less_23))
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { message -> toast(activity, message) }
-                }
+                e.message?.let { message -> callbackMessage.invoke(message) }
             }
         }
     }
 
     fun dispatchTakePermission(
         activity: PhotoDayActivity,
-        valueDate: String?
+        valueDate: String?,
+        callbackMessage: (message: String) -> Unit
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -66,14 +71,13 @@ object CheckVersionPermission {
                                 REQUEST_IMAGE_CAPTURE_USER
                             )
                         }
-                        else -> dispatchTakeExhibition(activity, valueDate)
+                        else -> dispatchTakeExhibition(activity, valueDate,
+                        callbackMessage = {message -> callbackMessage.invoke(message) })
                     }
                 } else
-                    toast(activity, R.string.version_less_23.toString())
+                    callbackMessage.invoke(getSystem().getString(R.string.version_less_23))
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { message -> toast(activity, message) }
-                }
+                    e.message?.let { message -> callbackMessage.invoke(message) }
             }
         }
     }

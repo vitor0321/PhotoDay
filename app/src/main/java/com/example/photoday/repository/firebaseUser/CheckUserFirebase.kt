@@ -1,25 +1,22 @@
 package com.example.photoday.repository.firebaseUser
 
-import android.content.Context
+import android.content.res.Resources.getSystem
 import androidx.navigation.NavController
 import com.example.photoday.R
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.ON_START
-import com.example.photoday.constants.Utils.toast
 import com.example.photoday.navigation.Navigation.navFragmentLoginToSplashLogin
 import com.example.photoday.navigation.Navigation.navFragmentLoginToTimeline
 import com.example.photoday.repository.firebaseUser.user.UserFirebase
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 object CheckUserFirebase {
     private var auth = FirebaseAuth.getInstance()
 
-    suspend fun updateUI(
+    fun updateUI(
         controlNavigation: NavController,
         startLog: Int,
-        context: Context,
+        callbackMessage: (message: String) -> Unit,
     ) {
         try {
             val currentUser = auth.currentUser
@@ -33,29 +30,28 @@ object CheckUserFirebase {
                                 when (startLog) {
                                     ON_START -> {
                                         navFragmentLoginToTimeline(controlNavigation)
+                                        callbackMessage.invoke(getSystem().getString(R.string.login_is_success))
                                     }
                                     FIRST_LOGIN -> {
                                         navFragmentLoginToSplashLogin(controlNavigation)
-                                        toast(context, R.string.login_is_success.toString())
+                                        callbackMessage.invoke(getSystem().getString(R.string.login_is_success))
                                     }
                                 }
                             }
                             else -> {
-                                toast(context, R.string.verify_your_email_address.toString())
+                                callbackMessage.invoke(getSystem().getString(R.string.verify_your_email_address))
                             }
                     }
                 }
             }
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 
-    suspend fun getCurrentUserFirebase(
-        context: Context,
+    fun getCurrentUserFirebase(
         callback: (userFirebase: UserFirebase) -> Unit,
+        callbackMessage: (message: String) -> Unit,
     ) {
         try {
             val user = UserFirebase()
@@ -67,9 +63,7 @@ object CheckUserFirebase {
             }
             callback.invoke(user)
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 }

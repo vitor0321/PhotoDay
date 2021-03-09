@@ -6,7 +6,6 @@ import android.widget.EditText
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import com.example.photoday.constants.Utils.toast
 import com.example.photoday.repository.firebaseUser.ChangeUserFirebase
 import com.example.photoday.repository.firebaseUser.CheckUserFirebase
 import com.example.photoday.repository.firebaseUser.LogFirebase
@@ -14,7 +13,6 @@ import com.example.photoday.repository.firebaseUser.user.UserFirebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class BaseRepositoryUser(
     private val repositoryChange: ChangeUserFirebase = ChangeUserFirebase,
@@ -22,133 +20,141 @@ class BaseRepositoryUser(
     private val repositoryLog: LogFirebase = LogFirebase,
 ) {
 
-    suspend fun baseRepositoryChangeNameUser(context: Context, name: String) {
+    fun baseRepositoryChangeNameUser(
+        name: String,
+        callbackMessage: (message: String) -> Unit,
+    ) {
         try {
-            repositoryChange.changeNameUser(context, name)
+            repositoryChange.changeNameUser(name,
+                callbackMessage = { message -> callbackMessage.invoke(message) })
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 
-    suspend fun baseRepositoryForgotPassword(userEmail: EditText, context: Context) {
+    fun baseRepositoryForgotPassword(
+        userEmail: EditText,
+        callbackMessage: (message: String) -> Unit,
+    ) {
         try {
-            repositoryChange.forgotPassword(userEmail, context)
+            repositoryChange.forgotPassword(userEmail,
+                callbackMessage = { message -> callbackMessage.invoke(message) })
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 
     fun baseRepositoryUpdateUI(
         controlNavigation: NavController,
         startLog: Int,
-        context: Context,
+        callbackMessage: (message: String) -> Unit,
     ) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                repositoryCheck.updateUI(controlNavigation, startLog, context)
+                repositoryCheck.updateUI(controlNavigation,
+                    startLog,
+                    callbackMessage = { message -> callbackMessage.invoke(message) })
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { message -> toast(context, message) }
-                }
+                e.message?.let { message -> callbackMessage.invoke(message) }
             }
         }
     }
 
-    suspend fun baseRepositoryGetCurrentUserFirebase(
-        context: Context,
+    fun baseRepositoryGetCurrentUserFirebase(
         callback: (userFirebase: UserFirebase) -> Unit,
+        callbackMessage: (message: String) -> Unit,
     ) {
         try {
-            repositoryCheck.getCurrentUserFirebase(context) { userFirebase ->
-                callback.invoke(userFirebase)
-            }
+            repositoryCheck.getCurrentUserFirebase(
+                callback = { userFirebase ->
+                    callback.invoke(userFirebase)
+                },
+                callbackMessage = { message -> callbackMessage.invoke(message) })
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 
-    suspend fun baseRepositoryChangeImageUser(context: Context, image: Uri) {
+    fun baseRepositoryChangeImageUser(
+        image: Uri,
+        callbackMessage: (message: String) -> Unit,
+    ) {
         try {
-            repositoryChange.changeImageUser(context, image)
+            repositoryChange.changeImageUser(image,
+                callbackMessage = { message -> callbackMessage.invoke(message) })
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 
-    suspend fun baseRepositoryLogoutFirebase(context: Context) {
+    fun baseRepositoryLogoutFirebase(
+        context: Context,
+        callbackMessage: (message: String) -> Unit,
+    ) {
         try {
-            repositoryLog.logoutFirebase(context)
+            repositoryLog.logoutFirebase(context,
+                callbackMessage = { message -> callbackMessage.invoke(message) })
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 
-    suspend fun baseRepositoryFirebaseAuthWithGoogle(
+    fun baseRepositoryFirebaseAuthWithGoogle(
         idToken: String,
         controlNavigation: NavController,
-        context: Context,
+        callbackMessage: (message: String) -> Unit,
     ) {
         try {
-            repositoryLog.firebaseAuthWithGoogle(idToken, context,
+            repositoryLog.firebaseAuthWithGoogle(idToken,
                 callback = { login: Int ->
-                    baseRepositoryUpdateUI(controlNavigation, login, context)
-                })
+                    baseRepositoryUpdateUI(controlNavigation,
+                        login,
+                        callbackMessage = { message -> callbackMessage.invoke(message) })
+                },
+                callbackMessage = { message -> callbackMessage.invoke(message) })
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 
-    suspend fun baseRepositoryCreateUserWithEmailAndPassword(
-        context: Context,
+    fun baseRepositoryCreateUserWithEmailAndPassword(
         registerUser: AppCompatEditText,
         registerUserPassword: AppCompatEditText,
         controlNavigation: NavController,
+        callbackMessage: (message: String) -> Unit,
     ) {
         try {
-            repositoryLog.createUserWithEmailAndPassword(context,
+            repositoryLog.createUserWithEmailAndPassword(
                 registerUser,
                 registerUserPassword,
-                controlNavigation)
+                controlNavigation,
+                callbackMessage = { message -> callbackMessage.invoke(message) })
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 
-    suspend fun baseRepositorySignInWithEmailAndPassword(
+    fun baseRepositorySignInWithEmailAndPassword(
         loginUserId: AppCompatEditText,
         loginPassword: AppCompatEditText,
         requireActivity: FragmentActivity,
         controlNavigation: NavController,
-        context: Context,
+        callbackMessage: (message: String) -> Unit,
     ) {
         try {
             repositoryLog.signInWithEmailAndPassword(
                 loginUserId,
                 loginPassword,
                 requireActivity,
-                context,
                 callback = { login: Int ->
-                    baseRepositoryUpdateUI(controlNavigation, login, context)
-                }
+                    baseRepositoryUpdateUI(controlNavigation,
+                        login,
+                        callbackMessage = { message -> callbackMessage.invoke(message) })
+                },
+                callbackMessage = { message -> callbackMessage.invoke(message) }
             )
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 }

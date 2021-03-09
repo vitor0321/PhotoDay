@@ -12,6 +12,8 @@ import android.provider.MediaStore
 import android.view.View
 import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -60,11 +62,18 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private fun init() {
         initializeControl()
         initButton()
+        initObserver()
     }
 
     private fun initButton() {
         binding.apply {
             buttonFabAdd.setOnClickListener { datePicker() }
+        }
+    }
+
+    private fun initObserver(){
+        viewModel.uiStateFlowMessage.asLiveData().observe(this) { message ->
+            toast(this, message)
         }
     }
 
@@ -81,7 +90,6 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                     data?.data?.let { photo ->
                         datePhotoEventBus?.let { dateCalendar ->
                             viewModel.createPushPhoto(
-                                this,
                                 dateCalendar,
                                 photo
                             )
@@ -101,7 +109,6 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                     )
                         datePhotoEventBus?.let { dateCalendar ->
                             viewModel.createPushPhoto(
-                                this,
                                 dateCalendar,
                                 Uri.parse(path)
                             )

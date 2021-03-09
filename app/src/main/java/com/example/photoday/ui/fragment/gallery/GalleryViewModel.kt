@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.photoday.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.repository.BaseRepositoryPhoto
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -19,11 +17,11 @@ class GalleryViewModel(private val repository: BaseRepositoryPhoto) : ViewModel(
     private val _uiStateFlowError = MutableStateFlow("")
     val uiStateFlowError: StateFlow<String> get() = _uiStateFlowError
 
-    fun createPullPhotos(context: Context) {
+    fun createPullPhotos() {
         viewModelScope.launch {
-            repository.baseRepositoryListFileDownload(context,
+            repository.baseRepositoryListFileDownload(
                 callback = { imagesList: List<ItemPhoto> -> _uiStateFlow.value = imagesList },
-                callbackError = { messageError: String -> _uiStateFlowError.value = messageError }
+                callbackMessage = { messageError: String -> _uiStateFlowError.value = messageError }
             )
         }
     }

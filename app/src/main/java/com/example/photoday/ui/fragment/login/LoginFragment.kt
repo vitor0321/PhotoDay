@@ -6,6 +6,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
@@ -61,10 +62,10 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun init() {
-        // Configure Google Sign In
         createRequestLoginGoogle()
         initButton()
         statusBarNavigation()
+        initObserverStateFlow()
     }
 
     private fun initButton() {
@@ -94,7 +95,6 @@ class LoginFragment : BaseFragment() {
                     }
                     viewModel.doLogin(editTextLoginUser,
                         editTextLoginPassword,
-                        context,
                         requireActivity())
                 } catch (e: Exception) {
                     CoroutineScope(Dispatchers.Main).launch {
@@ -131,6 +131,12 @@ class LoginFragment : BaseFragment() {
                     e.printStackTrace()
                 }
             }
+        }
+    }
+
+    private fun initObserverStateFlow(){
+        viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
+            context?.let { context -> toast(context, message) }
         }
     }
 

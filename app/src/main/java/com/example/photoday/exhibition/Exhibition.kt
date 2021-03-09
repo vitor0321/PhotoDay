@@ -5,16 +5,17 @@ import android.content.Intent
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import com.example.photoday.constants.*
-import com.example.photoday.constants.Utils.toast
 import com.example.photoday.eventBus.MessageEvent
 import com.example.photoday.ui.activity.PhotoDayActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 
 object Exhibition {
 
-    suspend fun galleryExhibition(activity: PhotoDayActivity, valueDate: String?) {
+    fun galleryExhibition(
+        activity: PhotoDayActivity,
+        valueDate: String?,
+        callbackMessage: (message: String) -> Unit,
+    ) {
         try {
             val intentGallery = Intent(Intent.ACTION_PICK)
             intentGallery.type = GALLERY_TYPE
@@ -38,14 +39,16 @@ object Exhibition {
                 }
             }
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(activity, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 
     @SuppressLint("QueryPermissionsNeeded")
-    suspend fun dispatchTakeExhibition(activity: PhotoDayActivity, valueDate: String?) {
+    fun dispatchTakeExhibition(
+        activity: PhotoDayActivity,
+        valueDate: String?,
+        callbackMessage: (message: String) -> Unit,
+    ) {
         try {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intentTakePicture ->
                 val packageManager = activity.packageManager
@@ -79,9 +82,7 @@ object Exhibition {
             }
 
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(activity, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 }

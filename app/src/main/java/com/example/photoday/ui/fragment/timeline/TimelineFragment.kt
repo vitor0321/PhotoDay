@@ -53,16 +53,16 @@ class TimelineFragment : BaseFragment() {
         super.onStart()
         CoroutineScope(Dispatchers.Main).launch {
             viewFlipperControl(CHILD_FIRST,PROGRESS_BAR_VISIBLE)
-            context?.let { context -> viewModel.createPullPhotos(context) }
+            viewModel.createPullPhotos()
         }
     }
 
     private fun init() {
         statusBarNavigation()
-        initObservers()
+        initStateFlowObserve()
     }
 
-    private fun initObservers() {
+    private fun initStateFlowObserve() {
         viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { imagesList ->
             binding.run {
                 recycleViewListTimeline.layoutManager = LinearLayoutManager(context)
@@ -74,7 +74,7 @@ class TimelineFragment : BaseFragment() {
 
         viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
 
-        viewModel.uiStateFlowError.asLiveData().observe(viewLifecycleOwner) { message ->
+        viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
             context?.let { context -> toast(context, message) }
         }
     }

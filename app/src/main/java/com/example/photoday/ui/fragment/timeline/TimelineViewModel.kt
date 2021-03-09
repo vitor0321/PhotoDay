@@ -15,13 +15,13 @@ class TimelineViewModel(private val repository: BaseRepositoryPhoto) : ViewModel
     val uiStateFlow: StateFlow<List<ItemPhoto>> get() = _uiStateFlow
 
     private val _uiStateFlowError = MutableStateFlow("")
-    val uiStateFlowError: StateFlow<String> get() = _uiStateFlowError
+    val uiStateFlowMessage: StateFlow<String> get() = _uiStateFlowError
 
-    fun createPullPhotos(context: Context) {
+    fun createPullPhotos() {
         viewModelScope.launch {
-            repository.baseRepositoryListFileDownload(context,
+            repository.baseRepositoryListFileDownload(
                 callback = { imagesList: List<ItemPhoto> -> _uiStateFlow.value = imagesList },
-                callbackError = { messageError: String -> _uiStateFlowError.value = messageError }
+                callbackMessage = { messageError: String -> _uiStateFlowError.value = messageError }
             )
         }
     }

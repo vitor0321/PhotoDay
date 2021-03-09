@@ -7,7 +7,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.MediaStore
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -52,13 +54,14 @@ class ConfigurationFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        context?.let { context -> viewModel.getUserDBFirebase(context) }
+        viewModel.getUserDBFirebase()
     }
 
     private fun init() {
         initButton()
         statusBarNavigation()
         initStateFlowObserve()
+
     }
 
     private fun initButton() {
@@ -95,6 +98,10 @@ class ConfigurationFragment : BaseFragment() {
                 }
             }
         }
+
+        viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
+            context?.let { context -> toast(context, message) }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -104,7 +111,7 @@ class ConfigurationFragment : BaseFragment() {
                 when {
                     requestCode == REQUEST_IMAGE_GALLERY_USER && resultCode == RESULT_OK -> {
                         data?.data?.let { data ->
-                            context?.let { context -> viewModel.imageUser(context, data) }
+                            viewModel.imageUser(data)
                         }
                     }
                     requestCode == REQUEST_IMAGE_CAPTURE_USER && resultCode == RESULT_OK -> {
@@ -118,7 +125,7 @@ class ConfigurationFragment : BaseFragment() {
                             getString(R.string.change_image_user),
                             null
                         )
-                        context?.let { viewModel.imageUser(it, Uri.parse(path)) }
+                        viewModel.imageUser(Uri.parse(path))
                     }
                 }
             } catch (e: Exception) {

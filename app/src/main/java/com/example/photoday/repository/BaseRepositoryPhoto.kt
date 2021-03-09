@@ -1,53 +1,48 @@
 package com.example.photoday.repository
 
-import android.content.Context
 import android.net.Uri
 import com.example.photoday.adapter.modelAdapter.ItemPhoto
-import com.example.photoday.constants.Utils.toast
 import com.example.photoday.repository.firebasePhotos.FirebasePhoto
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class BaseRepositoryPhoto(private val repositoryPhoto: FirebasePhoto = FirebasePhoto) {
 
-    suspend fun baseRepositoryUploadImageToStorage(
-        context: Context,
+    fun baseRepositoryUploadImageToStorage(
         dateCalendar: String,
         curFile: Uri?,
+        callbackMessage: (message: String) -> Unit,
     ) {
         try {
-            repositoryPhoto.uploadImageToStorage(context, dateCalendar, curFile)
+            repositoryPhoto.uploadImageToStorage(dateCalendar,
+                curFile,
+                callbackMessage = { message -> callbackMessage.invoke(message) })
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message) }
-            }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 
-    suspend fun baseRepositoryListFileDownload(
-        context: Context,
+    fun baseRepositoryListFileDownload(
         callback: (imagesList: List<ItemPhoto>) -> Unit,
-        callbackError: (messageError: String) -> Unit,
+        callbackMessage: (messageError: String) -> Unit,
     ) {
         try {
             repositoryPhoto.listFileDownload(
                 callback = { imagesList: List<ItemPhoto> -> callback.invoke(imagesList) },
-                callbackError = { messageError: String -> callbackError(messageError) })
+                callbackError = { message: String -> callbackMessage(message) })
 
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message) }
-            }
+            e.message?.let { message -> callbackMessage(message) }
         }
     }
 
-    suspend fun baseRepositoryDeleteImage(context: Context, date: String) {
-            try {
-                repositoryPhoto.deleteImage(context, date)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { message -> toast(context, message) }
-                }
-            }
+    fun baseRepositoryDeleteImage(
+        date: String,
+        callbackMessage: (message: String) -> Unit,
+    ) {
+        try {
+            repositoryPhoto.deleteImage(date,
+                callbackMessage = { message: String -> callbackMessage(message) })
+        } catch (e: Exception) {
+            e.message?.let { message -> callbackMessage.invoke(message) }
+        }
     }
 }

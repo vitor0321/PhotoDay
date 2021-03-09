@@ -5,10 +5,12 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
+import com.example.photoday.constants.Utils
 import com.example.photoday.databinding.FragmentRegisterUserBinding
 import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.fragment.base.BaseFragment
@@ -44,6 +46,7 @@ class RegisterFragment : BaseFragment() {
     private fun init() {
         statusBarNavigation()
         initButton()
+        initObserverStateFlow()
     }
 
     private fun initButton() {
@@ -89,6 +92,12 @@ class RegisterFragment : BaseFragment() {
                     context
                 )
             }
+        }
+    }
+
+    private fun initObserverStateFlow() {
+        viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
+            context?.let { context -> Utils.toast(context, message) }
         }
     }
 

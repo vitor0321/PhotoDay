@@ -57,8 +57,9 @@ class NewUserNameDialog(
                     val name = editTextNewName.text.toString()
                     CoroutineScope(Dispatchers.IO).launch{
                         context?.let { context ->
-                            baseRepositoryUser.baseRepositoryChangeNameUser(context,
-                                name)
+                            baseRepositoryUser.baseRepositoryChangeNameUser(
+                                name,
+                            callbackMessage = {message -> toast(context, message) })
                         }
                     }
                     dialog?.dismiss()
