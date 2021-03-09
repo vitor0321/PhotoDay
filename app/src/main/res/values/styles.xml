@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="AppThemeActionBar" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Set Style components android  -->
         <item name="colorPrimary">@color/orange</item>
@@ -101,6 +102,11 @@
 
     <style name="DialogButtonStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="Widget.AppThemeActionBar.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
 
 </resources>

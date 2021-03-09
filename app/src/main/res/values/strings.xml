@@ -98,5 +98,7 @@
     <string name="nav_graph_label_configuration">Configuration</string>
     <string name="nav_graph_label_splash_goodbye">Splash GoodBye</string>
     <string name="nav_graph_label_splash_intro">Splash Intro</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

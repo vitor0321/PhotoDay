@@ -21,12 +21,12 @@ object FirebasePhoto {
         try {
             curFile?.let {
                 imageRef.child("$IMAGES$dateCalendar").putFile(it)
-                toast(context, R.string.successfully_upload_image)
+                toast(context, R.string.successfully_upload_image.toString())
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
                 e.message?.let { message ->
-                    toast(context, message.toInt())
+                    toast(context, message)
                 }
             }
         }
@@ -35,20 +35,20 @@ object FirebasePhoto {
         try {
             imageRef.child("$IMAGES$dateCalendar").delete()
             withContext(Dispatchers.Main) {
-                toast(context, R.string.successfully_delete_image)
+                toast(context, R.string.successfully_delete_image.toString())
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
                 e.message?.let { message ->
-                    toast(context, message.toInt())
+                    toast(context, message)
                 }
             }
         }
     }
 
-    suspend fun listFileDownload(
-        context: Context,
+    fun listFileDownload(
         callback: (imagesList: List<ItemPhoto>) -> Unit,
+        callbackError: (messageError: String) -> Unit
     ) {
         try {
             val storageRef = imageRef.child("$IMAGES")
@@ -69,11 +69,7 @@ object FirebasePhoto {
                 }
             }
         } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.message?.let { message ->
-                    toast(context, message.toInt())
-                }
-            }
+            e.message?.let { message -> callbackError.invoke(message) }
         }
     }
 }

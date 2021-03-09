@@ -19,13 +19,11 @@ import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.ActivityPhotoDayBinding
-import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.eventBus.MessageEvent
 import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
-import kotlinx.coroutines.CoroutineScope
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -38,7 +36,8 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private var _binding: ActivityPhotoDayBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by lazy { ViewModelInjector.providerPhotoDayViewModel(BaseRepositoryPhoto) }
+    private val baseRepositoryPhoto: BaseRepositoryPhoto = BaseRepositoryPhoto()
+    private val viewModel by lazy { ViewModelInjector.providerPhotoDayViewModel(baseRepositoryPhoto) }
 
     private var datePhotoEventBus: String? = null
     @SuppressLint("SimpleDateFormat")
@@ -110,7 +109,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                 }
             }
         } catch (e: Exception) {
-            e.message?.let {toast(this, it.toInt()) }
+            e.message?.let { message -> toast(this, message) }
         }
     }
 
@@ -140,7 +139,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                             title = null
                         }
             } catch (e: Exception) {
-                e.message?.let { Utils.toast(this@PhotoDayActivity, it.toInt()) }
+                e.message?.let { message -> Utils.toast(this@PhotoDayActivity, message) }
             }
 
         }
@@ -169,7 +168,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { toast(this@PhotoDayActivity, it.toInt()) }
+            e.message?.let { message -> toast(this@PhotoDayActivity, message) }
         }
 
     }
@@ -184,7 +183,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         try {
             DatePickerDialog(this, this, year, month, day ).show()
         } catch (e: Exception) {
-            e.message?.let { toast(this@PhotoDayActivity, it.toInt()) }
+            e.message?.let { message -> toast(this@PhotoDayActivity, message) }
         }
     }
 

@@ -23,12 +23,12 @@ object ChangeUserFirebase {
             user!!.updateProfile(profileUpdates)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        toast(context, R.string.name_change_successful)
+                        toast(context, R.string.name_change_successful.toString())
                     }
                 }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { toast(context, it.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }
@@ -42,12 +42,12 @@ object ChangeUserFirebase {
             user!!.updateProfile(profileUpdates)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        toast(context, R.string.image_change_successful)
+                        toast(context, R.string.image_change_successful.toString())
                     }
                 }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }
@@ -56,20 +56,20 @@ object ChangeUserFirebase {
         try {
             when {
                 userEmail.text.toString().isEmpty() -> {
-                    toast(context, R.string.please_enter_email)
+                    toast(context, R.string.please_enter_email.toString())
                 }
                 !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
-                    toast(context, R.string.please_enter_valid_email)
+                    toast(context, R.string.please_enter_valid_email.toString())
                 }
                 else -> {
                     auth.sendPasswordResetEmail(userEmail.text.toString())
                         .addOnCompleteListener { task ->
                             when {
                                 task.isSuccessful -> {
-                                    toast(context, R.string.email_sent)
+                                    toast(context, R.string.email_sent.toString())
                                 }
                                 else -> {
-                                    toast(context, R.string.unregistered_email)
+                                    toast(context, R.string.unregistered_email.toString())
                                 }
                             }
                         }
@@ -77,7 +77,7 @@ object ChangeUserFirebase {
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { toast(context, it.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }

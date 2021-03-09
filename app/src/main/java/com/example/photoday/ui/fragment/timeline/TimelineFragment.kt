@@ -1,14 +1,19 @@
 package com.example.photoday.ui.fragment.timeline
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.asLiveData
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.adapter.TimelineAdapter
 import com.example.photoday.constants.*
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentTimelineBinding
+import com.example.photoday.navigation.Navigation
 import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
@@ -24,11 +29,14 @@ class TimelineFragment : BaseFragment() {
     private var _binding: FragmentTimelineBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by lazy { ViewModelInjector.providerTimelineViewModel(BaseRepositoryPhoto) }
+    private val controlNavigation by lazy { findNavController() }
+    private val baseRepositoryPhoto: BaseRepositoryPhoto = BaseRepositoryPhoto()
+
+    private val viewModel by lazy { ViewModelInjector.providerTimelineViewModel(baseRepositoryPhoto) }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentTimelineBinding.inflate(inflater, container, false)
         return binding.root
@@ -59,12 +67,15 @@ class TimelineFragment : BaseFragment() {
             binding.run {
                 recycleViewListTimeline.layoutManager = LinearLayoutManager(context)
                 recycleViewListTimeline.adapter = TimelineAdapter(imagesList) { itemPhoto ->
-                    /**
-                     * quando clicar na photo, vai fazer o que ?
-                     */
+                    Navigation.navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
                 }
             }
-            viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
+        }
+
+        viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
+
+        viewModel.uiStateFlowError.asLiveData().observe(viewLifecycleOwner) { message ->
+            context?.let { context -> toast(context, message) }
         }
     }
 

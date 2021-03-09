@@ -31,16 +31,18 @@ class LoginFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val controlNavigation by lazy { findNavController() }
+    private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser()
+
     private val viewModel by lazy {
-        ViewModelInjector.providerLoginViewModel(controlNavigation, BaseRepositoryUser)
+        ViewModelInjector.providerLoginViewModel(controlNavigation, baseRepositoryUser)
     }
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
@@ -97,10 +99,7 @@ class LoginFragment : BaseFragment() {
                 } catch (e: Exception) {
                     CoroutineScope(Dispatchers.Main).launch {
                         e.message?.let { message ->
-                            context?.let { context ->
-                                toast(context,
-                                    message.toInt())
-                            }
+                            context?.let { context -> toast(context, message) }
                         }
                     }
                 }

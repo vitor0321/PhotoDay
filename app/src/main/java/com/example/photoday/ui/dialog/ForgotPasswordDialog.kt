@@ -9,7 +9,7 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
-import com.example.photoday.constants.Utils
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.DialogForgotPasswordBinding
 import com.example.photoday.repository.BaseRepositoryUser
 import kotlinx.coroutines.CoroutineScope
@@ -70,10 +70,7 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
                     dialog?.dismiss()
                 }catch (e: Exception) {
                     e.message?.let { message ->
-                        context?.let { context ->
-                            Utils.toast(context,
-                                message.toInt())
-                        }
+                        context?.let { context -> toast(context, message) }
                     }
                 }
             }
@@ -89,6 +86,7 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
     }
 
     companion object {
-        fun newInstance() = ForgotPasswordDialog(BaseRepositoryUser)
+        private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser()
+        fun newInstance() = ForgotPasswordDialog(baseRepositoryUser)
     }
 }

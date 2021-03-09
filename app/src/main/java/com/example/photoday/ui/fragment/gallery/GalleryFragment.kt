@@ -1,14 +1,18 @@
 package com.example.photoday.ui.fragment.gallery
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.asLiveData
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.photoday.R
 import com.example.photoday.adapter.GalleryAdapter
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentGalleryBinding
+import com.example.photoday.navigation.Navigation
 import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
@@ -18,13 +22,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 class GalleryFragment : BaseFragment() {
 
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by lazy { ViewModelInjector.providerGalleryViewModel(BaseRepositoryPhoto) }
+    private val controlNavigation by lazy { findNavController() }
+    private val baseRepositoryPhoto: BaseRepositoryPhoto = BaseRepositoryPhoto()
+
+    private val viewModel by lazy { ViewModelInjector.providerGalleryViewModel(baseRepositoryPhoto) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,10 +65,15 @@ class GalleryFragment : BaseFragment() {
             binding.run {
                 recycleViewListGallery.layoutManager = layoutManager
                 recycleViewListGallery.adapter = GalleryAdapter(imagesList) { itemPhoto ->
-
+                    Navigation.navFragmentGalleryToFullScreen(controlNavigation, itemPhoto.photo)
                 }
             }
+
             viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
+
+            viewModel.uiStateFlowError.asLiveData().observe(viewLifecycleOwner) { message ->
+                context?.let { context -> Utils.toast(context, message) }
+            }
         }
     }
 

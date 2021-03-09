@@ -7,38 +7,37 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.example.photoday.constants.Utils.toast
-import com.example.photoday.repository.firebaseUser.ChangeUserFirebase.changeImageUser
-import com.example.photoday.repository.firebaseUser.ChangeUserFirebase.changeNameUser
-import com.example.photoday.repository.firebaseUser.ChangeUserFirebase.forgotPassword
-import com.example.photoday.repository.firebaseUser.CheckUserFirebase.getCurrentUserFirebase
-import com.example.photoday.repository.firebaseUser.CheckUserFirebase.updateUI
-import com.example.photoday.repository.firebaseUser.LogFirebase.createUserWithEmailAndPassword
-import com.example.photoday.repository.firebaseUser.LogFirebase.firebaseAuthWithGoogle
-import com.example.photoday.repository.firebaseUser.LogFirebase.logoutFirebase
-import com.example.photoday.repository.firebaseUser.LogFirebase.signInWithEmailAndPassword
+import com.example.photoday.repository.firebaseUser.ChangeUserFirebase
+import com.example.photoday.repository.firebaseUser.CheckUserFirebase
+import com.example.photoday.repository.firebaseUser.LogFirebase
 import com.example.photoday.repository.firebaseUser.user.UserFirebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-object BaseRepositoryUser {
+class BaseRepositoryUser(
+    private val repositoryChange: ChangeUserFirebase = ChangeUserFirebase,
+    private val repositoryCheck: CheckUserFirebase = CheckUserFirebase,
+    private val repositoryLog: LogFirebase = LogFirebase,
+) {
+
     suspend fun baseRepositoryChangeNameUser(context: Context, name: String) {
         try {
-            changeNameUser(context, name)
+            repositoryChange.changeNameUser(context, name)
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }
 
     suspend fun baseRepositoryForgotPassword(userEmail: EditText, context: Context) {
         try {
-            forgotPassword(userEmail, context)
+            repositoryChange.forgotPassword(userEmail, context)
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }
@@ -50,10 +49,10 @@ object BaseRepositoryUser {
     ) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                updateUI(controlNavigation, startLog, context)
+                repositoryCheck.updateUI(controlNavigation, startLog, context)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { message -> toast(context, message.toInt()) }
+                    e.message?.let { message -> toast(context, message) }
                 }
             }
         }
@@ -64,32 +63,32 @@ object BaseRepositoryUser {
         callback: (userFirebase: UserFirebase) -> Unit,
     ) {
         try {
-            getCurrentUserFirebase(context) { userFirebase ->
+            repositoryCheck.getCurrentUserFirebase(context) { userFirebase ->
                 callback.invoke(userFirebase)
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }
 
     suspend fun baseRepositoryChangeImageUser(context: Context, image: Uri) {
         try {
-            changeImageUser(context, image)
+            repositoryChange.changeImageUser(context, image)
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }
 
     suspend fun baseRepositoryLogoutFirebase(context: Context) {
         try {
-            logoutFirebase(context)
+            repositoryLog.logoutFirebase(context)
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }
@@ -100,10 +99,13 @@ object BaseRepositoryUser {
         context: Context,
     ) {
         try {
-            firebaseAuthWithGoogle(idToken, controlNavigation, context)
+            repositoryLog.firebaseAuthWithGoogle(idToken, context,
+                callback = { login: Int ->
+                    baseRepositoryUpdateUI(controlNavigation, login, context)
+                })
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }
@@ -115,13 +117,13 @@ object BaseRepositoryUser {
         controlNavigation: NavController,
     ) {
         try {
-            createUserWithEmailAndPassword(context,
+            repositoryLog.createUserWithEmailAndPassword(context,
                 registerUser,
                 registerUserPassword,
                 controlNavigation)
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }
@@ -134,16 +136,18 @@ object BaseRepositoryUser {
         context: Context,
     ) {
         try {
-            signInWithEmailAndPassword(
+            repositoryLog.signInWithEmailAndPassword(
                 loginUserId,
                 loginPassword,
                 requireActivity,
-                controlNavigation,
-                context
+                context,
+                callback = { login: Int ->
+                    baseRepositoryUpdateUI(controlNavigation, login, context)
+                }
             )
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }

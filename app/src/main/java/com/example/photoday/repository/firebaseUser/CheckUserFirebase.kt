@@ -36,19 +36,19 @@ object CheckUserFirebase {
                                     }
                                     FIRST_LOGIN -> {
                                         navFragmentLoginToSplashLogin(controlNavigation)
-                                        toast(context, R.string.login_is_success)
+                                        toast(context, R.string.login_is_success.toString())
                                     }
                                 }
                             }
                             else -> {
-                                toast(context, R.string.verify_your_email_address)
+                                toast(context, R.string.verify_your_email_address.toString())
                             }
                     }
                 }
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }
@@ -68,7 +68,7 @@ object CheckUserFirebase {
             callback.invoke(user)
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(context, message.toInt()) }
+                e.message?.let { message -> toast(context, message) }
             }
         }
     }

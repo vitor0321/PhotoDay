@@ -39,7 +39,7 @@ object Exhibition {
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(activity, message.toInt()) }
+                e.message?.let { message -> toast(activity, message) }
             }
         }
     }
@@ -80,7 +80,7 @@ object Exhibition {
 
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                e.message?.let { message -> toast(activity, message.toInt()) }
+                e.message?.let { message -> toast(activity, message) }
             }
         }
     }

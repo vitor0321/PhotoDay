@@ -16,11 +16,15 @@ class GalleryViewModel(private val repository: BaseRepositoryPhoto) : ViewModel(
     private val _uiStateFlow = MutableStateFlow<List<ItemPhoto>>(emptyList())
     val uiStateFlow: StateFlow<List<ItemPhoto>> get() = _uiStateFlow
 
+    private val _uiStateFlowError = MutableStateFlow("")
+    val uiStateFlowError: StateFlow<String> get() = _uiStateFlowError
+
     fun createPullPhotos(context: Context) {
         viewModelScope.launch {
-            repository.baseRepositoryListFileDownload(context) { imagesList ->
-                _uiStateFlow.value = imagesList
-            }
+            repository.baseRepositoryListFileDownload(context,
+                callback = { imagesList: List<ItemPhoto> -> _uiStateFlow.value = imagesList },
+                callbackError = { messageError: String -> _uiStateFlowError.value = messageError }
+            )
         }
     }
 }

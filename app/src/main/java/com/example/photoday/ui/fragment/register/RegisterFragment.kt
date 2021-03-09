@@ -20,16 +20,17 @@ class RegisterFragment : BaseFragment() {
     private var _binding: FragmentRegisterUserBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by lazy {
-        ViewModelInjector.providerRegisterViewModel(controlNavigation,
-            BaseRepositoryUser)
-    }
     private val controlNavigation by lazy { findNavController() }
+    private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser()
+
+    private val viewModel by lazy {
+        ViewModelInjector.providerRegisterViewModel(controlNavigation, baseRepositoryUser)
+    }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentRegisterUserBinding.inflate(inflater, container, false)
         return binding.root

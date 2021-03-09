@@ -23,11 +23,17 @@ class GalleryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         Picasso.get().load(item.photo).into(holder.imageView)
+
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView = binding.imageGallery
+
+        fun bind(item: ItemPhoto) {
+            imageView.setOnClickListener { listen.invoke(item) }
+        }
     }
 }

@@ -60,4 +60,16 @@ object Navigation {
             RegisterFragmentDirections.actionRegisterToLoginFragment()
         navFragment.navigate(direction)
     }
+
+    fun navFragmentTimelineToFullScreen(navFragment: NavController, itemPhoto: String){
+        val direction =
+            TimelineFragmentDirections.actionNavTimelineFragmentToFullscreenFragment(itemPhoto)
+        navFragment.navigate(direction)
+    }
+
+    fun navFragmentGalleryToFullScreen(navFragment: NavController, itemPhoto: String){
+        val direction =
+            GalleryFragmentDirections.actionNavGalleryFragmentToFullscreenFragment(itemPhoto)
+        navFragment.navigate(direction)
+    }
 }

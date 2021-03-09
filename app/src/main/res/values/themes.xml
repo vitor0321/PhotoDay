@@ -8,4 +8,9 @@
     <style name="AppThemeActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppThemeActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ThemeOverlay.PhotoDay.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/orange_light</item>
+        <item name="fullscreenTextColor">@color/orange</item>
+    </style>
 </resources>

@@ -10,19 +10,21 @@ import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.DialogFragmentUserNameBinding
-import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryChangeNameUser
+import com.example.photoday.repository.BaseRepositoryUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class NewUserNameDialog : DialogFragment() {
+class NewUserNameDialog(
+    private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser(),
+) : DialogFragment() {
 
     private lateinit var binding: DialogFragmentUserNameBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DialogFragmentUserNameBinding.inflate(inflater, container, false)
         return binding.root
@@ -54,11 +56,14 @@ class NewUserNameDialog : DialogFragment() {
                     }
                     val name = editTextNewName.text.toString()
                     CoroutineScope(Dispatchers.IO).launch{
-                        context?.let { context -> baseRepositoryChangeNameUser(context, name) }
+                        context?.let { context ->
+                            baseRepositoryUser.baseRepositoryChangeNameUser(context,
+                                name)
+                        }
                     }
                     dialog?.dismiss()
                 } catch (e: Exception) {
-                    e.message?.let { context?.let { it1 -> toast(it1, it.toInt()) } }
+                    e.message?.let { message -> context?.let { context -> toast(context, message) } }
                 }
             }
             buttonCancel.setOnClickListener {

@@ -38,10 +38,10 @@ object CheckVersionPermission {
                         }
                         else -> galleryExhibition(activity, valueDate)
                     }
-                } else toast(activity, R.string.version_less_23)
+                } else toast(activity, R.string.version_less_23.toString())
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { message -> toast(activity, message.toInt()) }
+                    e.message?.let { message -> toast(activity, message) }
                 }
             }
         }
@@ -69,10 +69,10 @@ object CheckVersionPermission {
                         else -> dispatchTakeExhibition(activity, valueDate)
                     }
                 } else
-                    toast(activity, R.string.version_less_23)
+                    toast(activity, R.string.version_less_23.toString())
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    e.message?.let { message -> toast(activity, message.toInt()) }
+                    e.message?.let { message -> toast(activity, message) }
                 }
             }
         }

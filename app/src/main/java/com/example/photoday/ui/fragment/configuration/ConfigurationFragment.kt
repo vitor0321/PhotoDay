@@ -23,10 +23,6 @@ import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
 class ConfigurationFragment : BaseFragment() {
@@ -35,8 +31,9 @@ class ConfigurationFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val navFragment by lazy { findNavController() }
+    private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser()
     private val viewModel by lazy {
-        ViewModelInjector.providerConfigurationViewModel(BaseRepositoryUser)
+        ViewModelInjector.providerConfigurationViewModel(baseRepositoryUser)
     }
     private var auth = FirebaseAuth.getInstance()
 
@@ -106,8 +103,8 @@ class ConfigurationFragment : BaseFragment() {
                 //here get the image of ChangeUserFirebase
                 when {
                     requestCode == REQUEST_IMAGE_GALLERY_USER && resultCode == RESULT_OK -> {
-                        data?.data?.let {
-                            context?.let { context -> viewModel.imageUser(context, it) }
+                        data?.data?.let { data ->
+                            context?.let { context -> viewModel.imageUser(context, data) }
                         }
                     }
                     requestCode == REQUEST_IMAGE_CAPTURE_USER && resultCode == RESULT_OK -> {
@@ -125,7 +122,7 @@ class ConfigurationFragment : BaseFragment() {
                     }
                 }
             } catch (e: Exception) {
-                e.message?.let { context?.let { context -> toast(context, it.toInt()) } }
+                e.message?.let { message -> context?.let { context -> toast(context, message) } }
             }
     }
 
