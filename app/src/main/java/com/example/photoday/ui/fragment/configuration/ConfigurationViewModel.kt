@@ -27,9 +27,11 @@ class ConfigurationViewModel(private val repository: BaseRepositoryUser) : ViewM
         }
     }
 
-    fun imageUser(image: Uri) {
+    fun imageUser(image: Uri,  context: Context) {
         viewModelScope.launch {
-            repository.baseRepositoryChangeImageUser(image,
+            repository.baseRepositoryChangeImageUser(
+                image,
+                context,
                 callbackMessage = { message -> _uiStateFlowMessage.value = message })
         }
     }

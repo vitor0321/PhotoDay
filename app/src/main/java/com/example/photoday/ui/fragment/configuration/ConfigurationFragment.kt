@@ -111,7 +111,7 @@ class ConfigurationFragment : BaseFragment() {
                 when {
                     requestCode == REQUEST_IMAGE_GALLERY_USER && resultCode == RESULT_OK -> {
                         data?.data?.let { data ->
-                            viewModel.imageUser(data)
+                            context?.let { context -> viewModel.imageUser(data, context) }
                         }
                     }
                     requestCode == REQUEST_IMAGE_CAPTURE_USER && resultCode == RESULT_OK -> {
@@ -125,7 +125,7 @@ class ConfigurationFragment : BaseFragment() {
                             getString(R.string.change_image_user),
                             null
                         )
-                        viewModel.imageUser(Uri.parse(path))
+                        context?.let { context -> viewModel.imageUser(Uri.parse(path), context) }
                     }
                 }
             } catch (e: Exception) {

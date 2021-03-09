@@ -59,6 +59,7 @@ class NewUserNameDialog(
                         context?.let { context ->
                             baseRepositoryUser.baseRepositoryChangeNameUser(
                                 name,
+                                context,
                             callbackMessage = {message -> toast(context, message) })
                         }
                     }

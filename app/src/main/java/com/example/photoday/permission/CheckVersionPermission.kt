@@ -1,26 +1,25 @@
 package com.example.photoday.permission
 
 import android.Manifest
-import android.content.res.Resources.getSystem
+import android.content.Context
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker
 import com.example.photoday.R
 import com.example.photoday.constants.REQUEST_IMAGE_CAPTURE_USER
 import com.example.photoday.constants.REQUEST_IMAGE_GALLERY_USER
-import com.example.photoday.constants.Utils.toast
 import com.example.photoday.exhibition.Exhibition.dispatchTakeExhibition
 import com.example.photoday.exhibition.Exhibition.galleryExhibition
 import com.example.photoday.ui.activity.PhotoDayActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 object CheckVersionPermission {
     fun galleryPermission(
         activity: PhotoDayActivity,
         valueDate: String?,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -44,7 +43,7 @@ object CheckVersionPermission {
                         else -> galleryExhibition(activity, valueDate,
                             callbackMessage = { message -> callbackMessage.invoke(message) })
                     }
-                } else callbackMessage.invoke(getSystem().getString(R.string.version_less_23))
+                } else callbackMessage.invoke(context.getString(R.string.version_less_23))
             } catch (e: Exception) {
                 e.message?.let { message -> callbackMessage.invoke(message) }
             }
@@ -54,7 +53,8 @@ object CheckVersionPermission {
     fun dispatchTakePermission(
         activity: PhotoDayActivity,
         valueDate: String?,
-        callbackMessage: (message: String) -> Unit
+        context: Context,
+        callbackMessage: (message: String) -> Unit,
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -75,7 +75,7 @@ object CheckVersionPermission {
                         callbackMessage = {message -> callbackMessage.invoke(message) })
                     }
                 } else
-                    callbackMessage.invoke(getSystem().getString(R.string.version_less_23))
+                    callbackMessage.invoke(context.getString(R.string.version_less_23))
             } catch (e: Exception) {
                     e.message?.let { message -> callbackMessage.invoke(message) }
             }

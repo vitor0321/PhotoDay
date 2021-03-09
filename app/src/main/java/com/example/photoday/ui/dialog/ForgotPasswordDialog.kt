@@ -63,7 +63,7 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
                     }
                     CoroutineScope(Dispatchers.IO).launch {
                         context?.let { context ->
-                            repository.baseRepositoryForgotPassword(userEmail,
+                            repository.baseRepositoryForgotPassword(userEmail, context,
                                 callbackMessage = { message -> toast(context, message)})
                         }
                     }

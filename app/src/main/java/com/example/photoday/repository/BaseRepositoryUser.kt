@@ -22,10 +22,11 @@ class BaseRepositoryUser(
 
     fun baseRepositoryChangeNameUser(
         name: String,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
-            repositoryChange.changeNameUser(name,
+            repositoryChange.changeNameUser(name, context,
                 callbackMessage = { message -> callbackMessage.invoke(message) })
         } catch (e: Exception) {
             e.message?.let { message -> callbackMessage.invoke(message) }
@@ -34,10 +35,11 @@ class BaseRepositoryUser(
 
     fun baseRepositoryForgotPassword(
         userEmail: EditText,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
-            repositoryChange.forgotPassword(userEmail,
+            repositoryChange.forgotPassword(userEmail, context,
                 callbackMessage = { message -> callbackMessage.invoke(message) })
         } catch (e: Exception) {
             e.message?.let { message -> callbackMessage.invoke(message) }
@@ -47,12 +49,14 @@ class BaseRepositoryUser(
     fun baseRepositoryUpdateUI(
         controlNavigation: NavController,
         startLog: Int,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 repositoryCheck.updateUI(controlNavigation,
                     startLog,
+                    context,
                     callbackMessage = { message -> callbackMessage.invoke(message) })
             } catch (e: Exception) {
                 e.message?.let { message -> callbackMessage.invoke(message) }
@@ -77,10 +81,11 @@ class BaseRepositoryUser(
 
     fun baseRepositoryChangeImageUser(
         image: Uri,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
-            repositoryChange.changeImageUser(image,
+            repositoryChange.changeImageUser(image, context,
                 callbackMessage = { message -> callbackMessage.invoke(message) })
         } catch (e: Exception) {
             e.message?.let { message -> callbackMessage.invoke(message) }
@@ -102,6 +107,7 @@ class BaseRepositoryUser(
     fun baseRepositoryFirebaseAuthWithGoogle(
         idToken: String,
         controlNavigation: NavController,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
@@ -109,6 +115,7 @@ class BaseRepositoryUser(
                 callback = { login: Int ->
                     baseRepositoryUpdateUI(controlNavigation,
                         login,
+                        context,
                         callbackMessage = { message -> callbackMessage.invoke(message) })
                 },
                 callbackMessage = { message -> callbackMessage.invoke(message) })
@@ -121,6 +128,7 @@ class BaseRepositoryUser(
         registerUser: AppCompatEditText,
         registerUserPassword: AppCompatEditText,
         controlNavigation: NavController,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
@@ -128,6 +136,7 @@ class BaseRepositoryUser(
                 registerUser,
                 registerUserPassword,
                 controlNavigation,
+                context,
                 callbackMessage = { message -> callbackMessage.invoke(message) })
         } catch (e: Exception) {
             e.message?.let { message -> callbackMessage.invoke(message) }
@@ -139,6 +148,7 @@ class BaseRepositoryUser(
         loginPassword: AppCompatEditText,
         requireActivity: FragmentActivity,
         controlNavigation: NavController,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
@@ -146,9 +156,11 @@ class BaseRepositoryUser(
                 loginUserId,
                 loginPassword,
                 requireActivity,
+                context,
                 callback = { login: Int ->
                     baseRepositoryUpdateUI(controlNavigation,
                         login,
+                        context,
                         callbackMessage = { message -> callbackMessage.invoke(message) })
                 },
                 callbackMessage = { message -> callbackMessage.invoke(message) }

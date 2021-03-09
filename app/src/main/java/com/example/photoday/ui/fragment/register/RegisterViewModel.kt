@@ -29,6 +29,7 @@ class RegisterViewModel(
                     registerUser,
                     registerUserPassword,
                     controlNavigation,
+                    context,
                     callbackMessage = { message -> _uiStateFlowMessage.value = message }
                 )
             }

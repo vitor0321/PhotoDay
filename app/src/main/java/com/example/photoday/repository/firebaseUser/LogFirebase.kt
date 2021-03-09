@@ -1,6 +1,7 @@
 package com.example.photoday.repository.firebaseUser
 
 import android.content.Context
+import android.content.res.Resources
 import android.content.res.Resources.getSystem
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
@@ -58,6 +59,7 @@ object LogFirebase {
         registerUser: AppCompatEditText,
         registerUserPassword: AppCompatEditText,
         controlNavigation: NavController,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
@@ -74,14 +76,14 @@ object LogFirebase {
                                         .addOnCompleteListener {
                                             Navigation.navFragmentRegisterToLogin(controlNavigation)
                                         }
-                                    callbackMessage.invoke(getSystem().getString(R.string.check_your_email_and_confirm))
+                                    callbackMessage.invoke(context.getString(R.string.check_your_email_and_confirm))
                                 }
                                 !task.isSuccessful -> {
                                     Navigation.navFragmentRegisterToLogin(controlNavigation)
-                                    callbackMessage.invoke(getSystem().getString(R.string.email_already_exists))
+                                    callbackMessage.invoke(context.getString(R.string.email_already_exists))
                                 }
                                 else -> {
-                                    callbackMessage.invoke(getSystem().getString(R.string.authentication_failed_try_again))
+                                    callbackMessage.invoke(context.getString(R.string.authentication_failed_try_again))
                                 }
                             }
                         }
@@ -94,6 +96,7 @@ object LogFirebase {
         loginUserId: AppCompatEditText,
         loginPassword: AppCompatEditText,
         requireActivity: FragmentActivity,
+        context: Context,
         callback: (login: Int) -> Unit,
         callbackMessage: (message: String) -> Unit,
     ) {
@@ -111,7 +114,7 @@ object LogFirebase {
                         }
                         else -> {
                             // If sign in fails, display a message to the user.
-                            callbackMessage.invoke(getSystem().getString(R.string.login_failed))
+                            callbackMessage.invoke(context.getString(R.string.login_failed))
                             callback.invoke(FIRST_LOGIN)
                         }
                     }

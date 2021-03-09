@@ -14,6 +14,7 @@ import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.navigation.Navigation
+import com.example.photoday.navigation.Navigation.navFragmentTimelineToFullScreen
 import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
@@ -67,7 +68,7 @@ class TimelineFragment : BaseFragment() {
             binding.run {
                 recycleViewListTimeline.layoutManager = LinearLayoutManager(context)
                 recycleViewListTimeline.adapter = TimelineAdapter(imagesList) { itemPhoto ->
-                    Navigation.navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
+                    navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
                 }
             }
         }

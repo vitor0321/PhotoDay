@@ -93,9 +93,12 @@ class LoginFragment : BaseFragment() {
                             return@setOnClickListener
                         }
                     }
-                    viewModel.doLogin(editTextLoginUser,
-                        editTextLoginPassword,
-                        requireActivity())
+                    context?.let { context ->
+                        viewModel.doLogin(editTextLoginUser,
+                            editTextLoginPassword,
+                            requireActivity(),
+                            context)
+                    }
                 } catch (e: Exception) {
                     CoroutineScope(Dispatchers.Main).launch {
                         e.message?.let { message ->

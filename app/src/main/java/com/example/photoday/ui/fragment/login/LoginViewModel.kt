@@ -26,6 +26,7 @@ class LoginViewModel(
         editTextLoginUser: TextInputEditText,
         editTextLoginPassword: TextInputEditText,
         requireActivity: FragmentActivity,
+        context: Context
     ) {
         viewModelScope.launch {
             repository.baseRepositorySignInWithEmailAndPassword(
@@ -33,6 +34,7 @@ class LoginViewModel(
                 editTextLoginPassword,
                 requireActivity,
                 controlNavigation,
+                context,
                 callbackMessage = { message -> _uiStateFlowMessage.value = message }
             )
         }
@@ -40,18 +42,24 @@ class LoginViewModel(
 
     fun repositoryUpdateUI(controlNavigation: NavController, ON_START: Int, context: Context?) {
         viewModelScope.launch {
-            repository.baseRepositoryUpdateUI(controlNavigation,
-                ON_START,
-                callbackMessage = { message -> _uiStateFlowMessage.value = message })
+            context?.let { context ->
+                repository.baseRepositoryUpdateUI(controlNavigation,
+                    ON_START,
+                    context,
+                    callbackMessage = { message -> _uiStateFlowMessage.value = message })
+            }
         }
     }
 
     fun authWithGoogle(account: GoogleSignInAccount, context: Context?) {
         viewModelScope.launch {
-            repository.baseRepositoryFirebaseAuthWithGoogle(
-                account.idToken!!,
-                controlNavigation,
-                callbackMessage = { message -> _uiStateFlowMessage.value = message })
+            context?.let { context ->
+                repository.baseRepositoryFirebaseAuthWithGoogle(
+                    account.idToken!!,
+                    controlNavigation,
+                    context,
+                    callbackMessage = { message -> _uiStateFlowMessage.value = message })
+            }
         }
     }
 

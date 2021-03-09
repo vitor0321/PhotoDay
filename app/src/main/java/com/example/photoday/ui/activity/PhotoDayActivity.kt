@@ -91,7 +91,8 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         datePhotoEventBus?.let { dateCalendar ->
                             viewModel.createPushPhoto(
                                 dateCalendar,
-                                photo
+                                photo,
+                                this
                             )
                         }
                     }
@@ -110,7 +111,8 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         datePhotoEventBus?.let { dateCalendar ->
                             viewModel.createPushPhoto(
                                 dateCalendar,
-                                Uri.parse(path)
+                                Uri.parse(path),
+                                this
                             )
                         }
                 }

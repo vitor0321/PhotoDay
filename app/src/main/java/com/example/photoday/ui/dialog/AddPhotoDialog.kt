@@ -43,39 +43,47 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
             val activity = requireActivity() as PhotoDayActivity
             imageUploadGallery.setOnClickListener {
                 when (valueDate) {
-                    null -> galleryPermission(activity, null,
-                        callbackMessage = { message ->
-                            context?.let { context ->
-                                toast(context,
-                                    message)
-                            }
-                        })
-                    else -> galleryPermission(activity, valueDate,
-                        callbackMessage = { message ->
-                            context?.let { context ->
-                                toast(context,
-                                    message)
-                            }
-                        })
+                    null -> context?.let { context ->
+                        galleryPermission(activity, null, context,
+                            callbackMessage = { message ->
+                                context?.let { context ->
+                                    toast(context,
+                                        message)
+                                }
+                            })
+                    }
+                    else -> context?.let { context ->
+                        galleryPermission(activity, valueDate, context,
+                            callbackMessage = { message ->
+                                context?.let { context ->
+                                    toast(context,
+                                        message)
+                                }
+                            })
+                    }
                 }
                 dialog?.dismiss()
             }
             imageUploadCamera.setOnClickListener {
                 when (valueDate) {
-                    null -> dispatchTakePermission(activity, null,
-                        callbackMessage = { message ->
-                            context?.let { context ->
-                                toast(context,
-                                    message)
-                            }
-                        })
-                    else -> dispatchTakePermission(activity, valueDate,
-                        callbackMessage = { message ->
-                            context?.let { context ->
-                                toast(context,
-                                    message)
-                            }
-                        })
+                    null -> context?.let { context ->
+                        dispatchTakePermission(activity, null, context,
+                            callbackMessage = { message ->
+                                context?.let { context ->
+                                    toast(context,
+                                        message)
+                                }
+                            })
+                    }
+                    else -> context?.let { context ->
+                        dispatchTakePermission(activity, valueDate, context,
+                            callbackMessage = { message ->
+                                context?.let { context ->
+                                    toast(context,
+                                        message)
+                                }
+                            })
+                    }
                 }
                 dialog?.dismiss()
             }

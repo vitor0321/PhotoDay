@@ -1,6 +1,6 @@
 package com.example.photoday.repository.firebaseUser
 
-import android.content.res.Resources.getSystem
+import android.content.Context
 import android.net.Uri
 import android.util.Patterns
 import android.widget.EditText
@@ -13,6 +13,7 @@ object ChangeUserFirebase {
 
     fun changeNameUser(
         newName: String,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
@@ -23,7 +24,7 @@ object ChangeUserFirebase {
             user!!.updateProfile(profileUpdates)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        callbackMessage.invoke(getSystem().getString(R.string.name_change_successful))
+                        callbackMessage.invoke(context.getString(R.string.name_change_successful))
                     }
                 }
         } catch (e: Exception) {
@@ -33,6 +34,7 @@ object ChangeUserFirebase {
 
     fun changeImageUser(
         image: Uri,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
@@ -43,7 +45,7 @@ object ChangeUserFirebase {
             user!!.updateProfile(profileUpdates)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        callbackMessage.invoke(getSystem().getString(R.string.image_change_successful))
+                        callbackMessage.invoke(context.getString(R.string.image_change_successful))
                     }
                 }
         } catch (e: Exception) {
@@ -53,25 +55,26 @@ object ChangeUserFirebase {
 
     fun forgotPassword(
         userEmail: EditText,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
             when {
                 userEmail.text.toString().isEmpty() -> {
-                    callbackMessage.invoke(getSystem().getString(R.string.please_enter_email))
+                    callbackMessage.invoke(context.getString(R.string.please_enter_email))
                 }
                 !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
-                    callbackMessage.invoke(getSystem().getString(R.string.please_enter_valid_email))
+                    callbackMessage.invoke(context.getString(R.string.please_enter_valid_email))
                 }
                 else -> {
                     auth.sendPasswordResetEmail(userEmail.text.toString())
                         .addOnCompleteListener { task ->
                             when {
                                 task.isSuccessful -> {
-                                    callbackMessage.invoke(getSystem().getString(R.string.email_sent))
+                                    callbackMessage.invoke(context.getString(R.string.email_sent))
                                 }
                                 else -> {
-                                    callbackMessage.invoke(getSystem().getString(R.string.unregistered_email))
+                                    callbackMessage.invoke(context.getString(R.string.unregistered_email))
                                 }
                             }
                         }

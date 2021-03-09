@@ -1,5 +1,6 @@
 package com.example.photoday.repository.firebaseUser
 
+import android.content.Context
 import android.content.res.Resources.getSystem
 import androidx.navigation.NavController
 import com.example.photoday.R
@@ -16,6 +17,7 @@ object CheckUserFirebase {
     fun updateUI(
         controlNavigation: NavController,
         startLog: Int,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
@@ -30,16 +32,16 @@ object CheckUserFirebase {
                                 when (startLog) {
                                     ON_START -> {
                                         navFragmentLoginToTimeline(controlNavigation)
-                                        callbackMessage.invoke(getSystem().getString(R.string.login_is_success))
+                                        callbackMessage.invoke(context.getString(R.string.login_is_success))
                                     }
                                     FIRST_LOGIN -> {
                                         navFragmentLoginToSplashLogin(controlNavigation)
-                                        callbackMessage.invoke(getSystem().getString(R.string.login_is_success))
+                                        callbackMessage.invoke(context.getString(R.string.login_is_success))
                                     }
                                 }
                             }
                             else -> {
-                                callbackMessage.invoke(getSystem().getString(R.string.verify_your_email_address))
+                                callbackMessage.invoke(context.getString(R.string.verify_your_email_address))
                             }
                     }
                 }

@@ -1,5 +1,6 @@
 package com.example.photoday.repository.firebasePhotos
 
+import android.content.Context
 import android.content.res.Resources.getSystem
 import android.net.Uri
 import com.example.photoday.R
@@ -17,12 +18,13 @@ object FirebasePhoto {
     fun uploadImageToStorage(
         dateCalendar: String,
         curFile: Uri?,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) =
         try {
             curFile?.let {
                 imageRef.child("$IMAGES$dateCalendar").putFile(it)
-                callbackMessage.invoke(getSystem().getString(R.string.successfully_upload_image))
+                callbackMessage.invoke(context.getString(R.string.successfully_upload_image))
             }
         } catch (e: Exception) {
             e.message?.let { message ->
@@ -32,11 +34,12 @@ object FirebasePhoto {
 
     fun deleteImage(
         dateCalendar: String,
+        context: Context,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
             imageRef.child("$IMAGES$dateCalendar").delete()
-            callbackMessage.invoke(getSystem().getString(R.string.successfully_delete_image))
+            callbackMessage.invoke(context.getString(R.string.successfully_delete_image))
         } catch (e: Exception) {
             e.message?.let { message -> callbackMessage.invoke(message) }
         }
