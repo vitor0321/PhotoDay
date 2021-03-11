@@ -11,6 +11,7 @@ import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
 import com.example.photoday.constants.Utils
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentRegisterUserBinding
 import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.fragment.base.BaseFragment
@@ -23,9 +24,9 @@ class RegisterFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val controlNavigation by lazy { findNavController() }
-    private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser()
 
     private val viewModel by lazy {
+        val baseRepositoryUser = BaseRepositoryUser()
         ViewModelInjector.providerRegisterViewModel(controlNavigation, baseRepositoryUser)
     }
 
@@ -35,18 +36,13 @@ class RegisterFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentRegisterUserBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         init()
+        return binding.root
     }
 
     private fun init() {
         statusBarNavigation()
         initButton()
-        initObserverStateFlow()
     }
 
     private fun initButton() {
@@ -81,23 +77,21 @@ class RegisterFragment : BaseFragment() {
                     }
                     editTextUserConfirmPassword.text.toString() != editTextUserConfirmPassword.text.toString() -> {
                         editTextUserConfirmPassword.error =
-                                context?.getString(R.string.password_are_not_the_same)
+                            context?.getString(R.string.password_are_not_the_same)
                         editTextUserConfirmPassword.requestFocus()
                         return@setOnClickListener
                     }
                 }
-                viewModel.signUpUser(
-                    editTextUserEmail,
-                    editTextUserPassword,
-                    context
-                )
+                context?.let { context ->
+                    viewModel.signUpUser(
+                        editTextUserEmail,
+                        editTextUserPassword,
+                        context
+                    ).observe(viewLifecycleOwner, { resourceMessage ->
+                        resourceMessage.error?.let { message -> toast(context, message) }
+                    })
+                }
             }
-        }
-    }
-
-    private fun initObserverStateFlow() {
-        viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
-            context?.let { context -> Utils.toast(context, message) }
         }
     }
 

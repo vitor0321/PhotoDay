@@ -59,8 +59,9 @@ class NewUserNameDialog(
                         context?.let { context ->
                             baseRepositoryUser.baseRepositoryChangeNameUser(
                                 name,
-                                context,
-                            callbackMessage = {message -> toast(context, message) })
+                                context).observe(viewLifecycleOwner, { resourceResult ->
+                                resourceResult.error?.let { message -> toast(context, message) }
+                            })
                         }
                     }
                     dialog?.dismiss()

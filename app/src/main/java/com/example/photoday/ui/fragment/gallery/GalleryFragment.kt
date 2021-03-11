@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.photoday.R
@@ -20,7 +19,6 @@ import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class GalleryFragment : BaseFragment() {
@@ -29,53 +27,48 @@ class GalleryFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val controlNavigation by lazy { findNavController() }
-    private val baseRepositoryPhoto: BaseRepositoryPhoto = BaseRepositoryPhoto()
 
-    private val viewModel by lazy { ViewModelInjector.providerGalleryViewModel(baseRepositoryPhoto) }
+    private val viewModel by lazy {
+        val baseRepositoryPhoto = BaseRepositoryPhoto()
+        ViewModelInjector.providerGalleryViewModel(baseRepositoryPhoto)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         CoroutineScope(Dispatchers.Main).launch {
             init()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
-        context?.let { context -> viewModel.createPullPhotos() }
+        return binding.root
     }
 
     private fun init() {
+        viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
         statusBarNavigation()
         initStateFlowObserve()
     }
 
     private fun initStateFlowObserve() {
-        viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { imagesList ->
+        viewModel.createPullPhotos().observe(viewLifecycleOwner, { resourceList ->
             val spanCount = SPAN_COUNT
             val layoutManager = GridLayoutManager(context, spanCount)
             binding.run {
                 recycleViewListGallery.layoutManager = layoutManager
-                recycleViewListGallery.adapter = GalleryAdapter(imagesList) { itemPhoto ->
-                    Navigation.navFragmentGalleryToFullScreen(controlNavigation, itemPhoto.photo)
+                recycleViewListGallery.adapter =
+                    resourceList.data?.let { itemListPhoto ->
+                        GalleryAdapter(itemListPhoto) { itemPhoto ->
+                            Navigation.navFragmentGalleryToFullScreen(controlNavigation,
+                                itemPhoto.photo)
+                        }
+                    }
+                if (resourceList.error != null) {
+                    context?.let { context -> toast(context, resourceList.error) }
                 }
             }
-
             viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
-
-            viewModel.uiStateFlowError.asLiveData().observe(viewLifecycleOwner) { message ->
-                context?.let { context -> toast(context, message) }
-            }
-        }
+        })
     }
 
     private fun viewFlipperControl(child: Int, visible: Boolean) {
@@ -88,7 +81,6 @@ class GalleryFragment : BaseFragment() {
             }
             child == CHILD_SECOND && visible == PROGRESS_BAR_INVISIBLE -> {
                 CoroutineScope(Dispatchers.Main).launch {
-                    delay(DELAY_VIEW_FLIPPER)
                     binding.run {
                         viewFlipperGallery.displayedChild = CHILD_SECOND
                         progressFlowGallery.isVisible = PROGRESS_BAR_INVISIBLE

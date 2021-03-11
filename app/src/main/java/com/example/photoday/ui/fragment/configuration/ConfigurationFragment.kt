@@ -10,7 +10,6 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.photoday.R
@@ -33,8 +32,9 @@ class ConfigurationFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val navFragment by lazy { findNavController() }
-    private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser()
+
     private val viewModel by lazy {
+        val baseRepositoryUser = BaseRepositoryUser()
         ViewModelInjector.providerConfigurationViewModel(baseRepositoryUser)
     }
     private var auth = FirebaseAuth.getInstance()
@@ -52,15 +52,10 @@ class ConfigurationFragment : BaseFragment() {
         init()
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.getUserDBFirebase()
-    }
-
     private fun init() {
         initButton()
         statusBarNavigation()
-        initStateFlowObserve()
+        initObserve()
 
     }
 
@@ -69,7 +64,9 @@ class ConfigurationFragment : BaseFragment() {
             /*Button logout*/
             btnLogout.setOnClickListener {
                 /*logout with Firebase*/
-                context?.let { context -> viewModel.logout(context) }
+                context?.let { context -> viewModel.logout(context).observe(viewLifecycleOwner, {resourceMessage ->
+                    resourceMessage.error?.let { message -> toast(context, message) }
+                }) }
                 navFragmentConfigurationToSplashGoodbye(navFragment)
             }
             /*Button edit user photo*/
@@ -79,13 +76,13 @@ class ConfigurationFragment : BaseFragment() {
         }
     }
 
-    private fun initStateFlowObserve() {
-        viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { userFirebase ->
+    private fun initObserve() {
+        viewModel.getUserDBFirebase().observe(viewLifecycleOwner, { resourceUser ->
             binding.run {
                 val auth = auth.currentUser
-                textViewUserName.text = userFirebase.name
-                textViewUserEmail.text = userFirebase.email
-                userFirebase.image?.let {
+                resourceUser.data?.let { data -> textViewUserName.text = data.name }
+                resourceUser.data?.let { data -> textViewUserEmail.text = data.email }
+                resourceUser.data?.image?.let {
                     context?.let { context ->
                         if (auth != null) {
                             Glide.with(context)
@@ -96,41 +93,51 @@ class ConfigurationFragment : BaseFragment() {
                         }
                     }
                 }
+                repositoryError(resourceUser.error)
             }
-        }
+        })
+    }
 
-        viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
-            context?.let { context -> toast(context, message) }
-        }
+    private fun repositoryError(error: String?) {
+        context?.let { context -> error?.let { message -> toast(context, message) } }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-            try {
-                //here get the image of ChangeUserFirebase
-                when {
-                    requestCode == REQUEST_IMAGE_GALLERY_USER && resultCode == RESULT_OK -> {
-                        data?.data?.let { data ->
-                            context?.let { context -> viewModel.imageUser(data, context) }
+        try {
+            //here get the image of ChangeUserFirebase
+            when {
+                requestCode == REQUEST_IMAGE_GALLERY_USER && resultCode == RESULT_OK -> {
+                    data?.data?.let { data ->
+                        context?.let { context ->
+                            viewModel.imageUser(data, context).observe(this, { resourceUser ->
+                                resourceUser.error?.let { message -> toast(context, message) }
+                            })
                         }
                     }
-                    requestCode == REQUEST_IMAGE_CAPTURE_USER && resultCode == RESULT_OK -> {
-                        val imageBitmap =
-                            data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
-                        val bytes = ByteArrayOutputStream()
-                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-                        val path: String = MediaStore.Images.Media.insertImage(
-                            context?.contentResolver,
-                            imageBitmap,
-                            getString(R.string.change_image_user),
-                            null
-                        )
-                        context?.let { context -> viewModel.imageUser(Uri.parse(path), context) }
+                }
+                requestCode == REQUEST_IMAGE_CAPTURE_USER && resultCode == RESULT_OK -> {
+                    val imageBitmap =
+                        data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
+                    val bytes = ByteArrayOutputStream()
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+                    val path: String = MediaStore.Images.Media.insertImage(
+                        context?.contentResolver,
+                        imageBitmap,
+                        getString(R.string.change_image_user),
+                        null
+                    )
+                    context?.let { context ->
+                        viewModel.imageUser(Uri.parse(path), context)
+                            .observe(this, { resourceUser ->
+                                resourceUser.error?.let { message -> toast(context, message) }
+                            })
                     }
                 }
-            } catch (e: Exception) {
-                e.message?.let { message -> context?.let { context -> toast(context, message) } }
             }
+        } catch (e: Exception) {
+            e.message?.let { message -> context?.let { context -> toast(context, message) } }
+        }
     }
 
     private fun photoDialog() {

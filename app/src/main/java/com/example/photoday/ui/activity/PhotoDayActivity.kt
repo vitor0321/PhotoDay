@@ -12,8 +12,6 @@ import android.provider.MediaStore
 import android.view.View
 import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -38,10 +36,13 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private var _binding: ActivityPhotoDayBinding? = null
     private val binding get() = _binding!!
 
-    private val baseRepositoryPhoto: BaseRepositoryPhoto = BaseRepositoryPhoto()
-    private val viewModel by lazy { ViewModelInjector.providerPhotoDayViewModel(baseRepositoryPhoto) }
+    private val viewModel by lazy {
+        val baseRepositoryPhoto = BaseRepositoryPhoto()
+        ViewModelInjector.providerPhotoDayViewModel(baseRepositoryPhoto)
+    }
 
     private var datePhotoEventBus: String? = null
+
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
@@ -62,18 +63,11 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private fun init() {
         initializeControl()
         initButton()
-        initObserver()
     }
 
     private fun initButton() {
         binding.apply {
             buttonFabAdd.setOnClickListener { datePicker() }
-        }
-    }
-
-    private fun initObserver(){
-        viewModel.uiStateFlowMessage.asLiveData().observe(this) { message ->
-            toast(this, message)
         }
     }
 
@@ -89,11 +83,10 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                 requestCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK -> {
                     data?.data?.let { photo ->
                         datePhotoEventBus?.let { dateCalendar ->
-                            viewModel.createPushPhoto(
-                                dateCalendar,
-                                photo,
-                                this
-                            )
+                            viewModel.createPushPhoto(dateCalendar, photo, this)
+                                .observe(this, { resourcesError ->
+                                    resourcesError.error?.let { message -> toast(this, message) }
+                                })
                         }
                     }
                 }
@@ -109,11 +102,14 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         null
                     )
                         datePhotoEventBus?.let { dateCalendar ->
-                            viewModel.createPushPhoto(
-                                dateCalendar,
-                                Uri.parse(path),
-                                this
-                            )
+                            viewModel.createPushPhoto(dateCalendar, Uri.parse(path), this)
+                                .observe(this,
+                                    { resourcesError ->
+                                        resourcesError.error?.let { message ->
+                                            toast(this,
+                                                message)
+                                        }
+                                    })
                         }
                 }
             }

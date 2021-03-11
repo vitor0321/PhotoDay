@@ -13,7 +13,6 @@ import com.example.photoday.adapter.TimelineAdapter
 import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentTimelineBinding
-import com.example.photoday.navigation.Navigation
 import com.example.photoday.navigation.Navigation.navFragmentTimelineToFullScreen
 import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
@@ -21,7 +20,6 @@ import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 
@@ -31,53 +29,45 @@ class TimelineFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val controlNavigation by lazy { findNavController() }
-    private val baseRepositoryPhoto: BaseRepositoryPhoto = BaseRepositoryPhoto()
 
-    private val viewModel by lazy { ViewModelInjector.providerTimelineViewModel(baseRepositoryPhoto) }
+    private val viewModel by lazy {
+        val baseRepositoryPhoto = BaseRepositoryPhoto()
+        ViewModelInjector.providerTimelineViewModel(baseRepositoryPhoto)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentTimelineBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         CoroutineScope(Dispatchers.Main).launch {
             init()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        CoroutineScope(Dispatchers.Main).launch {
-            viewFlipperControl(CHILD_FIRST,PROGRESS_BAR_VISIBLE)
-            viewModel.createPullPhotos()
-        }
+        return binding.root
     }
 
     private fun init() {
+        viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
         statusBarNavigation()
         initStateFlowObserve()
     }
 
     private fun initStateFlowObserve() {
-        viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { imagesList ->
+        viewModel.createPullPhotos().observe(viewLifecycleOwner) { ResorceList ->
             binding.run {
                 recycleViewListTimeline.layoutManager = LinearLayoutManager(context)
-                recycleViewListTimeline.adapter = TimelineAdapter(imagesList) { itemPhoto ->
-                    navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
+                recycleViewListTimeline.adapter =
+                    ResorceList.data?.let { itemPhoto ->
+                        TimelineAdapter(itemPhoto) { itemPhoto ->
+                            navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
+                        }
+                    }
+                if (ResorceList.error != null) {
+                    context?.let { context -> toast(context, ResorceList.error) }
                 }
             }
         }
-
         viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
-
-        viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
-            context?.let { context -> toast(context, message) }
-        }
     }
 
     private fun viewFlipperControl(child : Int, visible : Boolean){
@@ -90,7 +80,6 @@ class TimelineFragment : BaseFragment() {
             }
             child == CHILD_SECOND && visible == PROGRESS_BAR_INVISIBLE ->{
                 CoroutineScope(Dispatchers.Main).launch {
-                    delay(DELAY_VIEW_FLIPPER)
                     binding.run {
                         viewFlipperTimeline.displayedChild = CHILD_SECOND
                         progressFlowTimeline.isVisible = PROGRESS_BAR_INVISIBLE

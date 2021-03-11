@@ -37,7 +37,6 @@ const val CHILD_FIRST = 0
 const val CHILD_SECOND = 1
 const val PROGRESS_BAR_VISIBLE = true
 const val PROGRESS_BAR_INVISIBLE = false
-const val DELAY_VIEW_FLIPPER = 1900L
 
 
 

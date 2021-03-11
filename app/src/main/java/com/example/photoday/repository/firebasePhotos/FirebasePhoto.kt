@@ -1,8 +1,10 @@
 package com.example.photoday.repository.firebasePhotos
 
 import android.content.Context
-import android.content.res.Resources.getSystem
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
 import com.example.photoday.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.constants.IMAGES
@@ -15,40 +17,9 @@ import com.google.firebase.storage.ktx.storage
 object FirebasePhoto {
     private val imageRef = Firebase.storage.reference
 
-    fun uploadImageToStorage(
-        dateCalendar: String,
-        curFile: Uri?,
-        context: Context,
-        callbackMessage: (message: String) -> Unit,
-    ) =
-        try {
-            curFile?.let {
-                imageRef.child("$IMAGES$dateCalendar").putFile(it)
-                callbackMessage.invoke(context.getString(R.string.successfully_upload_image))
-            }
-        } catch (e: Exception) {
-            e.message?.let { message ->
-                callbackMessage.invoke(message)
-            }
-        }
+    private val mediator = MediatorLiveData<ResourceItem<List<ItemPhoto>?>>()
 
-    fun deleteImage(
-        dateCalendar: String,
-        context: Context,
-        callbackMessage: (message: String) -> Unit,
-    ) {
-        try {
-            imageRef.child("$IMAGES$dateCalendar").delete()
-            callbackMessage.invoke(context.getString(R.string.successfully_delete_image))
-        } catch (e: Exception) {
-            e.message?.let { message -> callbackMessage.invoke(message) }
-        }
-    }
-
-    fun listFileDownload(
-        callback: (imagesList: List<ItemPhoto>) -> Unit,
-        callbackError: (messageError: String) -> Unit,
-    ) {
+    fun listFileDownload(): LiveData<ResourceItem<List<ItemPhoto>?>> {
         try {
             val storageRef = imageRef.child("$IMAGES")
             val imagesList: ArrayList<ItemPhoto> = ArrayList()
@@ -63,12 +34,56 @@ object FirebasePhoto {
                     }.addOnCompleteListener {
                         imagesList.sortBy { it.dateCalendar }
                         val listReversed = imagesList.asReversed()
-                        callback.invoke(listReversed)
+                        mediator.value = ResourceItem(data = listReversed)
                     }
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { message -> callbackError.invoke(message) }
+            val mediatorKeep = mediator.value
+            when (mediator.value) {
+                null -> mediator.value = ResourceItem(data = mediatorKeep?.data, error = e.message)
+            }
         }
+        return mediator
+    }
+
+    fun uploadImageToStorage(
+        dateCalendar: String,
+        curFile: Uri?,
+        context: Context,
+    ): LiveData<ResourceItem<Void?>> {
+        val liveData = MutableLiveData<ResourceItem<Void?>>()
+        try {
+            curFile?.let {
+                imageRef.child("$IMAGES$dateCalendar").putFile(it)
+                liveData.value =
+                    ResourceItem(data = null,
+                        error = context.getString(R.string.successfully_upload_image))
+            }
+        } catch (e: Exception) {
+            val liveDataKeep = liveData.value
+            when(liveData.value){
+                null-> liveData.value = ResourceItem(data= liveDataKeep?.data,error = e.message)
+            }
+        }
+        return liveData
+    }
+
+    fun deleteImage(
+        dateCalendar: String,
+        context: Context
+    ): LiveData<ResourceItem<Void?>> {
+        val liveData = MutableLiveData<ResourceItem<Void?>>()
+        try {
+            imageRef.child("$IMAGES$dateCalendar").delete()
+            liveData.value =
+                ResourceItem(data = null,
+                    error = context.getString(R.string.successfully_delete_image))
+        } catch (e: Exception) {
+            e.message?.let { message ->
+                liveData.value = ResourceItem(data = null, error = message)
+            }
+        }
+        return liveData
     }
 }

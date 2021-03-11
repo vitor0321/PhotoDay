@@ -32,9 +32,9 @@ class LoginFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val controlNavigation by lazy { findNavController() }
-    private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser()
 
     private val viewModel by lazy {
+        val baseRepositoryUser = BaseRepositoryUser()
         ViewModelInjector.providerLoginViewModel(controlNavigation, baseRepositoryUser)
     }
     private lateinit var auth: FirebaseAuth
@@ -47,25 +47,31 @@ class LoginFragment : BaseFragment() {
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         init()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        viewModel.repositoryUpdateUI(controlNavigation, ON_START, context)
+        return binding.root
     }
 
     private fun init() {
         createRequestLoginGoogle()
         initButton()
         statusBarNavigation()
-        initObserverStateFlow()
+        initObserver()
+    }
+
+    private fun initObserver() {
+        // Check if user is signed in (non-null) and update UI accordingly.
+        viewModel.updateUI(controlNavigation, ON_START, context)
+            ?.observe(viewLifecycleOwner, { resourceUser ->
+                context?.let { context ->
+                    resourceUser.error?.let { message ->
+                        toast(context, message)
+                    }
+                }
+            })
+
+        viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
+            context?.let { context -> toast(context, message) }
+        }
     }
 
     private fun initButton() {
@@ -97,7 +103,9 @@ class LoginFragment : BaseFragment() {
                         viewModel.doLogin(editTextLoginUser,
                             editTextLoginPassword,
                             requireActivity(),
-                            context)
+                            context).observe(viewLifecycleOwner, { resourceMessage ->
+                            resourceMessage.error?.let { message -> toast(context, message) }
+                        })
                     }
                 } catch (e: Exception) {
                     CoroutineScope(Dispatchers.Main).launch {
@@ -129,17 +137,16 @@ class LoginFragment : BaseFragment() {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
-                    viewModel.authWithGoogle(account, context)
+                    context?.let { context ->
+                        viewModel.authWithGoogle(account, context)
+                            .observe(this, { resourceMessage ->
+                                resourceMessage.error?.let { message -> toast(context, message) }
+                            })
+                    }
                 } catch (e: ApiException) {
                     e.printStackTrace()
                 }
             }
-        }
-    }
-
-    private fun initObserverStateFlow(){
-        viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
-            context?.let { context -> toast(context, message) }
         }
     }
 
