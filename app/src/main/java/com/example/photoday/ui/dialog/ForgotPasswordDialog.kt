@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.DialogForgotPasswordBinding
+import com.example.photoday.databinding.DialogFragmentAddPhotoBinding
 import com.example.photoday.repository.BaseRepositoryUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,14 +19,15 @@ import kotlinx.coroutines.launch
 
 class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogFragment() {
 
-    private lateinit var binding: DialogForgotPasswordBinding
+    private var _binding: DialogForgotPasswordBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = DialogForgotPasswordBinding.inflate(inflater, container, false)
+        _binding = DialogForgotPasswordBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -83,7 +85,7 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
     }
 
     override fun onDestroy() {
-        binding
+        _binding = null
         super.onDestroy()
     }
 

@@ -9,24 +9,23 @@ import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
 import com.example.photoday.constants.Utils.toast
+import com.example.photoday.databinding.DialogForgotPasswordBinding
 import com.example.photoday.databinding.DialogFragmentUserNameBinding
 import com.example.photoday.repository.BaseRepositoryUser
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class NewUserNameDialog(
     private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser(),
 ) : DialogFragment() {
 
-    private lateinit var binding: DialogFragmentUserNameBinding
+    private var _binding: DialogFragmentUserNameBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = DialogFragmentUserNameBinding.inflate(inflater, container, false)
+        _binding = DialogFragmentUserNameBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -55,15 +54,12 @@ class NewUserNameDialog(
                         }
                     }
                     val name = editTextNewName.text.toString()
-                    CoroutineScope(Dispatchers.IO).launch{
                         context?.let { context ->
-                            baseRepositoryUser.baseRepositoryChangeNameUser(
-                                name,
-                                context).observe(viewLifecycleOwner, { resourceResult ->
-                                resourceResult.error?.let { message -> toast(context, message) }
-                            })
+                            baseRepositoryUser.baseRepositoryChangeNameUser(name, context)
+                                .observe(viewLifecycleOwner, { resourceResult ->
+                                    resourceResult.error?.let { message -> toast(context, message) }
+                                })
                         }
-                    }
                     dialog?.dismiss()
                 } catch (e: Exception) {
                     e.message?.let { message -> context?.let { context -> toast(context, message) } }
@@ -76,7 +72,7 @@ class NewUserNameDialog(
     }
 
     override fun onDestroy() {
-        binding
+        _binding = null
         super.onDestroy()
     }
 

@@ -17,6 +17,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_text_login_user_id"
         style="@style/TextInputLayoutStyle"
+        app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

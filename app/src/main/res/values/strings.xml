@@ -17,7 +17,7 @@
     <string name="configuration_gallery">Configuration Gallery</string>
 
     <!-- Login Fragment -->
-    <string name="please_enter_valid_email_login">Please Enter Valid Email</string>
+    <string name="please_enter_valid_email_login">Please enter valid email</string>
     <string name="please_enter_email_login">Please enter email</string>
     <string name="please_enter_password">Please enter password</string>
     <string name="email_user_login">Email</string>

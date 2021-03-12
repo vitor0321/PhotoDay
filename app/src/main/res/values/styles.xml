@@ -21,6 +21,10 @@
         <item name="colorAccent">@color/orange</item>
     </style>
 
+    <style name="ShapeAppearanceOverlay.App.CornerSize" parent="Theme.AppCompat.Light.Dialog">
+        <item name="cornerSize">50%</item>
+    </style>
+
     <style name="ProgressBar" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:indeterminateTint">@color/white</item>
     </style>

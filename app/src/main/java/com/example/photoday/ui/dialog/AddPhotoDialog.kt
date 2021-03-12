@@ -9,20 +9,22 @@ import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.DialogFragmentAddPhotoBinding
+import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.permission.CheckVersionPermission.dispatchTakePermission
 import com.example.photoday.permission.CheckVersionPermission.galleryPermission
 import com.example.photoday.ui.activity.PhotoDayActivity
 
 class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
 
-    private lateinit var binding: DialogFragmentAddPhotoBinding
+    private var _binding: DialogFragmentAddPhotoBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        binding = DialogFragmentAddPhotoBinding.inflate(inflater, container, false)
+        _binding = DialogFragmentAddPhotoBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -91,7 +93,7 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
     }
 
     override fun onDestroy() {
-        binding
+        _binding = null
         super.onDestroy()
     }
 
