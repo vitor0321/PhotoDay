@@ -8,10 +8,10 @@ const val SPLASH_TIME_OUT: Long = 2000
 const val RC_SIGN_IN = 123
 
 const val GALLERY_TYPE = "image/*"
-const val ON_START = 100
-
-const val FIRST_LOGIN = 200
 const val DEFAULT_WEB_CLIENT_ID = "49062301467-3v2h2s5hk33aic1a1g86j05rdbhqb3af.apps.googleusercontent.com"
+
+const val ON_START = 100
+const val FIRST_LOGIN = 200
 
 /*Dialog*/
 const val ADD_PHOTO_DIALOG = "ADD_PHOTO_DIALOG"
@@ -37,6 +37,9 @@ const val CHILD_FIRST = 0
 const val CHILD_SECOND = 1
 const val PROGRESS_BAR_VISIBLE = true
 const val PROGRESS_BAR_INVISIBLE = false
+
+/*View Flipper*/
+const val TIME_DELAY = 1600L
 
 
 

@@ -18,9 +18,9 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/image_user"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="@dimen/layout_width_100dp"
+        android:layout_height="@dimen/layout_height_100dp"
+        android:layout_marginTop="@dimen/layout_marin_top_60dp"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
         app:layout_constraintBottom_toTopOf="@id/text_view_user_name"
