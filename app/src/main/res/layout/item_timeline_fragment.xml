@@ -1,40 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/CardView.Light"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/layout_height_250dp"
-    android:layout_marginStart="@dimen/layout_marin_start_8dp"
-    android:layout_marginTop="@dimen/layout_margin_cardView_top_8dp"
-    android:layout_marginEnd="@dimen/layout_margin_end_8dp"
-    android:orientation="vertical"
-    app:cardCornerRadius="@dimen/card_corner_radius_18dp">
+<layout>
+    <data>
+        <import type="androidx.appcompat.widget.AppCompatImageView" />
+        <variable
+            name="itemTimeline"
+            type="com.example.photoday.adapter.modelAdapter.ItemPhoto" />
+    </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        style="@style/CardView.Light"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/layout_height_180dp"
+        android:layout_marginStart="@dimen/layout_marin_start_8dp"
+        android:layout_marginTop="@dimen/layout_margin_cardView_top_8dp"
+        android:layout_marginEnd="@dimen/layout_margin_end_8dp"
+        android:orientation="vertical"
+        app:cardCornerRadius="@dimen/card_corner_radius_18dp">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/date_photo_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/text_view_margin_start_16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/image_timeline"
-            tools:text="@string/text_view_tools_date" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/image_timeline"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date_photo_text_view"
-            tools:src="@drawable/ic_item_photo" />
+            android:layout_height="wrap_content">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/date_photo_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/text_view_margin_start_16dp"
+                android:text="@{itemTimeline.dateCalendar}"
+                android:textSize="@dimen/text_size_16sp"
+                app:layout_constraintBottom_toTopOf="@id/image_timeline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/text_view_tools_date" />
+
+            <ImageView
+                android:id="@+id/image_timeline"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@{itemTimeline.photo}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_photo_text_view"
+                tools:src="@drawable/ic_item_photo" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -7,8 +7,6 @@ import com.example.photoday.repository.BaseRepositoryPhoto
 
 class PhotoDayViewModel(private val repository: BaseRepositoryPhoto) : ViewModel() {
 
-    fun createPushPhoto(context: Context, dateCalendar: String, curFile: Uri?) {
-        repository.baseRepositoryUploadImageToStorage(context, dateCalendar, curFile)
-    }
-
+    fun createPushPhoto(dateCalendar: String, curFile: Uri?, context: Context) =
+        repository.baseRepositoryUploadImageToStorage(dateCalendar, curFile, context)
 }

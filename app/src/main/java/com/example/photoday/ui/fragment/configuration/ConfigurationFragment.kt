@@ -7,15 +7,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.provider.MediaStore
-import android.view.*
-import androidx.lifecycle.asLiveData
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentConfigurationBinding
-import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
 import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.dialog.AddPhotoDialog
@@ -32,8 +32,10 @@ class ConfigurationFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val navFragment by lazy { findNavController() }
+
     private val viewModel by lazy {
-        ViewModelInjector.providerConfigurationViewModel(BaseRepositoryUser)
+        val baseRepositoryUser = BaseRepositoryUser()
+        ViewModelInjector.providerConfigurationViewModel(baseRepositoryUser)
     }
     private var auth = FirebaseAuth.getInstance()
 
@@ -45,25 +47,16 @@ class ConfigurationFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_fragment_configuration, menu)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
     }
 
-    override fun onStart() {
-        super.onStart()
-        context?.let { context -> viewModel.getUserDBFirebase(context) }
-    }
-
     private fun init() {
         initButton()
         statusBarNavigation()
-        initStateFlowObserve()
+        initObserve()
+
     }
 
     private fun initButton() {
@@ -71,7 +64,9 @@ class ConfigurationFragment : BaseFragment() {
             /*Button logout*/
             btnLogout.setOnClickListener {
                 /*logout with Firebase*/
-                context?.let { context -> viewModel.logout(context) }
+                context?.let { context -> viewModel.logout(context).observe(viewLifecycleOwner, {resourceMessage ->
+                    resourceMessage.error?.let { message -> toast(context, message) }
+                }) }
                 navFragmentConfigurationToSplashGoodbye(navFragment)
             }
             /*Button edit user photo*/
@@ -81,13 +76,13 @@ class ConfigurationFragment : BaseFragment() {
         }
     }
 
-    private fun initStateFlowObserve() {
-        viewModel.uiStateFlow.asLiveData().observe(viewLifecycleOwner) { userFirebase ->
+    private fun initObserve() {
+        viewModel.getUserDBFirebase().observe(viewLifecycleOwner, { resourceUser ->
             binding.run {
                 val auth = auth.currentUser
-                textViewUserName.text = userFirebase.name
-                textViewUserEmail.text = userFirebase.email
-                userFirebase.image?.let {
+                resourceUser.data?.let { data -> textViewUserName.text = data.name }
+                resourceUser.data?.let { data -> textViewUserEmail.text = data.email }
+                resourceUser.data?.image?.let {
                     context?.let { context ->
                         if (auth != null) {
                             Glide.with(context)
@@ -98,8 +93,13 @@ class ConfigurationFragment : BaseFragment() {
                         }
                     }
                 }
+                repositoryError(resourceUser.error)
             }
-        }
+        })
+    }
+
+    private fun repositoryError(error: String?) {
+        context?.let { context -> error?.let { message -> toast(context, message) } }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -108,26 +108,35 @@ class ConfigurationFragment : BaseFragment() {
             //here get the image of ChangeUserFirebase
             when {
                 requestCode == REQUEST_IMAGE_GALLERY_USER && resultCode == RESULT_OK -> {
-                    data?.data?.let {
-                        context?.let { context -> viewModel.imageUser(context, it) }
+                    data?.data?.let { data ->
+                        context?.let { context ->
+                            viewModel.imageUser(data, context).observe(this, { resourceUser ->
+                                resourceUser.error?.let { message -> toast(context, message) }
+                            })
+                        }
                     }
                 }
                 requestCode == REQUEST_IMAGE_CAPTURE_USER && resultCode == RESULT_OK -> {
                     val imageBitmap =
-                            data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
+                        data?.extras?.get(ContactsContract.Intents.Insert.DATA) as Bitmap
                     val bytes = ByteArrayOutputStream()
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
                     val path: String = MediaStore.Images.Media.insertImage(
-                            context?.contentResolver,
-                            imageBitmap,
-                            getString(R.string.change_image_user),
-                            null
+                        context?.contentResolver,
+                        imageBitmap,
+                        getString(R.string.change_image_user),
+                        null
                     )
-                    context?.let { viewModel.imageUser(it, Uri.parse(path)) }
+                    context?.let { context ->
+                        viewModel.imageUser(Uri.parse(path), context)
+                            .observe(this, { resourceUser ->
+                                resourceUser.error?.let { message -> toast(context, message) }
+                            })
+                    }
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { context?.let { context -> toast(context, it.toInt()) } }
+            e.message?.let { message -> context?.let { context -> toast(context, message) } }
         }
     }
 
@@ -148,7 +157,7 @@ class ConfigurationFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(true, Components(TRUE, FALSE), R.color.orange_status_bar)
+        statusAppBarNavigationBase(FALSE_MENU, Components(FALSE_MENU, TRUE), R.color.orange_status_bar)
     }
 
     override fun onDestroy() {

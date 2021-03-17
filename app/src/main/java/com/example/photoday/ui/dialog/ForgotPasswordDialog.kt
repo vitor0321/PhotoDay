@@ -9,21 +9,21 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
-import com.example.photoday.constants.Utils
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.DialogForgotPasswordBinding
-import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryForgotPassword
+import com.example.photoday.repository.BaseRepositoryUser
 
+class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogFragment() {
 
-class ForgotPasswordDialog : DialogFragment() {
-
-    private lateinit var binding: DialogForgotPasswordBinding
+    private var _binding: DialogForgotPasswordBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        binding = DialogForgotPasswordBinding.inflate(inflater, container, false)
+        _binding = DialogForgotPasswordBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -54,15 +54,22 @@ class ForgotPasswordDialog : DialogFragment() {
                         }
                         !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
                             userEmail.error =
-                                    context?.getString(R.string.please_enter_valid_email_dialog)
+                                context?.getString(R.string.please_enter_valid_email_dialog)
                             userEmail.requestFocus()
                             return@setOnClickListener
                         }
                     }
-                    context?.let { context -> baseRepositoryForgotPassword(userEmail, context) }
+                    context?.let { context ->
+                        repository.baseRepositoryForgotPassword(userEmail, context)
+                            .observe(viewLifecycleOwner, { resourceMessage ->
+                                resourceMessage.error?.let { message -> toast(context, message) }
+                            })
+                    }
                     dialog?.dismiss()
                 }catch (e: Exception) {
-                    e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }
+                    e.message?.let { message ->
+                        context?.let { context -> toast(context, message) }
+                    }
                 }
             }
             buttonCancel.setOnClickListener {
@@ -72,11 +79,12 @@ class ForgotPasswordDialog : DialogFragment() {
     }
 
     override fun onDestroy() {
-        binding
+        _binding = null
         super.onDestroy()
     }
 
     companion object {
-        fun newInstance() = ForgotPasswordDialog()
+        private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser()
+        fun newInstance() = ForgotPasswordDialog(baseRepositoryUser)
     }
 }

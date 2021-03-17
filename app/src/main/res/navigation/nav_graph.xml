@@ -12,14 +12,15 @@
         android:layout="@layout/fragment_timeline"
         tools:layout="@layout/fragment_timeline">
         <action
-            android:id="@+id/action_timelineFragment_to_configurationFragment"
-            app:destination="@id/configurationFragment"
+            android:id="@+id/action_nav_timelineFragment_to_fullscreenFragment"
+            app:destination="@id/fullscreenFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="false"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/nav_timelineFragment"
             app:popUpToInclusive="false" />
-
     </fragment>
 
     <fragment
@@ -27,15 +28,36 @@
         android:name="com.example.photoday.ui.fragment.gallery.GalleryFragment"
         android:label="@string/nav_graph_label_gallery"
         android:layout="@layout/fragment_gallery"
-        tools:layout="@layout/fragment_gallery" >
+        tools:layout="@layout/fragment_gallery">
         <action
-            android:id="@+id/action_nav_galleryFragment_to_configurationFragment"
-            app:destination="@id/configurationFragment"
+            android:id="@+id/action_nav_galleryFragment_to_fullscreenFragment"
+            app:destination="@id/fullscreenFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="false"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/nav_timelineFragment"
             app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_configurationFragment"
+        android:name="com.example.photoday.ui.fragment.configuration.ConfigurationFragment"
+        android:label="@string/nav_graph_label_configuration"
+        android:layout="@layout/fragment_configuration"
+        tools:layout="@layout/fragment_configuration">
+        <action
+            android:id="@+id/action_configurationFragment_to_splashGoodbyeFragment"
+            app:destination="@id/splashGoodbyeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/nav_timelineFragment"
+            app:popUpToInclusive="true" />
+
     </fragment>
 
     <fragment
@@ -70,6 +92,7 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/register"
         android:name="com.example.photoday.ui.fragment.register.RegisterFragment"
@@ -85,6 +108,7 @@
             app:popUpTo="@id/register"
             app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/splashLogin"
         android:name="com.example.photoday.ui.fragment.splash.SplashLogin"
@@ -110,31 +134,6 @@
         app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
     <fragment
-        android:id="@+id/configurationFragment"
-        android:name="com.example.photoday.ui.fragment.configuration.ConfigurationFragment"
-        android:label="@string/nav_graph_label_configuration"
-        tools:layout="@layout/fragment_configuration">
-        <action
-            android:id="@+id/action_configurationFragment_to_splashGoodbyeFragment"
-            app:destination="@id/splashGoodbyeFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:launchSingleTop="false"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/nav_timelineFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_configurationFragment_to_timelineFragment"
-            app:destination="@id/nav_timelineFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/configurationFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
-    <fragment
         android:id="@+id/splashGoodbyeFragment"
         android:name="com.example.photoday.ui.fragment.splash.SplashGoodbyeFragment"
         android:label="@string/nav_graph_label_splash_goodbye"
@@ -151,6 +150,7 @@
             app:popUpToInclusive="true" />
 
     </fragment>
+
     <fragment
         android:id="@+id/splashIntroFragment"
         android:name="com.example.photoday.ui.fragment.splash.SplashIntroFragment"
@@ -165,5 +165,14 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/splashIntroFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullscreenFragment"
+        android:name="com.example.photoday.ui.fragment.fullScreen.FullscreenFragment"
+        android:label="fragment_fullscreen"
+        tools:layout="@layout/fragment_fullscreen" >
+        <argument
+            android:name="itemPhoto"
+            app:argType="string" />
     </fragment>
 </navigation>

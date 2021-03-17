@@ -17,7 +17,7 @@
     <string name="configuration_gallery">Configuration Gallery</string>
 
     <!-- Login Fragment -->
-    <string name="please_enter_valid_email_login">Please Enter Valid Email</string>
+    <string name="please_enter_valid_email_login">Please enter valid email</string>
     <string name="please_enter_email_login">Please enter email</string>
     <string name="please_enter_password">Please enter password</string>
     <string name="email_user_login">Email</string>
@@ -98,5 +98,7 @@
     <string name="nav_graph_label_configuration">Configuration</string>
     <string name="nav_graph_label_splash_goodbye">Splash GoodBye</string>
     <string name="nav_graph_label_splash_intro">Splash Intro</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

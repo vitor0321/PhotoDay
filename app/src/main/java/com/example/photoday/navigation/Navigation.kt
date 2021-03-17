@@ -1,16 +1,13 @@
 package com.example.photoday.navigation
 
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import com.example.photoday.ui.fragment.configuration.ConfigurationFragment
 import com.example.photoday.ui.fragment.configuration.ConfigurationFragmentDirections
 import com.example.photoday.ui.fragment.gallery.GalleryFragmentDirections
-import com.example.photoday.ui.fragment.login.LoginFragment
 import com.example.photoday.ui.fragment.login.LoginFragmentDirections
-import com.example.photoday.ui.fragment.register.RegisterFragment
 import com.example.photoday.ui.fragment.register.RegisterFragmentDirections
-import com.example.photoday.ui.fragment.splash.*
-import com.example.photoday.ui.fragment.timeline.TimelineFragment
+import com.example.photoday.ui.fragment.splash.SplashGoodbyeFragmentDirections
+import com.example.photoday.ui.fragment.splash.SplashIntroFragmentDirections
+import com.example.photoday.ui.fragment.splash.SplashLoginDirections
 import com.example.photoday.ui.fragment.timeline.TimelineFragmentDirections
 
 object Navigation {
@@ -39,12 +36,6 @@ object Navigation {
         navFragment.navigate(direction)
     }
 
-    fun navFragmentConfigurationToTimeline(navFragment: NavController) {
-        val direction =
-            ConfigurationFragmentDirections.actionConfigurationFragmentToTimelineFragment()
-        navFragment.navigate(direction)
-    }
-
     fun navFragmentSplashGoodbyeToLogin(navFragment: NavController){
         /*Navigation between fragments Directions*/
         val direction =
@@ -70,15 +61,15 @@ object Navigation {
         navFragment.navigate(direction)
     }
 
-    fun navFragmentTimelineToConfiguration(navFragment: NavController) {
+    fun navFragmentTimelineToFullScreen(navFragment: NavController, itemPhoto: String){
         val direction =
-            TimelineFragmentDirections.actionTimelineFragmentToConfigurationFragment()
+            TimelineFragmentDirections.actionNavTimelineFragmentToFullscreenFragment(itemPhoto)
         navFragment.navigate(direction)
     }
 
-    fun navFragmentGalleryToConfiguration(navFragment: NavController){
+    fun navFragmentGalleryToFullScreen(navFragment: NavController, itemPhoto: String){
         val direction =
-            GalleryFragmentDirections.actionNavGalleryFragmentToConfigurationFragment()
+            GalleryFragmentDirections.actionNavGalleryFragmentToFullscreenFragment(itemPhoto)
         navFragment.navigate(direction)
     }
 }

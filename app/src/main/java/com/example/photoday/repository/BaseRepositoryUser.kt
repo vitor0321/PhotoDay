@@ -5,152 +5,129 @@ import android.net.Uri
 import android.widget.EditText
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import com.example.photoday.constants.Utils
-import com.example.photoday.repository.firebaseUser.ChangeUserFirebase.changeImageUser
-import com.example.photoday.repository.firebaseUser.ChangeUserFirebase.changeNameUser
-import com.example.photoday.repository.firebaseUser.ChangeUserFirebase.forgotPassword
-import com.example.photoday.repository.firebaseUser.CheckUserFirebase.getCurrentUserFirebase
-import com.example.photoday.repository.firebaseUser.CheckUserFirebase.updateUI
-import com.example.photoday.repository.firebaseUser.LogFirebase.createUserWithEmailAndPassword
-import com.example.photoday.repository.firebaseUser.LogFirebase.firebaseAuthWithGoogle
-import com.example.photoday.repository.firebaseUser.LogFirebase.logoutFirebase
-import com.example.photoday.repository.firebaseUser.LogFirebase.signInWithEmailAndPassword
+import com.example.photoday.R
+import com.example.photoday.constants.FIRST_LOGIN
+import com.example.photoday.repository.firebaseUser.ChangeUserFirebase
+import com.example.photoday.repository.firebaseUser.CheckUserFirebase
+import com.example.photoday.repository.firebaseUser.LogFirebase
+import com.example.photoday.repository.firebaseUser.user.ResourceUser
 import com.example.photoday.repository.firebaseUser.user.UserFirebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.google.firebase.auth.FirebaseAuth
 
-object BaseRepositoryUser {
-    fun baseRepositoryChangeNameUser(context: Context, name: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                changeNameUser(context, name)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
-            }
-        }
-    }
+class BaseRepositoryUser(
+    private val repositoryChange: ChangeUserFirebase = ChangeUserFirebase,
+    private val repositoryCheck: CheckUserFirebase = CheckUserFirebase,
+    private val repositoryLog: LogFirebase = LogFirebase,
+) {
+    private var auth = FirebaseAuth.getInstance()
 
-    fun baseRepositoryChangeImageUser(context: Context, image: Uri) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                changeImageUser(context, image)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
-            }
-        }
-    }
+    fun baseRepositoryChangeImageUser(image: Uri, context: Context) =
+        repositoryChange.changeImageUser(image, context)
 
-    fun baseRepositoryForgotPassword(userEmail: EditText, context: Context) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                forgotPassword(userEmail, context)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
-            }
-        }
-    }
+    fun baseRepositoryGetCurrentUserFirebase() = repositoryChange.getCurrentUserFirebase()
 
-    fun baseRepositoryUpdateUI(
-        controlNavigation: NavController,
-        startLog: Int,
-        context: Context
-    ) {
-        try {
-            updateUI(controlNavigation, startLog, context)
-        } catch (e: Exception) {
-            e.message?.let { Utils.toast(context, it.toInt()) }
-        }
-    }
+    fun baseRepositoryChangeNameUser(name: String, context: Context) =
+        repositoryChange.changeNameUser(name, context)
 
-    fun baseRepositoryGetCurrentUserFirebase(context: Context, callback: (userFirebase: UserFirebase) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                getCurrentUserFirebase(context) { userFirebase ->
-                    callback.invoke(userFirebase)
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
-            }
-        }
-    }
+    fun baseRepositoryForgotPassword(userEmail: EditText, context: Context) =
+        repositoryChange.forgotPassword(userEmail, context)
 
-    fun baseRepositoryLogoutFirebase(context: Context) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                logoutFirebase(context)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
-            }
-        }
-    }
+    fun baseRepositoryUpdateUI(controlNavigation: NavController, startLog: Int, context: Context) =
+        repositoryCheck.updateUI(controlNavigation, startLog, context)
 
-    fun baseRepositoryFirebaseAuthWithGoogle(
-            idToken: String,
-            controlNavigation: NavController,
-            context: Context
-    ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                firebaseAuthWithGoogle(idToken, controlNavigation, context)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
-            }
-        }
-    }
+    fun baseRepositoryLogoutFirebase(context: Context) = repositoryLog.logoutFirebase(context)
 
     fun baseRepositoryCreateUserWithEmailAndPassword(
-            context: Context,
-            registerUser: AppCompatEditText,
-            registerUserPassword: AppCompatEditText,
-            controlNavigation: NavController
-    ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                createUserWithEmailAndPassword(context, registerUser, registerUserPassword, controlNavigation)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
-                }
-            }
+        registerUser: AppCompatEditText,
+        registerUserPassword: AppCompatEditText,
+        controlNavigation: NavController,
+        context: Context,
+    ) = repositoryLog.createUserWithEmailAndPassword(
+        registerUser,
+        registerUserPassword,
+        controlNavigation,
+        context)
+
+    fun baseRepositoryFirebaseAuthWithGoogle(
+        idToken: String,
+        controlNavigation: NavController,
+        context: Context,
+    ): LiveData<ResourceUser<Void>> {
+        val liveData = MutableLiveData<ResourceUser<Void>>()
+        try {
+            repositoryLog.firebaseAuthWithGoogle(idToken,
+                callback = { login: Int ->
+                    baseRepositoryUpdateUI(controlNavigation, login, context)
+                },
+                callbackMessage = { message ->
+                    liveData.value = ResourceUser(data = null, error = message)
+                })
+        } catch (e: Exception) {
+            liveData.value = ResourceUser(data = null, e.message)
         }
+        return liveData
     }
 
+
     fun baseRepositorySignInWithEmailAndPassword(
-            loginUserId: AppCompatEditText,
-            loginPassword: AppCompatEditText,
-            requireActivity: FragmentActivity,
-            controlNavigation: NavController,
-            context: Context
-    ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                signInWithEmailAndPassword(
-                        loginUserId,
-                        loginPassword,
-                        requireActivity,
-                        controlNavigation,
-                        context
-                )
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    e.message?.let { Utils.toast(context, it.toInt()) }
+        loginUserId: AppCompatEditText,
+        loginPassword: AppCompatEditText,
+        requireActivity: FragmentActivity,
+        controlNavigation: NavController,
+        context: Context,
+    ): LiveData<ResourceUser<UserFirebase>> {
+        val liveData = MutableLiveData<ResourceUser<UserFirebase>>()
+        try {
+            signInWithEmailAndPassword(
+                loginUserId,
+                loginPassword,
+                requireActivity,
+                context,
+                callback = { login: Int ->
+                    baseRepositoryUpdateUI(controlNavigation, login, context)
+                },
+                callbackMessage = { message ->
+                    liveData.value = ResourceUser(data = null, error = message)
                 }
-            }
+            )
+        } catch (e: Exception) {
+            liveData.value = ResourceUser(data = null, error = e.message)
+        }
+        return liveData
+    }
+
+    private fun signInWithEmailAndPassword(
+        loginUserId: AppCompatEditText,
+        loginPassword: AppCompatEditText,
+        requireActivity: FragmentActivity,
+        context: Context,
+        callback: (login: Int) -> Unit,
+        callbackMessage: (message: String) -> Unit,
+    ) {
+        try {
+            /*checking if the user exists*/
+            auth.signInWithEmailAndPassword(
+                loginUserId.text.toString(),
+                loginPassword.text.toString()
+            )
+                .addOnCompleteListener(requireActivity) { task ->
+                    when {
+                        task.isSuccessful -> {
+                            // Sign in success, update UI with the signed-in user's information
+                            callback.invoke(FIRST_LOGIN)
+                        }
+                        else -> {
+                            // If sign in fails, display a message to the user.
+                            callbackMessage.invoke(context.getString(R.string.login_failed))
+                            callback.invoke(FIRST_LOGIN)
+                        }
+                    }
+                }
+        } catch (e: Exception) {
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 }

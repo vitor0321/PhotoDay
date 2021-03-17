@@ -11,7 +11,11 @@ import org.greenrobot.eventbus.EventBus
 
 object Exhibition {
 
-    fun galleryExhibition(activity: PhotoDayActivity, valueDate: String?) {
+    fun galleryExhibition(
+        activity: PhotoDayActivity,
+        valueDate: String?,
+        callbackMessage: (message: String) -> Unit,
+    ) {
         try {
             val intentGallery = Intent(Intent.ACTION_PICK)
             intentGallery.type = GALLERY_TYPE
@@ -35,12 +39,16 @@ object Exhibition {
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { Utils.toast(activity, it.toInt()) }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 
     @SuppressLint("QueryPermissionsNeeded")
-    fun dispatchTakeExhibition(activity: PhotoDayActivity, valueDate: String?) {
+    fun dispatchTakeExhibition(
+        activity: PhotoDayActivity,
+        valueDate: String?,
+        callbackMessage: (message: String) -> Unit,
+    ) {
         try {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intentTakePicture ->
                 val packageManager = activity.packageManager
@@ -74,7 +82,7 @@ object Exhibition {
             }
 
         } catch (e: Exception) {
-            e.message?.let { Utils.toast(activity, it.toInt()) }
+            e.message?.let { message -> callbackMessage.invoke(message) }
         }
     }
 }

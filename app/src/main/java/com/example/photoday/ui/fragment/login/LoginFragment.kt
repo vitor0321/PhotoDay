@@ -6,13 +6,14 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.databinding.FragmentGalleryBinding
+import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
-import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryUpdateUI
+import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -21,6 +22,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginFragment : BaseFragment() {
 
@@ -28,42 +32,46 @@ class LoginFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val controlNavigation by lazy { findNavController() }
+
     private val viewModel by lazy {
-        ViewModelInjector.providerLoginViewModel(
-                controlNavigation,
-                context,
-                requireActivity()
-        )
+        val baseRepositoryUser = BaseRepositoryUser()
+        ViewModelInjector.providerLoginViewModel(controlNavigation, baseRepositoryUser)
     }
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
+        init()
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        init()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        context?.let { baseRepositoryUpdateUI(controlNavigation, ON_START, it) }
-    }
-
     private fun init() {
-        // Configure Google Sign In
         createRequestLoginGoogle()
         initButton()
         statusBarNavigation()
+        initObserver()
+    }
+
+    private fun initObserver() {
+        // Check if user is signed in (non-null) and update UI accordingly.
+        viewModel.updateUI(controlNavigation, ON_START, context)
+            ?.observe(viewLifecycleOwner, { resourceUser ->
+                context?.let { context ->
+                    resourceUser.error?.let { message ->
+                        toast(context, message)
+                    }
+                }
+            })
+
+        viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
+            context?.let { context -> toast(context, message) }
+        }
     }
 
     private fun initButton() {
@@ -79,19 +87,32 @@ class LoginFragment : BaseFragment() {
                             return@setOnClickListener
                         }
                         !Patterns.EMAIL_ADDRESS.matcher(editTextLoginUser.text.toString()).matches() -> {
-                            editTextLoginUser.error = context?.getString(R.string.please_enter_valid_email_login)
+                            editTextLoginUser.error =
+                                context?.getString(R.string.please_enter_valid_email_login)
                             editTextLoginUser.requestFocus()
                             return@setOnClickListener
                         }
                         editTextLoginPassword.text.toString().isEmpty() -> {
-                            editTextLoginPassword.error = context?.getString(R.string.please_enter_password)
+                            editTextLoginPassword.error =
+                                context?.getString(R.string.please_enter_password)
                             editTextLoginPassword.requestFocus()
                             return@setOnClickListener
                         }
                     }
-                    viewModel.doLogin(editTextLoginUser, editTextLoginPassword)
+                    context?.let { context ->
+                        viewModel.doLogin(editTextLoginUser,
+                            editTextLoginPassword,
+                            requireActivity(),
+                            context).observe(viewLifecycleOwner, { resourceMessage ->
+                            resourceMessage.error?.let { message -> toast(context, message) }
+                        })
+                    }
                 } catch (e: Exception) {
-                    e.message?.let { context?.let { it1 -> Utils.toast(it1, it.toInt()) } }
+                    CoroutineScope(Dispatchers.Main).launch {
+                        e.message?.let { message ->
+                            context?.let { context -> toast(context, message) }
+                        }
+                    }
                 }
 
             }
@@ -116,7 +137,12 @@ class LoginFragment : BaseFragment() {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
-                    viewModel.authWithGoogle(account)
+                    context?.let { context ->
+                        viewModel.authWithGoogle(account, context)
+                            .observe(this, { resourceMessage ->
+                                resourceMessage.error?.let { message -> toast(context, message) }
+                            })
+                    }
                 } catch (e: ApiException) {
                     e.printStackTrace()
                 }
@@ -140,7 +166,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(false, Components(FALSE, FALSE), R.color.white_status_bar)
+        statusAppBarNavigationBase(FALSE_MENU, Components(FALSE, FALSE), R.color.white_status_bar)
     }
 
     override fun onDestroy() {

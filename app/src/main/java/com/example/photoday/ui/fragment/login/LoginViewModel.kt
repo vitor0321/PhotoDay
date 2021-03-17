@@ -5,44 +5,52 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.constants.FORGOT_PASSWORD
-import com.example.photoday.repository.BaseRepositoryUser.baseRepositoryFirebaseAuthWithGoogle
-import com.example.photoday.repository.BaseRepositoryUser.baseRepositorySignInWithEmailAndPassword
+import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class LoginViewModel(
-        private val controlNavigation: NavController,
-        private val context: Context?,
-        private val requireActivity: FragmentActivity,
+    private val controlNavigation: NavController,
+    private val repository: BaseRepositoryUser,
 ) : ViewModel() {
 
-    fun doLogin(editTextLoginUser: TextInputEditText, editTextLoginPassword: TextInputEditText) {
-        context?.let {
-            baseRepositorySignInWithEmailAndPassword(
-                    editTextLoginUser,
-                    editTextLoginPassword,
-                    requireActivity,
-                    controlNavigation,
-                    it
-            )
-        }
-    }
+    private val _uiStateFlowMessage = MutableStateFlow("")
+    val uiStateFlowMessage: StateFlow<String> get() = _uiStateFlowMessage
 
-    fun authWithGoogle(account: GoogleSignInAccount) {
-        context?.let {
-            baseRepositoryFirebaseAuthWithGoogle(
-                    account.idToken!!,
-                    controlNavigation,
-                    it
-            )
+    fun updateUI(controlNavigation: NavController, ON_START: Int, context: Context?) =
+        context?.let { context ->
+            repository.baseRepositoryUpdateUI(controlNavigation,
+                ON_START,
+                context)
         }
-    }
+
+    fun doLogin(
+        editTextLoginUser: TextInputEditText,
+        editTextLoginPassword: TextInputEditText,
+        requireActivity: FragmentActivity,
+        context: Context,
+    ) = repository.baseRepositorySignInWithEmailAndPassword(
+        editTextLoginUser,
+        editTextLoginPassword,
+        requireActivity,
+        controlNavigation,
+        context
+    )
+
+    fun authWithGoogle(account: GoogleSignInAccount, context: Context) =
+        repository.baseRepositoryFirebaseAuthWithGoogle(
+            account.idToken!!,
+            controlNavigation,
+            context)
+
 
     fun forgotPassword(activity: FragmentActivity?) {
-        activity?.let {
+        activity?.let { activity ->
             ForgotPasswordDialog.newInstance()
-                    .show(it.supportFragmentManager, FORGOT_PASSWORD)
+                .show(activity.supportFragmentManager, FORGOT_PASSWORD)
         }
     }
 }

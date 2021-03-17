@@ -19,7 +19,6 @@ import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.ActivityPhotoDayBinding
-import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.eventBus.MessageEvent
 import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.ui.dialog.AddPhotoDialog
@@ -37,11 +36,15 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private var _binding: ActivityPhotoDayBinding? = null
     private val binding get() = _binding!!
 
+    private val viewModel by lazy {
+        val baseRepositoryPhoto = BaseRepositoryPhoto()
+        ViewModelInjector.providerPhotoDayViewModel(baseRepositoryPhoto)
+    }
+
     private var datePhotoEventBus: String? = null
 
     @SuppressLint("SimpleDateFormat")
-    private val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
-    private val viewModel by lazy { ViewModelInjector.providerPhotoDayViewModel(BaseRepositoryPhoto) }
+    private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,11 +83,10 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                 requestCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK -> {
                     data?.data?.let { photo ->
                         datePhotoEventBus?.let { dateCalendar ->
-                            viewModel.createPushPhoto(
-                                this,
-                                dateCalendar,
-                                photo
-                            )
+                            viewModel.createPushPhoto(dateCalendar, photo, this)
+                                .observe(this, { resourcesError ->
+                                    resourcesError.error?.let { message -> toast(this, message) }
+                                })
                         }
                     }
                 }
@@ -100,16 +102,19 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         null
                     )
                         datePhotoEventBus?.let { dateCalendar ->
-                            viewModel.createPushPhoto(
-                                this,
-                                dateCalendar,
-                                Uri.parse(path)
-                            )
+                            viewModel.createPushPhoto(dateCalendar, Uri.parse(path), this)
+                                .observe(this,
+                                    { resourcesError ->
+                                        resourcesError.error?.let { message ->
+                                            toast(this,
+                                                message)
+                                        }
+                                    })
                         }
                 }
             }
         } catch (e: Exception) {
-            e.message?.let {toast(this, it.toInt()) }
+            e.message?.let { message -> toast(this, message) }
         }
     }
 
@@ -121,8 +126,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
     private fun initializeControl() {
         binding.apply {
-            try {
-                val navHostFragment =
+            try { val navHostFragment =
                         supportFragmentManager.findFragmentById(R.id.main_activity_nav_host) as NavHostFragment
                 val navController: NavController = navHostFragment.navController
                 // all components start with HIDE and then each fragment decides what appears or not
@@ -140,7 +144,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                             title = null
                         }
             } catch (e: Exception) {
-                e.message?.let { Utils.toast(this@PhotoDayActivity, it.toInt()) }
+                e.message?.let { message -> Utils.toast(this@PhotoDayActivity, message) }
             }
 
         }
@@ -169,7 +173,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { toast(this@PhotoDayActivity, it.toInt()) }
+            e.message?.let { message -> toast(this@PhotoDayActivity, message) }
         }
 
     }
@@ -184,7 +188,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         try {
             DatePickerDialog(this, this, year, month, day ).show()
         } catch (e: Exception) {
-            e.message?.let { toast(this@PhotoDayActivity, it.toInt()) }
+            e.message?.let { message -> toast(this@PhotoDayActivity, message) }
         }
     }
 
