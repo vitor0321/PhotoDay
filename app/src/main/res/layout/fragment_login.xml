@@ -11,13 +11,13 @@
         android:layout_height="@dimen/layout_height_animation_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/input_text_login_user_id"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_rawRes="@raw/register_security" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_text_login_user_id"
         style="@style/TextInputLayoutStyle"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lottie_login_security">
@@ -34,6 +34,7 @@
         android:id="@+id/edit_text_input_login_password"
         style="@style/TextInputLayoutStyle"
         app:passwordToggleEnabled="true"
+        app:layout_constraintBottom_toTopOf="@id/button_login_log"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/input_text_login_user_id">
@@ -50,9 +51,10 @@
         android:id="@+id/button_login_log"
         style="@style/AppCompatButtonOrange"
         android:text="@string/login"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_input_login_password"
+        app:layout_constraintBottom_toTopOf="@id/button_login_google"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_input_login_password" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/button_login_google"

@@ -19,6 +19,7 @@ import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class GalleryFragment : BaseFragment() {
@@ -66,8 +67,11 @@ class GalleryFragment : BaseFragment() {
                 if (resourceList.error != null) {
                     context?.let { context -> toast(context, resourceList.error) }
                 }
+                CoroutineScope(Dispatchers.IO).launch {
+                    delay(TIME_DELAY)
+                    viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
+                }
             }
-            viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
         })
     }
 
