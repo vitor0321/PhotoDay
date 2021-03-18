@@ -8,8 +8,8 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
-import com.example.photoday.adapter.TimelineAdapter
-import com.example.photoday.adapter.modelAdapter.ItemPhoto
+import com.example.photoday.ui.adapter.TimelineAdapter
+import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentTimelineBinding

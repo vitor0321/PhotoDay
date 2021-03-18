@@ -1,10 +1,10 @@
-package com.example.photoday.adapter
+package com.example.photoday.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photoday.adapter.modelAdapter.ItemPhoto
+import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.databinding.ItemGalleryFragmentBinding
 import com.squareup.picasso.Picasso
 
