@@ -8,8 +8,8 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
-import com.example.photoday.adapter.TimelineAdapter
-import com.example.photoday.adapter.modelAdapter.ItemPhoto
+import com.example.photoday.ui.adapter.TimelineAdapter
+import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentTimelineBinding
@@ -66,10 +66,11 @@ class TimelineFragment : BaseFragment() {
     private fun initRecycleView(listPhoto: List<ItemPhoto>) {
         binding.run {
             recycleViewListTimeline.layoutManager = LinearLayoutManager(context)
-            recycleViewListTimeline.adapter =
-                TimelineAdapter(listPhoto) { itemPhoto ->
-                    navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
-                }
+            recycleViewListTimeline.run {
+                adapter = TimelineAdapter(listPhoto) { itemPhoto ->
+                        navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
+                    }
+            }
             CoroutineScope(Dispatchers.IO).launch {
                 delay(TIME_DELAY)
                 viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)

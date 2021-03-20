@@ -1,23 +1,25 @@
-package com.example.photoday.adapter
+package com.example.photoday.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photoday.adapter.modelAdapter.ItemPhoto
-import com.example.photoday.databinding.ItemTimelineFragmentBinding
+import com.example.photoday.BR
 import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
+import com.example.photoday.databinding.ItemTimelineFragmentBinding
 import com.squareup.picasso.Picasso
 
 class TimelineAdapter(
     private val items: List<ItemPhoto>,
-    private val listen: (item: ItemPhoto) -> Unit
+    private val listen: (item: ItemPhoto) -> Unit,
 ) : RecyclerView.Adapter<TimelineAdapter.ViewHolder>() {
     private lateinit var binding: ItemTimelineFragmentBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding =
-            ItemTimelineFragmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val inflate = LayoutInflater.from(parent.context)
+        binding = ItemTimelineFragmentBinding.inflate(inflate, parent, false)
         return ViewHolder(binding.root)
     }
 
@@ -31,12 +33,11 @@ class TimelineAdapter(
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView = binding.imageTimeline
-        private val date = binding.datePhotoTextView
 
         fun bind(item: ItemPhoto) {
-            date.text = item.dateCalendar
             imageView.setOnClickListener { listen.invoke(item) }
         }
     }
 }
+
 

@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
-import com.example.photoday.adapter.modelAdapter.ItemPhoto
+import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.constants.IMAGES
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ktx.Firebase

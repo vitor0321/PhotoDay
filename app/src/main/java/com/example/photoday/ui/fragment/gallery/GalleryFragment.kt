@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.photoday.R
-import com.example.photoday.adapter.GalleryAdapter
+import com.example.photoday.ui.adapter.GalleryAdapter
 import com.example.photoday.constants.*
 import com.example.photoday.constants.Utils.toast
 import com.example.photoday.databinding.FragmentGalleryBinding
