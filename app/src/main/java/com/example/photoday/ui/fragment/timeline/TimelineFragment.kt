@@ -66,10 +66,11 @@ class TimelineFragment : BaseFragment() {
     private fun initRecycleView(listPhoto: List<ItemPhoto>) {
         binding.run {
             recycleViewListTimeline.layoutManager = LinearLayoutManager(context)
-            recycleViewListTimeline.adapter =
-                TimelineAdapter(listPhoto) { itemPhoto ->
-                    navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
-                }
+            recycleViewListTimeline.run {
+                adapter = TimelineAdapter(listPhoto) { itemPhoto ->
+                        navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
+                    }
+            }
             CoroutineScope(Dispatchers.IO).launch {
                 delay(TIME_DELAY)
                 viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
