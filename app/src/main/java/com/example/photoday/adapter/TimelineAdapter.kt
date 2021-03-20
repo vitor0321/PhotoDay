@@ -3,13 +3,10 @@ package com.example.photoday.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photoday.BR
 import com.example.photoday.adapter.modelAdapter.ItemPhoto
-import com.example.photoday.databinding.ItemGalleryFragmentBinding
 import com.example.photoday.databinding.ItemTimelineFragmentBinding
+import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 import com.squareup.picasso.Picasso
 
 class TimelineAdapter(
