@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <!--Analogous Color-->
+    <color name="orange_a">#FF590D</color>
+    <color name="orange_b">#E8710C</color>
+    <color name="orange_c">#FF9800</color>
+    <color name="orange_d">#E8A60C</color>
+    <color name="orange_e">#FFCF0D</color>
+
+
     <!--Common-->
     <color name="orange">#FF9800</color>
     <color name="orange_light">#F3B965</color>
