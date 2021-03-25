@@ -11,9 +11,9 @@ import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
 import com.example.photoday.constants.SPLASH_TIME_OUT
-import com.example.photoday.databinding.FragmentSplashGoodbyeBinding
 import com.example.photoday.databinding.FragmentSplashIntroBinding
 import com.example.photoday.navigation.Navigation.navFragmentSplashIntroToLogin
+import com.example.photoday.ui.databinding.data.ComponentsData
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 
@@ -47,7 +47,13 @@ class SplashIntroFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FALSE_MENU, Components(FALSE, FALSE), R.color.white_status_bar)
+        statusAppBarNavigationBase(
+            menu = FALSE_MENU,
+            components = Components(
+                appBar = FALSE,
+                bottomNavigation = FALSE,
+                floatingActionButton = FALSE),
+            barColor = R.color.white_status_bar)
     }
 
     override fun onDestroy() {

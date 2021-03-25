@@ -29,7 +29,7 @@ class BaseRepositoryUser(
 
     fun baseRepositoryGetCurrentUserFirebase() = repositoryChange.getCurrentUserFirebase()
 
-    fun baseRepositoryChangeNameUser(name: String, context: Context) =
+    fun baseRepositoryChangeNameUser(name: EditText, context: Context) =
         repositoryChange.changeNameUser(name, context)
 
     fun baseRepositoryForgotPassword(userEmail: EditText, context: Context) =

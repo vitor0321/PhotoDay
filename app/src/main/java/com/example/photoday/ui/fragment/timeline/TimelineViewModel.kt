@@ -6,4 +6,5 @@ import com.example.photoday.repository.BaseRepositoryPhoto
 class TimelineViewModel(private val repository: BaseRepositoryPhoto) : ViewModel() {
 
     fun createPullPhotos() = repository.baseRepositoryListFileDownload()
+
 }

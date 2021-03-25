@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
-import com.example.photoday.constants.Utils.toast
+import com.example.photoday.constants.toast.Utils.toast
 import com.example.photoday.databinding.DialogFragmentAddPhotoBinding
-import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.permission.CheckVersionPermission.dispatchTakePermission
 import com.example.photoday.permission.CheckVersionPermission.galleryPermission
 import com.example.photoday.ui.activity.PhotoDayActivity
@@ -47,21 +46,11 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
                 when (valueDate) {
                     null -> context?.let { context ->
                         galleryPermission(activity, null, context,
-                            callbackMessage = { message ->
-                                context?.let { context ->
-                                    toast(context,
-                                        message)
-                                }
-                            })
+                            callbackMessage = { message -> toast(message) })
                     }
                     else -> context?.let { context ->
                         galleryPermission(activity, valueDate, context,
-                            callbackMessage = { message ->
-                                context?.let { context ->
-                                    toast(context,
-                                        message)
-                                }
-                            })
+                            callbackMessage = { message -> toast(message) })
                     }
                 }
                 dialog?.dismiss()
@@ -70,21 +59,11 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
                 when (valueDate) {
                     null -> context?.let { context ->
                         dispatchTakePermission(activity, null, context,
-                            callbackMessage = { message ->
-                                context?.let { context ->
-                                    toast(context,
-                                        message)
-                                }
-                            })
+                            callbackMessage = { message -> toast(message) })
                     }
                     else -> context?.let { context ->
                         dispatchTakePermission(activity, valueDate, context,
-                            callbackMessage = { message ->
-                                context?.let { context ->
-                                    toast(context,
-                                        message)
-                                }
-                            })
+                            callbackMessage = { message -> toast(message)})
                     }
                 }
                 dialog?.dismiss()

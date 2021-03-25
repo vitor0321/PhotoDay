@@ -11,40 +11,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.constants.Utils.toast
+import com.example.photoday.constants.toast.Utils.toast
 import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
 import com.example.photoday.repository.BaseRepositoryUser
+import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
-import com.google.firebase.auth.FirebaseAuth
 import java.io.ByteArrayOutputStream
 
 class ConfigurationFragment : BaseFragment() {
 
-    private var _binding: FragmentConfigurationBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: FragmentConfigurationBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
     private val navFragment by lazy { findNavController() }
+    private val userFirebaseData by lazy { UserFirebaseData() }
 
     private val viewModel by lazy {
         val baseRepositoryUser = BaseRepositoryUser()
         ViewModelInjector.providerConfigurationViewModel(baseRepositoryUser)
     }
-    private var auth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentConfigurationBinding.inflate(inflater, container, false)
-        return binding.root
+        _viewDataBinding = FragmentConfigurationBinding.inflate(inflater, container, false)
+        viewDataBinding.userFirebase = userFirebaseData
+        viewDataBinding.lifecycleOwner = this
+        return viewDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,50 +57,30 @@ class ConfigurationFragment : BaseFragment() {
         initButton()
         statusBarNavigation()
         initObserve()
-
     }
 
     private fun initButton() {
-        binding.apply {
+        viewDataBinding.apply {
             /*Button logout*/
-            btnLogout.setOnClickListener {
-                /*logout with Firebase*/
-                context?.let { context -> viewModel.logout(context).observe(viewLifecycleOwner, {resourceMessage ->
-                    resourceMessage.error?.let { message -> toast(context, message) }
-                }) }
-                navFragmentConfigurationToSplashGoodbye(navFragment)
-            }
+            this.logoutButton = View.OnClickListener { logout() }
             /*Button edit user photo*/
-            btnEditPhotoUser.setOnClickListener { photoDialog() }
+            this.addImageClickButton = View.OnClickListener { photoDialog() }
             /*Button edit user name */
-            btnEditNameUser.setOnClickListener { newUserNameDialog() }
+            this.changeNameButton = View.OnClickListener { newUserNameDialog() }
         }
     }
 
     private fun initObserve() {
         viewModel.getUserDBFirebase().observe(viewLifecycleOwner, { resourceUser ->
-            binding.run {
-                val auth = auth.currentUser
-                resourceUser.data?.let { data -> textViewUserName.text = data.name }
-                resourceUser.data?.let { data -> textViewUserEmail.text = data.email }
-                resourceUser.data?.image?.let {
-                    context?.let { context ->
-                        if (auth != null) {
-                            Glide.with(context)
-                                .load(auth.photoUrl)
-                                .fitCenter()
-                                .placeholder(R.drawable.ic_photo_edit)
-                                .into(imageUser)
-                        }
-                    }
-                }
+            viewDataBinding.run {
+                userFirebaseData.setData(resourceUser.data)
                 repositoryError(resourceUser.error)
             }
         })
     }
 
     private fun repositoryError(error: String?) {
-        context?.let { context -> error?.let { message -> toast(context, message) } }
+        error?.let { message -> toast(message) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -111,7 +92,7 @@ class ConfigurationFragment : BaseFragment() {
                     data?.data?.let { data ->
                         context?.let { context ->
                             viewModel.imageUser(data, context).observe(this, { resourceUser ->
-                                resourceUser.error?.let { message -> toast(context, message) }
+                                repositoryError(resourceUser.error)
                             })
                         }
                     }
@@ -130,21 +111,31 @@ class ConfigurationFragment : BaseFragment() {
                     context?.let { context ->
                         viewModel.imageUser(Uri.parse(path), context)
                             .observe(this, { resourceUser ->
-                                resourceUser.error?.let { message -> toast(context, message) }
+                                repositoryError(resourceUser.error)
                             })
                     }
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { message -> context?.let { context -> toast(context, message) } }
+            repositoryError(e.message)
         }
+    }
+
+    private fun logout() {
+        /*logout with Firebase*/
+        context?.let { context ->
+            viewModel.logout(context).observe(viewLifecycleOwner, { resourceMessage ->
+                repositoryError(resourceMessage.error)
+            })
+        }
+        navFragmentConfigurationToSplashGoodbye(navFragment)
     }
 
     private fun photoDialog() {
         /*open AddPhotoDialog*/
         activity?.let {
             AddPhotoDialog.newInstance(null)
-                    .show(it.supportFragmentManager, ADD_PHOTO_DIALOG)
+                .show(it.supportFragmentManager, ADD_PHOTO_DIALOG)
         }
     }
 
@@ -157,12 +148,18 @@ class ConfigurationFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FALSE_MENU, Components(FALSE_MENU, TRUE), R.color.orange_status_bar)
+        statusAppBarNavigationBase(
+            menu = FALSE_MENU,
+            components = Components(
+                appBar = TRUE,
+                bottomNavigation = TRUE,
+                floatingActionButton = FALSE),
+            barColor = R.color.orange_status_bar)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+        _viewDataBinding = null
     }
 }
 

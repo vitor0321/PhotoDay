@@ -8,19 +8,18 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
-import com.example.photoday.adapter.TimelineAdapter
-import com.example.photoday.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.constants.*
-import com.example.photoday.constants.Utils.toast
+import com.example.photoday.constants.toast.Utils.toast
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.navigation.Navigation.navFragmentTimelineToFullScreen
 import com.example.photoday.repository.BaseRepositoryPhoto
+import com.example.photoday.ui.adapter.TimelineAdapter
+import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 
@@ -53,28 +52,26 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun initObserve() {
-        viewModel.createPullPhotos().observe(viewLifecycleOwner) { ResourceList ->
-            ResourceList.data?.let { listPhoto ->
+        viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
+            resourceList.data?.let { listPhoto ->
                 initRecycleView(listPhoto)
             }
-            if (ResourceList.error != null) {
-                context?.let { context -> toast(context, ResourceList.error) }
+            when {
+                resourceList.error != null -> toast(resourceList.error)
             }
         }
     }
 
     private fun initRecycleView(listPhoto: List<ItemPhoto>) {
-        binding.run {
-            recycleViewListTimeline.layoutManager = LinearLayoutManager(context)
-            recycleViewListTimeline.run {
-                adapter = TimelineAdapter(listPhoto) { itemPhoto ->
-                        navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
-                    }
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.recycleViewListTimeline.run {
+                layoutManager = LinearLayoutManager(context)
+                adapter = TimelineAdapter(context, listPhoto) { itemPhoto ->
+                    navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
+                }
             }
-            CoroutineScope(Dispatchers.IO).launch {
-                delay(TIME_DELAY)
-                viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
-            }
+        }.isCompleted.apply {
+            viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
         }
     }
 
@@ -98,7 +95,13 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FALSE_MENU, Components(FALSE_MENU, TRUE), R.color.orange_status_bar)
+        statusAppBarNavigationBase(
+            menu = FALSE_MENU,
+            components = Components(
+                appBar = TRUE,
+                bottomNavigation = TRUE,
+                floatingActionButton = TRUE),
+            barColor = R.color.orange_status_bar)
     }
 
     override fun onDestroy() {

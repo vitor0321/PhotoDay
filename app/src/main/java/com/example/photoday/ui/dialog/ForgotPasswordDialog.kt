@@ -1,15 +1,13 @@
 package com.example.photoday.ui.dialog
 
 import android.os.Bundle
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
-import com.example.photoday.R
-import com.example.photoday.constants.Utils.toast
+import com.example.photoday.constants.toast.Utils.toast
 import com.example.photoday.databinding.DialogForgotPasswordBinding
 import com.example.photoday.repository.BaseRepositoryUser
 
@@ -29,7 +27,6 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init()
     }
 
@@ -43,36 +40,20 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
     private fun init() {
         binding.apply {
             val userEmail = editTextEmailConfirm
-            buttonOk.setOnClickListener {
+            okButton = View.OnClickListener {
                 try {
-                    /*here you will authenticate your email and password*/
-                    when {
-                        userEmail.text.toString().isEmpty() -> {
-                            userEmail.error = context?.getString(R.string.please_enter_email_dialog)
-                            userEmail.requestFocus()
-                            return@setOnClickListener
-                        }
-                        !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
-                            userEmail.error =
-                                context?.getString(R.string.please_enter_valid_email_dialog)
-                            userEmail.requestFocus()
-                            return@setOnClickListener
-                        }
-                    }
                     context?.let { context ->
                         repository.baseRepositoryForgotPassword(userEmail, context)
                             .observe(viewLifecycleOwner, { resourceMessage ->
-                                resourceMessage.error?.let { message -> toast(context, message) }
+                                resourceMessage.error?.let { message -> toast(message) }
                             })
                     }
                     dialog?.dismiss()
-                }catch (e: Exception) {
-                    e.message?.let { message ->
-                        context?.let { context -> toast(context, message) }
-                    }
+                } catch (e: Exception) {
+                    e.message?.let { message -> toast( message) }
                 }
             }
-            buttonCancel.setOnClickListener {
+            cancelButton = View.OnClickListener {
                 dialog?.dismiss()
             }
         }

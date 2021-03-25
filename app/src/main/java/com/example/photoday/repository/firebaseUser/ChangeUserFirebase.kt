@@ -2,6 +2,7 @@ package com.example.photoday.repository.firebaseUser
 
 import android.content.Context
 import android.net.Uri
+import android.provider.Settings.Global.getString
 import android.util.Patterns
 import android.widget.EditText
 import androidx.lifecycle.LiveData
@@ -10,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
 import com.example.photoday.repository.firebaseUser.user.ResourceUser
 import com.example.photoday.repository.firebaseUser.user.UserFirebase
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 
@@ -62,12 +64,20 @@ object ChangeUserFirebase {
         return liveDataUser
     }
 
-    fun changeNameUser(newName: String, context: Context): LiveData<ResourceUser<Void>> {
+    fun changeNameUser(newName: EditText, context: Context): LiveData<ResourceUser<Void>> {
         val liveData = MutableLiveData<ResourceUser<Void>>()
         try {
+            when {
+                newName.text.toString().isEmpty() -> {
+                    liveData.value = ResourceUser(data = null,
+                        error = context.getString(R.string.enter_valid_name))
+                    newName.requestFocus()
+                }
+            }
             val user = FirebaseAuth.getInstance().currentUser
+            val name = newName.text.toString()
             val profileUpdates = UserProfileChangeRequest.Builder()
-                .setDisplayName(newName)
+                .setDisplayName(name)
                 .build()
             user!!.updateProfile(profileUpdates)
                 .addOnCompleteListener { task ->

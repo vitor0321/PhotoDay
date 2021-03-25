@@ -10,10 +10,11 @@ import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.constants.Utils.toast
+import com.example.photoday.constants.toast.Utils.toast
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.repository.BaseRepositoryUser
+import com.example.photoday.ui.databinding.data.ComponentsData
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -62,15 +63,11 @@ class LoginFragment : BaseFragment() {
         // Check if user is signed in (non-null) and update UI accordingly.
         viewModel.updateUI(controlNavigation, ON_START, context)
             ?.observe(viewLifecycleOwner, { resourceUser ->
-                context?.let { context ->
-                    resourceUser.error?.let { message ->
-                        toast(context, message)
-                    }
-                }
+                resourceUser.error?.let { message -> toast(message) }
             })
 
         viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
-            context?.let { context -> toast(context, message) }
+            toast(message)
         }
     }
 
@@ -104,13 +101,13 @@ class LoginFragment : BaseFragment() {
                             editTextLoginPassword,
                             requireActivity(),
                             context).observe(viewLifecycleOwner, { resourceMessage ->
-                            resourceMessage.error?.let { message -> toast(context, message) }
+                            resourceMessage.error?.let { message -> toast(message) }
                         })
                     }
                 } catch (e: Exception) {
                     CoroutineScope(Dispatchers.Main).launch {
                         e.message?.let { message ->
-                            context?.let { context -> toast(context, message) }
+                            toast(message)
                         }
                     }
                 }
@@ -140,7 +137,7 @@ class LoginFragment : BaseFragment() {
                     context?.let { context ->
                         viewModel.authWithGoogle(account, context)
                             .observe(this, { resourceMessage ->
-                                resourceMessage.error?.let { message -> toast(context, message) }
+                                resourceMessage.error?.let { message -> toast(message) }
                             })
                     }
                 } catch (e: ApiException) {
@@ -166,7 +163,13 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FALSE_MENU, Components(FALSE, FALSE), R.color.white_status_bar)
+        statusAppBarNavigationBase(
+            menu = FALSE_MENU,
+            components = Components(
+                appBar = FALSE,
+                bottomNavigation = FALSE,
+                floatingActionButton = FALSE),
+            barColor = R.color.white_status_bar)
     }
 
     override fun onDestroy() {

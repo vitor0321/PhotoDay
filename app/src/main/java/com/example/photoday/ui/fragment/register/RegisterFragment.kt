@@ -5,15 +5,14 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
-import com.example.photoday.constants.Utils
-import com.example.photoday.constants.Utils.toast
+import com.example.photoday.constants.toast.Utils.toast
 import com.example.photoday.databinding.FragmentRegisterUserBinding
 import com.example.photoday.repository.BaseRepositoryUser
+import com.example.photoday.ui.databinding.data.ComponentsData
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -88,7 +87,7 @@ class RegisterFragment : BaseFragment() {
                         editTextUserPassword,
                         context
                     ).observe(viewLifecycleOwner, { resourceMessage ->
-                        resourceMessage.error?.let { message -> toast(context, message) }
+                        resourceMessage.error?.let { message -> toast(message) }
                     })
                 }
             }
@@ -96,7 +95,13 @@ class RegisterFragment : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FALSE_MENU, Components(FALSE, FALSE), R.color.white_status_bar)
+        statusAppBarNavigationBase(
+            menu = FALSE_MENU,
+            components = Components(
+                appBar = FALSE,
+                bottomNavigation = FALSE,
+                floatingActionButton = FALSE),
+            barColor = R.color.white_status_bar)
     }
 
     override fun onDestroy() {

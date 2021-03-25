@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
-import com.example.photoday.R
-import com.example.photoday.constants.Utils.toast
-import com.example.photoday.databinding.DialogForgotPasswordBinding
+import com.example.photoday.constants.toast.Utils.toast
 import com.example.photoday.databinding.DialogFragmentUserNameBinding
 import com.example.photoday.repository.BaseRepositoryUser
+import com.example.photoday.ui.databinding.data.ComponentsData
+import com.example.photoday.ui.databinding.data.UserFirebaseData
 
 class NewUserNameDialog(
     private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser(),
@@ -19,6 +19,7 @@ class NewUserNameDialog(
 
     private var _binding: DialogFragmentUserNameBinding? = null
     private val binding get() = _binding!!
+    private val userFirebaseData by lazy { UserFirebaseData() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,26 +44,17 @@ class NewUserNameDialog(
 
     private fun init() {
         binding.apply {
-            buttonOk.setOnClickListener {
+            okButton = View.OnClickListener {
                 try {
-                    /*here you will authenticate your email and password*/
-                    when {
-                        editTextNewName.text.toString().isEmpty() -> {
-                            editTextNewName.error = getString(R.string.enter_valid_name)
-                            editTextNewName.requestFocus()
-                            return@setOnClickListener
-                        }
+                    context?.let { context ->
+                        baseRepositoryUser.baseRepositoryChangeNameUser(editTextNewName, context)
+                            .observe(viewLifecycleOwner, { resourceResult ->
+                                resourceResult.error?.let { message -> toast(message) }
+                            })
                     }
-                    val name = editTextNewName.text.toString()
-                        context?.let { context ->
-                            baseRepositoryUser.baseRepositoryChangeNameUser(name, context)
-                                .observe(viewLifecycleOwner, { resourceResult ->
-                                    resourceResult.error?.let { message -> toast(context, message) }
-                                })
-                        }
                     dialog?.dismiss()
                 } catch (e: Exception) {
-                    e.message?.let { message -> context?.let { context -> toast(context, message) } }
+                    e.message?.let { message -> toast(message) }
                 }
             }
             buttonCancel.setOnClickListener {

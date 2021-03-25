@@ -1,49 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:startDestination="@id/main_activity_nav_host">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/main_activity_nav_host"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="datePickerFloatButton"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="components"
+            type="com.example.photoday.ui.databinding.data.ComponentsData" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/container_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout="@layout/fragment_timeline"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph"
-        tools:layout="@layout/fragment_timeline" />
+        app:startDestination="@id/main_activity_nav_host">
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottom_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:fabCradleMargin="@dimen/bar_cradle_margin_20dp"
-        app:fabCradleRoundedCornerRadius="@dimen/bar_cradle_counded_corner_radius_20dp"
-        app:fabCradleVerticalOffset="@dimen/bar_cradle_vertical_offset_10dp">
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/main_activity_nav_host"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout="@layout/fragment_timeline"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph"
+            tools:layout="@layout/fragment_timeline" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_nav_main_activity"
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:visibility="@{components.appBar ? View.VISIBLE : View.GONE}"
+            app:fabCradleMargin="@dimen/bar_cradle_margin_20dp"
+            app:fabCradleRoundedCornerRadius="@dimen/bar_cradle_counded_corner_radius_20dp"
+            app:fabCradleVerticalOffset="@dimen/bar_cradle_vertical_offset_10dp">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_nav_main_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/layout_margin_end_16dp"
+                android:background="@android:color/transparent"
+                android:visibility="@{components.bottomNavigation ? View.VISIBLE : View.GONE}"
+                app:menu="@menu/menu_bottom_navigation" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_fab_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/layout_margin_end_16dp"
-            android:background="@android:color/transparent"
-            app:menu="@menu/menu_bottom_navigation" />
+            android:layout_margin="@dimen/fab_margin"
+            android:background="@drawable/button_fab"
+            android:contentDescription="@string/add_photo"
+            android:onClick="@{datePickerFloatButton}"
+            android:src="@drawable/ic_add_photo"
+            android:visibility="@{components.floatingActionButton ? View.VISIBLE : View.GONE}"
+            app:layout_anchor="@id/bottom_nav_main_activity" />
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_fab_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/add_photo"
-        android:src="@drawable/ic_add_photo"
-        android:layout_margin="@dimen/fab_margin"
-        android:background="@drawable/button_fab"
-        app:layout_anchor="@id/bottom_nav_main_activity" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

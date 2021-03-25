@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <import type="androidx.appcompat.widget.AppCompatImageView" />
+
+        <variable
+            name="clickCardView"
+            type="android.view.View.OnClickListener" />
         <variable
             name="itemTimeline"
-            type="com.example.photoday.adapter.modelAdapter.ItemPhoto" />
+            type="com.example.photoday.ui.adapter.modelAdapter.ItemPhoto" />
     </data>
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.cardview.widget.CardView
         style="@style/CardView.Light"
         android:layout_width="match_parent"
         android:layout_height="@dimen/layout_height_180dp"
+        android:onClick="@{(view)-> clickCardView.onClick(view)}"
         android:layout_marginStart="@dimen/layout_marin_start_8dp"
         android:layout_marginTop="@dimen/layout_margin_cardView_top_8dp"
         android:layout_marginEnd="@dimen/layout_margin_end_8dp"
@@ -41,7 +47,7 @@
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@{itemTimeline.photo}"
+                app:upLoadImageUri="@{itemTimeline.photo}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/date_photo_text_view"
