@@ -25,8 +25,9 @@ import org.greenrobot.eventbus.EventBus
 
 class TimelineFragment : BaseFragment() {
 
-    private var _binding: FragmentTimelineBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: FragmentTimelineBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
+
     private val controlNavigation by lazy { findNavController() }
 
     private val viewModel by lazy {
@@ -38,11 +39,15 @@ class TimelineFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentTimelineBinding.inflate(inflater, container, false)
+        _viewDataBinding = FragmentTimelineBinding.inflate(inflater, container, false)
+        return viewDataBinding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
         CoroutineScope(Dispatchers.Main).launch {
             init()
         }
-        return binding.root
     }
 
     private fun init() {
@@ -52,23 +57,22 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun initObserve() {
-        viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
+        this.viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
             resourceList.data?.let { listPhoto ->
                 initRecycleView(listPhoto)
             }
-            when {
-                resourceList.error != null -> toast(resourceList.error)
-            }
+            messageToast(resourceList.error)
         }
     }
 
     private fun initRecycleView(listPhoto: List<ItemPhoto>) {
         CoroutineScope(Dispatchers.Main).launch {
-            binding.recycleViewListTimeline.run {
+            viewDataBinding.recycleViewListTimeline.run {
                 layoutManager = LinearLayoutManager(context)
                 adapter = TimelineAdapter(context, listPhoto) { itemPhoto ->
                     navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
                 }
+
             }
         }.isCompleted.apply {
             viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
@@ -78,14 +82,14 @@ class TimelineFragment : BaseFragment() {
     private fun viewFlipperControl(child: Int, visible: Boolean) {
         when {
             child == CHILD_FIRST && visible == PROGRESS_BAR_VISIBLE -> {
-                binding.run {
+                viewDataBinding.run {
                     viewFlipperTimeline.displayedChild = CHILD_FIRST
                     progressFlowTimeline.isVisible = PROGRESS_BAR_VISIBLE
                 }
             }
             child == CHILD_SECOND && visible == PROGRESS_BAR_INVISIBLE -> {
                 CoroutineScope(Dispatchers.Main).launch {
-                    binding.run {
+                    viewDataBinding.run {
                         viewFlipperTimeline.displayedChild = CHILD_SECOND
                         progressFlowTimeline.isVisible = PROGRESS_BAR_INVISIBLE
                     }
@@ -104,9 +108,13 @@ class TimelineFragment : BaseFragment() {
             barColor = R.color.orange_status_bar)
     }
 
+    private fun messageToast(message: String?) {
+        message?.let { message -> toast(message) }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
-        _binding = null
+        this._viewDataBinding = null
     }
 }

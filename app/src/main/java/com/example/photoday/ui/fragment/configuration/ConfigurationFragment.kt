@@ -43,8 +43,8 @@ class ConfigurationFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View {
         _viewDataBinding = FragmentConfigurationBinding.inflate(inflater, container, false)
-        viewDataBinding.userFirebase = userFirebaseData
-        viewDataBinding.lifecycleOwner = this
+        this.viewDataBinding.userFirebase = userFirebaseData
+        this.viewDataBinding.lifecycleOwner = this
         return viewDataBinding.root
     }
 
@@ -71,16 +71,10 @@ class ConfigurationFragment : BaseFragment() {
     }
 
     private fun initObserve() {
-        viewModel.getUserDBFirebase().observe(viewLifecycleOwner, { resourceUser ->
-            viewDataBinding.run {
-                userFirebaseData.setData(resourceUser.data)
-                repositoryError(resourceUser.error)
-            }
+        this.viewModel.getUserDBFirebase().observe(viewLifecycleOwner, { resourceUser ->
+            this.userFirebaseData.setData(resourceUser.data)
+            messageToast(resourceUser.error)
         })
-    }
-
-    private fun repositoryError(error: String?) {
-        error?.let { message -> toast(message) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -92,7 +86,7 @@ class ConfigurationFragment : BaseFragment() {
                     data?.data?.let { data ->
                         context?.let { context ->
                             viewModel.imageUser(data, context).observe(this, { resourceUser ->
-                                repositoryError(resourceUser.error)
+                                messageToast(resourceUser.error)
                             })
                         }
                     }
@@ -111,21 +105,21 @@ class ConfigurationFragment : BaseFragment() {
                     context?.let { context ->
                         viewModel.imageUser(Uri.parse(path), context)
                             .observe(this, { resourceUser ->
-                                repositoryError(resourceUser.error)
+                                messageToast(resourceUser.error)
                             })
                     }
                 }
             }
         } catch (e: Exception) {
-            repositoryError(e.message)
+            messageToast(e.message)
         }
     }
 
     private fun logout() {
         /*logout with Firebase*/
         context?.let { context ->
-            viewModel.logout(context).observe(viewLifecycleOwner, { resourceMessage ->
-                repositoryError(resourceMessage.error)
+            this.viewModel.logout(context).observe(viewLifecycleOwner, { resourceMessage ->
+                messageToast(resourceMessage.error)
             })
         }
         navFragmentConfigurationToSplashGoodbye(navFragment)
@@ -157,9 +151,13 @@ class ConfigurationFragment : BaseFragment() {
             barColor = R.color.orange_status_bar)
     }
 
+    private fun messageToast(message: String?) {
+        message?.let { message -> toast(message) }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        _viewDataBinding = null
+        this._viewDataBinding = null
     }
 }
 

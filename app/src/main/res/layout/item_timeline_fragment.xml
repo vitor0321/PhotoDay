@@ -11,7 +11,7 @@
             type="android.view.View.OnClickListener" />
         <variable
             name="itemTimeline"
-            type="com.example.photoday.ui.adapter.modelAdapter.ItemPhoto" />
+            type="com.example.photoday.ui.databinding.data.ItemPhotoData" />
     </data>
 
     <androidx.cardview.widget.CardView

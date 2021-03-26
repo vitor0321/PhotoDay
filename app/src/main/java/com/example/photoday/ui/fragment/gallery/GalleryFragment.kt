@@ -24,8 +24,8 @@ import kotlinx.coroutines.launch
 
 class GalleryFragment : BaseFragment() {
 
-    private var _binding: FragmentGalleryBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: FragmentGalleryBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
     private val controlNavigation by lazy { findNavController() }
 
@@ -38,11 +38,15 @@ class GalleryFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        _viewDataBinding = FragmentGalleryBinding.inflate(inflater, container, false)
+        return viewDataBinding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
         CoroutineScope(Dispatchers.Main).launch {
             init()
         }
-        return binding.root
     }
 
     private fun init() {
@@ -52,25 +56,22 @@ class GalleryFragment : BaseFragment() {
     }
 
     private fun initStateFlowObserve() {
-        viewModel.createPullPhotos().observe(viewLifecycleOwner, { resourceList ->
+        this.viewModel.createPullPhotos().observe(viewLifecycleOwner, { resourceList ->
             resourceList.data?.let { listPhoto ->
                 initRecycleView(listPhoto)
             }
-            when {
-                resourceList.error != null -> toast(resourceList.error)
-            }
+            messageToast(resourceList.error)
         })
     }
 
     private fun initRecycleView(listPhoto: List<ItemPhoto>) {
         val spanCount = SPAN_COUNT
-        var layoutManager = GridLayoutManager(context, spanCount)
+        val layoutManagerAdapter = GridLayoutManager(context, spanCount)
         CoroutineScope(Dispatchers.Main).launch {
-            binding.recycleViewListGallery.run {
-                layoutManager = layoutManager
-                adapter = GalleryAdapter(listPhoto) { itemPhoto ->
-                    Navigation.navFragmentGalleryToFullScreen(controlNavigation,
-                        itemPhoto.photo)
+            viewDataBinding.recycleViewListGallery.run {
+                layoutManager = layoutManagerAdapter
+                adapter = GalleryAdapter(context, listPhoto) { itemPhoto ->
+                    Navigation.navFragmentGalleryToFullScreen(controlNavigation, itemPhoto.photo)
                 }
             }
         }.isCompleted.apply {
@@ -82,14 +83,14 @@ class GalleryFragment : BaseFragment() {
     private fun viewFlipperControl(child: Int, visible: Boolean) {
         when {
             child == CHILD_FIRST && visible == PROGRESS_BAR_VISIBLE -> {
-                binding.run {
+                viewDataBinding.run {
                     viewFlipperGallery.displayedChild = CHILD_FIRST
                     progressFlowGallery.isVisible = PROGRESS_BAR_VISIBLE
                 }
             }
             child == CHILD_SECOND && visible == PROGRESS_BAR_INVISIBLE -> {
                 CoroutineScope(Dispatchers.Main).launch {
-                    binding.run {
+                    viewDataBinding.run {
                         viewFlipperGallery.displayedChild = CHILD_SECOND
                         progressFlowGallery.isVisible = PROGRESS_BAR_INVISIBLE
                     }
@@ -108,8 +109,12 @@ class GalleryFragment : BaseFragment() {
             barColor = R.color.orange_status_bar)
     }
 
+    private fun messageToast(message: String?) {
+        message?.let { message -> toast(message) }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+        this._viewDataBinding = null
     }
 }

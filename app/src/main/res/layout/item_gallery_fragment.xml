@@ -1,21 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/layout_height_180dp"
-    style="@style/CardView.Light"
-    app:cardCornerRadius="18dp"
-    android:layout_marginEnd="12dp"
-    android:layout_marginStart="12dp"
-    android:layout_marginTop="12dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/image_gallery"
+    <data>
+
+        <import type="androidx.appcompat.widget.AppCompatImageView" />
+
+        <variable
+            name="clickCardView"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="itemGallery"
+            type="com.example.photoday.ui.databinding.data.ItemPhotoData" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        style="@style/CardView.Light"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        tools:src="@drawable/ic_item_photo" />
+        android:layout_height="@dimen/layout_height_180dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:onClick="@{(view)-> clickCardView.onClick(view)}"
+        android:layout_marginEnd="12dp"
+        android:orientation="vertical"
+        app:cardCornerRadius="18dp">
 
-</androidx.cardview.widget.CardView>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:upLoadImageUri="@{itemGallery.photo}"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_item_photo" />
+
+    </androidx.cardview.widget.CardView>
+</layout>

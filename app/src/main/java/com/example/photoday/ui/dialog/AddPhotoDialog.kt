@@ -15,16 +15,16 @@ import com.example.photoday.ui.activity.PhotoDayActivity
 
 class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
 
-    private var _binding: DialogFragmentAddPhotoBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: DialogFragmentAddPhotoBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = DialogFragmentAddPhotoBinding.inflate(inflater, container, false)
-        return binding.root
+        _viewDataBinding = DialogFragmentAddPhotoBinding.inflate(inflater, container, false)
+        return viewDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,9 +40,9 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
     }
 
     private fun initButton() {
-        binding.apply {
+        this.viewDataBinding.apply {
             val activity = requireActivity() as PhotoDayActivity
-            imageUploadGallery.setOnClickListener {
+            this.clickUploadGallery = View.OnClickListener  {
                 when (valueDate) {
                     null -> context?.let { context ->
                         galleryPermission(activity, null, context,
@@ -55,7 +55,7 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
                 }
                 dialog?.dismiss()
             }
-            imageUploadCamera.setOnClickListener {
+            this.clickUploadCamera = View.OnClickListener  {
                 when (valueDate) {
                     null -> context?.let { context ->
                         dispatchTakePermission(activity, null, context,
@@ -72,7 +72,7 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
     }
 
     override fun onDestroy() {
-        _binding = null
+        this._viewDataBinding = null
         super.onDestroy()
     }
 

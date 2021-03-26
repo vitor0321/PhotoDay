@@ -5,6 +5,7 @@ import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.activity.PhotoDayViewModel
 import com.example.photoday.ui.activity.PhotoDayViewModelFactory
+import com.example.photoday.ui.databinding.data.ComponentsData
 import com.example.photoday.ui.fragment.base.BaseViewModel
 import com.example.photoday.ui.fragment.base.BaseViewModelFactory
 import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
