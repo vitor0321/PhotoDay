@@ -9,10 +9,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
-import com.example.photoday.constants.toast.Utils.toast
+import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentRegisterUserBinding
 import com.example.photoday.repository.BaseRepositoryUser
-import com.example.photoday.ui.databinding.data.ComponentsData
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components

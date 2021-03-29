@@ -1,5 +1,7 @@
 package com.example.photoday.constants
 
+import com.google.protobuf.Empty
+
 const val TRUE = true
 const val FALSE = false
 
@@ -38,7 +40,10 @@ const val CHILD_FIRST = 0
 const val CHILD_SECOND = 1
 const val PROGRESS_BAR_VISIBLE = true
 const val PROGRESS_BAR_INVISIBLE = false
-const val TIME_DELAY = 1600L
+
+/*Toast*/
+const val EMPTY = ""
+
 
 
 

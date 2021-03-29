@@ -7,22 +7,23 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
-import com.example.photoday.constants.toast.Utils.toast
+import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.DialogForgotPasswordBinding
 import com.example.photoday.repository.BaseRepositoryUser
+import com.example.photoday.ui.databinding.data.UserFirebaseData
 
 class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogFragment() {
 
-    private var _binding: DialogForgotPasswordBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: DialogForgotPasswordBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = DialogForgotPasswordBinding.inflate(inflater, container, false)
-        return binding.root
+        _viewDataBinding = DialogForgotPasswordBinding.inflate(inflater, container, false)
+        return viewDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +39,7 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
     }
 
     private fun init() {
-        binding.apply {
+        viewDataBinding.apply {
             val userEmail = editTextEmailConfirm
             okButton = View.OnClickListener {
                 try {
@@ -60,7 +61,7 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
     }
 
     override fun onDestroy() {
-        _binding = null
+        _viewDataBinding = null
         super.onDestroy()
     }
 

@@ -18,9 +18,9 @@ class UserFirebaseData(
 
     fun setData(userFirebase: UserFirebase?) {
         userFirebase?.let { this.userFirebase = userFirebase }
-        name.postValue(this.userFirebase.name)
-        email.postValue(this.userFirebase.email)
-        image.postValue(this.userFirebase.image)
+        userFirebase?.name?.let { name.postValue(this.userFirebase.name) }
+        userFirebase?.email?.let { email.postValue(this.userFirebase.email) }
+        userFirebase?.image?.let { image.postValue(this.userFirebase.image) }
     }
 
     fun getData(): UserFirebase? {

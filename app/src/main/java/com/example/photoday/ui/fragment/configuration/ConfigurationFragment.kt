@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.constants.toast.Utils.toast
+import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
 import com.example.photoday.repository.BaseRepositoryUser
@@ -86,6 +86,7 @@ class ConfigurationFragment : BaseFragment() {
                     data?.data?.let { data ->
                         context?.let { context ->
                             viewModel.imageUser(data, context).observe(this, { resourceUser ->
+                                this.userFirebaseData.setData(resourceUser.data)
                                 messageToast(resourceUser.error)
                             })
                         }
@@ -105,6 +106,7 @@ class ConfigurationFragment : BaseFragment() {
                     context?.let { context ->
                         viewModel.imageUser(Uri.parse(path), context)
                             .observe(this, { resourceUser ->
+                                this.userFirebaseData.setData(resourceUser.data)
                                 messageToast(resourceUser.error)
                             })
                     }

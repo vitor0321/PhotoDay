@@ -7,27 +7,29 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
-import com.example.photoday.constants.toast.Utils.toast
-import com.example.photoday.databinding.DialogFragmentUserNameBinding
+import com.example.photoday.constants.toast.Toast.toast
+import com.example.photoday.databinding.DialogFragmentUserNewNameBinding
 import com.example.photoday.repository.BaseRepositoryUser
-import com.example.photoday.ui.databinding.data.ComponentsData
+import com.example.photoday.repository.firebaseUser.user.UserFirebase
 import com.example.photoday.ui.databinding.data.UserFirebaseData
 
 class NewUserNameDialog(
     private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser(),
+    private val userFirebaseData: UserFirebaseData = UserFirebaseData()
 ) : DialogFragment() {
 
-    private var _binding: DialogFragmentUserNameBinding? = null
-    private val binding get() = _binding!!
-    private val userFirebaseData by lazy { UserFirebaseData() }
+    private var _viewDataBinding: DialogFragmentUserNewNameBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = DialogFragmentUserNameBinding.inflate(inflater, container, false)
-        return binding.root
+        _viewDataBinding = DialogFragmentUserNewNameBinding.inflate(inflater, container, false)
+        this.viewDataBinding.userFirebase = userFirebaseData
+        this.viewDataBinding.lifecycleOwner = this
+        return this.viewDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,12 +45,13 @@ class NewUserNameDialog(
     }
 
     private fun init() {
-        binding.apply {
+        this.viewDataBinding.apply {
             okButton = View.OnClickListener {
                 try {
                     context?.let { context ->
                         baseRepositoryUser.baseRepositoryChangeNameUser(editTextNewName, context)
                             .observe(viewLifecycleOwner, { resourceResult ->
+                                resourceResult.data?.let { newName -> setNameData(newName) }
                                 resourceResult.error?.let { message -> toast(message) }
                             })
                     }
@@ -63,8 +66,17 @@ class NewUserNameDialog(
         }
     }
 
+    private fun setNameData(newName: String) {
+        val userName = UserFirebase(
+            name = newName,
+            email = null,
+            image = null
+        )
+        this.userFirebaseData.setData(userName)
+    }
+
     override fun onDestroy() {
-        _binding = null
+        this._viewDataBinding = null
         super.onDestroy()
     }
 

@@ -10,11 +10,10 @@ import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.constants.toast.Utils.toast
+import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
 import com.example.photoday.repository.BaseRepositoryUser
-import com.example.photoday.ui.databinding.data.ComponentsData
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
@@ -23,14 +22,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class LoginFragment : BaseFragment() {
 
-    private var _binding: FragmentLoginBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: FragmentLoginBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
     private val controlNavigation by lazy { findNavController() }
 
@@ -46,10 +42,10 @@ class LoginFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _viewDataBinding = FragmentLoginBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         init()
-        return binding.root
+        return this.viewDataBinding.root
     }
 
     private fun init() {
@@ -61,39 +57,41 @@ class LoginFragment : BaseFragment() {
 
     private fun initObserver() {
         // Check if user is signed in (non-null) and update UI accordingly.
-        viewModel.updateUI(controlNavigation, ON_START, context)
+        this.viewModel.updateUI(controlNavigation, ON_START, context)
             ?.observe(viewLifecycleOwner, { resourceUser ->
                 resourceUser.error?.let { message -> toast(message) }
             })
 
-        viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
+        this.viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
             toast(message)
         }
     }
 
     private fun initButton() {
-        binding.apply {
+        this.viewDataBinding.apply {
             //Button to login
-            buttonLoginLog.setOnClickListener {
+            loginButton = View.OnClickListener {
                 try {
                     /*here you will authenticate your email and password*/
                     when {
-                        editTextLoginUser.text.toString().isEmpty() -> {
-                            editTextLoginUser.error = context?.getString(R.string.please_enter_email_login)
+                        userLogin?.email?.isEmpty() == true -> {
+                            editTextLoginUser.error =
+                                context?.getString(R.string.please_enter_email_login)
                             editTextLoginUser.requestFocus()
-                            return@setOnClickListener
+                            return@OnClickListener
                         }
-                        !Patterns.EMAIL_ADDRESS.matcher(editTextLoginUser.text.toString()).matches() -> {
+                        !Patterns.EMAIL_ADDRESS.matcher(editTextLoginUser.text.toString())
+                            .matches() -> {
                             editTextLoginUser.error =
                                 context?.getString(R.string.please_enter_valid_email_login)
                             editTextLoginUser.requestFocus()
-                            return@setOnClickListener
+                            return@OnClickListener
                         }
                         editTextLoginPassword.text.toString().isEmpty() -> {
                             editTextLoginPassword.error =
                                 context?.getString(R.string.please_enter_password)
                             editTextLoginPassword.requestFocus()
-                            return@setOnClickListener
+                            return@OnClickListener
                         }
                     }
                     context?.let { context ->
@@ -101,27 +99,23 @@ class LoginFragment : BaseFragment() {
                             editTextLoginPassword,
                             requireActivity(),
                             context).observe(viewLifecycleOwner, { resourceMessage ->
-                            resourceMessage.error?.let { message -> toast(message) }
+                            messageToast(resourceMessage.error)
                         })
                     }
                 } catch (e: Exception) {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        e.message?.let { message ->
-                            toast(message)
-                        }
-                    }
+                    messageToast(e.message)
                 }
 
             }
 
             //Button register
-            buttonLoginRegister.setOnClickListener { navFragmentLoginToRegister(controlNavigation) }
+            registerButton = View.OnClickListener { navFragmentLoginToRegister(controlNavigation) }
 
             //Button Login Google
-            buttonLoginGoogle.setOnClickListener { signIn() }
+            loginGoogleButton = View.OnClickListener { signIn() }
 
             //Button forgot Password
-            buttonLoginForgotPassword.setOnClickListener { viewModel.forgotPassword(activity) }
+            forgotPasswordButton = View.OnClickListener { viewModel.forgotPassword(activity) }
         }
     }
 
@@ -137,7 +131,7 @@ class LoginFragment : BaseFragment() {
                     context?.let { context ->
                         viewModel.authWithGoogle(account, context)
                             .observe(this, { resourceMessage ->
-                                resourceMessage.error?.let { message -> toast(message) }
+                                messageToast(resourceMessage.error)
                             })
                     }
                 } catch (e: ApiException) {
@@ -168,12 +162,18 @@ class LoginFragment : BaseFragment() {
             components = Components(
                 appBar = FALSE,
                 bottomNavigation = FALSE,
-                floatingActionButton = FALSE),
-            barColor = R.color.white_status_bar)
+                floatingActionButton = FALSE
+            ),
+            barColor = R.color.white_status_bar
+        )
+    }
+
+    private fun messageToast(message: String?) {
+        message?.let { message -> toast(message) }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+        this._viewDataBinding = null
     }
 }

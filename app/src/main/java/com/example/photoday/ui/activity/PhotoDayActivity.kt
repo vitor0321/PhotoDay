@@ -19,7 +19,7 @@ import com.example.photoday.R
 import com.example.photoday.constants.ADD_PHOTO_DIALOG
 import com.example.photoday.constants.REQUEST_IMAGE_CAPTURE
 import com.example.photoday.constants.REQUEST_IMAGE_GALLERY
-import com.example.photoday.constants.toast.Utils.toast
+import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.ActivityPhotoDayBinding
 import com.example.photoday.eventBus.MessageEvent
 import com.example.photoday.repository.BaseRepositoryPhoto

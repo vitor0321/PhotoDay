@@ -4,6 +4,6 @@ import android.net.Uri
 
 data class UserFirebase(
         var name: String? = null,
-        var email: String = "",
+        var email: String? = null,
         var image: Uri? = null
 )

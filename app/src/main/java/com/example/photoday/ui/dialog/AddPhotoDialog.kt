@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
-import com.example.photoday.constants.toast.Utils.toast
+import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.DialogFragmentAddPhotoBinding
 import com.example.photoday.permission.CheckVersionPermission.dispatchTakePermission
 import com.example.photoday.permission.CheckVersionPermission.galleryPermission

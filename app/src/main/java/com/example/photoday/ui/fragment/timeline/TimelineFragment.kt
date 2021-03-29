@@ -9,7 +9,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.constants.toast.Utils.toast
+import com.example.photoday.constants.toast.Toast.toast
+import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.navigation.Navigation.navFragmentTimelineToFullScreen
 import com.example.photoday.repository.BaseRepositoryPhoto

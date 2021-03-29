@@ -8,15 +8,17 @@ import androidx.navigation.fragment.navArgs
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
+import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentFullscreenBinding
+import com.example.photoday.repository.firebaseUser.user.UserFirebase
+import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
-import com.squareup.picasso.Picasso
 
-class FullscreenFragment : BaseFragment(){
+class FullscreenFragment : BaseFragment() {
 
-    private var _binding: FragmentFullscreenBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: FragmentFullscreenBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
     private val arguments by navArgs<FullscreenFragmentArgs>()
     private val itemPhoto by lazy { arguments.itemPhoto }
@@ -25,9 +27,9 @@ class FullscreenFragment : BaseFragment(){
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        _binding = FragmentFullscreenBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View {
+        _viewDataBinding = FragmentFullscreenBinding.inflate(inflater, container, false)
+        return this.viewDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,23 +42,27 @@ class FullscreenFragment : BaseFragment(){
         setImageFullScreen()
     }
 
-    private fun setImageFullScreen(){
-        binding.run {
-            Picasso.get().load(itemPhoto).into(imageViewFullScreen)
+    private fun setImageFullScreen() {
+        this.viewDataBinding.itemFromRecycle = ItemPhoto(photo = itemPhoto)
+        this.viewDataBinding.run {
+            //Picasso.get().load(itemPhoto).into(imageViewFullScreen)
         }
     }
+
     private fun statusBarNavigation() {
         statusAppBarNavigationBase(
             menu = FALSE_MENU,
             components = Components(
                 appBar = FALSE,
                 bottomNavigation = FALSE,
-                floatingActionButton = FALSE),
-            barColor = R.color.orange_status_bar)
+                floatingActionButton = FALSE
+            ),
+            barColor = R.color.orange_status_bar
+        )
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+        this._viewDataBinding = null
     }
 }
