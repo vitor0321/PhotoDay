@@ -10,8 +10,8 @@ class ConfigurationViewModel(private val repository: BaseRepositoryUser) : ViewM
 
     fun getUserDBFirebase() = repository.baseRepositoryGetCurrentUserFirebase()
 
-    fun imageUser(image: Uri, context: Context) =
-        repository.baseRepositoryChangeImageUser(image, context)
+    fun imageUser(image: Uri) =
+        repository.baseRepositoryChangeImageUser(image)
 
     fun logout(context: Context) = repository.baseRepositoryLogoutFirebase(context)
 

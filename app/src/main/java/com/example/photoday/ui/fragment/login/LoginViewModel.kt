@@ -1,6 +1,5 @@
 package com.example.photoday.ui.fragment.login
 
-import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
@@ -20,31 +19,25 @@ class LoginViewModel(
     private val _uiStateFlowMessage = MutableStateFlow("")
     val uiStateFlowMessage: StateFlow<String> get() = _uiStateFlowMessage
 
-    fun updateUI(controlNavigation: NavController, ON_START: Int, context: Context?) =
-        context?.let { context ->
-            repository.baseRepositoryUpdateUI(controlNavigation,
-                ON_START,
-                context)
-        }
+    fun updateUI(controlNavigation: NavController, ON_START: Int) =
+        repository.baseRepositoryUpdateUI(controlNavigation, ON_START)
 
     fun doLogin(
         editTextLoginUser: TextInputEditText,
         editTextLoginPassword: TextInputEditText,
         requireActivity: FragmentActivity,
-        context: Context,
     ) = repository.baseRepositorySignInWithEmailAndPassword(
         editTextLoginUser,
         editTextLoginPassword,
         requireActivity,
-        controlNavigation,
-        context
+        controlNavigation
     )
 
-    fun authWithGoogle(account: GoogleSignInAccount, context: Context) =
+    fun authWithGoogle(account: GoogleSignInAccount) =
         repository.baseRepositoryFirebaseAuthWithGoogle(
             account.idToken!!,
-            controlNavigation,
-            context)
+            controlNavigation
+        )
 
 
     fun forgotPassword(activity: FragmentActivity?) {

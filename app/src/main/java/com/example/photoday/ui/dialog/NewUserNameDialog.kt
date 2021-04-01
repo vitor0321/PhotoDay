@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
+import com.example.photoday.R
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.DialogFragmentUserNewNameBinding
 import com.example.photoday.repository.BaseRepositoryUser
@@ -48,19 +49,29 @@ class NewUserNameDialog(
         this.viewDataBinding.apply {
             okButton = View.OnClickListener {
                 try {
-                    context?.let { context ->
-                        baseRepositoryUser.baseRepositoryChangeNameUser(editTextNewName, context)
-                            .observe(viewLifecycleOwner, { resourceResult ->
-                                resourceResult.data?.let { newName -> setNameData(newName) }
-                                resourceResult.error?.let { message -> toast(message) }
-                            })
+                    when {
+                        editTextNewName.text.toString().isEmpty() -> {
+                            messageToast(context?.getString(R.string.enter_valid_name))
+                            editTextNewName.requestFocus()
+                        }
                     }
+                    baseRepositoryUser.baseRepositoryChangeNameUser(editTextNewName)
+                        .observe(viewLifecycleOwner, { resourceResult ->
+                            when {
+                                resourceResult.error != null -> messageToast(getString(R.string.error_api))
+                                resourceResult.message != null -> messageToast(resourceResult.message?.let { message ->
+                                    context?.getString(message)
+                                })
+                                resourceResult.data != null -> setNameData(resourceResult.data)
+
+                            }
+                        })
                     dialog?.dismiss()
                 } catch (e: Exception) {
-                    e.message?.let { message -> toast(message) }
+                    messageToast(e.message)
                 }
             }
-            buttonCancel.setOnClickListener {
+            cancelButton = View.OnClickListener {
                 dialog?.dismiss()
             }
         }
@@ -73,6 +84,10 @@ class NewUserNameDialog(
             image = null
         )
         this.userFirebaseData.setData(userName)
+    }
+
+    private fun messageToast(message: String?) {
+        message?.let { message -> toast(message) }
     }
 
     override fun onDestroy() {

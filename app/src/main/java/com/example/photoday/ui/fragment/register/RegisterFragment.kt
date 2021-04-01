@@ -18,8 +18,8 @@ import com.example.photoday.ui.stateBarNavigation.Components
 
 class RegisterFragment : BaseFragment() {
 
-    private var _binding: FragmentRegisterUserBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: FragmentRegisterUserBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
     private val controlNavigation by lazy { findNavController() }
 
@@ -33,9 +33,9 @@ class RegisterFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentRegisterUserBinding.inflate(inflater, container, false)
+        _viewDataBinding = FragmentRegisterUserBinding.inflate(inflater, container, false)
         init()
-        return binding.root
+        return this.viewDataBinding.root
     }
 
     private fun init() {
@@ -44,40 +44,40 @@ class RegisterFragment : BaseFragment() {
     }
 
     private fun initButton() {
-        binding.apply {
-            buttonRegisterUser.setOnClickListener {
+        this.viewDataBinding.apply {
+            registerButton = View.OnClickListener {
                 /*here you will authenticate your email and password*/
                 when {
                     editTextUserEmail.text.toString().isEmpty() -> {
                         editTextUserEmail.error =
-                                context?.getString(R.string.please_enter_email_register)
+                            context?.getString(R.string.please_enter_email_register)
                         editTextUserEmail.requestFocus()
-                        return@setOnClickListener
+                        return@OnClickListener
                     }
                     !Patterns.EMAIL_ADDRESS.matcher(editTextUserEmail.text.toString())
-                            .matches() -> {
+                        .matches() -> {
                         editTextUserEmail.error =
                                 context?.getString(R.string.please_enter_valid_email_register)
                         editTextUserEmail.requestFocus()
-                        return@setOnClickListener
+                        return@OnClickListener
                     }
                     editTextUserPassword.text.toString().isEmpty() -> {
                         editTextUserPassword.error =
                                 context?.getString(R.string.please_enter_password_register)
                         editTextUserPassword.requestFocus()
-                        return@setOnClickListener
+                        return@OnClickListener
                     }
                     editTextUserConfirmPassword.text.toString().isEmpty() -> {
                         editTextUserConfirmPassword.error =
                                 context?.getString(R.string.please_enter_password_confirm)
                         editTextUserConfirmPassword.requestFocus()
-                        return@setOnClickListener
+                        return@OnClickListener
                     }
                     editTextUserConfirmPassword.text.toString() != editTextUserConfirmPassword.text.toString() -> {
                         editTextUserConfirmPassword.error =
                             context?.getString(R.string.password_are_not_the_same)
                         editTextUserConfirmPassword.requestFocus()
-                        return@setOnClickListener
+                        return@OnClickListener
                     }
                 }
                 context?.let { context ->
@@ -105,7 +105,7 @@ class RegisterFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+        this._viewDataBinding = null
     }
 }
 

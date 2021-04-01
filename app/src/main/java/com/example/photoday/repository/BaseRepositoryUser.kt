@@ -24,19 +24,19 @@ class BaseRepositoryUser(
 ) {
     private var auth = FirebaseAuth.getInstance()
 
-    fun baseRepositoryChangeImageUser(image: Uri, context: Context) =
-        repositoryChange.changeImageUser(image, context)
+    fun baseRepositoryChangeImageUser(image: Uri) =
+        repositoryChange.changeImageUser(image)
 
     fun baseRepositoryGetCurrentUserFirebase() = repositoryChange.getCurrentUserFirebase()
 
-    fun baseRepositoryChangeNameUser(name: EditText, context: Context) =
-        repositoryChange.changeNameUser(name, context)
+    fun baseRepositoryChangeNameUser(name: EditText) =
+        repositoryChange.changeNameUser(name)
 
-    fun baseRepositoryForgotPassword(userEmail: EditText, context: Context) =
-        repositoryChange.forgotPassword(userEmail, context)
+    fun baseRepositoryForgotPassword(userEmail: EditText) =
+        repositoryChange.forgotPassword(userEmail)
 
-    fun baseRepositoryUpdateUI(controlNavigation: NavController, startLog: Int, context: Context) =
-        repositoryCheck.updateUI(controlNavigation, startLog, context)
+    fun baseRepositoryUpdateUI(controlNavigation: NavController, startLog: Int) =
+        repositoryCheck.updateUI(controlNavigation, startLog)
 
     fun baseRepositoryLogoutFirebase(context: Context) = repositoryLog.logoutFirebase(context)
 
@@ -49,18 +49,18 @@ class BaseRepositoryUser(
         registerUser,
         registerUserPassword,
         controlNavigation,
-        context)
+        context
+    )
 
     fun baseRepositoryFirebaseAuthWithGoogle(
         idToken: String,
         controlNavigation: NavController,
-        context: Context,
     ): LiveData<ResourceUser<Void>> {
         val liveData = MutableLiveData<ResourceUser<Void>>()
         try {
             repositoryLog.firebaseAuthWithGoogle(idToken,
                 callback = { login: Int ->
-                    baseRepositoryUpdateUI(controlNavigation, login, context)
+                    baseRepositoryUpdateUI(controlNavigation, login)
                 },
                 callbackMessage = { message ->
                     liveData.value = ResourceUser(data = null, error = message)
@@ -77,7 +77,6 @@ class BaseRepositoryUser(
         loginPassword: AppCompatEditText,
         requireActivity: FragmentActivity,
         controlNavigation: NavController,
-        context: Context,
     ): LiveData<ResourceUser<UserFirebase>> {
         val liveData = MutableLiveData<ResourceUser<UserFirebase>>()
         try {
@@ -85,16 +84,18 @@ class BaseRepositoryUser(
                 loginUserId,
                 loginPassword,
                 requireActivity,
-                context,
                 callback = { login: Int ->
-                    baseRepositoryUpdateUI(controlNavigation, login, context)
+                    baseRepositoryUpdateUI(controlNavigation, login)
+                },
+                callbackError = { error ->
+                    liveData.value = ResourceUser(message = error)
                 },
                 callbackMessage = { message ->
-                    liveData.value = ResourceUser(data = null, error = message)
+                    liveData.value = ResourceUser(error = message)
                 }
             )
         } catch (e: Exception) {
-            liveData.value = ResourceUser(data = null, error = e.message)
+            liveData.value = ResourceUser(error = e.message)
         }
         return liveData
     }
@@ -103,8 +104,8 @@ class BaseRepositoryUser(
         loginUserId: AppCompatEditText,
         loginPassword: AppCompatEditText,
         requireActivity: FragmentActivity,
-        context: Context,
         callback: (login: Int) -> Unit,
+        callbackError: (error: Int) -> Unit,
         callbackMessage: (message: String) -> Unit,
     ) {
         try {
@@ -121,7 +122,7 @@ class BaseRepositoryUser(
                         }
                         else -> {
                             // If sign in fails, display a message to the user.
-                            callbackMessage.invoke(context.getString(R.string.login_failed))
+                            callbackError.invoke(R.string.login_failed)
                             callback.invoke(FIRST_LOGIN)
                         }
                     }

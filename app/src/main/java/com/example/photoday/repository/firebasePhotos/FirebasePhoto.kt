@@ -1,13 +1,12 @@
 package com.example.photoday.repository.firebasePhotos
 
-import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
-import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.constants.IMAGES
+import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ListResult
@@ -50,15 +49,13 @@ object FirebasePhoto {
     fun uploadImageToStorage(
         dateCalendar: String,
         curFile: Uri?,
-        context: Context,
     ): LiveData<ResourceItem<Void?>> {
         val liveData = MutableLiveData<ResourceItem<Void?>>()
         try {
             curFile?.let {
                 imageRef.child("$IMAGES$dateCalendar").putFile(it)
                 liveData.value =
-                    ResourceItem(data = null,
-                        error = context.getString(R.string.successfully_upload_image))
+                    ResourceItem(message = R.string.successfully_upload_image)
             }
         } catch (e: Exception) {
             val liveDataKeep = liveData.value
@@ -71,17 +68,15 @@ object FirebasePhoto {
 
     fun deleteImage(
         dateCalendar: String,
-        context: Context
     ): LiveData<ResourceItem<Void?>> {
         val liveData = MutableLiveData<ResourceItem<Void?>>()
         try {
             imageRef.child("$IMAGES$dateCalendar").delete()
             liveData.value =
-                ResourceItem(data = null,
-                    error = context.getString(R.string.successfully_delete_image))
+                ResourceItem(message = R.string.successfully_delete_image)
         } catch (e: Exception) {
             e.message?.let { message ->
-                liveData.value = ResourceItem(data = null, error = message)
+                liveData.value = ResourceItem(error = message)
             }
         }
         return liveData

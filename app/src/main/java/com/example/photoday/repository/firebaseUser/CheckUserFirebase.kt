@@ -1,6 +1,5 @@
 package com.example.photoday.repository.firebaseUser
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
@@ -20,8 +19,7 @@ object CheckUserFirebase {
 
     fun updateUI(
         controlNavigation: NavController,
-        startLog: Int,
-        context: Context,
+        startLog: Int
     ): LiveData<ResourceUser<Void>> {
         val liveData = MutableLiveData<ResourceUser<Void>>()
         CoroutineScope(Dispatchers.Main).launch {
@@ -37,25 +35,27 @@ object CheckUserFirebase {
                                 when (startLog) {
                                     ON_START -> {
                                         navFragmentLoginToTimeline(controlNavigation)
-                                        liveData.value = ResourceUser(data = null,
-                                            error = context.getString(R.string.login_is_success))
+                                        liveData.value = ResourceUser(
+                                            message = R.string.login_is_success
+                                        )
                                     }
                                     FIRST_LOGIN -> {
                                         navFragmentLoginToSplashLogin(controlNavigation)
-                                        liveData.value = ResourceUser(data = null,
-                                            error = context.getString(R.string.login_is_success))
+                                        liveData.value = ResourceUser(
+                                            message = R.string.login_is_success
+                                        )
                                     }
                                 }
                             }
                             else -> {
-                                liveData.value = ResourceUser(data = null,
-                                    error = context.getString(R.string.verify_your_email_address))
+                                liveData.value =
+                                    ResourceUser(message = R.string.verify_your_email_address)
                             }
                         }
                     }
                 }
             } catch (e: Exception) {
-                liveData.value = ResourceUser(data = null, error = e.message)
+                liveData.value = ResourceUser(error = e.message)
             }
         }
         return liveData

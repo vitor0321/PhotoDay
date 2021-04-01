@@ -89,9 +89,16 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                 requestCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK -> {
                     data?.data?.let { photo ->
                         datePhotoEventBus?.let { dateCalendar ->
-                            viewModel.createPushPhoto(dateCalendar, photo, this)
+                            viewModel.createPushPhoto(dateCalendar, photo)
                                 .observe(this, { resourcesError ->
-                                    resourcesError.error?.let { message -> toast(message) }
+                                    when {
+                                        resourcesError.error != null -> {
+                                            messageToast(resourcesError.error)
+                                        }
+                                        resourcesError.message != null -> {
+                                            messageToast(this.getString(resourcesError.message))
+                                        }
+                                    }
                                 })
                         }
                     }
@@ -108,16 +115,22 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         null
                     )
                         datePhotoEventBus?.let { dateCalendar ->
-                            viewModel.createPushPhoto(dateCalendar, Uri.parse(path), this)
-                                .observe(this,
-                                    { resourcesError ->
-                                        resourcesError.error?.let { message -> toast(message) }
-                                    })
+                            viewModel.createPushPhoto(dateCalendar, Uri.parse(path))
+                                .observe(this, { resourcesError ->
+                                    when {
+                                        resourcesError.error != null -> {
+                                            messageToast(resourcesError.error)
+                                        }
+                                        resourcesError.message != null -> {
+                                            messageToast(this.getString(resourcesError.message))
+                                        }
+                                    }
+                                })
                         }
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { message -> toast(message) }
+            messageToast(e.message)
         }
     }
 
@@ -145,7 +158,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         title = null
                     }
             } catch (e: Exception) {
-                e.message?.let { message -> toast(message) }
+                messageToast(e.message)
             }
 
         }
@@ -161,7 +174,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         try {
             DatePickerDialog(this, this, year, month, day ).show()
         } catch (e: Exception) {
-            e.message?.let { message -> toast(message) }
+            messageToast(e.message)
         }
     }
 
@@ -181,6 +194,10 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         /*open AddPhotoDialog*/
         AddPhotoDialog.newInstance(valueDate)
             .show(supportFragmentManager, ADD_PHOTO_DIALOG)
+    }
+
+    private fun messageToast(message: String?) {
+        message?.let { message -> toast(message) }
     }
 
     override fun onDestroy() {

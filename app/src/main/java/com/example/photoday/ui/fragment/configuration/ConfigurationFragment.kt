@@ -84,12 +84,18 @@ class ConfigurationFragment : BaseFragment() {
             when {
                 requestCode == REQUEST_IMAGE_GALLERY_USER && resultCode == RESULT_OK -> {
                     data?.data?.let { data ->
-                        context?.let { context ->
-                            viewModel.imageUser(data, context).observe(this, { resourceUser ->
-                                this.userFirebaseData.setData(resourceUser.data)
-                                messageToast(resourceUser.error)
-                            })
-                        }
+                        viewModel.imageUser(data).observe(this, { resourceUser ->
+                            this.userFirebaseData.setData(resourceUser.data)
+                            when {
+                                resourceUser.error != null -> {
+                                    messageToast(resourceUser.error)
+                                }
+                                resourceUser.message != null -> {
+                                    messageToast(context?.getString(resourceUser.message))
+                                }
+                            }
+
+                        })
                     }
                 }
                 requestCode == REQUEST_IMAGE_CAPTURE_USER && resultCode == RESULT_OK -> {
@@ -103,13 +109,10 @@ class ConfigurationFragment : BaseFragment() {
                         getString(R.string.change_image_user),
                         null
                     )
-                    context?.let { context ->
-                        viewModel.imageUser(Uri.parse(path), context)
-                            .observe(this, { resourceUser ->
-                                this.userFirebaseData.setData(resourceUser.data)
-                                messageToast(resourceUser.error)
-                            })
-                    }
+                    viewModel.imageUser(Uri.parse(path)).observe(this, { resourceUser ->
+                        this.userFirebaseData.setData(resourceUser.data)
+                        messageToast(resourceUser.error)
+                    })
                 }
             }
         } catch (e: Exception) {

@@ -57,7 +57,7 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="new_user_name">New Name</string>
-
+    <string name="error_api">Error API</string>
 
     <!-- Permission -->
     <string name="version_less_23">Version less than 23</string>

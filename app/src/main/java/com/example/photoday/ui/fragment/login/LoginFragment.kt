@@ -57,13 +57,20 @@ class LoginFragment : BaseFragment() {
 
     private fun initObserver() {
         // Check if user is signed in (non-null) and update UI accordingly.
-        this.viewModel.updateUI(controlNavigation, ON_START, context)
-            ?.observe(viewLifecycleOwner, { resourceUser ->
-                resourceUser.error?.let { message -> toast(message) }
+        this.viewModel.updateUI(controlNavigation, ON_START)
+            .observe(viewLifecycleOwner, { resourceUser ->
+                when {
+                    resourceUser.error != null -> {
+                        messageToast(resourceUser.error)
+                    }
+                    resourceUser.message != null -> {
+                        messageToast(context?.getString(resourceUser.message))
+                    }
+                }
             })
 
         this.viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
-            toast(message)
+            messageToast(message)
         }
     }
 
@@ -74,12 +81,7 @@ class LoginFragment : BaseFragment() {
                 try {
                     /*here you will authenticate your email and password*/
                     when {
-                        userLogin?.email?.isEmpty() == true -> {
-                            editTextLoginUser.error =
-                                context?.getString(R.string.please_enter_email_login)
-                            editTextLoginUser.requestFocus()
-                            return@OnClickListener
-                        }
+
                         !Patterns.EMAIL_ADDRESS.matcher(editTextLoginUser.text.toString())
                             .matches() -> {
                             editTextLoginUser.error =
@@ -94,14 +96,20 @@ class LoginFragment : BaseFragment() {
                             return@OnClickListener
                         }
                     }
-                    context?.let { context ->
-                        viewModel.doLogin(editTextLoginUser,
-                            editTextLoginPassword,
-                            requireActivity(),
-                            context).observe(viewLifecycleOwner, { resourceMessage ->
-                            messageToast(resourceMessage.error)
-                        })
-                    }
+                    viewModel.doLogin(
+                        editTextLoginUser,
+                        editTextLoginPassword,
+                        requireActivity()
+                    ).observe(viewLifecycleOwner, { resourceMessage ->
+                        when {
+                            resourceMessage.error != null -> {
+                                messageToast(resourceMessage.error)
+                            }
+                            resourceMessage.message != null -> {
+                                messageToast(context?.getString(resourceMessage.message))
+                            }
+                        }
+                    })
                 } catch (e: Exception) {
                     messageToast(e.message)
                 }
@@ -128,12 +136,10 @@ class LoginFragment : BaseFragment() {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
-                    context?.let { context ->
-                        viewModel.authWithGoogle(account, context)
-                            .observe(this, { resourceMessage ->
-                                messageToast(resourceMessage.error)
-                            })
-                    }
+                    viewModel.authWithGoogle(account)
+                        .observe(this, { resourceMessage ->
+                            messageToast(resourceMessage.error)
+                        })
                 } catch (e: ApiException) {
                     e.printStackTrace()
                 }

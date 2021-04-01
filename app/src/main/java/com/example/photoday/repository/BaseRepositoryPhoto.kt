@@ -11,11 +11,10 @@ class BaseRepositoryPhoto(private val repositoryPhoto: FirebasePhoto = FirebaseP
     fun baseRepositoryUploadImageToStorage(
         dateCalendar: String,
         curFile: Uri?,
-        context: Context,
-    ) = repositoryPhoto.uploadImageToStorage(dateCalendar, curFile, context)
+    ) = repositoryPhoto.uploadImageToStorage(dateCalendar, curFile)
 
     fun baseRepositoryDeleteImage(date: String, context: Context) =
-        repositoryPhoto.deleteImage(date, context)
+        repositoryPhoto.deleteImage(date)
 
 
 }

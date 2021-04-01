@@ -1,16 +1,17 @@
 package com.example.photoday.ui.dialog
 
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
+import com.example.photoday.R
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.DialogForgotPasswordBinding
 import com.example.photoday.repository.BaseRepositoryUser
-import com.example.photoday.ui.databinding.data.UserFirebaseData
 
 class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogFragment() {
 
@@ -43,21 +44,40 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
             val userEmail = editTextEmailConfirm
             okButton = View.OnClickListener {
                 try {
-                    context?.let { context ->
-                        repository.baseRepositoryForgotPassword(userEmail, context)
-                            .observe(viewLifecycleOwner, { resourceMessage ->
-                                resourceMessage.error?.let { message -> toast(message) }
-                            })
+                    when {
+                        userEmail.text.toString().isEmpty() -> {
+                            messageToast(context?.getString(R.string.please_enter_email))
+                        }
+                        !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
+                            messageToast(context?.getString(R.string.please_enter_valid_email))
+                        }
+                        else -> {
+                            repository.baseRepositoryForgotPassword(userEmail)
+                                .observe(viewLifecycleOwner, { resourceMessage ->
+                                    when {
+                                        resourceMessage.error != null -> {
+                                            messageToast(resourceMessage.error)
+                                        }
+                                        resourceMessage.message != null -> {
+                                            messageToast(context?.getString(resourceMessage.message))
+                                        }
+                                    }
+                                })
+                            dialog?.dismiss()
+                        }
                     }
-                    dialog?.dismiss()
                 } catch (e: Exception) {
-                    e.message?.let { message -> toast( message) }
+                    messageToast(e.message)
                 }
             }
             cancelButton = View.OnClickListener {
                 dialog?.dismiss()
             }
         }
+    }
+
+    private fun messageToast(message: String?) {
+        message?.let { message -> toast(message) }
     }
 
     override fun onDestroy() {

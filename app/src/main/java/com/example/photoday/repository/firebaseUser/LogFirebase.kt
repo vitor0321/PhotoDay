@@ -28,12 +28,11 @@ object LogFirebase {
                     .signOut(context)
                     .addOnSuccessListener {
                         liveData.value = ResourceUser(
-                            data = null,
                             error = context.getString(R.string.successfully_logged)
                         )
                     }
             } catch (e: Exception) {
-                liveData.value = ResourceUser(data = null, error = e.message)
+                liveData.value = ResourceUser( error = e.message)
             }
         }
         return liveData

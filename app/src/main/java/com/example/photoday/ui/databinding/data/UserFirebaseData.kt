@@ -25,7 +25,7 @@ class UserFirebaseData(
 
     fun getData(): UserFirebase? {
         return this.userFirebase.copy(
-            name = name.value,
+            name = name.value?: return null,
             email = email.value?: return null,
             image = image.value?: return null
         )

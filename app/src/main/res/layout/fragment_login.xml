@@ -6,7 +6,7 @@
 
         <variable
             name="userLogin"
-            type="com.example.photoday.ui.databinding.typesItem.ItemLogin" />
+            type="com.example.photoday.repository.firebaseUser.user.ItemLogin" />
 
         <variable
             name="loginButton"
@@ -51,7 +51,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_login_user"
                 style="@style/TextInputEditText"
-                android:text="@{userLogin.email}"
+                android:text="@{userLogin.email }"
                 android:drawableStart="@drawable/ic_email"
                 android:hint="@string/email_user_login"
                 android:inputType="textEmailAddress" />
@@ -69,7 +69,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_login_password"
                 style="@style/TextInputEditText"
-                android:text="@{userLogin.password}"
+                android:text="@={userLogin.password}"
                 android:drawableStart="@drawable/ic_lock"
                 android:hint="@string/password"
                 android:inputType="textPassword" />
