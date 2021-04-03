@@ -11,21 +11,18 @@ import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentRegisterUserBinding
-import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class RegisterFragment : BaseFragment() {
 
     private var _viewDataBinding: FragmentRegisterUserBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val controlNavigation by lazy { findNavController() }
-
-    private val viewModel by lazy {
-        val baseRepositoryUser = BaseRepositoryUser()
-        ViewModelInjector.providerRegisterViewModel(controlNavigation, baseRepositoryUser)
+    private val viewModel: RegisterViewModel by viewModel {
+        parametersOf(findNavController())
     }
 
     override fun onCreateView(
@@ -33,7 +30,7 @@ class RegisterFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _viewDataBinding = FragmentRegisterUserBinding.inflate(inflater, container, false)
+        this._viewDataBinding = FragmentRegisterUserBinding.inflate(inflater, container, false)
         init()
         return this.viewDataBinding.root
     }
@@ -80,17 +77,23 @@ class RegisterFragment : BaseFragment() {
                         return@OnClickListener
                     }
                 }
-                context?.let { context ->
-                    viewModel.signUpUser(
-                        editTextUserEmail,
-                        editTextUserPassword,
-                        context
-                    ).observe(viewLifecycleOwner, { resourceMessage ->
-                        resourceMessage.error?.let { message -> toast(message) }
+                viewModel.signUpUser(editTextUserEmail, editTextUserPassword)
+                    .observe(viewLifecycleOwner, { resourceMessage ->
+                        when {
+                            resourceMessage.error != null -> {
+                                messageToast(resourceMessage.error)
+                            }
+                            resourceMessage.message != null -> {
+                                messageToast(context?.getString(resourceMessage.message))
+                            }
+                        }
                     })
-                }
             }
         }
+    }
+
+    private fun messageToast(message: String?) {
+        message?.let { message -> toast(message) }
     }
 
     private fun statusBarNavigation() {
@@ -99,8 +102,10 @@ class RegisterFragment : BaseFragment() {
             components = Components(
                 appBar = FALSE,
                 bottomNavigation = FALSE,
-                floatingActionButton = FALSE),
-            barColor = R.color.white_status_bar)
+                floatingActionButton = FALSE
+            ),
+            barColor = R.color.white_status_bar
+        )
     }
 
     override fun onDestroy() {

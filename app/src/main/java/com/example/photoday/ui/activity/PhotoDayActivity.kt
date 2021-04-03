@@ -22,14 +22,13 @@ import com.example.photoday.constants.REQUEST_IMAGE_GALLERY
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.ActivityPhotoDayBinding
 import com.example.photoday.eventBus.MessageEvent
-import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.ui.databinding.data.ComponentsData
 import com.example.photoday.ui.dialog.AddPhotoDialog
-import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,10 +38,8 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private var _viewDataBinding: ActivityPhotoDayBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val viewModel by lazy {
-        val baseRepositoryPhoto = BaseRepositoryPhoto()
-        ViewModelInjector.providerPhotoDayViewModel(baseRepositoryPhoto)
-    }
+    private val viewModel: PhotoDayViewModel by viewModel()
+
     private val componentsData by lazy { ComponentsData() }
 
     private var datePhotoEventBus: String? = null

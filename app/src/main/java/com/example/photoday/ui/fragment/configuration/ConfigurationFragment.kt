@@ -15,14 +15,13 @@ import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentConfigurationBinding
-import com.example.photoday.navigation.Navigation.navFragmentConfigurationToSplashGoodbye
-import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.io.ByteArrayOutputStream
 
 class ConfigurationFragment : BaseFragment() {
@@ -30,12 +29,10 @@ class ConfigurationFragment : BaseFragment() {
     private var _viewDataBinding: FragmentConfigurationBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val navFragment by lazy { findNavController() }
     private val userFirebaseData by lazy { UserFirebaseData() }
 
-    private val viewModel by lazy {
-        val baseRepositoryUser = BaseRepositoryUser()
-        ViewModelInjector.providerConfigurationViewModel(baseRepositoryUser)
+    private val viewModel: ConfigurationViewModel by viewModel {
+        parametersOf(findNavController())
     }
 
     override fun onCreateView(
@@ -124,10 +121,16 @@ class ConfigurationFragment : BaseFragment() {
         /*logout with Firebase*/
         context?.let { context ->
             this.viewModel.logout(context).observe(viewLifecycleOwner, { resourceMessage ->
-                messageToast(resourceMessage.error)
+                when {
+                    resourceMessage.error != null -> {
+                        messageToast(resourceMessage.error)
+                    }
+                    resourceMessage.message != null -> {
+                        messageToast(context.getString(resourceMessage.message))
+                    }
+                }
             })
         }
-        navFragmentConfigurationToSplashGoodbye(navFragment)
     }
 
     private fun photoDialog() {

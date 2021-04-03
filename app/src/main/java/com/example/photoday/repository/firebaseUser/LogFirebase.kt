@@ -1,7 +1,6 @@
 package com.example.photoday.repository.firebaseUser
 
 import android.content.Context
-import android.content.res.Resources.getSystem
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,7 +27,7 @@ object LogFirebase {
                     .signOut(context)
                     .addOnSuccessListener {
                         liveData.value = ResourceUser(
-                            error = context.getString(R.string.successfully_logged)
+                            message = R.string.successfully_logged
                         )
                     }
             } catch (e: Exception) {
@@ -41,8 +40,8 @@ object LogFirebase {
     fun firebaseAuthWithGoogle(
         idToken: String,
         callback: (login: Int) -> Unit,
-        callbackMessage: (message: String) -> Unit,
-    ) {
+    ): LiveData<ResourceUser<Void>> {
+        val liveData = MutableLiveData<ResourceUser<Void>>()
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -54,21 +53,21 @@ object LogFirebase {
                                 callback.invoke(FIRST_LOGIN)
                             }
                             else -> {
-                                callbackMessage.invoke(getSystem().getString(R.string.auth_failed))
+                                liveData.value = ResourceUser(message = R.string.auth_failed)
                             }
                         }
                     }
             } catch (e: Exception) {
-                e.message?.let { message -> callbackMessage.invoke(message) }
+                liveData.value = ResourceUser(error = e.message)
             }
         }
+        return liveData
     }
 
     fun createUserWithEmailAndPassword(
         registerUser: AppCompatEditText,
         registerUserPassword: AppCompatEditText,
         controlNavigation: NavController,
-        context: Context,
     ): LiveData<ResourceUser<Void>> {
         val liveData = MutableLiveData<ResourceUser<Void>>()
         CoroutineScope(Dispatchers.Main).launch {
@@ -86,22 +85,25 @@ object LogFirebase {
                                     .addOnCompleteListener {
                                         Navigation.navFragmentRegisterToLogin(controlNavigation)
                                     }
-                                liveData.value = ResourceUser(data = null,
-                                    error = context.getString(R.string.check_your_email_and_confirm))
+                                liveData.value = ResourceUser(
+                                    message = R.string.check_your_email_and_confirm
+                                )
                             }
                             !task.isSuccessful -> {
                                 Navigation.navFragmentRegisterToLogin(controlNavigation)
-                                liveData.value = ResourceUser(data = null,
-                                    error = context.getString(R.string.email_already_exists))
+                                liveData.value = ResourceUser(
+                                    message = R.string.email_already_exists
+                                )
                             }
                             else -> {
-                                liveData.value = ResourceUser(data = null,
-                                    error = context.getString(R.string.authentication_failed_try_again))
+                                liveData.value = ResourceUser(
+                                    message = R.string.authentication_failed_try_again
+                                )
                             }
                         }
                     }
             } catch (e: Exception) {
-                liveData.value = ResourceUser(data = null, error = e.message)
+                liveData.value = ResourceUser(error = e.message)
             }
         }
         return liveData

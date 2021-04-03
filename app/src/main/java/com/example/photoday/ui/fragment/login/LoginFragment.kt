@@ -13,15 +13,15 @@ import com.example.photoday.constants.*
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
-import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class LoginFragment : BaseFragment() {
 
@@ -30,9 +30,8 @@ class LoginFragment : BaseFragment() {
 
     private val controlNavigation by lazy { findNavController() }
 
-    private val viewModel by lazy {
-        val baseRepositoryUser = BaseRepositoryUser()
-        ViewModelInjector.providerLoginViewModel(controlNavigation, baseRepositoryUser)
+    private val viewModel: LoginViewModel by viewModel {
+        parametersOf(findNavController())
     }
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -138,7 +137,14 @@ class LoginFragment : BaseFragment() {
                     val account = task.getResult(ApiException::class.java)!!
                     viewModel.authWithGoogle(account)
                         .observe(this, { resourceMessage ->
-                            messageToast(resourceMessage.error)
+                            when {
+                                resourceMessage.error != null -> {
+                                    messageToast(resourceMessage.error)
+                                }
+                                resourceMessage.message != null -> {
+                                    messageToast(context?.getString(resourceMessage.message))
+                                }
+                            }
                         })
                 } catch (e: ApiException) {
                     e.printStackTrace()

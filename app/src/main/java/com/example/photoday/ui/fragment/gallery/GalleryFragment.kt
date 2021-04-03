@@ -11,34 +11,30 @@ import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentGalleryBinding
-import com.example.photoday.navigation.Navigation
-import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.ui.adapter.GalleryAdapter
 import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class GalleryFragment : BaseFragment() {
 
     private var _viewDataBinding: FragmentGalleryBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val controlNavigation by lazy { findNavController() }
-
-    private val viewModel by lazy {
-        val baseRepositoryPhoto = BaseRepositoryPhoto()
-        ViewModelInjector.providerGalleryViewModel(baseRepositoryPhoto)
+    private val viewModel: GalleryViewModel by viewModel{
+        parametersOf(findNavController())
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _viewDataBinding = FragmentGalleryBinding.inflate(inflater, container, false)
+        this._viewDataBinding = FragmentGalleryBinding.inflate(inflater, container, false)
         return viewDataBinding.root
     }
 
@@ -71,7 +67,7 @@ class GalleryFragment : BaseFragment() {
             viewDataBinding.recycleViewListGallery.run {
                 layoutManager = layoutManagerAdapter
                 adapter = GalleryAdapter(context, listPhoto) { itemPhoto ->
-                    Navigation.navFragmentGalleryToFullScreen(controlNavigation, itemPhoto.photo)
+                    viewModel.navFragment(itemPhoto.photo)
                 }
             }
         }.isCompleted.apply {

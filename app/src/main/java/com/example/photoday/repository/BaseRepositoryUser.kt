@@ -44,12 +44,10 @@ class BaseRepositoryUser(
         registerUser: AppCompatEditText,
         registerUserPassword: AppCompatEditText,
         controlNavigation: NavController,
-        context: Context,
     ) = repositoryLog.createUserWithEmailAndPassword(
         registerUser,
         registerUserPassword,
         controlNavigation,
-        context
     )
 
     fun baseRepositoryFirebaseAuthWithGoogle(
@@ -58,15 +56,13 @@ class BaseRepositoryUser(
     ): LiveData<ResourceUser<Void>> {
         val liveData = MutableLiveData<ResourceUser<Void>>()
         try {
-            repositoryLog.firebaseAuthWithGoogle(idToken,
+            val returnBD = repositoryLog.firebaseAuthWithGoogle(idToken,
                 callback = { login: Int ->
                     baseRepositoryUpdateUI(controlNavigation, login)
-                },
-                callbackMessage = { message ->
-                    liveData.value = ResourceUser(data = null, error = message)
                 })
+            liveData.value = ResourceUser(message = returnBD.value?.message)
         } catch (e: Exception) {
-            liveData.value = ResourceUser(data = null, e.message)
+            liveData.value = ResourceUser(error =  e.message)
         }
         return liveData
     }

@@ -10,30 +10,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.toast.Toast.toast
-import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.example.photoday.databinding.FragmentTimelineBinding
-import com.example.photoday.navigation.Navigation.navFragmentTimelineToFullScreen
-import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.ui.adapter.TimelineAdapter
 import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class TimelineFragment : BaseFragment() {
 
     private var _viewDataBinding: FragmentTimelineBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val controlNavigation by lazy { findNavController() }
-
-    private val viewModel by lazy {
-        val baseRepositoryPhoto = BaseRepositoryPhoto()
-        ViewModelInjector.providerTimelineViewModel(baseRepositoryPhoto)
+    private val viewModel: TimelineViewModel by viewModel {
+        parametersOf(findNavController())
     }
 
     override fun onCreateView(
@@ -71,7 +66,7 @@ class TimelineFragment : BaseFragment() {
             viewDataBinding.recycleViewListTimeline.run {
                 layoutManager = LinearLayoutManager(context)
                 adapter = TimelineAdapter(context, listPhoto) { itemPhoto ->
-                    navFragmentTimelineToFullScreen(controlNavigation, itemPhoto.photo)
+                    viewModel.navFragment(itemPhoto.photo)
                 }
 
             }

@@ -24,6 +24,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_photo_day_logo"
         android:supportsRtl="true"
+        android:name=".PhotoDayApp"
         android:theme="@style/AppThemeActionBar"
         tools:replace="android:appComponentFactory"
         tools:targetApi="p">

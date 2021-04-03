@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class LoginViewModel(
-    private val controlNavigation: NavController,
+    private val navFragment: NavController,
     private val repository: BaseRepositoryUser,
 ) : ViewModel() {
 
@@ -30,13 +30,13 @@ class LoginViewModel(
         editTextLoginUser,
         editTextLoginPassword,
         requireActivity,
-        controlNavigation
+        navFragment
     )
 
     fun authWithGoogle(account: GoogleSignInAccount) =
         repository.baseRepositoryFirebaseAuthWithGoogle(
             account.idToken!!,
-            controlNavigation
+            navFragment
         )
 
 
