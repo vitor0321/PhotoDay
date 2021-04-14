@@ -20,7 +20,7 @@ import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.io.ByteArrayOutputStream
 
@@ -119,18 +119,16 @@ class ConfigurationFragment : BaseFragment() {
 
     private fun logout() {
         /*logout with Firebase*/
-        context?.let { context ->
-            this.viewModel.logout(context).observe(viewLifecycleOwner, { resourceMessage ->
-                when {
-                    resourceMessage.error != null -> {
-                        messageToast(resourceMessage.error)
-                    }
-                    resourceMessage.message != null -> {
-                        messageToast(context.getString(resourceMessage.message))
-                    }
+        this.viewModel.logout().observe(viewLifecycleOwner, { resourceMessage ->
+            when {
+                resourceMessage.error != null -> {
+                    messageToast(resourceMessage.error)
                 }
-            })
-        }
+                resourceMessage.message != null -> {
+                    messageToast(context?.getString(resourceMessage.message))
+                }
+            }
+        })
     }
 
     private fun photoDialog() {
@@ -143,10 +141,7 @@ class ConfigurationFragment : BaseFragment() {
 
     private fun newUserNameDialog() {
         /*open NewUserNameDialog*/
-        activity?.let {
-            NewUserNameDialog.newInstance()
-                    .show(it.supportFragmentManager, NEW_USER_NAME)
-        }
+        NewUserNameDialog.newInstance()
     }
 
     private fun statusBarNavigation() {

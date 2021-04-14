@@ -8,7 +8,7 @@ import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.ON_START
 import com.example.photoday.navigation.Navigation.navFragmentLoginToSplashLogin
 import com.example.photoday.navigation.Navigation.navFragmentLoginToTimeline
-import com.example.photoday.repository.firebaseUser.user.ResourceUser
+import com.example.photoday.model.resource.ResourceUser
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

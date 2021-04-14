@@ -2,7 +2,7 @@ package com.example.photoday.ui.databinding.data
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
-import com.example.photoday.repository.firebaseUser.user.UserFirebase
+import com.example.photoday.model.user.UserFirebase
 
 class UserFirebaseData(
     private var userFirebase: UserFirebase = UserFirebase(),

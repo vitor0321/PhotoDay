@@ -1,4 +1,4 @@
-package com.example.photoday.repository.firebasePhotos
+package com.example.photoday.model.resource
 
 class ResourceItem<T>(
     val data: T? = null,

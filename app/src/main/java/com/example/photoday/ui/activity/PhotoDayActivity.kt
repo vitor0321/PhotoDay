@@ -28,7 +28,7 @@ import com.example.photoday.ui.stateBarNavigation.Components
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*

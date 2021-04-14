@@ -86,7 +86,6 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
     }
 
     companion object {
-        private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser()
-        fun newInstance() = ForgotPasswordDialog(baseRepositoryUser)
+        fun newInstance() = ForgotPasswordDialog
     }
 }

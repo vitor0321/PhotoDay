@@ -20,7 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class LoginFragment : BaseFragment() {
@@ -122,7 +122,7 @@ class LoginFragment : BaseFragment() {
             loginGoogleButton = View.OnClickListener { signIn() }
 
             //Button forgot Password
-            forgotPasswordButton = View.OnClickListener { viewModel.forgotPassword(activity) }
+            forgotPasswordButton = View.OnClickListener { viewModel.forgotPassword() }
         }
     }
 

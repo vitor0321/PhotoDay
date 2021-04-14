@@ -14,17 +14,15 @@ class PhotoDayApp : Application() {
 
     private fun modulesKoin() {
         startKoin {
-            androidLogger()
+            androidLogger(org.koin.core.logger.Level.NONE)
             androidContext(this@PhotoDayApp)
 
             modules(
                 listOf(
-                    modulePhotoDay,
-                    moduleConfiguration,
-                    moduleGallery,
-                    moduloLogin,
-                    moduloRegister,
-                    moduloTimeline
+                    repositoryModulo,
+                    firebaseRepositoryModulo,
+                    uiModulo,
+                    viewModelModulo,
                 )
             )
         }

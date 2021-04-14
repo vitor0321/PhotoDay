@@ -25,6 +25,7 @@ object Toast {
                 view = layoutToast
             }.show()
         }
+        _viewDataBinding = null
     }
 
     fun Activity.toast(message: String, time: Int = Toast.LENGTH_SHORT) {
@@ -38,5 +39,6 @@ object Toast {
                 view = layoutToast
             }.show()
         }
+        _viewDataBinding = null
     }
 }

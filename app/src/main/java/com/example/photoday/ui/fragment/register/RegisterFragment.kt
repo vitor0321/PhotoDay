@@ -11,9 +11,10 @@ import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentRegisterUserBinding
+import com.example.photoday.model.user.UserLogin
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class RegisterFragment : BaseFragment() {
@@ -44,52 +45,70 @@ class RegisterFragment : BaseFragment() {
         this.viewDataBinding.apply {
             registerButton = View.OnClickListener {
                 /*here you will authenticate your email and password*/
-                when {
-                    editTextUserEmail.text.toString().isEmpty() -> {
-                        editTextUserEmail.error =
-                            context?.getString(R.string.please_enter_email_register)
-                        editTextUserEmail.requestFocus()
-                        return@OnClickListener
-                    }
-                    !Patterns.EMAIL_ADDRESS.matcher(editTextUserEmail.text.toString())
-                        .matches() -> {
-                        editTextUserEmail.error =
-                                context?.getString(R.string.please_enter_valid_email_register)
-                        editTextUserEmail.requestFocus()
-                        return@OnClickListener
-                    }
-                    editTextUserPassword.text.toString().isEmpty() -> {
-                        editTextUserPassword.error =
-                                context?.getString(R.string.please_enter_password_register)
-                        editTextUserPassword.requestFocus()
-                        return@OnClickListener
-                    }
-                    editTextUserConfirmPassword.text.toString().isEmpty() -> {
-                        editTextUserConfirmPassword.error =
-                                context?.getString(R.string.please_enter_password_confirm)
-                        editTextUserConfirmPassword.requestFocus()
-                        return@OnClickListener
-                    }
-                    editTextUserConfirmPassword.text.toString() != editTextUserConfirmPassword.text.toString() -> {
-                        editTextUserConfirmPassword.error =
-                            context?.getString(R.string.password_are_not_the_same)
-                        editTextUserConfirmPassword.requestFocus()
-                        return@OnClickListener
-                    }
+                cleanAllItem()
+
+                val email = editTextUserEmail.text.toString()
+                val password = editTextUserPassword.text.toString()
+                val confirmPassword = editTextUserConfirmPassword.text.toString()
+                val userLogin = UserLogin(email, password, confirmPassword)
+
+                when (confirmItem(userLogin)) {
+                    true -> registerUser(userLogin)
                 }
-                viewModel.signUpUser(editTextUserEmail, editTextUserPassword)
-                    .observe(viewLifecycleOwner, { resourceMessage ->
-                        when {
-                            resourceMessage.error != null -> {
-                                messageToast(resourceMessage.error)
-                            }
-                            resourceMessage.message != null -> {
-                                messageToast(context?.getString(resourceMessage.message))
-                            }
-                        }
-                    })
             }
         }
+    }
+
+    private fun cleanAllItem() {
+        this.viewDataBinding.apply {
+            editTextUserEmail.error = null
+            editTextUserPassword.error = null
+            editTextUserConfirmPassword.error = null
+        }
+    }
+
+    private fun confirmItem(userLogin: UserLogin): Boolean {
+        this.viewDataBinding.apply {
+            var validation = true
+            when {
+                userLogin.email.isBlank() -> {
+                    editTextUserEmail.error =
+                        context?.getString(R.string.please_enter_email_register)
+                    validation = false
+                }
+                !Patterns.EMAIL_ADDRESS.matcher(userLogin.email).matches() -> {
+                    editTextUserEmail.error =
+                        context?.getString(R.string.please_enter_valid_email_register)
+                    validation = false
+                }
+                userLogin.password.isBlank() -> {
+                    editTextUserPassword.error =
+                        context?.getString(R.string.please_enter_password_register)
+                    validation = false
+                }
+                userLogin.confirmPassword?.isBlank() == true -> {
+                    editTextUserConfirmPassword.error =
+                        context?.getString(R.string.please_enter_password_confirm)
+                    validation = false
+                }
+                userLogin.password != userLogin.confirmPassword -> {
+                    editTextUserConfirmPassword.error =
+                        context?.getString(R.string.password_are_not_the_same)
+                    validation = false
+                }
+            }
+            return validation
+        }
+    }
+
+    private fun registerUser(userLogin: UserLogin){
+        viewModel.signUpUser(userLogin)
+            .observe(viewLifecycleOwner, { resourceMessage ->
+                messageToast(resourceMessage.message?.let { message -> context?.getString(message)})
+                when (resourceMessage.navigation) {
+                    true -> { viewModel.navigationRegister() }
+                }
+            })
     }
 
     private fun messageToast(message: String?) {

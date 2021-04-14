@@ -11,12 +11,12 @@ import com.example.photoday.R
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.DialogFragmentUserNewNameBinding
 import com.example.photoday.repository.BaseRepositoryUser
-import com.example.photoday.repository.firebaseUser.user.UserFirebase
+import com.example.photoday.model.user.UserFirebase
 import com.example.photoday.ui.databinding.data.UserFirebaseData
 
 class NewUserNameDialog(
-    private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser(),
-    private val userFirebaseData: UserFirebaseData = UserFirebaseData()
+    private val baseRepositoryUser: BaseRepositoryUser,
+    private val userFirebaseData: UserFirebaseData
 ) : DialogFragment() {
 
     private var _viewDataBinding: DialogFragmentUserNewNameBinding? = null
@@ -96,6 +96,6 @@ class NewUserNameDialog(
     }
 
     companion object {
-        fun newInstance() = NewUserNameDialog()
+        fun newInstance() = NewUserNameDialog
     }
 }

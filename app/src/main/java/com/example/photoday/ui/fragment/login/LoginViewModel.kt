@@ -40,10 +40,7 @@ class LoginViewModel(
         )
 
 
-    fun forgotPassword(activity: FragmentActivity?) {
-        activity?.let { activity ->
-            ForgotPasswordDialog.newInstance()
-                .show(activity.supportFragmentManager, FORGOT_PASSWORD)
-        }
+    fun forgotPassword() {
+        ForgotPasswordDialog.newInstance()
     }
 }

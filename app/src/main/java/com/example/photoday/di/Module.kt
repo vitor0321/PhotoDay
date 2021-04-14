@@ -1,89 +1,93 @@
 package com.example.photoday.di
 
+import android.content.Context
 import androidx.navigation.NavController
 import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.repository.BaseRepositoryUser
+import com.example.photoday.repository.firebasePhotos.FirebasePhoto
+import com.example.photoday.repository.firebaseUser.ChangeUserFirebase
+import com.example.photoday.repository.firebaseUser.CheckUserFirebase
+import com.example.photoday.repository.firebaseUser.FirebaseAuthRepository
 import com.example.photoday.ui.activity.PhotoDayViewModel
+import com.example.photoday.ui.databinding.data.UserFirebaseData
+import com.example.photoday.ui.dialog.ForgotPasswordDialog
+import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
 import com.example.photoday.ui.fragment.gallery.GalleryViewModel
 import com.example.photoday.ui.fragment.login.LoginViewModel
 import com.example.photoday.ui.fragment.register.RegisterViewModel
 import com.example.photoday.ui.fragment.timeline.TimelineViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val modulePhotoDay = module(override = true) {
-    single<BaseRepositoryPhoto> {
-        BaseRepositoryPhoto()
-    }
 
-    viewModel {
+val repositoryModulo = module(override = true) {
+    single<BaseRepositoryPhoto> { BaseRepositoryPhoto(get<FirebasePhoto>()) }
+    single<BaseRepositoryUser> {
+        BaseRepositoryUser(
+            get<ChangeUserFirebase>(),
+            get<CheckUserFirebase>(),
+            get<FirebaseAuthRepository>()
+        )
+    }
+    single<FirebasePhoto> { FirebasePhoto }
+    single<ChangeUserFirebase> { ChangeUserFirebase }
+    single<CheckUserFirebase> { CheckUserFirebase }
+    single<FirebaseAuthRepository> { FirebaseAuthRepository(get<FirebaseAuth>()) }
+}
+
+val firebaseRepositoryModulo = module(override = true) {
+    single<FirebaseAuth> { Firebase.auth }
+}
+
+val uiModulo = module(override = true) {
+    single<ForgotPasswordDialog> { ForgotPasswordDialog(get<BaseRepositoryUser>()) }
+    single<NewUserNameDialog> {
+        NewUserNameDialog(
+            get<BaseRepositoryUser>(),
+            get<UserFirebaseData>()
+        )
+    }
+}
+
+val viewModelModulo = module(override = true) {
+
+    viewModel<PhotoDayViewModel> {
         PhotoDayViewModel(
-            repository = get()
+            repository = get<BaseRepositoryPhoto>()
         )
     }
-}
-
-val moduleConfiguration = module(override = true) {
-    single<BaseRepositoryUser> {
-        BaseRepositoryUser()
-    }
-
-    viewModel { (navFragment: NavController) ->
+    viewModel<ConfigurationViewModel> { (navFragment: NavController) ->
         ConfigurationViewModel(
-            repository = get(),
-            navFragment = navFragment
+            repository = get<BaseRepositoryUser>(),
+            navFragment = navFragment,
+            context = get<Context>()
         )
     }
-}
-
-val moduleGallery = module(override = true) {
-    single<BaseRepositoryPhoto> {
-        BaseRepositoryPhoto()
-    }
-
-    viewModel { (navFragment: NavController) ->
+    viewModel<GalleryViewModel> { (navFragment: NavController) ->
         GalleryViewModel(
-            repository = get(),
+            repository = get<BaseRepositoryPhoto>(),
             navFragment = navFragment
         )
     }
-}
-
-val moduloLogin = module(override = true) {
-    single<BaseRepositoryUser> {
-        BaseRepositoryUser()
-    }
-
-    viewModel { (navFragment: NavController) ->
+    viewModel<LoginViewModel> { (navFragment: NavController) ->
         LoginViewModel(
-            repository = get(),
+            repository = get<BaseRepositoryUser>(),
             navFragment = navFragment
         )
     }
-}
-
-val moduloRegister = module(override = true) {
-    single<BaseRepositoryUser> {
-        BaseRepositoryUser()
-    }
-
-    viewModel { (navFragment: NavController) ->
+    viewModel<RegisterViewModel> { (navFragment: NavController) ->
         RegisterViewModel(
-            repository = get(),
+            repository = get<BaseRepositoryUser>(),
             navFragment = navFragment
         )
     }
-}
-
-val moduloTimeline = module(override = true) {
-    single<BaseRepositoryPhoto> {
-        BaseRepositoryPhoto()
-    }
-
-    viewModel { (navFragment: NavController) ->
+    viewModel<TimelineViewModel> { (navFragment: NavController) ->
         TimelineViewModel(
-            repository = get(),
+            repository = get<BaseRepositoryPhoto>(),
             navFragment = navFragment
         )
     }
