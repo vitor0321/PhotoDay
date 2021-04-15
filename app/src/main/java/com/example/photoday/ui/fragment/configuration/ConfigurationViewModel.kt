@@ -12,7 +12,6 @@ import com.example.photoday.model.resource.ResourceUser
 class ConfigurationViewModel(
     private val repository: BaseRepositoryUser,
     private val navFragment: NavController,
-    private val context: Context
 ) : ViewModel() {
 
 
@@ -22,7 +21,7 @@ class ConfigurationViewModel(
         repository.baseRepositoryChangeImageUser(image)
 
     fun logout(): LiveData<ResourceUser<Void>> {
-        val logout = repository.baseRepositoryLogoutFirebase(context)
+        val logout = repository.baseRepositoryLogoutFirebase()
         Navigation.navFragmentConfigurationToSplashGoodbye(navFragment)
         return logout
     }

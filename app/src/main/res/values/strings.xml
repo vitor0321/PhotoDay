@@ -104,5 +104,6 @@
     <string name="nav_graph_label_splash_intro">Splash Intro</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="failure_api">Opsss! Failure API. Try again</string>
 
 </resources>

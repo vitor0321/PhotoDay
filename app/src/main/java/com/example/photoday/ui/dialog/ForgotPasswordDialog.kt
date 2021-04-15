@@ -44,24 +44,20 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
             val userEmail = editTextEmailConfirm
             okButton = View.OnClickListener {
                 try {
+                    val email = userEmail.text.toString()
                     when {
-                        userEmail.text.toString().isEmpty() -> {
+                        email.isBlank() -> {
                             messageToast(context?.getString(R.string.please_enter_email))
                         }
-                        !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
+                        !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
                             messageToast(context?.getString(R.string.please_enter_valid_email))
                         }
                         else -> {
-                            repository.baseRepositoryForgotPassword(userEmail)
+                            repository.baseRepositoryForgotPassword(email)
                                 .observe(viewLifecycleOwner, { resourceMessage ->
-                                    when {
-                                        resourceMessage.error != null -> {
-                                            messageToast(resourceMessage.error)
-                                        }
-                                        resourceMessage.message != null -> {
-                                            messageToast(context?.getString(resourceMessage.message))
-                                        }
-                                    }
+                                    messageToast(resourceMessage.message?.let { message ->
+                                        context?.getString(message)
+                                    })
                                 })
                             dialog?.dismiss()
                         }
@@ -86,6 +82,6 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
     }
 
     companion object {
-        fun newInstance() = ForgotPasswordDialog
+        fun newInstance(repository: BaseRepositoryUser) = ForgotPasswordDialog(repository)
     }
 }

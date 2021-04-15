@@ -12,14 +12,13 @@ import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentLoginBinding
-import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
+import com.example.photoday.model.resource.ResourceUser
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -28,12 +27,9 @@ class LoginFragment : BaseFragment() {
     private var _viewDataBinding: FragmentLoginBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val controlNavigation by lazy { findNavController() }
-
     private val viewModel: LoginViewModel by viewModel {
         parametersOf(findNavController())
     }
-    private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreateView(
@@ -42,7 +38,6 @@ class LoginFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View {
         _viewDataBinding = FragmentLoginBinding.inflate(inflater, container, false)
-        auth = FirebaseAuth.getInstance()
         init()
         return this.viewDataBinding.root
     }
@@ -56,16 +51,9 @@ class LoginFragment : BaseFragment() {
 
     private fun initObserver() {
         // Check if user is signed in (non-null) and update UI accordingly.
-        this.viewModel.updateUI(controlNavigation, ON_START)
+        this.viewModel.updateUI(ON_START)
             .observe(viewLifecycleOwner, { resourceUser ->
-                when {
-                    resourceUser.error != null -> {
-                        messageToast(resourceUser.error)
-                    }
-                    resourceUser.message != null -> {
-                        messageToast(context?.getString(resourceUser.message))
-                    }
-                }
+                navigation(resourceUser)
             })
 
         this.viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
@@ -79,35 +67,25 @@ class LoginFragment : BaseFragment() {
             loginButton = View.OnClickListener {
                 try {
                     /*here you will authenticate your email and password*/
+                    val email = editTextLoginUser.text.toString()
+                    val password = editTextLoginPassword.text.toString()
                     when {
-
-                        !Patterns.EMAIL_ADDRESS.matcher(editTextLoginUser.text.toString())
+                        !Patterns.EMAIL_ADDRESS.matcher(email)
                             .matches() -> {
                             editTextLoginUser.error =
                                 context?.getString(R.string.please_enter_valid_email_login)
                             editTextLoginUser.requestFocus()
                             return@OnClickListener
                         }
-                        editTextLoginPassword.text.toString().isEmpty() -> {
+                        password.isBlank() -> {
                             editTextLoginPassword.error =
                                 context?.getString(R.string.please_enter_password)
                             editTextLoginPassword.requestFocus()
                             return@OnClickListener
                         }
                     }
-                    viewModel.doLogin(
-                        editTextLoginUser,
-                        editTextLoginPassword,
-                        requireActivity()
-                    ).observe(viewLifecycleOwner, { resourceMessage ->
-                        when {
-                            resourceMessage.error != null -> {
-                                messageToast(resourceMessage.error)
-                            }
-                            resourceMessage.message != null -> {
-                                messageToast(context?.getString(resourceMessage.message))
-                            }
-                        }
+                    viewModel.doLogin(email, password).observe(viewLifecycleOwner, { resourceUser ->
+                        navigation(resourceUser)
                     })
                 } catch (e: Exception) {
                     messageToast(e.message)
@@ -116,13 +94,13 @@ class LoginFragment : BaseFragment() {
             }
 
             //Button register
-            registerButton = View.OnClickListener { navFragmentLoginToRegister(controlNavigation) }
+            registerButton = View.OnClickListener { viewModel.navController(REGISTER) }
 
             //Button Login Google
             loginGoogleButton = View.OnClickListener { signIn() }
 
             //Button forgot Password
-            forgotPasswordButton = View.OnClickListener { viewModel.forgotPassword() }
+            forgotPasswordButton = View.OnClickListener { viewModel.navController(FORGOT_PASSWORD) }
         }
     }
 
@@ -136,15 +114,8 @@ class LoginFragment : BaseFragment() {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
                     viewModel.authWithGoogle(account)
-                        .observe(this, { resourceMessage ->
-                            when {
-                                resourceMessage.error != null -> {
-                                    messageToast(resourceMessage.error)
-                                }
-                                resourceMessage.message != null -> {
-                                    messageToast(context?.getString(resourceMessage.message))
-                                }
-                            }
+                        .observe(this, { resourceUser ->
+                            navigation(resourceUser)
                         })
                 } catch (e: ApiException) {
                     e.printStackTrace()
@@ -161,11 +132,25 @@ class LoginFragment : BaseFragment() {
     private fun createRequestLoginGoogle() {
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(DEFAULT_WEB_CLIENT_ID)
-                .requestEmail()
-                .build()
+            .requestIdToken(DEFAULT_WEB_CLIENT_ID)
+            .requestEmail()
+            .build()
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+    }
+
+    private fun navigation(resourceUser: ResourceUser<Void>) {
+        this.messageToast(resourceUser.message?.let { message ->
+            context?.getString(message)
+        })
+        when (resourceUser.login) {
+            ON_START -> {
+                this.viewModel.navController(ON_START)
+            }
+            FIRST_LOGIN -> {
+                this.viewModel.navController(FIRST_LOGIN)
+            }
+        }
     }
 
     private fun statusBarNavigation() {

@@ -49,16 +49,16 @@ class NewUserNameDialog(
         this.viewDataBinding.apply {
             okButton = View.OnClickListener {
                 try {
+                    val newName = editTextNewName.text.toString()
                     when {
-                        editTextNewName.text.toString().isEmpty() -> {
+                        newName.isBlank() -> {
                             messageToast(context?.getString(R.string.enter_valid_name))
                             editTextNewName.requestFocus()
                         }
                     }
-                    baseRepositoryUser.baseRepositoryChangeNameUser(editTextNewName)
+                    baseRepositoryUser.baseRepositoryChangeNameUser(newName)
                         .observe(viewLifecycleOwner, { resourceResult ->
                             when {
-                                resourceResult.error != null -> messageToast(getString(R.string.error_api))
                                 resourceResult.message != null -> messageToast(resourceResult.message?.let { message ->
                                     context?.getString(message)
                                 })

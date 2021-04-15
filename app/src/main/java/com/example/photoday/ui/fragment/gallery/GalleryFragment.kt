@@ -12,7 +12,7 @@ import com.example.photoday.constants.*
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.ui.adapter.GalleryAdapter
-import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
+import com.example.photoday.model.adapter.ItemPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 import kotlinx.coroutines.CoroutineScope

@@ -1,7 +1,7 @@
 package com.example.photoday.ui.databinding.data
 
 import androidx.lifecycle.MutableLiveData
-import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
+import com.example.photoday.model.adapter.ItemPhoto
 
 class ItemPhotoData(
     private var itemPhoto: ItemPhoto = ItemPhoto(),

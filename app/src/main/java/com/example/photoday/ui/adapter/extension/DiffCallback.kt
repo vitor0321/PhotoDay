@@ -1,7 +1,7 @@
 package com.example.photoday.ui.adapter.extension
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
+import com.example.photoday.model.adapter.ItemPhoto
 
 object DiffCallback : DiffUtil.ItemCallback<ItemPhoto>() {
     override fun areItemsTheSame(

@@ -2,25 +2,20 @@ package com.example.photoday.repository.firebaseUser
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
 import com.example.photoday.R
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.ON_START
-import com.example.photoday.navigation.Navigation.navFragmentLoginToSplashLogin
-import com.example.photoday.navigation.Navigation.navFragmentLoginToTimeline
 import com.example.photoday.model.resource.ResourceUser
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-object CheckUserFirebase {
-    private var auth = FirebaseAuth.getInstance()
+class CheckUserFirebase(
+    private val auth: FirebaseAuth
+) {
 
-    fun updateUI(
-        controlNavigation: NavController,
-        startLog: Int
-    ): LiveData<ResourceUser<Void>> {
+    fun updateUI(startLog: Int): LiveData<ResourceUser<Void>> {
         val liveData = MutableLiveData<ResourceUser<Void>>()
         CoroutineScope(Dispatchers.Main).launch {
             try {
@@ -34,14 +29,14 @@ object CheckUserFirebase {
                         if you are going to log in for the first time go to Login*/
                                 when (startLog) {
                                     ON_START -> {
-                                        navFragmentLoginToTimeline(controlNavigation)
                                         liveData.value = ResourceUser(
+                                            login = ON_START,
                                             message = R.string.login_is_success
                                         )
                                     }
                                     FIRST_LOGIN -> {
-                                        navFragmentLoginToSplashLogin(controlNavigation)
                                         liveData.value = ResourceUser(
+                                            login = FIRST_LOGIN,
                                             message = R.string.login_is_success
                                         )
                                     }
@@ -55,7 +50,7 @@ object CheckUserFirebase {
                     }
                 }
             } catch (e: Exception) {
-                liveData.value = ResourceUser(error = e.message)
+                liveData.value = ResourceUser(message = R.string.failure_api)
             }
         }
         return liveData

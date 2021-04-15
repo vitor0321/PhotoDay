@@ -133,9 +133,9 @@ class ConfigurationFragment : BaseFragment() {
 
     private fun photoDialog() {
         /*open AddPhotoDialog*/
-        activity?.let {
+        activity?.let { activity ->
             AddPhotoDialog.newInstance(null)
-                .show(it.supportFragmentManager, ADD_PHOTO_DIALOG)
+                .show(activity.supportFragmentManager, ADD_PHOTO_DIALOG)
         }
     }
 

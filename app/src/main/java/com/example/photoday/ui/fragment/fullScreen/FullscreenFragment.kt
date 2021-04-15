@@ -9,7 +9,7 @@ import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
 import com.example.photoday.databinding.FragmentFullscreenBinding
-import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
+import com.example.photoday.model.adapter.ItemPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 

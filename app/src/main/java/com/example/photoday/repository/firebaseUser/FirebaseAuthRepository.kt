@@ -1,7 +1,6 @@
 package com.example.photoday.repository.firebaseUser
 
 import android.content.Context
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,10 +15,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FirebaseAuthRepository(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val activity: FragmentActivity,
+    private val context: Context
 ) {
 
-    fun logoutFirebase(context: Context): LiveData<ResourceUser<Void>> {
+    fun logoutFirebase(): LiveData<ResourceUser<Void>> {
         val liveData = MutableLiveData<ResourceUser<Void>>()
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -31,7 +32,7 @@ class FirebaseAuthRepository(
                         )
                     }
             } catch (e: Exception) {
-                liveData.value = ResourceUser(error = e.message)
+                liveData.value = ResourceUser(message = R.string.failure_api)
             }
         }
         return liveData
@@ -39,7 +40,6 @@ class FirebaseAuthRepository(
 
     fun firebaseAuthWithGoogle(
         idToken: String,
-        callback: (login: Int) -> Unit,
     ): LiveData<ResourceUser<Void>> {
         val liveData = MutableLiveData<ResourceUser<Void>>()
         CoroutineScope(Dispatchers.Main).launch {
@@ -50,7 +50,10 @@ class FirebaseAuthRepository(
                         when {
                             task.isSuccessful -> {
                                 // Sign in success, update UI with the signed-in user's information
-                                callback.invoke(FIRST_LOGIN)
+                                liveData.value = ResourceUser(
+                                    login = FIRST_LOGIN,
+                                    message = R.string.login_success
+                                )
                             }
                             else -> {
                                 liveData.value = ResourceUser(message = R.string.auth_failed)
@@ -58,7 +61,7 @@ class FirebaseAuthRepository(
                         }
                     }
             } catch (e: Exception) {
-                liveData.value = ResourceUser(error = e.message)
+                liveData.value = ResourceUser(message = R.string.failure_api)
             }
         }
         return liveData
@@ -103,35 +106,33 @@ class FirebaseAuthRepository(
         }
     }
 
-    fun signInWithEmailAndPassword(
-        loginUserId: AppCompatEditText,
-        loginPassword: AppCompatEditText,
-        requireActivity: FragmentActivity,
-        callback: (login: Int) -> Unit,
-        callbackError: (error: Int) -> Unit,
-        callbackMessage: (message: String) -> Unit,
-    ) {
+    fun signInWithEmailAndPassword(email: String, password: String
+    ): LiveData<ResourceUser<Void>> {
+        val liveData = MutableLiveData<ResourceUser<Void>>()
         try {
             /*checking if the user exists*/
-            auth.signInWithEmailAndPassword(
-                loginUserId.text.toString(),
-                loginPassword.text.toString()
-            )
-                .addOnCompleteListener(requireActivity) { task ->
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(activity) { task ->
                     when {
                         task.isSuccessful -> {
                             // Sign in success, update UI with the signed-in user's information
-                            callback.invoke(FIRST_LOGIN)
+                            liveData.value = ResourceUser(
+                                login = FIRST_LOGIN,
+                                message = R.string.login_success
+                            )
                         }
                         else -> {
                             // If sign in fails, display a message to the user.
-                            callbackError.invoke(R.string.login_failed)
-                            callback.invoke(FIRST_LOGIN)
+                            liveData.value = ResourceUser(
+                                login = FIRST_LOGIN,
+                                message = R.string.login_failed
+                            )
                         }
                     }
                 }
         } catch (e: Exception) {
-            e.message?.let { message -> callbackMessage.invoke(message) }
+            liveData.value = ResourceUser(message = R.string.failure_api)
         }
+        return liveData
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.example.photoday.repository.firebasePhotos.FirebasePhoto
 
-class BaseRepositoryPhoto(private val repositoryPhoto: FirebasePhoto = FirebasePhoto) {
+class BaseRepositoryPhoto(private val repositoryPhoto: FirebasePhoto) {
 
     fun baseRepositoryListFileDownload() = repositoryPhoto.listFileDownload()
 

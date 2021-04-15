@@ -1,6 +1,7 @@
 package com.example.photoday.di
 
 import android.content.Context
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.repository.BaseRepositoryUser
@@ -20,6 +21,8 @@ import com.example.photoday.ui.fragment.timeline.TimelineViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -33,17 +36,25 @@ val repositoryModulo = module(override = true) {
             get<FirebaseAuthRepository>()
         )
     }
-    single<FirebasePhoto> { FirebasePhoto }
-    single<ChangeUserFirebase> { ChangeUserFirebase }
-    single<CheckUserFirebase> { CheckUserFirebase }
-    single<FirebaseAuthRepository> { FirebaseAuthRepository(get<FirebaseAuth>()) }
+    single<FirebasePhoto> { FirebasePhoto(get<FirebaseStorage>()) }
+    single<ChangeUserFirebase> { ChangeUserFirebase(get<FirebaseAuth>()) }
+    single<CheckUserFirebase> { CheckUserFirebase(get<FirebaseAuth>()) }
+    single<FirebaseAuthRepository> {
+        FirebaseAuthRepository(
+            get<FirebaseAuth>(),
+            get<FragmentActivity>(),
+            get<Context>()
+        )
+    }
 }
 
 val firebaseRepositoryModulo = module(override = true) {
     single<FirebaseAuth> { Firebase.auth }
+    single<FirebaseStorage> { Firebase.storage }
 }
 
 val uiModulo = module(override = true) {
+    single<FragmentActivity> { FragmentActivity() }
     single<ForgotPasswordDialog> { ForgotPasswordDialog(get<BaseRepositoryUser>()) }
     single<NewUserNameDialog> {
         NewUserNameDialog(
@@ -63,8 +74,7 @@ val viewModelModulo = module(override = true) {
     viewModel<ConfigurationViewModel> { (navFragment: NavController) ->
         ConfigurationViewModel(
             repository = get<BaseRepositoryUser>(),
-            navFragment = navFragment,
-            context = get<Context>()
+            navFragment = navFragment
         )
     }
     viewModel<GalleryViewModel> { (navFragment: NavController) ->
