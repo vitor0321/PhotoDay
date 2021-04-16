@@ -9,27 +9,26 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
-import com.example.photoday.constants.Utils.toast
+import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.DialogForgotPasswordBinding
 import com.example.photoday.repository.BaseRepositoryUser
 
 class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogFragment() {
 
-    private var _binding: DialogForgotPasswordBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: DialogForgotPasswordBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = DialogForgotPasswordBinding.inflate(inflater, container, false)
-        return binding.root
+        _viewDataBinding = DialogForgotPasswordBinding.inflate(inflater, container, false)
+        return viewDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init()
     }
 
@@ -41,50 +40,48 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
     }
 
     private fun init() {
-        binding.apply {
+        viewDataBinding.apply {
             val userEmail = editTextEmailConfirm
-            buttonOk.setOnClickListener {
+            okButton = View.OnClickListener {
                 try {
-                    /*here you will authenticate your email and password*/
+                    val email = userEmail.text.toString()
                     when {
-                        userEmail.text.toString().isEmpty() -> {
-                            userEmail.error = context?.getString(R.string.please_enter_email_dialog)
-                            userEmail.requestFocus()
-                            return@setOnClickListener
+                        email.isBlank() -> {
+                            messageToast(context?.getString(R.string.please_enter_email))
                         }
-                        !Patterns.EMAIL_ADDRESS.matcher(userEmail.text.toString()).matches() -> {
-                            userEmail.error =
-                                context?.getString(R.string.please_enter_valid_email_dialog)
-                            userEmail.requestFocus()
-                            return@setOnClickListener
+                        !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                            messageToast(context?.getString(R.string.please_enter_valid_email))
+                        }
+                        else -> {
+                            repository.baseRepositoryForgotPassword(email)
+                                .observe(viewLifecycleOwner, { resourceMessage ->
+                                    messageToast(resourceMessage.message?.let { message ->
+                                        context?.getString(message)
+                                    })
+                                })
+                            dialog?.dismiss()
                         }
                     }
-                    context?.let { context ->
-                        repository.baseRepositoryForgotPassword(userEmail, context)
-                            .observe(viewLifecycleOwner, { resourceMessage ->
-                                resourceMessage.error?.let { message -> toast(context, message) }
-                            })
-                    }
-                    dialog?.dismiss()
-                }catch (e: Exception) {
-                    e.message?.let { message ->
-                        context?.let { context -> toast(context, message) }
-                    }
+                } catch (e: Exception) {
+                    messageToast(e.message)
                 }
             }
-            buttonCancel.setOnClickListener {
+            cancelButton = View.OnClickListener {
                 dialog?.dismiss()
             }
         }
     }
 
+    private fun messageToast(message: String?) {
+        message?.let { message -> toast(message) }
+    }
+
     override fun onDestroy() {
-        _binding = null
+        _viewDataBinding = null
         super.onDestroy()
     }
 
     companion object {
-        private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser()
-        fun newInstance() = ForgotPasswordDialog(baseRepositoryUser)
+        fun newInstance(repository: BaseRepositoryUser) = ForgotPasswordDialog(repository)
     }
 }

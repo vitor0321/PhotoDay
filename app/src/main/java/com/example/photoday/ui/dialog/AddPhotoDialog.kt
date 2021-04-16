@@ -7,25 +7,24 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
-import com.example.photoday.constants.Utils.toast
+import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.DialogFragmentAddPhotoBinding
-import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.permission.CheckVersionPermission.dispatchTakePermission
 import com.example.photoday.permission.CheckVersionPermission.galleryPermission
 import com.example.photoday.ui.activity.PhotoDayActivity
 
 class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
 
-    private var _binding: DialogFragmentAddPhotoBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: DialogFragmentAddPhotoBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        _binding = DialogFragmentAddPhotoBinding.inflate(inflater, container, false)
-        return binding.root
+        _viewDataBinding = DialogFragmentAddPhotoBinding.inflate(inflater, container, false)
+        return viewDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,50 +40,30 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
     }
 
     private fun initButton() {
-        binding.apply {
+        this.viewDataBinding.apply {
             val activity = requireActivity() as PhotoDayActivity
-            imageUploadGallery.setOnClickListener {
+            this.clickUploadGallery = View.OnClickListener  {
                 when (valueDate) {
                     null -> context?.let { context ->
                         galleryPermission(activity, null, context,
-                            callbackMessage = { message ->
-                                context?.let { context ->
-                                    toast(context,
-                                        message)
-                                }
-                            })
+                            callbackMessage = { message -> toast(message) })
                     }
                     else -> context?.let { context ->
                         galleryPermission(activity, valueDate, context,
-                            callbackMessage = { message ->
-                                context?.let { context ->
-                                    toast(context,
-                                        message)
-                                }
-                            })
+                            callbackMessage = { message -> toast(message) })
                     }
                 }
                 dialog?.dismiss()
             }
-            imageUploadCamera.setOnClickListener {
+            this.clickUploadCamera = View.OnClickListener  {
                 when (valueDate) {
                     null -> context?.let { context ->
                         dispatchTakePermission(activity, null, context,
-                            callbackMessage = { message ->
-                                context?.let { context ->
-                                    toast(context,
-                                        message)
-                                }
-                            })
+                            callbackMessage = { message -> toast(message) })
                     }
                     else -> context?.let { context ->
                         dispatchTakePermission(activity, valueDate, context,
-                            callbackMessage = { message ->
-                                context?.let { context ->
-                                    toast(context,
-                                        message)
-                                }
-                            })
+                            callbackMessage = { message -> toast(message)})
                     }
                 }
                 dialog?.dismiss()
@@ -93,7 +72,7 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
     }
 
     override fun onDestroy() {
-        _binding = null
+        this._viewDataBinding = null
         super.onDestroy()
     }
 

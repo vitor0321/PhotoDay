@@ -19,8 +19,8 @@
             app:launchSingleTop="false"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/nav_timelineFragment"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/fullscreenFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -37,8 +37,8 @@
             app:launchSingleTop="false"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/nav_timelineFragment"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/fullscreenFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

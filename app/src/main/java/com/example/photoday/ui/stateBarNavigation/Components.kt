@@ -8,6 +8,7 @@ import com.example.photoday.constants.FALSE
  * */
 
 data class Components(
-    val appBar: Boolean = FALSE,
-    val bottomNavigation: Boolean = FALSE
+    val appBar: Boolean? = null,
+    val bottomNavigation: Boolean? = null,
+    val floatingActionButton: Boolean? = null,
 )

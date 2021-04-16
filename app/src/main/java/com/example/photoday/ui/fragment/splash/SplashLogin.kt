@@ -48,7 +48,13 @@ class SplashLogin : BaseFragment() {
     }
 
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FALSE_MENU, Components(FALSE, FALSE), R.color.white_status_bar)
+        statusAppBarNavigationBase(
+            menu = FALSE_MENU,
+            components = Components(
+                appBar = FALSE,
+                bottomNavigation = FALSE,
+                floatingActionButton = FALSE),
+            barColor = R.color.white_status_bar)
     }
 
     override fun onDestroy() {

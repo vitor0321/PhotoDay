@@ -10,34 +10,27 @@ import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.constants.Utils.toast
+import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentLoginBinding
-import com.example.photoday.navigation.Navigation.navFragmentLoginToRegister
-import com.example.photoday.repository.BaseRepositoryUser
+import com.example.photoday.model.resource.ResourceUser
+import com.example.photoday.model.user.UserLogin
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class LoginFragment : BaseFragment() {
 
-    private var _binding: FragmentLoginBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: FragmentLoginBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
-    private val controlNavigation by lazy { findNavController() }
-
-    private val viewModel by lazy {
-        val baseRepositoryUser = BaseRepositoryUser()
-        ViewModelInjector.providerLoginViewModel(controlNavigation, baseRepositoryUser)
+    private val viewModel: LoginViewModel by viewModel {
+        parametersOf(findNavController())
     }
-    private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreateView(
@@ -45,10 +38,9 @@ class LoginFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        auth = FirebaseAuth.getInstance()
+        _viewDataBinding = FragmentLoginBinding.inflate(inflater, container, false)
         init()
-        return binding.root
+        return this.viewDataBinding.root
     }
 
     private fun init() {
@@ -60,71 +52,29 @@ class LoginFragment : BaseFragment() {
 
     private fun initObserver() {
         // Check if user is signed in (non-null) and update UI accordingly.
-        viewModel.updateUI(controlNavigation, ON_START, context)
-            ?.observe(viewLifecycleOwner, { resourceUser ->
-                context?.let { context ->
-                    resourceUser.error?.let { message ->
-                        toast(context, message)
-                    }
-                }
+        this.viewModel.updateUI(ON_START)
+            .observe(viewLifecycleOwner, { resourceUser ->
+                navigation(resourceUser)
             })
 
-        viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
-            context?.let { context -> toast(context, message) }
+        this.viewModel.uiStateFlowMessage.asLiveData().observe(viewLifecycleOwner) { message ->
+            messageToast(message)
         }
     }
 
     private fun initButton() {
-        binding.apply {
+        this.viewDataBinding.apply {
             //Button to login
-            buttonLoginLog.setOnClickListener {
-                try {
-                    /*here you will authenticate your email and password*/
-                    when {
-                        editTextLoginUser.text.toString().isEmpty() -> {
-                            editTextLoginUser.error = context?.getString(R.string.please_enter_email_login)
-                            editTextLoginUser.requestFocus()
-                            return@setOnClickListener
-                        }
-                        !Patterns.EMAIL_ADDRESS.matcher(editTextLoginUser.text.toString()).matches() -> {
-                            editTextLoginUser.error =
-                                context?.getString(R.string.please_enter_valid_email_login)
-                            editTextLoginUser.requestFocus()
-                            return@setOnClickListener
-                        }
-                        editTextLoginPassword.text.toString().isEmpty() -> {
-                            editTextLoginPassword.error =
-                                context?.getString(R.string.please_enter_password)
-                            editTextLoginPassword.requestFocus()
-                            return@setOnClickListener
-                        }
-                    }
-                    context?.let { context ->
-                        viewModel.doLogin(editTextLoginUser,
-                            editTextLoginPassword,
-                            requireActivity(),
-                            context).observe(viewLifecycleOwner, { resourceMessage ->
-                            resourceMessage.error?.let { message -> toast(context, message) }
-                        })
-                    }
-                } catch (e: Exception) {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        e.message?.let { message ->
-                            context?.let { context -> toast(context, message) }
-                        }
-                    }
-                }
-
-            }
+            loginButton = View.OnClickListener { login() }
 
             //Button register
-            buttonLoginRegister.setOnClickListener { navFragmentLoginToRegister(controlNavigation) }
+            registerButton = View.OnClickListener { viewModel.navController(REGISTER) }
 
             //Button Login Google
-            buttonLoginGoogle.setOnClickListener { signIn() }
+            loginGoogleButton = View.OnClickListener { signIn() }
 
             //Button forgot Password
-            buttonLoginForgotPassword.setOnClickListener { viewModel.forgotPassword(activity) }
+            forgotPasswordButton = View.OnClickListener { viewModel.navController(FORGOT_PASSWORD) }
         }
     }
 
@@ -137,12 +87,10 @@ class LoginFragment : BaseFragment() {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = task.getResult(ApiException::class.java)!!
-                    context?.let { context ->
-                        viewModel.authWithGoogle(account, context)
-                            .observe(this, { resourceMessage ->
-                                resourceMessage.error?.let { message -> toast(context, message) }
-                            })
-                    }
+                    viewModel.authWithGoogle(account)
+                        .observe(this, { resourceUser ->
+                            navigation(resourceUser)
+                        })
                 } catch (e: ApiException) {
                     e.printStackTrace()
                 }
@@ -158,19 +106,92 @@ class LoginFragment : BaseFragment() {
     private fun createRequestLoginGoogle() {
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(DEFAULT_WEB_CLIENT_ID)
-                .requestEmail()
-                .build()
+            .requestIdToken(DEFAULT_WEB_CLIENT_ID)
+            .requestEmail()
+            .build()
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
     }
 
+    private fun login() {
+        try {
+            cleanAllItem()
+            /*here you will authenticate your email and password*/
+            this.viewDataBinding.apply {
+                val email = editTextLoginUser.text.toString()
+                val password = editTextLoginPassword.text.toString()
+                when (confirmItem(UserLogin(email, password))) {
+                    true -> viewModel.signInWithEmailAndPassword(email, password)
+                        .observe(viewLifecycleOwner, { resourceUser ->
+                            navigation(resourceUser)
+                        })
+                }
+            }
+        } catch (e: Exception) {
+            messageToast(e.message)
+        }
+    }
+
+    private fun cleanAllItem() {
+        this.viewDataBinding.apply {
+            editTextLoginUser.error = null
+            editTextLoginPassword.error = null
+        }
+    }
+
+    private fun confirmItem(userLogin: UserLogin): Boolean {
+        this.viewDataBinding.apply {
+            when {
+                !Patterns.EMAIL_ADDRESS.matcher(userLogin.email)
+                    .matches() -> {
+                    editTextLoginUser.error =
+                        context?.getString(R.string.please_enter_valid_email_login)
+                    editTextLoginUser.requestFocus()
+                    return false
+                }
+                userLogin.password.isBlank() -> {
+                    editTextLoginPassword.error =
+                        context?.getString(R.string.please_enter_password)
+                    editTextLoginPassword.requestFocus()
+                    return false
+                }
+            }
+            return true
+        }
+    }
+
+    private fun navigation(resourceUser: ResourceUser<Void>) {
+        this.messageToast(resourceUser.message?.let { message ->
+            context?.getString(message)
+        })
+        when (resourceUser.login) {
+            ON_START -> {
+                this.viewModel.navController(ON_START)
+            }
+            FIRST_LOGIN -> {
+                this.viewModel.navController(FIRST_LOGIN)
+            }
+        }
+    }
+
     private fun statusBarNavigation() {
-        statusAppBarNavigationBase(FALSE_MENU, Components(FALSE, FALSE), R.color.white_status_bar)
+        statusAppBarNavigationBase(
+            menu = FALSE_MENU,
+            components = Components(
+                appBar = FALSE,
+                bottomNavigation = FALSE,
+                floatingActionButton = FALSE
+            ),
+            barColor = R.color.white_status_bar
+        )
+    }
+
+    private fun messageToast(message: String?) {
+        message?.let { message -> toast(message) }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+        this._viewDataBinding = null
     }
 }

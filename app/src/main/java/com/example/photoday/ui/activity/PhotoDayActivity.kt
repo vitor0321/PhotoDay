@@ -16,30 +16,31 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
-import com.example.photoday.constants.*
-import com.example.photoday.constants.Utils.toast
+import com.example.photoday.constants.ADD_PHOTO_DIALOG
+import com.example.photoday.constants.REQUEST_IMAGE_CAPTURE
+import com.example.photoday.constants.REQUEST_IMAGE_GALLERY
+import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.ActivityPhotoDayBinding
 import com.example.photoday.eventBus.MessageEvent
-import com.example.photoday.repository.BaseRepositoryPhoto
+import com.example.photoday.ui.databinding.data.ComponentsData
 import com.example.photoday.ui.dialog.AddPhotoDialog
-import com.example.photoday.ui.injector.ViewModelInjector
 import com.example.photoday.ui.stateBarNavigation.Components
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
 class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
-    private var _binding: ActivityPhotoDayBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: ActivityPhotoDayBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
-    private val viewModel by lazy {
-        val baseRepositoryPhoto = BaseRepositoryPhoto()
-        ViewModelInjector.providerPhotoDayViewModel(baseRepositoryPhoto)
-    }
+    private val viewModel: PhotoDayViewModel by viewModel()
+
+    private val componentsData by lazy { ComponentsData() }
 
     private var datePhotoEventBus: String? = null
 
@@ -48,8 +49,10 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityPhotoDayBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        _viewDataBinding = ActivityPhotoDayBinding.inflate(layoutInflater)
+        viewDataBinding.lifecycleOwner = this
+        viewDataBinding.components = componentsData
+        setContentView(viewDataBinding.root)
         init()
     }
 
@@ -66,8 +69,8 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     }
 
     private fun initButton() {
-        binding.apply {
-            buttonFabAdd.setOnClickListener { datePicker() }
+        viewDataBinding.apply {
+            datePickerFloatButton = View.OnClickListener { datePicker() }
         }
     }
 
@@ -83,9 +86,16 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                 requestCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK -> {
                     data?.data?.let { photo ->
                         datePhotoEventBus?.let { dateCalendar ->
-                            viewModel.createPushPhoto(dateCalendar, photo, this)
+                            viewModel.createPushPhoto(dateCalendar, photo)
                                 .observe(this, { resourcesError ->
-                                    resourcesError.error?.let { message -> toast(this, message) }
+                                    when {
+                                        resourcesError.error != null -> {
+                                            messageToast(resourcesError.error)
+                                        }
+                                        resourcesError.message != null -> {
+                                            messageToast(this.getString(resourcesError.message))
+                                        }
+                                    }
                                 })
                         }
                     }
@@ -102,19 +112,22 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         null
                     )
                         datePhotoEventBus?.let { dateCalendar ->
-                            viewModel.createPushPhoto(dateCalendar, Uri.parse(path), this)
-                                .observe(this,
-                                    { resourcesError ->
-                                        resourcesError.error?.let { message ->
-                                            toast(this,
-                                                message)
+                            viewModel.createPushPhoto(dateCalendar, Uri.parse(path))
+                                .observe(this, { resourcesError ->
+                                    when {
+                                        resourcesError.error != null -> {
+                                            messageToast(resourcesError.error)
                                         }
-                                    })
+                                        resourcesError.message != null -> {
+                                            messageToast(this.getString(resourcesError.message))
+                                        }
+                                    }
+                                })
                         }
                 }
             }
         } catch (e: Exception) {
-            e.message?.let { message -> toast(this, message) }
+            messageToast(e.message)
         }
     }
 
@@ -125,57 +138,27 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     }
 
     private fun initializeControl() {
-        binding.apply {
-            try { val navHostFragment =
-                        supportFragmentManager.findFragmentById(R.id.main_activity_nav_host) as NavHostFragment
+        viewDataBinding.apply {
+            try {
+                val navHostFragment =
+                    supportFragmentManager.findFragmentById(R.id.main_activity_nav_host) as NavHostFragment
                 val navController: NavController = navHostFragment.navController
-                // all components start with HIDE and then each fragment decides what appears or not
-                supportActionBar?.hide()
-                bottomAppBar.visibility = View.INVISIBLE
-                buttonFabAdd.visibility = View.INVISIBLE
-                bottomNavMainActivity.visibility = View.INVISIBLE
                 //background menu navigation
                 bottomNavMainActivity.background = null
+                /*Action Bar Gone*/
+                supportActionBar?.hide()
                 /* control all bottom navigation navigation */
                 bottomNavMainActivity.setupWithNavController(navController)
                 navController
-                        .addOnDestinationChangedListener { controller, destination, arguments ->
-                            /* change the fragment title as it is in the nav_graph Label */
-                            title = null
-                        }
+                    .addOnDestinationChangedListener { controller, destination, arguments ->
+                        /* change the fragment title as it is in the nav_graph Label */
+                        title = null
+                    }
             } catch (e: Exception) {
-                e.message?.let { message -> Utils.toast(this@PhotoDayActivity, message) }
+                messageToast(e.message)
             }
 
         }
-    }
-
-    fun statusAppBarNavigation(stateComponents: Components) {
-        try {
-            binding.apply {
-                when {
-                    /* here will activate or not the actionBar */
-                    stateComponents.appBar -> supportActionBar?.show()
-                    !stateComponents.appBar -> supportActionBar?.hide()
-                }
-                when {
-                    /*here will activate or not the Bottom navegation*/
-                    stateComponents.bottomNavigation -> {
-                        bottomNavMainActivity.visibility = View.VISIBLE
-                        bottomAppBar.visibility = View.VISIBLE
-                        buttonFabAdd.visibility = View.VISIBLE
-                    }
-                    !stateComponents.bottomNavigation -> {
-                        bottomNavMainActivity.visibility = View.INVISIBLE
-                        bottomAppBar.visibility = View.INVISIBLE
-                        buttonFabAdd.visibility = View.INVISIBLE
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            e.message?.let { message -> toast(this@PhotoDayActivity, message) }
-        }
-
     }
 
     private fun datePicker() {
@@ -188,7 +171,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         try {
             DatePickerDialog(this, this, year, month, day ).show()
         } catch (e: Exception) {
-            e.message?.let { message -> toast(this@PhotoDayActivity, message) }
+            messageToast(e.message)
         }
     }
 
@@ -200,14 +183,22 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         photoDialog(valueDate)
     }
 
+    fun statusAppBarNavigation(components: Components) {
+        componentsData.setComponentsData(components)
+    }
+
     private fun photoDialog(valueDate: String) {
         /*open AddPhotoDialog*/
         AddPhotoDialog.newInstance(valueDate)
-                .show(supportFragmentManager, ADD_PHOTO_DIALOG)
+            .show(supportFragmentManager, ADD_PHOTO_DIALOG)
+    }
+
+    private fun messageToast(message: String?) {
+        message?.let { message -> toast(message) }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+        _viewDataBinding = null
     }
 }

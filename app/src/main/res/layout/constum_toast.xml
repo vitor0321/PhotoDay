@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_wrapper"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/round_toast"
-    android:gravity="center"
-    android:orientation="horizontal"
-    android:padding="@dimen/padding_toast">
+<layout>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_image"
+    <data>
+        <variable
+            name="itemToast"
+            type="com.example.photoday.constants.toast.ItemToast" />
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ll_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_start_toast_image"
-        android:src="@drawable/ic_warning_toast" />
+        android:background="@drawable/round_toast"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_toast">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:textColor="@color/white_toast"
-        android:textSize="@dimen/text_size_toast"
-         />
-</LinearLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_start_toast_image"
+            android:src="@drawable/ic_warning_toast" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{itemToast.message}"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/white_toast"
+            android:textSize="@dimen/text_size_toast" />
+    </LinearLayout>
+</layout>

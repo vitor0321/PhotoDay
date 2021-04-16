@@ -31,7 +31,6 @@ android {
 
     dataBinding.enabled = true
 
-
     buildFeatures {
         viewBinding true
     }
@@ -45,10 +44,9 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.3.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.3.0-rc01'
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.1.1'
@@ -58,8 +56,10 @@ dependencies {
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    implementation "org.koin:koin-android:$koin_version"
-    implementation "org.koin:koin-android-viewmodel:$koin_version"
+    // Koin for Kotlin apps
+    implementation 'org.koin:koin-android:2.1.3'
+    implementation 'org.koin:koin-android-scope:2.1.3'
+    implementation 'org.koin:koin-android-viewmodel:2.1.3'
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecylce_version"
@@ -80,7 +80,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     // Recyclerview
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.recyclerview:recyclerview:1.2.0"
 
     //glide
     implementation "com.github.bumptech.glide:glide:4.11.0"
@@ -96,18 +96,18 @@ dependencies {
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
     // Jetpack Compose Integration
-    implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
+    implementation "androidx.navigation:navigation-compose:1.0.0-alpha10"
 
     //Firebase
-    implementation platform('com.google.firebase:firebase-bom:26.1.0')
-    implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-auth:20.0.3'
     implementation 'com.google.firebase:firebase-database:19.7.0'
-    implementation 'com.google.firebase:firebase-firestore:22.1.1'
-    implementation 'com.google.firebase:firebase-storage:19.2.1'
-    implementation 'com.google.firebase:firebase-storage-ktx:19.2.1'
-    implementation 'com.google.firebase:firebase-analytics:18.0.2'
+    implementation 'com.google.firebase:firebase-firestore:22.1.2'
+    implementation 'com.google.firebase:firebase-storage:19.2.2'
+    implementation 'com.google.firebase:firebase-storage-ktx:19.2.2'
+    implementation 'com.google.firebase:firebase-analytics:18.0.3'
     implementation 'com.firebaseui:firebase-ui-auth:7.1.1'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation platform('com.google.firebase:firebase-bom:26.8.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx:18.0.3'
 
     //Material Design Dependency:
     implementation 'com.google.android.material:material:1.3.0'
@@ -119,7 +119,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:datetime:3.2.1'
 
     // Lifecycle Scope
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     // Preferences DataStore
@@ -127,6 +127,9 @@ dependencies {
 
     //Event Bus
     implementation 'org.greenrobot:eventbus:3.2.0'
+
+    //Leak Canary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.3.0'

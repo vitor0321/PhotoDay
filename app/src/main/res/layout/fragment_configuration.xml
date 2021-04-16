@@ -1,77 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.configuration.ConfigurationFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btn_edit_photo_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/image_user"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/image_user"
-        android:src="@drawable/ic_add_photo_camera"
-        android:background="@color/fui_transparent_image_button" />
+    <data>
+        <import type="android.text.TextUtils"/>
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/image_user"
-        android:layout_width="@dimen/layout_width_100dp"
-        android:layout_height="@dimen/layout_height_100dp"
-        android:layout_marginTop="@dimen/layout_marin_top_60dp"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        app:layout_constraintBottom_toTopOf="@id/text_view_user_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_photo_edit"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize" />
+        <variable
+            name="userFirebase"
+            type="com.example.photoday.ui.databinding.data.UserFirebaseData" />
+        <variable
+            name="addImageClickButton"
+            type="android.view.View.OnClickListener"/>
+        <variable
+            name="changeNameButton"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="logoutButton"
+            type="android.view.View.OnClickListener" />
+    </data>
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btn_edit_name_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/text_view_user_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/text_view_user_name"
-        android:src="@drawable/ic_edit_pencil"
-        android:background="@color/fui_transparent_image_button" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragment.configuration.ConfigurationFragment">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_view_user_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/layout_margin_top_8dp_text_view"
-        android:hint="@string/user_name"
-        app:layout_constraintBottom_toTopOf="@id/text_view_user_email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_user"
-        tools:text="@string/user_name" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_edit_photo_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{addImageClickButton}"
+            android:background="@color/fui_transparent_image_button"
+            android:src="@drawable/ic_add_photo_camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/image_user"
+            app:layout_constraintTop_toTopOf="@+id/image_user" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_view_user_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/layout_margin_top_8dp_text_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_user_name"
-        android:hint="@string/email_user"
-        tools:text="@string/email_user" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_user"
+            android:layout_width="@dimen/layout_width_100dp"
+            android:layout_height="@dimen/layout_height_100dp"
+            android:layout_marginTop="@dimen/layout_marin_top_60dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            app:upLoadImageUser="@{userFirebase.image}"
+            android:src="@drawable/ic_profile_picture_user"
+            app:layout_constraintBottom_toTopOf="@id/text_view_user_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize"
+             />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_logout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/layout_margin_16dp"
-        android:text="@string/logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_user_email" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_edit_name_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{changeNameButton}"
+            android:background="@color/fui_transparent_image_button"
+            android:src="@drawable/ic_edit_pencil"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_view_user_name"
+            app:layout_constraintTop_toTopOf="@+id/text_view_user_name" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_margin_top_8dp_text_view"
+            android:text="@{userFirebase.name}"
+            android:hint="@string/user_name"
+            app:layout_constraintBottom_toTopOf="@id/text_view_user_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image_user"
+            tools:text="@string/user_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_user_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_margin_top_8dp_text_view"
+            android:hint="@string/email_user"
+            android:text="@{userFirebase.email}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_user_name"
+            tools:text="@string/email_user" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_logout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/layout_margin_16dp"
+            android:text="@string/logout"
+            android:onClick="@{logoutButton}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_user_email" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

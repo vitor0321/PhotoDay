@@ -8,25 +8,29 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
-import com.example.photoday.constants.Utils.toast
-import com.example.photoday.databinding.DialogForgotPasswordBinding
-import com.example.photoday.databinding.DialogFragmentUserNameBinding
+import com.example.photoday.constants.toast.Toast.toast
+import com.example.photoday.databinding.DialogFragmentUserNewNameBinding
 import com.example.photoday.repository.BaseRepositoryUser
+import com.example.photoday.model.user.UserFirebase
+import com.example.photoday.ui.databinding.data.UserFirebaseData
 
 class NewUserNameDialog(
-    private val baseRepositoryUser: BaseRepositoryUser = BaseRepositoryUser(),
+    private val baseRepositoryUser: BaseRepositoryUser,
+    private val userFirebaseData: UserFirebaseData
 ) : DialogFragment() {
 
-    private var _binding: DialogFragmentUserNameBinding? = null
-    private val binding get() = _binding!!
+    private var _viewDataBinding: DialogFragmentUserNewNameBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = DialogFragmentUserNameBinding.inflate(inflater, container, false)
-        return binding.root
+        _viewDataBinding = DialogFragmentUserNewNameBinding.inflate(inflater, container, false)
+        this.viewDataBinding.userFirebase = userFirebaseData
+        this.viewDataBinding.lifecycleOwner = this
+        return this.viewDataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,41 +46,56 @@ class NewUserNameDialog(
     }
 
     private fun init() {
-        binding.apply {
-            buttonOk.setOnClickListener {
+        this.viewDataBinding.apply {
+            okButton = View.OnClickListener {
                 try {
-                    /*here you will authenticate your email and password*/
+                    val newName = editTextNewName.text.toString()
                     when {
-                        editTextNewName.text.toString().isEmpty() -> {
-                            editTextNewName.error = getString(R.string.enter_valid_name)
+                        newName.isBlank() -> {
+                            messageToast(context?.getString(R.string.enter_valid_name))
                             editTextNewName.requestFocus()
-                            return@setOnClickListener
                         }
                     }
-                    val name = editTextNewName.text.toString()
-                        context?.let { context ->
-                            baseRepositoryUser.baseRepositoryChangeNameUser(name, context)
-                                .observe(viewLifecycleOwner, { resourceResult ->
-                                    resourceResult.error?.let { message -> toast(context, message) }
+                    baseRepositoryUser.baseRepositoryChangeNameUser(newName)
+                        .observe(viewLifecycleOwner, { resourceResult ->
+                            when {
+                                resourceResult.message != null -> messageToast(resourceResult.message?.let { message ->
+                                    context?.getString(message)
                                 })
-                        }
+                                resourceResult.data != null -> setNameData(resourceResult.data)
+
+                            }
+                        })
                     dialog?.dismiss()
                 } catch (e: Exception) {
-                    e.message?.let { message -> context?.let { context -> toast(context, message) } }
+                    messageToast(e.message)
                 }
             }
-            buttonCancel.setOnClickListener {
+            cancelButton = View.OnClickListener {
                 dialog?.dismiss()
             }
         }
     }
 
+    private fun setNameData(newName: String) {
+        val userName = UserFirebase(
+            name = newName,
+            email = null,
+            image = null
+        )
+        this.userFirebaseData.setData(userName)
+    }
+
+    private fun messageToast(message: String?) {
+        message?.let { message -> toast(message) }
+    }
+
     override fun onDestroy() {
-        _binding = null
+        this._viewDataBinding = null
         super.onDestroy()
     }
 
     companion object {
-        fun newInstance() = NewUserNameDialog()
+        fun newInstance() = NewUserNameDialog
     }
 }

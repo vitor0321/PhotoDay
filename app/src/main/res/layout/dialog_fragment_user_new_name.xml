@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="userFirebase"
+            type="com.example.photoday.ui.databinding.data.UserFirebaseData" />
+
+        <variable
+            name="okButton"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="cancelButton"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_constrain_layout_8dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tex_input_new_name"
+            style="@style/TextInputLayoutStyle"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_new_name"
+                android:text="@={userFirebase.name}"
+                style="@style/TextInputEditText"
+                android:hint="@string/new_user_name" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_ok"
+            style="@style/AppCompatButtonTransparent"
+            android:text="@string/ok"
+            android:onClick="@{okButton}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_cancel"
+            app:layout_constraintTop_toBottomOf="@id/tex_input_new_name" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_cancel"
+            style="@style/AppCompatButtonTransparent"
+            android:text="@string/cancel"
+            android:onClick="@{cancelButton}"
+            app:layout_constraintEnd_toStartOf="@id/button_ok"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tex_input_new_name" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
