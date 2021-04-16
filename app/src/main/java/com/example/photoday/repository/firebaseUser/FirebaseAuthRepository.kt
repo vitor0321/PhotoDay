@@ -1,5 +1,6 @@
 package com.example.photoday.repository.firebaseUser
 
+import android.content.ComponentCallbacks
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
@@ -31,6 +32,9 @@ class FirebaseAuthRepository(
                             message = R.string.successfully_logged
                         )
                     }
+                    .addOnFailureListener { exception ->
+                        liveData.value = ResourceUser(message = errorFirebaseAuth(exception))
+                    }
             } catch (e: Exception) {
                 liveData.value = ResourceUser(message = R.string.failure_api)
             }
@@ -46,19 +50,15 @@ class FirebaseAuthRepository(
             try {
                 val credential = GoogleAuthProvider.getCredential(idToken, null)
                 auth.signInWithCredential(credential)
-                    .addOnCompleteListener { task ->
-                        when {
-                            task.isSuccessful -> {
-                                // Sign in success, update UI with the signed-in user's information
-                                liveData.value = ResourceUser(
-                                    login = FIRST_LOGIN,
-                                    message = R.string.login_success
-                                )
-                            }
-                            else -> {
-                                liveData.value = ResourceUser(message = R.string.auth_failed)
-                            }
-                        }
+                    .addOnCompleteListener {
+                        // Sign in success, update UI with the signed-in user's information
+                        liveData.value = ResourceUser(
+                            login = FIRST_LOGIN,
+                            message = R.string.login_success
+                        )
+                    }
+                    .addOnFailureListener { exception ->
+                        liveData.value = ResourceUser(message = errorFirebaseAuth(exception))
                     }
             } catch (e: Exception) {
                 liveData.value = ResourceUser(message = R.string.failure_api)
@@ -72,24 +72,14 @@ class FirebaseAuthRepository(
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 /*Create New User */
-                val task = auth.createUserWithEmailAndPassword(userLogin.email, userLogin.password)
-                task.addOnCompleteListener { taskComplete ->
-                    val user = auth.currentUser
-                    when {
-                        taskComplete.isSuccessful -> {
-                            user!!.sendEmailVerification()
-                                .addOnCompleteListener {
-                                    liveData.value = ResourceUser(
-                                        message = R.string.check_your_email_and_confirm,
-                                        navigation = true
-                                    )
-                                }
-                        }
+                auth.createUserWithEmailAndPassword(userLogin.email, userLogin.password)
+                    .addOnCompleteListener {
+                        val sendEmail = sendEmailConfirm()
+                        liveData.value = ResourceUser(message = sendEmail.)
                     }
-                }
-                task.addOnFailureListener { exception ->
-                    liveData.value = ResourceUser(message = errorRegister(exception))
-                }
+                    .addOnFailureListener { exception ->
+                        liveData.value = ResourceUser(message = errorFirebaseAuth(exception))
+                    }
             } catch (e: IllegalArgumentException) {
                 liveData.value = ResourceUser(message = R.string.authentication_failed_try_again)
             }
@@ -97,42 +87,54 @@ class FirebaseAuthRepository(
         return liveData
     }
 
-    private fun errorRegister(exception: Exception): Int {
-        return when (exception) {
-            is FirebaseAuthWeakPasswordException -> R.string.password_needs_least_6_digits
-            is FirebaseAuthInvalidCredentialsException -> R.string.email_invalid
-            is FirebaseAuthUserCollisionException -> R.string.email_already_been
-            else -> R.string.unknown_error
-        }
-    }
-
-    fun signInWithEmailAndPassword(email: String, password: String
-    ): LiveData<ResourceUser<Void>> {
+    fun signInWithEmailAndPassword(email: String, password: String): LiveData<ResourceUser<Void>> {
         val liveData = MutableLiveData<ResourceUser<Void>>()
         try {
             /*checking if the user exists*/
             auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity) { task ->
-                    when {
-                        task.isSuccessful -> {
-                            // Sign in success, update UI with the signed-in user's information
-                            liveData.value = ResourceUser(
-                                login = FIRST_LOGIN,
-                                message = R.string.login_success
-                            )
-                        }
-                        else -> {
-                            // If sign in fails, display a message to the user.
-                            liveData.value = ResourceUser(
-                                login = FIRST_LOGIN,
-                                message = R.string.login_failed
-                            )
-                        }
-                    }
+                .addOnCompleteListener(activity) {
+                    // Sign in success, update UI with the signed-in user's information
+                    liveData.value = ResourceUser(
+                        login = FIRST_LOGIN,
+                        message = R.string.login_success
+                    )
+                }
+                .addOnFailureListener { exception ->
+                    // If sign in fails, display a message to the user.
+                    val message: Int = errorFirebaseAuth(exception)
+                    liveData.value = ResourceUser(
+                        login = FIRST_LOGIN,
+                        message = message
+                    )
                 }
         } catch (e: Exception) {
             liveData.value = ResourceUser(message = R.string.failure_api)
         }
         return liveData
+    }
+
+    private fun sendEmailConfirm(): {
+        val user = auth.currentUser
+        user!!.sendEmailVerification()
+            .addOnCompleteListener {
+                liveData.value = ResourceUser(
+                    message = R.string.check_your_email_and_confirm,
+                    navigation = true
+                )
+            }
+            .addOnFailureListener { exception ->
+                liveData.value =
+                    ResourceUser(message = errorFirebaseAuth(exception))
+            }
+    }
+
+    private fun errorFirebaseAuth(exception: Exception): Int {
+        return when (exception) {
+            is FirebaseAuthInvalidUserException,
+            is FirebaseAuthInvalidCredentialsException -> R.string.email_or_password_wrong
+            is FirebaseAuthWeakPasswordException -> R.string.password_needs_least_6_digits
+            is FirebaseAuthUserCollisionException -> R.string.email_already_been
+            else -> R.string.unknown_error
+        }
     }
 }

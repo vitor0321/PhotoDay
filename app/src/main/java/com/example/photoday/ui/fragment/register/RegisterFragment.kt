@@ -50,6 +50,7 @@ class RegisterFragment : BaseFragment() {
                 val email = editTextUserEmail.text.toString()
                 val password = editTextUserPassword.text.toString()
                 val confirmPassword = editTextUserConfirmPassword.text.toString()
+
                 val userLogin = UserLogin(email, password, confirmPassword)
 
                 when (confirmItem(userLogin)) {

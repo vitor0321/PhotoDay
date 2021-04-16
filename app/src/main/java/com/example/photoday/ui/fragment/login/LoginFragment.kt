@@ -13,6 +13,7 @@ import com.example.photoday.constants.*
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.model.resource.ResourceUser
+import com.example.photoday.model.user.UserLogin
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -64,34 +65,7 @@ class LoginFragment : BaseFragment() {
     private fun initButton() {
         this.viewDataBinding.apply {
             //Button to login
-            loginButton = View.OnClickListener {
-                try {
-                    /*here you will authenticate your email and password*/
-                    val email = editTextLoginUser.text.toString()
-                    val password = editTextLoginPassword.text.toString()
-                    when {
-                        !Patterns.EMAIL_ADDRESS.matcher(email)
-                            .matches() -> {
-                            editTextLoginUser.error =
-                                context?.getString(R.string.please_enter_valid_email_login)
-                            editTextLoginUser.requestFocus()
-                            return@OnClickListener
-                        }
-                        password.isBlank() -> {
-                            editTextLoginPassword.error =
-                                context?.getString(R.string.please_enter_password)
-                            editTextLoginPassword.requestFocus()
-                            return@OnClickListener
-                        }
-                    }
-                    viewModel.doLogin(email, password).observe(viewLifecycleOwner, { resourceUser ->
-                        navigation(resourceUser)
-                    })
-                } catch (e: Exception) {
-                    messageToast(e.message)
-                }
-
-            }
+            loginButton = View.OnClickListener { login() }
 
             //Button register
             registerButton = View.OnClickListener { viewModel.navController(REGISTER) }
@@ -137,6 +111,53 @@ class LoginFragment : BaseFragment() {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+    }
+
+    private fun login() {
+        try {
+            cleanAllItem()
+            /*here you will authenticate your email and password*/
+            this.viewDataBinding.apply {
+                val email = editTextLoginUser.text.toString()
+                val password = editTextLoginPassword.text.toString()
+                when (confirmItem(UserLogin(email, password))) {
+                    true -> viewModel.signInWithEmailAndPassword(email, password)
+                        .observe(viewLifecycleOwner, { resourceUser ->
+                            navigation(resourceUser)
+                        })
+                }
+            }
+        } catch (e: Exception) {
+            messageToast(e.message)
+        }
+    }
+
+    private fun cleanAllItem() {
+        this.viewDataBinding.apply {
+            editTextLoginUser.error = null
+            editTextLoginPassword.error = null
+        }
+    }
+
+    private fun confirmItem(userLogin: UserLogin): Boolean {
+        this.viewDataBinding.apply {
+            when {
+                !Patterns.EMAIL_ADDRESS.matcher(userLogin.email)
+                    .matches() -> {
+                    editTextLoginUser.error =
+                        context?.getString(R.string.please_enter_valid_email_login)
+                    editTextLoginUser.requestFocus()
+                    return false
+                }
+                userLogin.password.isBlank() -> {
+                    editTextLoginPassword.error =
+                        context?.getString(R.string.please_enter_password)
+                    editTextLoginPassword.requestFocus()
+                    return false
+                }
+            }
+            return true
+        }
     }
 
     private fun navigation(resourceUser: ResourceUser<Void>) {
