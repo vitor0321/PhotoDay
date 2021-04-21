@@ -1,6 +1,5 @@
 package com.example.photoday.repository.firebaseUser
 
-import android.content.ComponentCallbacks
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
@@ -73,9 +72,14 @@ class FirebaseAuthRepository(
             try {
                 /*Create New User */
                 auth.createUserWithEmailAndPassword(userLogin.email, userLogin.password)
-                    .addOnCompleteListener {
-                        val sendEmail = sendEmailConfirm()
-                        liveData.value = ResourceUser(message = sendEmail.)
+                    .addOnSuccessListener {task->
+                        sendEmailConfirm { sendEmail ->
+                            liveData.value = ResourceUser(
+                                message = sendEmail.message,
+                                navigation = sendEmail.navigation
+                            )
+                        }
+
                     }
                     .addOnFailureListener { exception ->
                         liveData.value = ResourceUser(message = errorFirebaseAuth(exception))
@@ -113,19 +117,30 @@ class FirebaseAuthRepository(
         return liveData
     }
 
-    private fun sendEmailConfirm(): {
-        val user = auth.currentUser
-        user!!.sendEmailVerification()
-            .addOnCompleteListener {
-                liveData.value = ResourceUser(
-                    message = R.string.check_your_email_and_confirm,
-                    navigation = true
-                )
+    private fun sendEmailConfirm(callback: (ResourceUser<Void>) -> Unit) {
+        try {
+            val user = auth.currentUser
+            user?.let {
+                user.sendEmailVerification()
+                    .addOnSuccessListener {
+                        callback.invoke(
+                            ResourceUser(
+                                message = R.string.check_your_email_and_confirm,
+                                navigation = true
+                            )
+                        )
+                    }
+                    .addOnFailureListener { exception ->
+                        callback.invoke(
+                            ResourceUser(message = errorFirebaseAuth(exception))
+                        )
+                    }
             }
-            .addOnFailureListener { exception ->
-                liveData.value =
-                    ResourceUser(message = errorFirebaseAuth(exception))
-            }
+        } catch (e: Exception) {
+            callback.invoke(
+                ResourceUser(message = R.string.failure_api)
+            )
+        }
     }
 
     private fun errorFirebaseAuth(exception: Exception): Int {
