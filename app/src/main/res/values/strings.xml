@@ -82,6 +82,7 @@
     <string name="email_already_been">Email Address has already been registered</string>
     <string name="unknown_error">Unknown error</string>
     <string name="verify_your_email_address">Please verify your email address</string>
+    <string name="email_or_password_wrong">Email or Password is wrong</string>
 
     <!-- Repository Firebase Photo  -->
     <string name="successfully_upload_image">Successfully upload image</string>

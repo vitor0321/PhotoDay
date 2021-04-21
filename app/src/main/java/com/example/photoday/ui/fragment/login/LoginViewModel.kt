@@ -24,7 +24,7 @@ class LoginViewModel(
     fun updateUI(login: Int) =
         repository.baseRepositoryUpdateUI(login)
 
-    fun doLogin(email: String, password: String) =
+    fun signInWithEmailAndPassword(email: String, password: String) =
         repository.baseRepositorySignInWithEmailAndPassword(email, password)
 
     fun authWithGoogle(account: GoogleSignInAccount) =
