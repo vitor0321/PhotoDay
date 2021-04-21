@@ -25,6 +25,7 @@
     <string name="login">Login</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="register_new_user">Register New User</string>
+    <string name="check_your_email_and_confirm">Ops!! Check your Email and Confirm</string>
 
     <!-- Register Fragment -->
     <string name="please_enter_email_register">Please enter email</string>
@@ -73,7 +74,6 @@
     <string name="auth_failed">Sorry, auth failed.</string>
     <string name="login_success">Login success</string>
     <string name="email_already_exists">Email already exists</string>
-    <string name="check_your_email_and_confirm">Check your Email and Confirm</string>
     <string name="authentication_failed_try_again">Authentication failed. Try again</string>
     <string name="login_failed">Login failed.</string>
     <string name="login_is_success">Login Success</string>

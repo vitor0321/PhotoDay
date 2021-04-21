@@ -150,6 +150,9 @@ class LoginFragment : BaseFragment() {
             FIRST_LOGIN -> {
                 this.viewModel.navController(FIRST_LOGIN)
             }
+            ERROR_LOGIN->{
+                this.messageToast(getString(R.string.check_your_email_and_confirm))
+            }
         }
     }
 

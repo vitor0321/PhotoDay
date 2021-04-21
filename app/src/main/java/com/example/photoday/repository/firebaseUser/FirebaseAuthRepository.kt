@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
+import com.example.photoday.constants.ERROR_LOGIN
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.model.resource.ResourceUser
 import com.example.photoday.model.user.UserLogin
@@ -67,29 +68,69 @@ class FirebaseAuthRepository(
         return liveData
     }
 
+    fun signInWithEmailAndPassword(
+        email: String, password: String
+    ): LiveData<ResourceUser<Void>> {
+        val liveData = MutableLiveData<ResourceUser<Void>>()
+        try {
+            /*checking if the user exists*/
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(activity) { task ->
+                    when {
+                        task.isSuccessful -> {
+                            // Sign in success, update UI with the signed-in user's information
+                            when(auth.currentUser.isEmailVerified){
+                                true->{
+                                    liveData.value = ResourceUser(
+                                        login = FIRST_LOGIN,
+                                        message = R.string.login_success
+                                    )
+                                }
+                                false ->{
+                                    liveData.value = ResourceUser(login = ERROR_LOGIN)
+                                }
+                            }
+                        }
+                        else -> {
+                            // If sign in fails, display a message to the user.
+                            liveData.value = ResourceUser(
+                                login = null,
+                                message = R.string.login_failed
+                            )
+                        }
+                    }
+                }
+        } catch (e: Exception) {
+            liveData.value = ResourceUser(message = R.string.failure_api)
+        }
+        return liveData
+    }
+
     fun createUserWithEmailAndPassword(userLogin: UserLogin): LiveData<ResourceUser<Void>> {
         val liveData = MutableLiveData<ResourceUser<Void>>()
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 /*Create New User */
-                val task = auth.createUserWithEmailAndPassword(userLogin.email, userLogin.password)
-                task.addOnCompleteListener { taskComplete ->
-                    val user = auth.currentUser
-                    when {
-                        taskComplete.isSuccessful -> {
-                            user!!.sendEmailVerification()
-                                .addOnCompleteListener {
-                                    liveData.value = ResourceUser(
-                                        message = R.string.check_your_email_and_confirm,
-                                        navigation = true
-                                    )
+                auth.createUserWithEmailAndPassword(userLogin.email, userLogin.password)
+                    .addOnCompleteListener { task ->
+                        val user = auth.currentUser
+                        when {
+                            task.isSuccessful -> {
+                                user?.let {
+                                    user.sendEmailVerification()
+                                        .addOnCompleteListener {
+                                            liveData.value = ResourceUser(
+                                                message = R.string.check_your_email_and_confirm,
+                                                navigation = true
+                                            )
+                                        }
                                 }
+                            }
                         }
                     }
-                }
-                task.addOnFailureListener { exception ->
-                    liveData.value = ResourceUser(message = errorRegister(exception))
-                }
+                    .addOnFailureListener { exception ->
+                        liveData.value = ResourceUser(message = errorRegister(exception))
+                    }
             } catch (e: IllegalArgumentException) {
                 liveData.value = ResourceUser(message = R.string.authentication_failed_try_again)
             }
@@ -104,35 +145,5 @@ class FirebaseAuthRepository(
             is FirebaseAuthUserCollisionException -> R.string.email_already_been
             else -> R.string.unknown_error
         }
-    }
-
-    fun signInWithEmailAndPassword(email: String, password: String
-    ): LiveData<ResourceUser<Void>> {
-        val liveData = MutableLiveData<ResourceUser<Void>>()
-        try {
-            /*checking if the user exists*/
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity) { task ->
-                    when {
-                        task.isSuccessful -> {
-                            // Sign in success, update UI with the signed-in user's information
-                            liveData.value = ResourceUser(
-                                login = FIRST_LOGIN,
-                                message = R.string.login_success
-                            )
-                        }
-                        else -> {
-                            // If sign in fails, display a message to the user.
-                            liveData.value = ResourceUser(
-                                login = FIRST_LOGIN,
-                                message = R.string.login_failed
-                            )
-                        }
-                    }
-                }
-        } catch (e: Exception) {
-            liveData.value = ResourceUser(message = R.string.failure_api)
-        }
-        return liveData
     }
 }

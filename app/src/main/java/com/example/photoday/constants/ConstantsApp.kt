@@ -16,6 +16,7 @@ const val DEFAULT_WEB_CLIENT_ID =
 const val ON_START = 100
 const val FIRST_LOGIN = 200
 const val REGISTER = 300
+const val ERROR_LOGIN = 350
 const val FORGOT_PASSWORD = 400
 
 /*Dialog*/
