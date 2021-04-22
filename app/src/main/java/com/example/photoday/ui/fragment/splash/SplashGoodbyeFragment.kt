@@ -43,6 +43,7 @@ class SplashGoodbyeFragment : BaseFragment() {
         //define time that the activity is active until it passes to the other
         Handler(Looper.getMainLooper()).postDelayed({
             navFragmentSplashGoodbyeToLogin(controlNavigation)
+            onDestroy()
         }, SPLASH_TIME_OUT)
     }
 

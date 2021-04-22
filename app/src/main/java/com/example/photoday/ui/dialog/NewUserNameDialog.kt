@@ -67,12 +67,14 @@ class NewUserNameDialog(
                             }
                         })
                     dialog?.dismiss()
+                    onDestroy()
                 } catch (e: Exception) {
                     messageToast(e.message)
                 }
             }
             cancelButton = View.OnClickListener {
                 dialog?.dismiss()
+                onDestroy()
             }
         }
     }

@@ -126,14 +126,14 @@ class ConfigurationFragment : BaseFragment() {
 
     private fun logout() {
         /*logout with Firebase*/
-        this.viewModel.logout().observe(viewLifecycleOwner, { resourceMessage ->
-            when {
-                resourceMessage.error != null -> {
-                    messageToast(resourceMessage.error)
+        this.viewModel.logout().observe(viewLifecycleOwner, { resource ->
+            when (resource.login) {
+                GOODBYE -> {
+                    messageToast(resource.message?.let { message -> context?.getString(message) })
+                    viewModel.navController(GOODBYE)
+                    onDestroy()
                 }
-                resourceMessage.message != null -> {
-                    messageToast(context?.getString(resourceMessage.message))
-                }
+                null -> { messageToast(resource.message?.let { message -> context?.getString(message) }) }
             }
         })
     }

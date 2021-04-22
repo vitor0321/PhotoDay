@@ -174,9 +174,11 @@ class LoginFragment : BaseFragment() {
         when (resourceUser.login) {
             ON_START -> {
                 this.viewModel.navController(ON_START)
+                onDestroy()
             }
             FIRST_LOGIN -> {
                 this.viewModel.navController(FIRST_LOGIN)
+                onDestroy()
             }
             ERROR_LOGIN->{
                 this.messageToast(getString(R.string.check_your_email_and_confirm))

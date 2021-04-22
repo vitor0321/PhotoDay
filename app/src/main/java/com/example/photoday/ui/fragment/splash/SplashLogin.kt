@@ -44,6 +44,7 @@ class SplashLogin : BaseFragment() {
         Handler(Looper.getMainLooper()).postDelayed({
             /*Navigation between fragments Directions*/
             navFragmentSplashLoginToTimeline(controlNavigation)
+            onDestroy()
         }, SPLASH_TIME_OUT)
     }
 

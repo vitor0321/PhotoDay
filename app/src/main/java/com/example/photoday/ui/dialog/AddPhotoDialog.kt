@@ -67,6 +67,7 @@ class AddPhotoDialog(private val valueDate: String?) : DialogFragment() {
                     }
                 }
                 dialog?.dismiss()
+                onDestroy()
             }
         }
     }

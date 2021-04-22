@@ -22,13 +22,10 @@ class ConfigurationViewModel(
     fun imageUser(image: Uri) =
         repository.baseRepositoryChangeImageUser(image)
 
-    fun logout(): LiveData<ResourceUser<Void>> {
-        val logout = repository.baseRepositoryLogoutFirebase()
-        navController(GOODBYE)
-        return logout
-    }
+    fun logout(): LiveData<ResourceUser<Void>> =
+        repository.baseRepositoryLogoutFirebase()
 
-    private fun navController(navigation: Int) {
+    fun navController(navigation: Int) {
         when(navigation){
             GOODBYE -> {Navigation.navFragmentConfigurationToSplashGoodbye(navFragment)}
         }

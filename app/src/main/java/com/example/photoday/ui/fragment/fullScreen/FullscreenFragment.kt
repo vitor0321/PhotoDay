@@ -42,9 +42,6 @@ class FullscreenFragment : BaseFragment() {
 
     private fun setImageFullScreen() {
         this.viewDataBinding.itemFromRecycle = ItemPhoto(photo = itemPhoto)
-        this.viewDataBinding.run {
-            //Picasso.get().load(itemPhoto).into(imageViewFullScreen)
-        }
     }
 
     private fun statusBarNavigation() {

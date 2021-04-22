@@ -107,7 +107,10 @@ class RegisterFragment : BaseFragment() {
             .observe(viewLifecycleOwner, { resourceMessage ->
                 messageToast(resourceMessage.message?.let { message -> context?.getString(message)})
                 when (resourceMessage.navigation) {
-                    true -> { viewModel.navigationRegister() }
+                    true -> {
+                        viewModel.navigationRegister()
+                        onDestroy()
+                    }
                 }
             })
     }

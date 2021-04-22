@@ -70,6 +70,7 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
             }
             cancelButton = View.OnClickListener {
                 dialog?.dismiss()
+                onDestroy()
             }
         }
     }

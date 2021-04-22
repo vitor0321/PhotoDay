@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
 import com.example.photoday.constants.ERROR_LOGIN
 import com.example.photoday.constants.FIRST_LOGIN
+import com.example.photoday.constants.GOODBYE
 import com.example.photoday.model.resource.ResourceUser
 import com.example.photoday.model.user.UserLogin
 import com.firebase.ui.auth.AuthUI
@@ -29,6 +30,7 @@ class FirebaseAuthRepository(
                     .signOut(context)
                     .addOnSuccessListener {
                         liveData.value = ResourceUser(
+                            login = GOODBYE,
                             message = R.string.successfully_logged
                         )
                     }

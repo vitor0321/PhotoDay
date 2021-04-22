@@ -43,6 +43,7 @@ class SplashIntroFragment : BaseFragment() {
         Handler(Looper.getMainLooper()).postDelayed({
             /*Navigation between fragments Directions*/
             navFragmentSplashIntroToLogin(controlNavigation)
+            onDestroy()
         }, SPLASH_TIME_OUT)
     }
 
