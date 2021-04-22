@@ -46,6 +46,7 @@ val repositoryModulo = module(override = true) {
             get<Context>()
         )
     }
+    single<UserFirebaseData> { UserFirebaseData() }
 }
 
 val firebaseRepositoryModulo = module(override = true) {
@@ -55,13 +56,6 @@ val firebaseRepositoryModulo = module(override = true) {
 
 val uiModulo = module(override = true) {
     single<FragmentActivity> { FragmentActivity() }
-    single<ForgotPasswordDialog> { ForgotPasswordDialog(get<BaseRepositoryUser>()) }
-    single<NewUserNameDialog> {
-        NewUserNameDialog(
-            get<BaseRepositoryUser>(),
-            get<UserFirebaseData>()
-        )
-    }
 }
 
 val viewModelModulo = module(override = true) {

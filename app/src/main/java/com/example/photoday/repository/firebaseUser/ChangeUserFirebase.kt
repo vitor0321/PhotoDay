@@ -97,23 +97,18 @@ class ChangeUserFirebase(
         val liveData = MutableLiveData<ResourceUser<Void>>()
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                when {
-
-                    else -> {
-                        auth.sendPasswordResetEmail(email)
-                            .addOnCompleteListener { task ->
-                                when {
-                                    task.isSuccessful -> {
-                                        liveData.value = ResourceUser(message = R.string.email_sent)
-                                    }
-                                    else -> {
-                                        liveData.value =
-                                            ResourceUser(message = R.string.unregistered_email)
-                                    }
-                                }
+                auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener { task ->
+                        when {
+                            task.isSuccessful -> {
+                                liveData.value = ResourceUser(message = R.string.email_sent)
                             }
+                            else -> {
+                                liveData.value =
+                                    ResourceUser(message = R.string.unregistered_email)
+                            }
+                        }
                     }
-                }
             } catch (e: Exception) {
                 liveData.value = ResourceUser(message= R.string.failure_api)
             }

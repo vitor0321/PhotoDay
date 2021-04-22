@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.example.photoday.R
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.DialogForgotPasswordBinding
@@ -54,12 +55,13 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
                         }
                         else -> {
                             repository.baseRepositoryForgotPassword(email)
-                                .observe(viewLifecycleOwner, { resourceMessage ->
-                                    messageToast(resourceMessage.message?.let { message ->
+                                .observe(viewLifecycleOwner, { resource ->
+                                    messageToast(resource.message?.let { message ->
                                         context?.getString(message)
                                     })
+                                    dialog?.dismiss()
+                                    onDestroy()
                                 })
-                            dialog?.dismiss()
                         }
                     }
                 } catch (e: Exception) {
@@ -82,6 +84,6 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
     }
 
     companion object {
-        fun newInstance() = ForgotPasswordDialog
+        fun newInstance(repository: BaseRepositoryUser) = ForgotPasswordDialog(repository)
     }
 }

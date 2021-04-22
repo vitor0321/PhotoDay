@@ -6,6 +6,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
@@ -14,12 +15,15 @@ import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentLoginBinding
 import com.example.photoday.model.resource.ResourceUser
 import com.example.photoday.model.user.UserLogin
+import com.example.photoday.repository.BaseRepositoryUser
+import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -30,6 +34,9 @@ class LoginFragment : BaseFragment() {
 
     private val viewModel: LoginViewModel by viewModel {
         parametersOf(findNavController())
+    }
+    private val repository: BaseRepositoryUser by inject {
+        parametersOf(this)
     }
     private lateinit var googleSignInClient: GoogleSignInClient
 
@@ -74,7 +81,7 @@ class LoginFragment : BaseFragment() {
             loginGoogleButton = View.OnClickListener { signIn() }
 
             //Button forgot Password
-            forgotPasswordButton = View.OnClickListener { viewModel.navController(FORGOT_PASSWORD) }
+            forgotPasswordButton = View.OnClickListener { forgotPassword(activity) }
         }
     }
 
@@ -174,6 +181,13 @@ class LoginFragment : BaseFragment() {
             ERROR_LOGIN->{
                 this.messageToast(getString(R.string.check_your_email_and_confirm))
             }
+        }
+    }
+
+    private fun forgotPassword(activity: FragmentActivity?) {
+        activity?.let {
+            ForgotPasswordDialog.newInstance(repository)
+                .show(it.supportFragmentManager, FORGOT_PASSWORD)
         }
     }
 

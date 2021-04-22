@@ -10,16 +10,19 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentConfigurationBinding
+import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.io.ByteArrayOutputStream
@@ -29,10 +32,14 @@ class ConfigurationFragment : BaseFragment() {
     private var _viewDataBinding: FragmentConfigurationBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val userFirebaseData by lazy { UserFirebaseData() }
-
     private val viewModel: ConfigurationViewModel by viewModel {
         parametersOf(findNavController())
+    }
+    private val repositoryUser: BaseRepositoryUser by inject {
+        parametersOf(this)
+    }
+    private val userFirebaseData: UserFirebaseData by inject {
+        parametersOf(this)
     }
 
     override fun onCreateView(
@@ -63,7 +70,7 @@ class ConfigurationFragment : BaseFragment() {
             /*Button edit user photo*/
             this.addImageClickButton = View.OnClickListener { photoDialog() }
             /*Button edit user name */
-            this.changeNameButton = View.OnClickListener { newUserNameDialog() }
+            this.changeNameButton = View.OnClickListener { newUserNameDialog(activity) }
         }
     }
 
@@ -139,9 +146,12 @@ class ConfigurationFragment : BaseFragment() {
         }
     }
 
-    private fun newUserNameDialog() {
+    private fun newUserNameDialog(activity: FragmentActivity?) {
         /*open NewUserNameDialog*/
-        NewUserNameDialog.newInstance()
+        activity?.let {
+            NewUserNameDialog.newInstance(repositoryUser, userFirebaseData)
+                .show(it.supportFragmentManager, NEW_NAME)
+        }
     }
 
     private fun statusBarNavigation() {

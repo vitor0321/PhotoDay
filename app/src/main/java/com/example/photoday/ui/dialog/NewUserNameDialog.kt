@@ -10,8 +10,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
 import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.DialogFragmentUserNewNameBinding
-import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.model.user.UserFirebase
+import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.databinding.data.UserFirebaseData
 
 class NewUserNameDialog(
@@ -96,6 +96,9 @@ class NewUserNameDialog(
     }
 
     companion object {
-        fun newInstance() = NewUserNameDialog
+        fun newInstance(
+            baseRepositoryUser: BaseRepositoryUser,
+            userFirebaseData: UserFirebaseData
+        ) = NewUserNameDialog(baseRepositoryUser, userFirebaseData)
     }
 }

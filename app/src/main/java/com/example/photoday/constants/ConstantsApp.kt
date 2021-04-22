@@ -17,10 +17,10 @@ const val ON_START = 100
 const val FIRST_LOGIN = 200
 const val REGISTER = 300
 const val ERROR_LOGIN = 350
-const val FORGOT_PASSWORD = 400
+const val FORGOT_PASSWORD = "FORGOT_PASSWORD"
 
 /*Configuration*/
-const val NEW_NAME = 403
+const val NEW_NAME = "NEW_NAME"
 const val GOODBYE = 456
 
 /*Dialog*/

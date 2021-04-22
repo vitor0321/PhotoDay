@@ -1,11 +1,9 @@
 package com.example.photoday.ui.fragment.login
 
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.photoday.constants.FIRST_LOGIN
-import com.example.photoday.constants.FORGOT_PASSWORD
-import com.example.photoday.constants.ON_START
-import com.example.photoday.constants.REGISTER
+import com.example.photoday.constants.*
 import com.example.photoday.navigation.Navigation
 import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.dialog.ForgotPasswordDialog
@@ -32,12 +30,17 @@ class LoginViewModel(
             account.idToken!!
         )
 
-    fun navController(navigation: Int){
-        when(navigation){
-            ON_START ->{Navigation.navFragmentLoginToTimeline(navFragment)}
-            FIRST_LOGIN ->{Navigation.navFragmentLoginToSplashLogin(navFragment)}
-            REGISTER -> {Navigation.navFragmentLoginToRegister(navFragment)}
-            FORGOT_PASSWORD -> {ForgotPasswordDialog.newInstance()}
+    fun navController(navigation: Int) {
+        when (navigation) {
+            ON_START -> {
+                Navigation.navFragmentLoginToTimeline(navFragment)
+            }
+            FIRST_LOGIN -> {
+                Navigation.navFragmentLoginToSplashLogin(navFragment)
+            }
+            REGISTER -> {
+                Navigation.navFragmentLoginToRegister(navFragment)
+            }
         }
     }
 }
