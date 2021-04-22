@@ -37,7 +37,7 @@ class LoginViewModel(
             ON_START ->{Navigation.navFragmentLoginToTimeline(navFragment)}
             FIRST_LOGIN ->{Navigation.navFragmentLoginToSplashLogin(navFragment)}
             REGISTER -> {Navigation.navFragmentLoginToRegister(navFragment)}
-            FORGOT_PASSWORD -> {ForgotPasswordDialog.newInstance(repository)}
+            FORGOT_PASSWORD -> {ForgotPasswordDialog.newInstance()}
         }
     }
 }

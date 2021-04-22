@@ -19,6 +19,10 @@ const val REGISTER = 300
 const val ERROR_LOGIN = 350
 const val FORGOT_PASSWORD = 400
 
+/*Configuration*/
+const val NEW_NAME = 403
+const val GOODBYE = 456
+
 /*Dialog*/
 const val ADD_PHOTO_DIALOG = "ADD_PHOTO_DIALOG"
 const val REQUEST_IMAGE_CAPTURE_USER = 1001
