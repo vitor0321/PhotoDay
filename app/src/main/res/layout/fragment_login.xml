@@ -6,7 +6,7 @@
 
         <variable
             name="userLogin"
-            type="com.example.photoday.model.user.UserLogin" />
+            type="com.example.photoday.ui.model.user.UserLogin" />
 
         <variable
             name="loginButton"

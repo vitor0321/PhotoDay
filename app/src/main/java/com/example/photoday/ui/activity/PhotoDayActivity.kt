@@ -16,24 +16,29 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
-import com.example.photoday.constants.ADD_PHOTO_DIALOG
-import com.example.photoday.constants.REQUEST_IMAGE_CAPTURE
-import com.example.photoday.constants.REQUEST_IMAGE_GALLERY
-import com.example.photoday.constants.toast.Toast.toast
+import com.example.photoday.constants.*
 import com.example.photoday.databinding.ActivityPhotoDayBinding
 import com.example.photoday.eventBus.MessageEvent
+import com.example.photoday.ui.common.ExhibitionCameraOrGallery
 import com.example.photoday.ui.databinding.data.ComponentsData
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.stateBarNavigation.Components
+import com.example.photoday.ui.toast.Toast.toast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
+class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
+    AddPhotoDialog.AddPhotoListener {
 
     private var _viewDataBinding: ActivityPhotoDayBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
@@ -42,10 +47,18 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
     private val componentsData by lazy { ComponentsData() }
 
+    private val exhibition: ExhibitionCameraOrGallery by inject {
+        parametersOf(this)
+    }
+    private val checkPermission: CheckVersionPermission by inject {
+        parametersOf(this)
+    }
+
     private var datePhotoEventBus: String? = null
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+    private var valueDate: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,12 +79,17 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private fun init() {
         initializeControl()
         initButton()
+        initObserve()
     }
 
     private fun initButton() {
         viewDataBinding.apply {
             datePickerFloatButton = View.OnClickListener { datePicker() }
         }
+    }
+
+    private fun initObserve() {
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -178,19 +196,32 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
         calendar.set(year, month, dayOfMonth)
-        val valueDate = simpleDateFormat.format(calendar.time)
+        valueDate = simpleDateFormat.format(calendar.time)
         //get select date and send to photoDialog
-        photoDialog(valueDate)
+        photoDialog()
     }
 
     fun statusAppBarNavigation(components: Components) {
         componentsData.setComponentsData(components)
     }
 
-    private fun photoDialog(valueDate: String) {
+    private fun photoDialog() {
         /*open AddPhotoDialog*/
-        AddPhotoDialog.newInstance(valueDate)
+        AddPhotoDialog.newInstance().apply {
+            listener = this@PhotoDayActivity
+        }
             .show(supportFragmentManager, ADD_PHOTO_DIALOG)
+    }
+
+    override fun onAccessSelected(accessSelected: Int) {
+        CoroutineScope(Dispatchers.Main).launch {
+            exhibition.exhibitionCaptureImage(
+                accessSelected,
+                valueDate,
+                this@PhotoDayActivity,
+                REQUEST_PHOTO_DAY
+            )
+        }
     }
 
     private fun messageToast(message: String?) {
@@ -199,6 +230,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
     override fun onDestroy() {
         super.onDestroy()
+        EventBus.getDefault().unregister(this)
         _viewDataBinding = null
     }
 }

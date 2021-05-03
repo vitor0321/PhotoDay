@@ -4,18 +4,15 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.photoday.constants.*
-import com.example.photoday.model.resource.ResourceUser
-import com.example.photoday.navigation.Navigation
+import com.example.photoday.constants.GOODBYE
+import com.example.photoday.ui.model.resource.ResourceUser
+import com.example.photoday.ui.navigation.Navigation
 import com.example.photoday.repository.BaseRepositoryUser
-import com.example.photoday.ui.dialog.ForgotPasswordDialog
-import com.example.photoday.ui.dialog.NewUserNameDialog
 
 class ConfigurationViewModel(
     private val repository: BaseRepositoryUser,
     private val navFragment: NavController,
-) : ViewModel() {
-
+): ViewModel() {
 
     fun getUserDBFirebase() = repository.baseRepositoryGetCurrentUserFirebase()
 
@@ -26,8 +23,10 @@ class ConfigurationViewModel(
         repository.baseRepositoryLogoutFirebase()
 
     fun navController(navigation: Int) {
-        when(navigation){
-            GOODBYE -> {Navigation.navFragmentConfigurationToSplashGoodbye(navFragment)}
+        when (navigation) {
+            GOODBYE -> {
+                Navigation.navFragmentConfigurationToSplashGoodbye(navFragment)
+            }
         }
     }
 }

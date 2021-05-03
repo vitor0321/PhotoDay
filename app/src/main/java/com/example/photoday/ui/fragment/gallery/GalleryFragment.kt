@@ -9,10 +9,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.constants.toast.Toast.toast
+import com.example.photoday.ui.toast.Toast.toast
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.ui.adapter.GalleryAdapter
-import com.example.photoday.model.adapter.ItemPhoto
+import com.example.photoday.ui.model.adapter.ItemPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 import kotlinx.coroutines.CoroutineScope

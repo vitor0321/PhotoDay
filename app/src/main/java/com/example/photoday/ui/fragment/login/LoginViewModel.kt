@@ -1,23 +1,18 @@
 package com.example.photoday.ui.fragment.login
 
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.photoday.constants.*
-import com.example.photoday.navigation.Navigation
+import com.example.photoday.constants.FIRST_LOGIN
+import com.example.photoday.constants.ON_START
+import com.example.photoday.constants.REGISTER
+import com.example.photoday.ui.navigation.Navigation
 import com.example.photoday.repository.BaseRepositoryUser
-import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 class LoginViewModel(
     private val navFragment: NavController,
     private val repository: BaseRepositoryUser,
 ) : ViewModel() {
-
-    private val _uiStateFlowMessage = MutableStateFlow("")
-    val uiStateFlowMessage: StateFlow<String> get() = _uiStateFlowMessage
 
     fun updateUI(login: Int) =
         repository.baseRepositoryUpdateUI(login)
@@ -29,6 +24,9 @@ class LoginViewModel(
         repository.baseRepositoryFirebaseAuthWithGoogle(
             account.idToken!!
         )
+
+    fun forgotPassword(email: String) =
+        repository.baseRepositoryForgotPassword(email)
 
     fun navController(navigation: Int) {
         when (navigation) {

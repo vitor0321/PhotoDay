@@ -6,14 +6,12 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
 import com.example.photoday.constants.IMAGES
-import com.example.photoday.model.resource.ResourceItem
-import com.example.photoday.model.adapter.ItemPhoto
+import com.example.photoday.ui.model.resource.ResourceItem
+import com.example.photoday.ui.model.adapter.ItemPhoto
 import com.google.android.gms.tasks.Task
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
 
 class FirebasePhoto(
     private val imageRef : FirebaseStorage

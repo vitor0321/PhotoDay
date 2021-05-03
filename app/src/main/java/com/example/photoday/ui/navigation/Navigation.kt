@@ -1,4 +1,4 @@
-package com.example.photoday.navigation
+package com.example.photoday.ui.navigation
 
 import androidx.navigation.NavController
 import com.example.photoday.ui.fragment.configuration.ConfigurationFragmentDirections
@@ -7,7 +7,7 @@ import com.example.photoday.ui.fragment.login.LoginFragmentDirections
 import com.example.photoday.ui.fragment.register.RegisterFragmentDirections
 import com.example.photoday.ui.fragment.splash.SplashGoodbyeFragmentDirections
 import com.example.photoday.ui.fragment.splash.SplashIntroFragmentDirections
-import com.example.photoday.ui.fragment.splash.SplashLoginDirections
+import com.example.photoday.ui.fragment.splash.SplashLoginFragmentDirections
 import com.example.photoday.ui.fragment.timeline.TimelineFragmentDirections
 
 object Navigation {
@@ -51,7 +51,7 @@ object Navigation {
 
     fun navFragmentSplashLoginToTimeline(navFragment: NavController){
         val direction =
-            SplashLoginDirections.actionSplashLoginToTimelineFragment()
+            SplashLoginFragmentDirections.actionSplashLoginToTimelineFragment()
         navFragment.navigate(direction)
     }
 

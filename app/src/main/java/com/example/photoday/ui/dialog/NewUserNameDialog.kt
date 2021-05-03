@@ -8,9 +8,9 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
-import com.example.photoday.constants.toast.Toast.toast
+import com.example.photoday.ui.toast.Toast.toast
 import com.example.photoday.databinding.DialogFragmentUserNewNameBinding
-import com.example.photoday.model.user.UserFirebase
+import com.example.photoday.ui.model.user.UserFirebase
 import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.databinding.data.UserFirebaseData
 

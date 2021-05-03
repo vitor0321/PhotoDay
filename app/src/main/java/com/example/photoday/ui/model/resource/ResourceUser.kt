@@ -1,4 +1,4 @@
-package com.example.photoday.model.resource
+package com.example.photoday.ui.model.resource
 
 class ResourceUser<T>(
     val data: T? = null,

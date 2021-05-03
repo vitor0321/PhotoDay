@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
-import com.example.photoday.model.resource.ResourceUser
-import com.example.photoday.model.user.UserFirebase
+import com.example.photoday.ui.model.resource.ResourceUser
+import com.example.photoday.ui.model.user.UserFirebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.CoroutineScope

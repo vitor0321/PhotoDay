@@ -3,16 +3,16 @@ package com.example.photoday.di
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import com.example.photoday.ui.common.ExhibitionCameraOrGallery
 import com.example.photoday.repository.BaseRepositoryPhoto
 import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.repository.firebasePhotos.FirebasePhoto
 import com.example.photoday.repository.firebaseUser.ChangeUserFirebase
 import com.example.photoday.repository.firebaseUser.CheckUserFirebase
 import com.example.photoday.repository.firebaseUser.FirebaseAuthRepository
+import com.example.photoday.ui.activity.PhotoDayActivity
 import com.example.photoday.ui.activity.PhotoDayViewModel
 import com.example.photoday.ui.databinding.data.UserFirebaseData
-import com.example.photoday.ui.dialog.ForgotPasswordDialog
-import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
 import com.example.photoday.ui.fragment.gallery.GalleryViewModel
 import com.example.photoday.ui.fragment.login.LoginViewModel
@@ -25,7 +25,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-
 
 val repositoryModulo = module(override = true) {
     single<BaseRepositoryPhoto> { BaseRepositoryPhoto(get<FirebasePhoto>()) }
@@ -54,21 +53,26 @@ val firebaseRepositoryModulo = module(override = true) {
     single<FirebaseStorage> { Firebase.storage }
 }
 
+val accessExceptionModulo = module(override = true) {
+    single<ExhibitionCameraOrGallery> { ExhibitionCameraOrGallery }
+    single<CheckVersionPermission> { CheckVersionPermission }
+}
+
 val uiModulo = module(override = true) {
     single<FragmentActivity> { FragmentActivity() }
+    single<PhotoDayActivity> { PhotoDayActivity() }
 }
 
 val viewModelModulo = module(override = true) {
-
     viewModel<PhotoDayViewModel> {
         PhotoDayViewModel(
-            repository = get<BaseRepositoryPhoto>()
+            repository = get<BaseRepositoryPhoto>(),
         )
     }
     viewModel<ConfigurationViewModel> { (navFragment: NavController) ->
         ConfigurationViewModel(
             repository = get<BaseRepositoryUser>(),
-            navFragment = navFragment
+            navFragment = navFragment,
         )
     }
     viewModel<GalleryViewModel> { (navFragment: NavController) ->

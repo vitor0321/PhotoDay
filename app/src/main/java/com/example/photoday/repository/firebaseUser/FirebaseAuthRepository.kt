@@ -8,8 +8,8 @@ import com.example.photoday.R
 import com.example.photoday.constants.ERROR_LOGIN
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.GOODBYE
-import com.example.photoday.model.resource.ResourceUser
-import com.example.photoday.model.user.UserLogin
+import com.example.photoday.ui.model.resource.ResourceUser
+import com.example.photoday.ui.model.user.UserLogin
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.*
 import kotlinx.coroutines.CoroutineScope

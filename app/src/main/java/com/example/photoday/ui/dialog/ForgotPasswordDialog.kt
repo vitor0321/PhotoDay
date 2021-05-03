@@ -8,16 +8,16 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import com.example.photoday.R
-import com.example.photoday.constants.toast.Toast.toast
+import com.example.photoday.ui.toast.Toast.toast
 import com.example.photoday.databinding.DialogForgotPasswordBinding
-import com.example.photoday.repository.BaseRepositoryUser
 
-class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogFragment() {
+class ForgotPasswordDialog : DialogFragment() {
 
     private var _viewDataBinding: DialogForgotPasswordBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
+
+    var listener: ForgotPasswordListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,14 +54,10 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
                             messageToast(context?.getString(R.string.please_enter_valid_email))
                         }
                         else -> {
-                            repository.baseRepositoryForgotPassword(email)
-                                .observe(viewLifecycleOwner, { resource ->
-                                    messageToast(resource.message?.let { message ->
-                                        context?.getString(message)
-                                    })
-                                    dialog?.dismiss()
-                                    onDestroy()
-                                })
+                            listener?.onEmailSelected(email)
+                            dialog?.dismiss()
+                            onDestroy()
+
                         }
                     }
                 } catch (e: Exception) {
@@ -75,6 +71,10 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
         }
     }
 
+    interface ForgotPasswordListener {
+        fun onEmailSelected(email: String)
+    }
+
     private fun messageToast(message: String?) {
         message?.let { message -> toast(message) }
     }
@@ -85,6 +85,6 @@ class ForgotPasswordDialog(private val repository: BaseRepositoryUser) : DialogF
     }
 
     companion object {
-        fun newInstance(repository: BaseRepositoryUser) = ForgotPasswordDialog(repository)
+        fun newInstance() = ForgotPasswordDialog()
     }
 }

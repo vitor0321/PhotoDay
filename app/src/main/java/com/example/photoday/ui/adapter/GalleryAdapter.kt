@@ -10,7 +10,7 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.photoday.ui.adapter.extension.DiffCallback
-import com.example.photoday.model.adapter.ItemPhoto
+import com.example.photoday.ui.model.adapter.ItemPhoto
 import com.example.photoday.databinding.ItemGalleryFragmentBinding
 import com.example.photoday.ui.databinding.data.ItemPhotoData
 

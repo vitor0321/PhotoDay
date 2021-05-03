@@ -12,8 +12,7 @@ import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
 import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.databinding.FragmentSplashGoodbyeBinding
-import com.example.photoday.navigation.Navigation.navFragmentSplashGoodbyeToLogin
-import com.example.photoday.ui.databinding.data.ComponentsData
+import com.example.photoday.ui.navigation.Navigation.navFragmentSplashGoodbyeToLogin
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 

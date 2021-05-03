@@ -62,6 +62,10 @@
 
     <!-- Permission -->
     <string name="version_less_23">Version less than 23</string>
+    <string name="error_version_less_23">Error Version less than 23</string>
+    <string name="error_access_gallery">Error Access Gallery</string>
+    <string name="error_access_camera">Error Access Camera</string>
+    <string name="errorPermission">Error Permission</string>
 
     <!-- Firebase Auth-->
     <string name="successfully_logged">Logged successfully</string>

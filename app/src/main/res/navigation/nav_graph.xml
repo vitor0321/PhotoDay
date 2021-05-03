@@ -111,7 +111,7 @@
 
     <fragment
         android:id="@+id/splashLogin"
-        android:name="com.example.photoday.ui.fragment.splash.SplashLogin"
+        android:name="com.example.photoday.ui.fragment.splash.SplashLoginFragment"
         android:label="@string/nav_graph_label_splash_login"
         tools:layout="@layout/fragment_splash_login">
         <action
