@@ -25,6 +25,7 @@
     <string name="login">Login</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="register_new_user">Register New User</string>
+    <string name="check_your_email_and_confirm">Check your Email and Confirm</string>
 
     <!-- Register Fragment -->
     <string name="please_enter_email_register">Please enter email</string>
@@ -50,6 +51,7 @@
     <string name="what_is_your_email">What\'s your email?</string>
     <string name="what_is_your_name">What\'s your name?</string>
     <string name="enter_valid_name">Enter a valid name</string>
+    <string name="name_change_successful">Name change Successful</string>
     <string name="please_enter_email_dialog">Please enter email</string>
     <string name="cannot_access_gallery">Cannot Access Gallery</string>
     <string name="please_enter_valid_email_dialog">Please Enter Valid Email</string>
@@ -61,19 +63,21 @@
 
     <!-- Permission -->
     <string name="version_less_23">Version less than 23</string>
+    <string name="error_version_less_23">Error Version less than 23</string>
+    <string name="error_access_gallery">Error Access Gallery</string>
+    <string name="error_access_camera">Error Access Camera</string>
+    <string name="errorPermission">Error Permission</string>
 
     <!-- Firebase Auth-->
     <string name="successfully_logged">Logged successfully</string>
     <string name="please_enter_email">Please enter email</string>
     <string name="email_sent">Email sent</string>
-    <string name="name_change_successful">Name change Successful</string>
     <string name="image_change_successful">Image change Successful</string>
     <string name="please_enter_valid_email">Please Enter Valid Email</string>
     <string name="unregistered_email">Unregistered Email</string>
     <string name="auth_failed">Sorry, auth failed.</string>
     <string name="login_success">Login success</string>
     <string name="email_already_exists">Email already exists</string>
-    <string name="check_your_email_and_confirm">Check your Email and Confirm</string>
     <string name="authentication_failed_try_again">Authentication failed. Try again</string>
     <string name="login_failed">Login failed.</string>
     <string name="login_is_success">Login Success</string>

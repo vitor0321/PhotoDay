@@ -4,7 +4,7 @@
     <data>
         <variable
             name="itemToast"
-            type="com.example.photoday.constants.toast.ItemToast" />
+            type="com.example.photoday.ui.toast.ItemToast" />
     </data>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/ll_wrapper"

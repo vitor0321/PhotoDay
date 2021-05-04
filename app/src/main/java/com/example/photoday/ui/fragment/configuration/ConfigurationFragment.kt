@@ -13,26 +13,37 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.constants.toast.Toast.toast
 import com.example.photoday.databinding.FragmentConfigurationBinding
+import com.example.photoday.ui.common.ExhibitionCameraOrGallery
 import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
+import com.example.photoday.ui.model.user.UserFirebase
 import com.example.photoday.ui.stateBarNavigation.Components
+import com.example.photoday.ui.toast.Toast.toast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.io.ByteArrayOutputStream
 
-class ConfigurationFragment : BaseFragment() {
+class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener,
+    NewUserNameDialog.NewUserNameListener {
 
     private var _viewDataBinding: FragmentConfigurationBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val userFirebaseData by lazy { UserFirebaseData() }
-
     private val viewModel: ConfigurationViewModel by viewModel {
         parametersOf(findNavController())
+    }
+    private val exhibition: ExhibitionCameraOrGallery by inject {
+        parametersOf(this)
+    }
+    private val userFirebaseData: UserFirebaseData by inject {
+        parametersOf(this)
     }
 
     override fun onCreateView(
@@ -70,7 +81,7 @@ class ConfigurationFragment : BaseFragment() {
     private fun initObserve() {
         this.viewModel.getUserDBFirebase().observe(viewLifecycleOwner, { resourceUser ->
             this.userFirebaseData.setData(resourceUser.data)
-            messageToast(resourceUser.error)
+            messageToast(resourceUser.message?.let { message -> context?.getString(message) })
         })
     }
 
@@ -83,15 +94,9 @@ class ConfigurationFragment : BaseFragment() {
                     data?.data?.let { data ->
                         viewModel.imageUser(data).observe(this, { resourceUser ->
                             this.userFirebaseData.setData(resourceUser.data)
-                            when {
-                                resourceUser.error != null -> {
-                                    messageToast(resourceUser.error)
-                                }
-                                resourceUser.message != null -> {
-                                    messageToast(context?.getString(resourceUser.message))
-                                }
-                            }
-
+                            messageToast(resourceUser.message?.let { message ->
+                                context?.getString(message)
+                            })
                         })
                     }
                 }
@@ -108,7 +113,9 @@ class ConfigurationFragment : BaseFragment() {
                     )
                     viewModel.imageUser(Uri.parse(path)).observe(this, { resourceUser ->
                         this.userFirebaseData.setData(resourceUser.data)
-                        messageToast(resourceUser.error)
+                        messageToast(resourceUser.message?.let { message ->
+                            context?.getString(message)
+                        })
                     })
                 }
             }
@@ -118,40 +125,85 @@ class ConfigurationFragment : BaseFragment() {
     }
 
     private fun logout() {
-        /*logout with Firebase*/
-        this.viewModel.logout().observe(viewLifecycleOwner, { resourceMessage ->
-            when {
-                resourceMessage.error != null -> {
-                    messageToast(resourceMessage.error)
+        CoroutineScope(Dispatchers.IO).launch {
+            /*logout with Firebase*/
+            viewModel.logout().observe(viewLifecycleOwner, { resource ->
+                when (resource.login) {
+                    GOODBYE -> {
+                        messageToast(resource.message?.let { message -> context?.getString(message) })
+                        viewModel.navController(GOODBYE)
+                        onDestroy()
+                    }
+                    null -> {
+                        messageToast(resource.message?.let { message -> context?.getString(message) })
+                    }
                 }
-                resourceMessage.message != null -> {
-                    messageToast(context?.getString(resourceMessage.message))
-                }
-            }
-        })
+            })
+        }
     }
 
     private fun photoDialog() {
         /*open AddPhotoDialog*/
         activity?.let { activity ->
-            AddPhotoDialog.newInstance(null)
+            AddPhotoDialog.newInstance().apply {
+                listener = this@ConfigurationFragment
+            }
                 .show(activity.supportFragmentManager, ADD_PHOTO_DIALOG)
+        }
+    }
+
+    override fun onAccessSelected(accessSelected: Int) {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val activity = requireActivity()
+                exhibition.exhibitionCaptureImage(
+                    accessSelected,
+                    null,
+                    activity,
+                    REQUEST_CONFIGURATION
+                )
+            } catch (e: Exception) {
+                messageToast(context?.getString(R.string.error_version_less_23))
+            }
         }
     }
 
     private fun newUserNameDialog() {
         /*open NewUserNameDialog*/
-        NewUserNameDialog.newInstance()
+        activity?.let { activity ->
+            NewUserNameDialog.newInstance().apply {
+                listener = this@ConfigurationFragment
+            }
+                .show(activity.supportFragmentManager, NEW_NAME)
+        }
+    }
+
+    override fun onNewNameSelected(userFirebase: UserFirebase?, message: Int?) {
+        when (message) {
+            null -> {
+                userFirebase?.let {
+                    viewModel.newNameUser(userFirebase).observe(this, { resourceResult ->
+                        this.userFirebaseData.setData(resourceResult.data)
+                        messageToast(resourceResult.message?.let { message ->
+                            context?.getString(message)
+                        })
+                    })
+                }
+            }
+            else -> {
+                messageToast(context?.getString(message))
+            }
+        }
     }
 
     private fun statusBarNavigation() {
         statusAppBarNavigationBase(
             menu = FALSE_MENU,
             components = Components(
-                appBar = TRUE,
-                bottomNavigation = TRUE,
-                floatingActionButton = FALSE),
-            barColor = R.color.orange_status_bar)
+                appBar = TRUE, bottomNavigation = TRUE, floatingActionButton = FALSE
+            ),
+            barColor = R.color.orange_status_bar
+        )
     }
 
     private fun messageToast(message: String?) {

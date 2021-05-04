@@ -2,11 +2,12 @@ package com.example.photoday.repository
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
-import com.example.photoday.model.resource.ResourceUser
-import com.example.photoday.model.user.UserLogin
+import com.example.photoday.ui.model.resource.ResourceUser
+import com.example.photoday.ui.model.user.UserLogin
 import com.example.photoday.repository.firebaseUser.ChangeUserFirebase
 import com.example.photoday.repository.firebaseUser.CheckUserFirebase
 import com.example.photoday.repository.firebaseUser.FirebaseAuthRepository
+import com.example.photoday.ui.model.user.UserFirebase
 
 class BaseRepositoryUser(
     private val repositoryChange: ChangeUserFirebase,
@@ -20,7 +21,7 @@ class BaseRepositoryUser(
     fun baseRepositoryGetCurrentUserFirebase() =
         repositoryChange.getCurrentUserFirebase()
 
-    fun baseRepositoryChangeNameUser(newName: String) =
+    fun baseRepositoryChangeNameUser(newName: UserFirebase) =
         repositoryChange.changeNameUser(newName)
 
     fun baseRepositoryForgotPassword(email: String) =

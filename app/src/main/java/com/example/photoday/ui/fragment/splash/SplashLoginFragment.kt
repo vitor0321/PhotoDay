@@ -12,11 +12,11 @@ import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
 import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.databinding.FragmentSplashLoginBinding
-import com.example.photoday.navigation.Navigation.navFragmentSplashLoginToTimeline
+import com.example.photoday.ui.navigation.Navigation.navFragmentSplashLoginToTimeline
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 
-class SplashLogin : BaseFragment() {
+class SplashLoginFragment : BaseFragment() {
 
     private var _binding: FragmentSplashLoginBinding? = null
     private val binding get() = _binding!!
@@ -44,6 +44,7 @@ class SplashLogin : BaseFragment() {
         Handler(Looper.getMainLooper()).postDelayed({
             /*Navigation between fragments Directions*/
             navFragmentSplashLoginToTimeline(controlNavigation)
+            onDestroy()
         }, SPLASH_TIME_OUT)
     }
 

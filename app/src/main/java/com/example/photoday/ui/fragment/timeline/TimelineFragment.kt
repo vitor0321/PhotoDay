@@ -14,16 +14,15 @@ import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 =======
 >>>>>>> developing
 import com.example.photoday.constants.*
-import com.example.photoday.constants.toast.Toast.toast
+import com.example.photoday.ui.toast.Toast.toast
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.ui.adapter.TimelineAdapter
-import com.example.photoday.model.adapter.ItemPhoto
+import com.example.photoday.ui.model.adapter.ItemPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.greenrobot.eventbus.EventBus
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -128,7 +127,6 @@ class TimelineFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        EventBus.getDefault().unregister(this)
         this._viewDataBinding = null
     }
 }

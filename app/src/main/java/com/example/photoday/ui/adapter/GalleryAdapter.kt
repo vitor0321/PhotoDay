@@ -4,7 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+<<<<<<< HEAD
 import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
+=======
+import com.example.photoday.ui.adapter.extension.DiffCallback
+import com.example.photoday.ui.model.adapter.ItemPhoto
+>>>>>>> developing
 import com.example.photoday.databinding.ItemGalleryFragmentBinding
 import com.squareup.picasso.Picasso
 

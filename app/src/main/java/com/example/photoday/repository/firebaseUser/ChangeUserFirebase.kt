@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
-import com.example.photoday.model.resource.ResourceUser
-import com.example.photoday.model.user.UserFirebase
+import com.example.photoday.ui.model.resource.ResourceUser
+import com.example.photoday.ui.model.user.UserFirebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +39,7 @@ class ChangeUserFirebase(
                 val mediatorData = mediator.value
                 when (mediator.value) {
                     null -> mediator.value =
-                        ResourceUser(data = mediatorData?.data, error = e.message)
+                        ResourceUser(data = mediatorData?.data, message = R.string.error_api)
                 }
             }
         }
@@ -62,20 +62,20 @@ class ChangeUserFirebase(
                 val liveDataKeep = liveDataUser.value
                 when (liveDataUser.value) {
                     null -> liveDataUser.value =
-                        ResourceUser(data = liveDataKeep?.data, error = e.message)
+                        ResourceUser(data = liveDataKeep?.data, message = R.string.error_api)
                 }
             }
         }
         return liveDataUser
     }
 
-    fun changeNameUser(newName: String): LiveData<ResourceUser<String?>> {
-        val liveData = MutableLiveData<ResourceUser<String?>>()
+    fun changeNameUser(newName: UserFirebase): LiveData<ResourceUser<UserFirebase?>> {
+        val liveData = MutableLiveData<ResourceUser<UserFirebase?>>()
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val user = FirebaseAuth.getInstance().currentUser
                 val profileUpdates = UserProfileChangeRequest.Builder()
-                    .setDisplayName(newName)
+                    .setDisplayName(newName.name)
                     .build()
                 user!!.updateProfile(profileUpdates)
                     .addOnCompleteListener { task ->
@@ -97,23 +97,18 @@ class ChangeUserFirebase(
         val liveData = MutableLiveData<ResourceUser<Void>>()
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                when {
-
-                    else -> {
-                        auth.sendPasswordResetEmail(email)
-                            .addOnCompleteListener { task ->
-                                when {
-                                    task.isSuccessful -> {
-                                        liveData.value = ResourceUser(message = R.string.email_sent)
-                                    }
-                                    else -> {
-                                        liveData.value =
-                                            ResourceUser(message = R.string.unregistered_email)
-                                    }
-                                }
+                auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener { task ->
+                        when {
+                            task.isSuccessful -> {
+                                liveData.value = ResourceUser(message = R.string.email_sent)
                             }
+                            else -> {
+                                liveData.value =
+                                    ResourceUser(message = R.string.unregistered_email)
+                            }
+                        }
                     }
-                }
             } catch (e: Exception) {
                 liveData.value = ResourceUser(message= R.string.failure_api)
             }

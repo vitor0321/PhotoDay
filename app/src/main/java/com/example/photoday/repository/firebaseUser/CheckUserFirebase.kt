@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.ON_START
-import com.example.photoday.model.resource.ResourceUser
+import com.example.photoday.ui.model.resource.ResourceUser
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -16,7 +16,15 @@ const val DEFAULT_WEB_CLIENT_ID =
 const val ON_START = 100
 const val FIRST_LOGIN = 200
 const val REGISTER = 300
-const val FORGOT_PASSWORD = 400
+const val ERROR_LOGIN = 350
+const val FORGOT_PASSWORD = "FORGOT_PASSWORD"
+
+/*Configuration*/
+const val NEW_NAME = "NEW_NAME"
+const val GOODBYE = 456
+
+/*Exhibition Image*/
+const val ADD_IMAGE_USER = "ADD_IMAGE_USER"
 
 /*Dialog*/
 const val ADD_PHOTO_DIALOG = "ADD_PHOTO_DIALOG"
@@ -24,6 +32,10 @@ const val REQUEST_IMAGE_CAPTURE_USER = 1001
 const val REQUEST_IMAGE_GALLERY_USER = 1002
 const val REQUEST_IMAGE_CAPTURE = 1011
 const val REQUEST_IMAGE_GALLERY = 1012
+const val REQUEST_CONFIGURATION = 1333
+const val REQUEST_PHOTO_DAY = 1444
+const val ADD_GALLERY = 1111
+const val ADD_CAMERA = 1112
 
 /*Firebase Photo*/
 const val IMAGES = "images/"

@@ -1,4 +1,4 @@
-package com.example.photoday.constants.toast
+package com.example.photoday.ui.toast
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -34,7 +34,7 @@ object Toast {
                 val layoutToast = LayoutInflater.from(this@toast)
                     .inflate(R.layout.constum_toast, null)
                 _viewDataBinding = ConstumToastBinding.bind(layoutToast)
-                viewDataBinding.itemToast = ItemToast(message)
+                viewDataBinding.itemToast= ItemToast(message)
                 duration = time
                 view = layoutToast
             }.show()

@@ -1,4 +1,4 @@
-package com.example.photoday.model.user
+package com.example.photoday.ui.model.user
 
 data class UserLogin(
     var email: String,

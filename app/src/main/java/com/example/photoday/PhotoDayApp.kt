@@ -21,6 +21,7 @@ class PhotoDayApp : Application() {
                 listOf(
                     repositoryModulo,
                     firebaseRepositoryModulo,
+                    accessExceptionModulo,
                     uiModulo,
                     viewModelModulo,
                 )

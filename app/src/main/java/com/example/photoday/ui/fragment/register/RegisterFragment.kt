@@ -9,9 +9,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
-import com.example.photoday.constants.toast.Toast.toast
+import com.example.photoday.ui.toast.Toast.toast
 import com.example.photoday.databinding.FragmentRegisterUserBinding
-import com.example.photoday.model.user.UserLogin
+import com.example.photoday.ui.model.user.UserLogin
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -107,7 +107,10 @@ class RegisterFragment : BaseFragment() {
             .observe(viewLifecycleOwner, { resourceMessage ->
                 messageToast(resourceMessage.message?.let { message -> context?.getString(message)})
                 when (resourceMessage.navigation) {
-                    true -> { viewModel.navigationRegister() }
+                    true -> {
+                        viewModel.navigationRegister()
+                        onDestroy()
+                    }
                 }
             })
     }
