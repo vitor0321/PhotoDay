@@ -8,19 +8,15 @@ import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
-import com.example.photoday.ui.toast.Toast.toast
 import com.example.photoday.databinding.DialogFragmentUserNewNameBinding
 import com.example.photoday.ui.model.user.UserFirebase
-import com.example.photoday.repository.BaseRepositoryUser
-import com.example.photoday.ui.databinding.data.UserFirebaseData
 
-class NewUserNameDialog(
-    private val baseRepositoryUser: BaseRepositoryUser,
-    private val userFirebaseData: UserFirebaseData
-) : DialogFragment() {
+class NewUserNameDialog : DialogFragment() {
 
     private var _viewDataBinding: DialogFragmentUserNewNameBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
+
+    var listener: NewUserNameListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,8 +24,6 @@ class NewUserNameDialog(
         savedInstanceState: Bundle?,
     ): View {
         _viewDataBinding = DialogFragmentUserNewNameBinding.inflate(inflater, container, false)
-        this.viewDataBinding.userFirebase = userFirebaseData
-        this.viewDataBinding.lifecycleOwner = this
         return this.viewDataBinding.root
     }
 
@@ -48,29 +42,23 @@ class NewUserNameDialog(
     private fun init() {
         this.viewDataBinding.apply {
             okButton = View.OnClickListener {
-                try {
-                    val newName = editTextNewName.text.toString()
-                    when {
-                        newName.isBlank() -> {
-                            messageToast(context?.getString(R.string.enter_valid_name))
-                            editTextNewName.requestFocus()
-                        }
+                val newName = editTextNewName.text.toString()
+                when {
+                    newName.isBlank() -> {
+                        listener?.onNewNameSelected(null, R.string.enter_valid_name)
+                        editTextNewName.requestFocus()
                     }
-                    baseRepositoryUser.baseRepositoryChangeNameUser(newName)
-                        .observe(viewLifecycleOwner, { resourceResult ->
-                            when {
-                                resourceResult.message != null -> messageToast(resourceResult.message?.let { message ->
-                                    context?.getString(message)
-                                })
-                                resourceResult.data != null -> setNameData(resourceResult.data)
-
-                            }
-                        })
-                    dialog?.dismiss()
-                    onDestroy()
-                } catch (e: Exception) {
-                    messageToast(e.message)
+                    else -> {
+                        val userName = UserFirebase(
+                            name = newName,
+                            email = null,
+                            image = null
+                        )
+                        listener?.onNewNameSelected(userName, null)
+                    }
                 }
+                dialog?.dismiss()
+                onDestroy()
             }
             cancelButton = View.OnClickListener {
                 dialog?.dismiss()
@@ -79,17 +67,8 @@ class NewUserNameDialog(
         }
     }
 
-    private fun setNameData(newName: String) {
-        val userName = UserFirebase(
-            name = newName,
-            email = null,
-            image = null
-        )
-        this.userFirebaseData.setData(userName)
-    }
-
-    private fun messageToast(message: String?) {
-        message?.let { message -> toast(message) }
+    interface NewUserNameListener {
+        fun onNewNameSelected(userFirebase: UserFirebase?, message: Int?)
     }
 
     override fun onDestroy() {
@@ -98,9 +77,6 @@ class NewUserNameDialog(
     }
 
     companion object {
-        fun newInstance(
-            baseRepositoryUser: BaseRepositoryUser,
-            userFirebaseData: UserFirebaseData
-        ) = NewUserNameDialog(baseRepositoryUser, userFirebaseData)
+        fun newInstance() = NewUserNameDialog()
     }
 }

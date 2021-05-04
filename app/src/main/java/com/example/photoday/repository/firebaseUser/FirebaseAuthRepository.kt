@@ -24,7 +24,6 @@ class FirebaseAuthRepository(
 
     fun logoutFirebase(): LiveData<ResourceUser<Void>> {
         val liveData = MutableLiveData<ResourceUser<Void>>()
-        CoroutineScope(Dispatchers.IO).launch {
             try {
                 AuthUI.getInstance()
                     .signOut(context)
@@ -37,7 +36,6 @@ class FirebaseAuthRepository(
             } catch (e: Exception) {
                 liveData.value = ResourceUser(message = R.string.failure_api)
             }
-        }
         return liveData
     }
 

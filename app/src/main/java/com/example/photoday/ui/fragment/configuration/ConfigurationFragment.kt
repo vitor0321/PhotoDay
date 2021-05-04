@@ -14,12 +14,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentConfigurationBinding
-import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.ui.common.ExhibitionCameraOrGallery
 import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.dialog.AddPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
+import com.example.photoday.ui.model.user.UserFirebase
 import com.example.photoday.ui.stateBarNavigation.Components
 import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
@@ -30,16 +30,14 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.io.ByteArrayOutputStream
 
-class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener {
+class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener,
+    NewUserNameDialog.NewUserNameListener {
 
     private var _viewDataBinding: FragmentConfigurationBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
     private val viewModel: ConfigurationViewModel by viewModel {
         parametersOf(findNavController())
-    }
-    private val repositoryUser: BaseRepositoryUser by inject {
-        parametersOf(this)
     }
     private val exhibition: ExhibitionCameraOrGallery by inject {
         parametersOf(this)
@@ -83,7 +81,7 @@ class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener {
     private fun initObserve() {
         this.viewModel.getUserDBFirebase().observe(viewLifecycleOwner, { resourceUser ->
             this.userFirebaseData.setData(resourceUser.data)
-            messageToast(resourceUser.error)
+            messageToast(resourceUser.message?.let { message -> context?.getString(message) })
         })
     }
 
@@ -96,15 +94,9 @@ class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener {
                     data?.data?.let { data ->
                         viewModel.imageUser(data).observe(this, { resourceUser ->
                             this.userFirebaseData.setData(resourceUser.data)
-                            when {
-                                resourceUser.error != null -> {
-                                    messageToast(resourceUser.error)
-                                }
-                                resourceUser.message != null -> {
-                                    messageToast(context?.getString(resourceUser.message))
-                                }
-                            }
-
+                            messageToast(resourceUser.message?.let { message ->
+                                context?.getString(message)
+                            })
                         })
                     }
                 }
@@ -121,7 +113,9 @@ class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener {
                     )
                     viewModel.imageUser(Uri.parse(path)).observe(this, { resourceUser ->
                         this.userFirebaseData.setData(resourceUser.data)
-                        messageToast(resourceUser.error)
+                        messageToast(resourceUser.message?.let { message ->
+                            context?.getString(message)
+                        })
                     })
                 }
             }
@@ -131,19 +125,21 @@ class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener {
     }
 
     private fun logout() {
-        /*logout with Firebase*/
-        this.viewModel.logout().observe(viewLifecycleOwner, { resource ->
-            when (resource.login) {
-                GOODBYE -> {
-                    messageToast(resource.message?.let { message -> context?.getString(message) })
-                    viewModel.navController(GOODBYE)
-                    onDestroy()
+        CoroutineScope(Dispatchers.IO).launch {
+            /*logout with Firebase*/
+            viewModel.logout().observe(viewLifecycleOwner, { resource ->
+                when (resource.login) {
+                    GOODBYE -> {
+                        messageToast(resource.message?.let { message -> context?.getString(message) })
+                        viewModel.navController(GOODBYE)
+                        onDestroy()
+                    }
+                    null -> {
+                        messageToast(resource.message?.let { message -> context?.getString(message) })
+                    }
                 }
-                null -> {
-                    messageToast(resource.message?.let { message -> context?.getString(message) })
-                }
-            }
-        })
+            })
+        }
     }
 
     private fun photoDialog() {
@@ -175,8 +171,28 @@ class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener {
     private fun newUserNameDialog() {
         /*open NewUserNameDialog*/
         activity?.let { activity ->
-            NewUserNameDialog.newInstance(repositoryUser, userFirebaseData)
+            NewUserNameDialog.newInstance().apply {
+                listener = this@ConfigurationFragment
+            }
                 .show(activity.supportFragmentManager, NEW_NAME)
+        }
+    }
+
+    override fun onNewNameSelected(userFirebase: UserFirebase?, message: Int?) {
+        when (message) {
+            null -> {
+                userFirebase?.let {
+                    viewModel.newNameUser(userFirebase).observe(this, { resourceResult ->
+                        this.userFirebaseData.setData(resourceResult.data)
+                        messageToast(resourceResult.message?.let { message ->
+                            context?.getString(message)
+                        })
+                    })
+                }
+            }
+            else -> {
+                messageToast(context?.getString(message))
+            }
         }
     }
 
@@ -184,9 +200,7 @@ class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener {
         statusAppBarNavigationBase(
             menu = FALSE_MENU,
             components = Components(
-                appBar = TRUE,
-                bottomNavigation = TRUE,
-                floatingActionButton = FALSE
+                appBar = TRUE, bottomNavigation = TRUE, floatingActionButton = FALSE
             ),
             barColor = R.color.orange_status_bar
         )

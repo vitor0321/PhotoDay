@@ -50,9 +50,6 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private val exhibition: ExhibitionCameraOrGallery by inject {
         parametersOf(this)
     }
-    private val checkPermission: CheckVersionPermission by inject {
-        parametersOf(this)
-    }
 
     private var datePhotoEventBus: String? = null
 

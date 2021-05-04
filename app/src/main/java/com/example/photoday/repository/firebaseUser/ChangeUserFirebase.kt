@@ -39,7 +39,7 @@ class ChangeUserFirebase(
                 val mediatorData = mediator.value
                 when (mediator.value) {
                     null -> mediator.value =
-                        ResourceUser(data = mediatorData?.data, error = e.message)
+                        ResourceUser(data = mediatorData?.data, message = R.string.error_api)
                 }
             }
         }
@@ -62,20 +62,20 @@ class ChangeUserFirebase(
                 val liveDataKeep = liveDataUser.value
                 when (liveDataUser.value) {
                     null -> liveDataUser.value =
-                        ResourceUser(data = liveDataKeep?.data, error = e.message)
+                        ResourceUser(data = liveDataKeep?.data, message = R.string.error_api)
                 }
             }
         }
         return liveDataUser
     }
 
-    fun changeNameUser(newName: String): LiveData<ResourceUser<String?>> {
-        val liveData = MutableLiveData<ResourceUser<String?>>()
+    fun changeNameUser(newName: UserFirebase): LiveData<ResourceUser<UserFirebase?>> {
+        val liveData = MutableLiveData<ResourceUser<UserFirebase?>>()
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val user = FirebaseAuth.getInstance().currentUser
                 val profileUpdates = UserProfileChangeRequest.Builder()
-                    .setDisplayName(newName)
+                    .setDisplayName(newName.name)
                     .build()
                 user!!.updateProfile(profileUpdates)
                     .addOnCompleteListener { task ->

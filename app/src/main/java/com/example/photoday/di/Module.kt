@@ -55,7 +55,6 @@ val firebaseRepositoryModulo = module(override = true) {
 
 val accessExceptionModulo = module(override = true) {
     single<ExhibitionCameraOrGallery> { ExhibitionCameraOrGallery }
-    single<CheckVersionPermission> { CheckVersionPermission }
 }
 
 val uiModulo = module(override = true) {
