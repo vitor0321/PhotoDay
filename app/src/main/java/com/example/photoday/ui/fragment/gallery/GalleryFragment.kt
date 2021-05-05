@@ -18,6 +18,7 @@ import com.example.photoday.ui.stateBarNavigation.Components
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -29,6 +30,7 @@ class GalleryFragment : BaseFragment() {
     private val viewModel: GalleryViewModel by viewModel{
         parametersOf(findNavController())
     }
+    private val adapterGallery: GalleryAdapter by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +38,11 @@ class GalleryFragment : BaseFragment() {
     ): View {
         this._viewDataBinding = FragmentGalleryBinding.inflate(inflater, container, false)
         return viewDataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecycleView()
     }
 
     override fun onStart() {
@@ -48,30 +55,33 @@ class GalleryFragment : BaseFragment() {
     private fun init() {
         viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
         statusBarNavigation()
-        initStateFlowObserve()
+        initObserve()
     }
 
-    private fun initStateFlowObserve() {
-        this.viewModel.createPullPhotos().observe(viewLifecycleOwner, { resourceList ->
-            resourceList.data?.let { listPhoto ->
-                initRecycleView(listPhoto)
-            }
-            messageToast(resourceList.error)
-        })
+    private fun initObserve() {
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.createPullPhotos().observe(viewLifecycleOwner, { resourceList ->
+                resourceList.data?.let { listPhoto ->
+                    adapterGallery.updateRecycle(listPhoto)
+                }
+                messageToast(resourceList.message?.let { message -> context?.getString(message) })
+            })
+        }.isCompleted.apply {
+            viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
+        }
     }
 
-    private fun initRecycleView(listPhoto: List<ItemPhoto>) {
+    private fun initRecycleView() {
         val spanCount = SPAN_COUNT
         val layoutManagerAdapter = GridLayoutManager(context, spanCount)
         CoroutineScope(Dispatchers.Main).launch {
             viewDataBinding.recycleViewListGallery.run {
                 layoutManager = layoutManagerAdapter
-                adapter = GalleryAdapter(context, listPhoto) { itemPhoto ->
+                adapter = adapterGallery
+                adapterGallery.onItemClickListener = { itemPhoto ->
                     viewModel.navFragment(itemPhoto.photo)
                 }
             }
-        }.isCompleted.apply {
-            viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
         }
     }
 

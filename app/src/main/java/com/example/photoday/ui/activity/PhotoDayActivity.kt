@@ -22,7 +22,6 @@ import com.example.photoday.eventBus.MessageEvent
 import com.example.photoday.ui.common.ExhibitionCameraOrGallery
 import com.example.photoday.ui.databinding.data.ComponentsData
 import com.example.photoday.ui.dialog.AddPhotoDialog
-import com.example.photoday.ui.stateBarNavigation.Components
 import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -86,7 +85,9 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     }
 
     private fun initObserve() {
-
+        viewModel.component.observe(this, { components ->
+            componentsData.setComponentsData(components)
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -102,15 +103,10 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                     data?.data?.let { photo ->
                         datePhotoEventBus?.let { dateCalendar ->
                             viewModel.createPushPhoto(dateCalendar, photo)
-                                .observe(this, { resourcesError ->
-                                    when {
-                                        resourcesError.error != null -> {
-                                            messageToast(resourcesError.error)
-                                        }
-                                        resourcesError.message != null -> {
-                                            messageToast(this.getString(resourcesError.message))
-                                        }
-                                    }
+                                .observe(this, { resources ->
+                                    messageToast(resources.message?.let { message ->
+                                        this.getString(message)
+                                    })
                                 })
                         }
                     }
@@ -128,15 +124,10 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                     )
                         datePhotoEventBus?.let { dateCalendar ->
                             viewModel.createPushPhoto(dateCalendar, Uri.parse(path))
-                                .observe(this, { resourcesError ->
-                                    when {
-                                        resourcesError.error != null -> {
-                                            messageToast(resourcesError.error)
-                                        }
-                                        resourcesError.message != null -> {
-                                            messageToast(this.getString(resourcesError.message))
-                                        }
-                                    }
+                                .observe(this, { resources ->
+                                    messageToast(resources.message?.let { message ->
+                                        this.getString(message)
+                                    })
                                 })
                         }
                 }
@@ -196,10 +187,6 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         valueDate = simpleDateFormat.format(calendar.time)
         //get select date and send to photoDialog
         photoDialog()
-    }
-
-    fun statusAppBarNavigation(components: Components) {
-        componentsData.setComponentsData(components)
     }
 
     private fun photoDialog() {

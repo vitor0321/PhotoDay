@@ -6,8 +6,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
 import com.example.photoday.constants.IMAGES
-import com.example.photoday.ui.model.resource.ResourceItem
 import com.example.photoday.ui.model.adapter.ItemPhoto
+import com.example.photoday.ui.model.resource.ResourceItem
 import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
@@ -40,7 +40,8 @@ class FirebasePhoto(
         } catch (e: Exception) {
             val mediatorKeep = mediator.value
             when (mediator.value) {
-                null -> mediator.value = ResourceItem(data = mediatorKeep?.data, error = e.message)
+                null -> mediator.value =
+                    ResourceItem(data = mediatorKeep?.data, message = R.string.error_api)
             }
         }
         return mediator
@@ -60,7 +61,7 @@ class FirebasePhoto(
         } catch (e: Exception) {
             val liveDataKeep = liveData.value
             when(liveData.value){
-                null-> liveData.value = ResourceItem(data= liveDataKeep?.data,error = e.message)
+                null-> liveData.value = ResourceItem(data= liveDataKeep?.data,message = R.string.error_api)
             }
         }
         return liveData
@@ -76,7 +77,7 @@ class FirebasePhoto(
                 ResourceItem(message = R.string.successfully_delete_image)
         } catch (e: Exception) {
             e.message?.let { message ->
-                liveData.value = ResourceItem(error = message)
+                liveData.value = ResourceItem(message = R.string.error_api)
             }
         }
         return liveData

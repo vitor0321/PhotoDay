@@ -9,15 +9,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.ui.toast.Toast.toast
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.ui.adapter.TimelineAdapter
-import com.example.photoday.ui.model.adapter.ItemPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.stateBarNavigation.Components
+import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -29,6 +29,7 @@ class TimelineFragment : BaseFragment() {
     private val viewModel: TimelineViewModel by viewModel {
         parametersOf(findNavController())
     }
+    private val adapterTimeline: TimelineAdapter by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +37,11 @@ class TimelineFragment : BaseFragment() {
     ): View {
         _viewDataBinding = FragmentTimelineBinding.inflate(inflater, container, false)
         return viewDataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecycleView()
     }
 
     override fun onStart() {
@@ -52,25 +58,28 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun initObserve() {
-        this.viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
-            resourceList.data?.let { listPhoto ->
-                initRecycleView(listPhoto)
-            }
-            messageToast(resourceList.error)
-        }
-    }
-
-    private fun initRecycleView(listPhoto: List<ItemPhoto>) {
         CoroutineScope(Dispatchers.Main).launch {
-            viewDataBinding.recycleViewListTimeline.run {
-                layoutManager = LinearLayoutManager(context)
-                adapter = TimelineAdapter(context, listPhoto) { itemPhoto ->
-                    viewModel.navFragment(itemPhoto.photo)
+            viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
+                resourceList.data?.let { listPhoto ->
+                    adapterTimeline.updateRecycle(listPhoto)
                 }
-
+                messageToast(resourceList.message?.let { message -> context?.getString(message) })
             }
         }.isCompleted.apply {
             viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
+        }
+    }
+
+    private fun initRecycleView() {
+        CoroutineScope(Dispatchers.Main).launch {
+            viewDataBinding.recycleViewListTimeline.run {
+                layoutManager = LinearLayoutManager(context)
+                adapter = adapterTimeline
+                adapterTimeline.onItemClickListener = { selectItem ->
+                    val itemSelect = selectItem.photo
+                    viewModel.navFragment(itemSelect)
+                }
+            }
         }
     }
 

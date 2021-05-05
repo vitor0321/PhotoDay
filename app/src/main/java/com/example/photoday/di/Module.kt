@@ -12,11 +12,15 @@ import com.example.photoday.repository.firebaseUser.CheckUserFirebase
 import com.example.photoday.repository.firebaseUser.FirebaseAuthRepository
 import com.example.photoday.ui.activity.PhotoDayActivity
 import com.example.photoday.ui.activity.PhotoDayViewModel
+import com.example.photoday.ui.adapter.GalleryAdapter
+import com.example.photoday.ui.adapter.TimelineAdapter
 import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
+import com.example.photoday.ui.fragment.gallery.GalleryFragment
 import com.example.photoday.ui.fragment.gallery.GalleryViewModel
 import com.example.photoday.ui.fragment.login.LoginViewModel
 import com.example.photoday.ui.fragment.register.RegisterViewModel
+import com.example.photoday.ui.fragment.timeline.TimelineFragment
 import com.example.photoday.ui.fragment.timeline.TimelineViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -58,8 +62,12 @@ val accessExceptionModulo = module(override = true) {
 }
 
 val uiModulo = module(override = true) {
-    single<FragmentActivity> { FragmentActivity() }
-    single<PhotoDayActivity> { PhotoDayActivity() }
+    factory<FragmentActivity> { FragmentActivity() }
+    factory<PhotoDayActivity> { PhotoDayActivity() }
+    factory<TimelineFragment> { TimelineFragment() }
+    factory<TimelineAdapter> {TimelineAdapter(get<Context>()) }
+    factory<GalleryFragment> {GalleryFragment() }
+    factory<GalleryAdapter> {GalleryAdapter(get<Context>())  }
 }
 
 val viewModelModulo = module(override = true) {

@@ -9,14 +9,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photoday.ui.adapter.extension.DiffCallback
-import com.example.photoday.ui.model.adapter.ItemPhoto
 import com.example.photoday.databinding.ItemGalleryFragmentBinding
+import com.example.photoday.ui.adapter.extension.DiffCallback
 import com.example.photoday.ui.databinding.data.ItemPhotoData
+import com.example.photoday.ui.model.adapter.ItemPhoto
 
 class GalleryAdapter(
     private val context: Context,
-    private val items: List<ItemPhoto>,
+    private val items: MutableList<ItemPhoto> = mutableListOf(),
     var onItemClickListener: (selectItem: ItemPhoto) -> Unit = {},
 ) : ListAdapter<ItemPhoto, GalleryAdapter.ViewHolder>(DiffCallback) {
 
@@ -42,6 +42,14 @@ class GalleryAdapter(
     override fun onViewDetachedFromWindow(holder: ViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.stateRegistry(Lifecycle.State.DESTROYED)
+    }
+
+    fun updateRecycle(newItems: List<ItemPhoto>) {
+        val currentSize: Int = items.size
+        items.clear()
+        items.addAll(newItems)
+        notifyItemRangeRemoved(0, currentSize)
+        notifyItemRangeInserted(0, newItems.size)
     }
 
     inner class ViewHolder(private val viewDataBinding: ItemGalleryFragmentBinding) :
