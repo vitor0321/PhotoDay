@@ -51,10 +51,14 @@ class TimelineFragment : BaseFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        initObserve()
+    }
+
     private fun init() {
         viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
         statusBarNavigation()
-        initObserve()
     }
 
     private fun initObserve() {

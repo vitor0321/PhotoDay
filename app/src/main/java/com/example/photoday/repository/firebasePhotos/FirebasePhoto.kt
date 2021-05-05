@@ -17,69 +17,62 @@ class FirebasePhoto(
     private val imageRef : FirebaseStorage
 ) {
 
-    private val mediator = MediatorLiveData<ResourceItem<List<ItemPhoto>?>>()
-    fun listFileDownload(): LiveData<ResourceItem<List<ItemPhoto>?>> {
-        try {
-            val storageRef = imageRef.reference.child("$IMAGES")
-            val imagesList: ArrayList<ItemPhoto> = ArrayList()
-            val listAllTask: Task<ListResult> = storageRef.listAll()
-            listAllTask.addOnCompleteListener { result ->
-                val items: List<StorageReference> = result.result!!.items
-                //add cycle for add image url to list
-                items.forEachIndexed { _, item ->
-                    item.downloadUrl.addOnSuccessListener { itemUri ->
-                        item.name
-                        imagesList.add(ItemPhoto(item.name, itemUri.toString()))
-                    }.addOnCompleteListener {
-                        imagesList.sortBy { it.dateCalendar }
-                        val listReversed = imagesList.asReversed()
-                        mediator.value = ResourceItem(data = listReversed)
+    fun listFileDownload(): LiveData<ResourceItem<List<ItemPhoto>?>> =
+        MediatorLiveData<ResourceItem<List<ItemPhoto>?>>().apply {
+            try {
+                val storageRef = imageRef.reference.child(IMAGES)
+                val imagesList: ArrayList<ItemPhoto> = ArrayList()
+                val listAllTask: Task<ListResult> = storageRef.listAll()
+                listAllTask.addOnCompleteListener { result ->
+                    val items: List<StorageReference> = result.result!!.items
+                    //add cycle for add image url to list
+                    items.forEachIndexed { _, item ->
+                        item.downloadUrl.addOnSuccessListener { itemUri ->
+                            item.name
+                            imagesList.add(ItemPhoto(item.name, itemUri.toString()))
+                        }.addOnCompleteListener {
+                            imagesList.sortBy { it.dateCalendar }
+                            val listReversed = imagesList.asReversed()
+                            value = ResourceItem(data = listReversed)
+                        }
                     }
                 }
-            }
-        } catch (e: Exception) {
-            val mediatorKeep = mediator.value
-            when (mediator.value) {
-                null -> mediator.value =
-                    ResourceItem(data = mediatorKeep?.data, message = R.string.error_api)
+            } catch (e: Exception) {
+                val mediatorKeep = value
+                when (value) {
+                    null -> value =
+                        ResourceItem(data = mediatorKeep?.data, message = R.string.error_api)
+                }
             }
         }
-        return mediator
-    }
 
     fun uploadImageToStorage(
         dateCalendar: String,
         curFile: Uri?,
-    ): LiveData<ResourceItem<Void?>> {
-        val liveData = MutableLiveData<ResourceItem<Void?>>()
+    ): LiveData<ResourceItem<Void?>> = MutableLiveData<ResourceItem<Void?>>().apply {
         try {
             curFile?.let {
                 imageRef.reference.child("$IMAGES$dateCalendar").putFile(it)
-                liveData.value =
-                    ResourceItem(message = R.string.successfully_upload_image)
+                value = ResourceItem(message = R.string.successfully_upload_image)
             }
         } catch (e: Exception) {
-            val liveDataKeep = liveData.value
-            when(liveData.value){
-                null-> liveData.value = ResourceItem(data= liveDataKeep?.data,message = R.string.error_api)
+            val liveDataKeep = value
+            when (value) {
+                null -> value =
+                    ResourceItem(data = liveDataKeep?.data, message = R.string.error_api)
             }
         }
-        return liveData
     }
+
 
     fun deleteImage(
         dateCalendar: String,
-    ): LiveData<ResourceItem<Void?>> {
-        val liveData = MutableLiveData<ResourceItem<Void?>>()
-        try {
+    ): LiveData<ResourceItem<Void?>> = MutableLiveData<ResourceItem<Void?>>().apply {
+        value = try {
             imageRef.reference.child("$IMAGES$dateCalendar").delete()
-            liveData.value =
-                ResourceItem(message = R.string.successfully_delete_image)
+            ResourceItem(message = R.string.successfully_delete_image)
         } catch (e: Exception) {
-            e.message?.let { message ->
-                liveData.value = ResourceItem(message = R.string.error_api)
-            }
+            ResourceItem(message = R.string.error_api)
         }
-        return liveData
     }
 }

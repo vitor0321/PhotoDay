@@ -67,7 +67,6 @@ val uiModulo = module(override = true) {
     factory<TimelineFragment> { TimelineFragment() }
     factory<TimelineAdapter> {TimelineAdapter(get<Context>()) }
     factory<GalleryFragment> {GalleryFragment() }
-    factory<GalleryAdapter> {GalleryAdapter(get<Context>())  }
 }
 
 val viewModelModulo = module(override = true) {
