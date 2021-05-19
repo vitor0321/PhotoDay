@@ -49,20 +49,16 @@ class NewUserNameDialog : DialogFragment() {
                         editTextNewName.requestFocus()
                     }
                     else -> {
-                        val userName = UserFirebase(
-                            name = newName,
-                            email = null,
-                            image = null
-                        )
+                        val userName = UserFirebase(name = newName, email = null, image = null)
                         listener?.onNewNameSelected(userName, null)
                     }
                 }
-                dialog?.dismiss()
                 onDestroy()
+                dialog?.dismiss()
             }
             cancelButton = View.OnClickListener {
-                dialog?.dismiss()
                 onDestroy()
+                dialog?.dismiss()
             }
         }
     }

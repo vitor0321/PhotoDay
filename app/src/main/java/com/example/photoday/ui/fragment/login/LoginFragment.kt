@@ -16,7 +16,7 @@ import com.example.photoday.ui.model.resource.ResourceUser
 import com.example.photoday.ui.model.user.UserLogin
 import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.stateBarNavigation.Components
+import com.example.photoday.ui.model.item.Components
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

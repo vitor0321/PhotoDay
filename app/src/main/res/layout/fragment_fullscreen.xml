@@ -7,7 +7,7 @@
 
         <variable
             name="itemFromRecycle"
-            type="com.example.photoday.ui.model.adapter.ItemPhoto" />
+            type="com.example.photoday.ui.model.item.ItemPhoto" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

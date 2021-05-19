@@ -13,63 +13,52 @@ import com.example.photoday.ui.fragment.timeline.TimelineFragmentDirections
 object Navigation {
 
     fun navFragmentLoginToSplashLogin(navFragment: NavController) {
-        /*Navigation between fragments Directions Login and Splash Login*/
-        val direction = LoginFragmentDirections.actionLoginFragmentToSplashLogin()
-        navFragment.navigate(direction)
+        LoginFragmentDirections.actionLoginFragmentToSplashLogin()
+            .let(navFragment::navigate)
     }
 
     fun navFragmentLoginToTimeline(navFragment: NavController) {
-        /*Navigation between fragments Directions Login and Timeline*/
-        val direction = LoginFragmentDirections.actionLoginFragmentToTimelineFragment()
-        navFragment.navigate(direction)
+        LoginFragmentDirections.actionLoginFragmentToTimelineFragment()
+            .let(navFragment::navigate)
     }
 
     fun navFragmentLoginToRegister(navFragment: NavController) {
-        /*Navigation between fragments Directions Login and Register*/
-        val direction = LoginFragmentDirections.actionLoginFragmentToRegister()
-        navFragment.navigate(direction)
+        LoginFragmentDirections.actionLoginFragmentToRegister()
+            .let(navFragment::navigate)
     }
 
     fun navFragmentConfigurationToSplashGoodbye(navFragment: NavController) {
-        val direction =
-            ConfigurationFragmentDirections.actionConfigurationFragmentToSplashGoodbyeFragment()
-        navFragment.navigate(direction)
+        ConfigurationFragmentDirections.actionConfigurationFragmentToSplashGoodbyeFragment()
+            .let(navFragment::navigate)
     }
 
     fun navFragmentSplashGoodbyeToLogin(navFragment: NavController){
-        /*Navigation between fragments Directions*/
-        val direction =
-            SplashGoodbyeFragmentDirections.actionSplashGoodbyeFragmentToLoginFragment()
-        navFragment.navigate(direction)
+        SplashGoodbyeFragmentDirections.actionSplashGoodbyeFragmentToLoginFragment()
+            .let(navFragment::navigate)
     }
 
     fun navFragmentSplashIntroToLogin(navFragment: NavController){
-        val direction =
-            SplashIntroFragmentDirections.actionSplashIntroFragmentToLoginFragment()
-        navFragment.navigate(direction)
+        SplashIntroFragmentDirections.actionSplashIntroFragmentToLoginFragment()
+            .let(navFragment::navigate)
     }
 
     fun navFragmentSplashLoginToTimeline(navFragment: NavController){
-        val direction =
-            SplashLoginFragmentDirections.actionSplashLoginToTimelineFragment()
-        navFragment.navigate(direction)
+        SplashLoginFragmentDirections.actionSplashLoginToTimelineFragment()
+            .let(navFragment::navigate)
     }
 
     fun navFragmentRegisterToLogin(navFragment: NavController){
-        val direction =
-            RegisterFragmentDirections.actionRegisterToLoginFragment()
-        navFragment.navigate(direction)
+        RegisterFragmentDirections.actionRegisterToLoginFragment()
+            .let(navFragment::navigate)
     }
 
     fun navFragmentTimelineToFullScreen(navFragment: NavController, itemPhoto: String){
-        val direction =
-            TimelineFragmentDirections.actionNavTimelineFragmentToFullscreenFragment(itemPhoto)
-        navFragment.navigate(direction)
+        TimelineFragmentDirections.actionNavTimelineFragmentToFullscreenFragment(itemPhoto)
+            .let(navFragment::navigate)
     }
 
     fun navFragmentGalleryToFullScreen(navFragment: NavController, itemPhoto: String){
-        val direction =
-            GalleryFragmentDirections.actionNavGalleryFragmentToFullscreenFragment(itemPhoto)
-        navFragment.navigate(direction)
+        GalleryFragmentDirections.actionNavGalleryFragmentToFullscreenFragment(itemPhoto)
+            .let(navFragment::navigate)
     }
 }

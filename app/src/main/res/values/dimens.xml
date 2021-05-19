@@ -35,7 +35,7 @@
 
     <!--Text View-->
     <dimen name="layout_margin_top_8dp_text_view">8dp</dimen>
-    <dimen name="text_view_size">20sp</dimen>
+    <dimen name="text_view_size">16sp</dimen>
     <dimen name="text_view_size_20sp">20sp</dimen>
     <dimen name="text_view_margin_start_16dp">16dp</dimen>
     <dimen name="text_view_size_24sp">24sp</dimen>

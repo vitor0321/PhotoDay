@@ -13,6 +13,6 @@ class TimelineViewModel(
     fun createPullPhotos() = repository.baseRepositoryListFileDownload()
 
     fun navFragment(itemPhoto: String) {
-        Navigation.navFragmentGalleryToFullScreen(navFragment, itemPhoto)
+        Navigation.navFragmentTimelineToFullScreen(navFragment, itemPhoto)
     }
 }

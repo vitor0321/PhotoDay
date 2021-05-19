@@ -51,6 +51,10 @@
     <string name="what_is_your_email">What\'s your email?</string>
     <string name="what_is_your_name">What\'s your name?</string>
     <string name="enter_valid_name">Enter a valid name</string>
+    <string name="enter_title">Enter with a title</string>
+    <string name="enter_nota">Enter with a nota</string>
+    <string name="nota_add">Nota ADD Successful</string>
+    <string name="nota_delete">Nota delete successful</string>
     <string name="name_change_successful">Name change Successful</string>
     <string name="please_enter_email_dialog">Please enter email</string>
     <string name="cannot_access_gallery">Cannot Access Gallery</string>
@@ -110,5 +114,11 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="failure_api">Opsss! Failure API. Try again</string>
+
+    <!-- Note Fragment -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="note">Note</string>
+    <string name="title">Title</string>
+    <string name="nota">Nota</string>
 
 </resources>

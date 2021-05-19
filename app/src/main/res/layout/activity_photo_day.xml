@@ -63,6 +63,8 @@
             android:contentDescription="@string/add_photo"
             android:onClick="@{datePickerFloatButton}"
             android:src="@drawable/ic_add_photo"
+            android:clickable="true"
+            android:focusable="true"
             android:visibility="@{components.floatingActionButton ? View.VISIBLE : View.GONE}"
             app:layout_anchor="@id/bottom_nav_main_activity" />
 

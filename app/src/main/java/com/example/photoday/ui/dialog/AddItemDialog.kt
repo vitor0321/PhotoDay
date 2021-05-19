@@ -9,21 +9,22 @@ import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.constants.ADD_CAMERA
 import com.example.photoday.constants.ADD_GALLERY
-import com.example.photoday.databinding.DialogFragmentAddPhotoBinding
+import com.example.photoday.constants.ADD_NOTE
+import com.example.photoday.databinding.DialogFragmentAddItemBinding
 
-class AddPhotoDialog : DialogFragment() {
+class AddItemDialog : DialogFragment() {
 
-    private var _viewDataBinding: DialogFragmentAddPhotoBinding? = null
+    private var _viewDataBinding: DialogFragmentAddItemBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    var listener: AddPhotoListener? = null
+    var listener: AddItemListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _viewDataBinding = DialogFragmentAddPhotoBinding.inflate(inflater, container, false)
+        _viewDataBinding = DialogFragmentAddItemBinding.inflate(inflater, container, false)
         return viewDataBinding.root
     }
 
@@ -51,10 +52,15 @@ class AddPhotoDialog : DialogFragment() {
                 dialog?.dismiss()
                 onDestroy()
             }
+            this.clickUploadNote = View.OnClickListener {
+                listener?.onAccessSelected(ADD_NOTE)
+                dialog?.dismiss()
+                onDestroy()
+            }
         }
     }
 
-    interface AddPhotoListener {
+    interface AddItemListener {
         fun onAccessSelected(accessSelected: Int)
     }
 
@@ -64,6 +70,6 @@ class AddPhotoDialog : DialogFragment() {
     }
 
     companion object {
-        fun newInstance() = AddPhotoDialog()
+        fun newInstance() = AddItemDialog()
     }
 }

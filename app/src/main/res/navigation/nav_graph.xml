@@ -175,4 +175,9 @@
             android:name="itemPhoto"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_noteFragment"
+        android:name="com.example.photoday.ui.fragment.note.NoteFragment"
+        android:label="fragment_note"
+        tools:layout="@layout/fragment_note" />
 </navigation>

@@ -8,7 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 =======
 import com.example.photoday.ui.adapter.extension.DiffCallback
+<<<<<<< HEAD
 import com.example.photoday.ui.model.adapter.ItemPhoto
+>>>>>>> developing
+=======
+import com.example.photoday.ui.model.item.ItemPhoto
 >>>>>>> developing
 import com.example.photoday.databinding.ItemGalleryFragmentBinding
 import com.squareup.picasso.Picasso

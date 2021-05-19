@@ -14,12 +14,12 @@ import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 =======
 >>>>>>> developing
 import com.example.photoday.constants.*
-import com.example.photoday.ui.toast.Toast.toast
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.ui.adapter.TimelineAdapter
-import com.example.photoday.ui.model.adapter.ItemPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.stateBarNavigation.Components
+import com.example.photoday.ui.model.item.ItemPhoto
+import com.example.photoday.ui.model.item.Components
+import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,18 +50,24 @@ class TimelineFragment : BaseFragment() {
         }
     }
 
-    private fun init() {
+    override fun onResume() {
+        super.onResume()
         viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
-        statusBarNavigation()
         initObserve()
     }
 
+    private fun init() {
+        statusBarNavigation()
+    }
+
     private fun initObserve() {
-        this.viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
-            resourceList.data?.let { listPhoto ->
-                initRecycleView(listPhoto)
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
+                resourceList.data?.let { listPhoto ->
+                    initRecycleView(listPhoto)
+                }
+                messageToast(resourceList.message?.let { message -> context?.getString(message) })
             }
-            messageToast(resourceList.error)
         }
     }
 
@@ -81,10 +87,13 @@ class TimelineFragment : BaseFragment() {
         CoroutineScope(Dispatchers.Main).launch {
             viewDataBinding.recycleViewListTimeline.run {
                 layoutManager = LinearLayoutManager(context)
-                adapter = TimelineAdapter(context, listPhoto) { itemPhoto ->
+                adapter= TimelineAdapter(context, listPhoto){ itemPhoto ->
                     viewModel.navFragment(itemPhoto.photo)
                 }
+<<<<<<< HEAD
 
+>>>>>>> developing
+=======
 >>>>>>> developing
             }
         }.isCompleted.apply {
@@ -123,6 +132,11 @@ class TimelineFragment : BaseFragment() {
 
     private fun messageToast(message: String?) {
         message?.let { message -> toast(message) }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        this._viewDataBinding = null
     }
 
     override fun onDestroy() {
