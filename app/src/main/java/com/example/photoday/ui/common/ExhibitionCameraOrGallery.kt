@@ -28,77 +28,98 @@ object ExhibitionCameraOrGallery {
                         activity, Manifest.permission.READ_EXTERNAL_STORAGE,
                     ),
                     -> {
-                        ActivityCompat.requestPermissions(
-                            activity,
-                            arrayOf(
-                                Manifest.permission.READ_EXTERNAL_STORAGE,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.CAMERA
-                            ),
-                            REQUEST_IMAGE_GALLERY_USER
-                        )
+                        permissions(activity)
                     }
                     else -> {
                         when (request) {
                             REQUEST_PHOTO_DAY -> {
-                                when (accessSelected) {
-                                    ADD_GALLERY -> {
-                                        /*Use the EventBus to send the Date to Timeline Fragment*/
-                                        val datePhoto = MessageEvent(valueDate)
-                                        EventBus.getDefault().post(datePhoto)
-                                        /*Here open the Gallery. Send the image to the Timeline Fragment*/
-                                        ActivityCompat.startActivityForResult(
-                                            activity, intentGallery,
-                                            REQUEST_IMAGE_GALLERY, null
-                                        )
-                                    }
-                                    ADD_CAMERA -> {
-                                        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intentTakePicture ->
-                                            intentTakePicture.resolveActivity(activity.packageManager)
-                                                ?.also {
-                                                    /*Use the EventBus to send the Date to Timeline Fragment*/
-                                                    val datePhoto = MessageEvent(valueDate)
-                                                    EventBus.getDefault().post(datePhoto)
-                                                    /*Here open the Camera and send the image to the Timeline Fragment*/
-                                                    ActivityCompat.startActivityForResult(
-                                                        activity,
-                                                        intentTakePicture,
-                                                        REQUEST_IMAGE_CAPTURE,
-                                                        null
-                                                    )
-                                                }
-                                        }
-                                    }
-                                }
+                                accessPhotoDay(accessSelected, valueDate, activity, intentGallery)
                             }
                             REQUEST_CONFIGURATION -> {
-                                when (accessSelected) {
-                                    ADD_GALLERY -> {
-                                        /*Here open the Gallery. Send the image to the user Configuration Fragment*/
-                                        ActivityCompat.startActivityForResult(
-                                            activity, intentGallery,
-                                            REQUEST_IMAGE_GALLERY_USER, null
-                                        )
-                                    }
-                                    ADD_CAMERA -> {
-                                        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intentTakePicture ->
-                                            val packageManager = activity.packageManager
-                                            intentTakePicture.resolveActivity(packageManager)
-                                                ?.also {
-                                                    /*Here open the Camera and send the image to the User in Configuration Fragment*/
-                                                    ActivityCompat.startActivityForResult(
-                                                        activity,
-                                                        intentTakePicture,
-                                                        REQUEST_IMAGE_CAPTURE_USER,
-                                                        null
-                                                    )
-                                                }
-                                        }
-                                    }
-                                }
+                                accessConfiguration(accessSelected, activity, intentGallery)
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun permissions(activity: Activity) {
+        ActivityCompat.requestPermissions(
+            activity,
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
+            ),
+            REQUEST_IMAGE_GALLERY_USER
+        )
+    }
+
+    private fun accessPhotoDay(
+        accessSelected: Int,
+        valueDate: String?,
+        activity: Activity,
+        intentGallery: Intent
+    ) {
+        when (accessSelected) {
+            ADD_GALLERY -> {
+                /*Use the EventBus to send the Date to Timeline Fragment*/
+                val datePhoto = MessageEvent(valueDate)
+                EventBus.getDefault().post(datePhoto)
+                /*Here open the Gallery. Send the image to the Timeline Fragment*/
+                ActivityCompat.startActivityForResult(
+                    activity, intentGallery,
+                    REQUEST_IMAGE_GALLERY, null
+                )
+            }
+            ADD_CAMERA -> {
+                Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intentTakePicture ->
+                    intentTakePicture.resolveActivity(activity.packageManager)
+                        ?.also {
+                            /*Use the EventBus to send the Date to Timeline Fragment*/
+                            val datePhoto = MessageEvent(valueDate)
+                            EventBus.getDefault().post(datePhoto)
+                            /*Here open the Camera and send the image to the Timeline Fragment*/
+                            ActivityCompat.startActivityForResult(
+                                activity,
+                                intentTakePicture,
+                                REQUEST_IMAGE_CAPTURE,
+                                null
+                            )
+                        }
+                }
+            }
+        }
+    }
+
+    private fun accessConfiguration(
+        accessSelected: Int,
+        activity: Activity,
+        intentGallery: Intent
+    ) {
+        when (accessSelected) {
+            ADD_GALLERY -> {
+                /*Here open the Gallery. Send the image to the user Configuration Fragment*/
+                ActivityCompat.startActivityForResult(
+                    activity, intentGallery,
+                    REQUEST_IMAGE_GALLERY_USER, null
+                )
+            }
+            ADD_CAMERA -> {
+                Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intentTakePicture ->
+                    val packageManager = activity.packageManager
+                    intentTakePicture.resolveActivity(packageManager)
+                        ?.also {
+                            /*Here open the Camera and send the image to the User in Configuration Fragment*/
+                            ActivityCompat.startActivityForResult(
+                                activity,
+                                intentTakePicture,
+                                REQUEST_IMAGE_CAPTURE_USER,
+                                null
+                            )
+                        }
                 }
             }
         }

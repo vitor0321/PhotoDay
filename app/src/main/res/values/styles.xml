@@ -26,7 +26,7 @@
     </style>
 
     <style name="ProgressBar" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:indeterminateTint">@color/white</item>
+        <item name="android:indeterminateTint">@color/orange</item>
     </style>
 
     <style name="TextInputEditText">

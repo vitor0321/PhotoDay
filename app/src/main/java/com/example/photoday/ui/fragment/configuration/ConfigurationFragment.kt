@@ -16,11 +16,11 @@ import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.example.photoday.ui.common.ExhibitionCameraOrGallery
 import com.example.photoday.ui.databinding.data.UserFirebaseData
-import com.example.photoday.ui.dialog.AddPhotoDialog
+import com.example.photoday.ui.dialog.AddItemDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.user.UserFirebase
-import com.example.photoday.ui.stateBarNavigation.Components
+import com.example.photoday.ui.model.item.Components
 import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +30,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.io.ByteArrayOutputStream
 
-class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener,
+class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
     NewUserNameDialog.NewUserNameListener {
 
     private var _viewDataBinding: FragmentConfigurationBinding? = null
@@ -125,7 +125,7 @@ class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener,
     }
 
     private fun logout() {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             /*logout with Firebase*/
             viewModel.logout().observe(viewLifecycleOwner, { resource ->
                 when (resource.login) {
@@ -145,7 +145,7 @@ class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener,
     private fun photoDialog() {
         /*open AddPhotoDialog*/
         activity?.let { activity ->
-            AddPhotoDialog.newInstance().apply {
+            AddItemDialog.newInstance().apply {
                 listener = this@ConfigurationFragment
             }
                 .show(activity.supportFragmentManager, ADD_PHOTO_DIALOG)
@@ -208,6 +208,11 @@ class ConfigurationFragment : BaseFragment(), AddPhotoDialog.AddPhotoListener,
 
     private fun messageToast(message: String?) {
         message?.let { message -> toast(message) }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        this._viewDataBinding = null
     }
 
     override fun onDestroy() {

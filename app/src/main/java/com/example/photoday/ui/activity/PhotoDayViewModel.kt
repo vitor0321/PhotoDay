@@ -4,11 +4,14 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.photoday.repository.BaseRepositoryNote
 import com.example.photoday.repository.BaseRepositoryPhoto
-import com.example.photoday.ui.stateBarNavigation.Components
+import com.example.photoday.ui.model.item.Components
+import com.example.photoday.ui.model.item.ItemNote
 
 class PhotoDayViewModel(
-    private val repository: BaseRepositoryPhoto,
+    private val photoRepository: BaseRepositoryPhoto,
+    private val notaRepository: BaseRepositoryNote
 ) : ViewModel() {
 
     val component: LiveData<Components> get() = _component
@@ -26,6 +29,9 @@ class PhotoDayViewModel(
 
 
     fun createPushPhoto(dateCalendar: String, curFile: Uri?) =
-        repository.baseRepositoryUploadImageToStorage(dateCalendar, curFile)
+        photoRepository.baseRepositoryUploadImageToStorage(dateCalendar, curFile)
+
+    fun salveNota(nota: ItemNote) =
+        notaRepository.saveFirebase(nota)
 
 }

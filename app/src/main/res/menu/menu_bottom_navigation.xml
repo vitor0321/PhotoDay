@@ -8,8 +8,9 @@
         android:title="@string/timeline" />
 
     <item
-        android:id="@+id/nav_1"
-        android:title="" />
+        android:id="@+id/nav_noteFragment"
+        android:icon="@drawable/ic_note"
+        android:title="@string/note" />
 
     <item
         android:id="@+id/nav_2"

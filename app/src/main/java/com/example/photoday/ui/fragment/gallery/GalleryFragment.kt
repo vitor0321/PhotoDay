@@ -12,8 +12,8 @@ import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.ui.adapter.GalleryAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.model.adapter.ItemPhoto
-import com.example.photoday.ui.stateBarNavigation.Components
+import com.example.photoday.ui.model.item.ItemPhoto
+import com.example.photoday.ui.model.item.Components
 import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,12 +54,12 @@ class GalleryFragment : BaseFragment() {
     }
 
     private fun initObserve() {
-        this.viewModel.createPullPhotos().observe(viewLifecycleOwner, { resourceList ->
-            resourceList.data?.let { listPhoto ->
-                initRecycleView(listPhoto)
-            }
-            messageToast(resourceList.message?.let { message -> context?.getString(message) })
-        })
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.createPullPhotos().observe(viewLifecycleOwner, { resourceList ->
+                resourceList.data?.let { listPhoto -> initRecycleView(listPhoto) }
+                messageToast(resourceList.message?.let { message -> context?.getString(message) })
+            })
+        }
     }
 
     private fun initRecycleView(listPhoto: List<ItemPhoto>) {
@@ -76,7 +76,6 @@ class GalleryFragment : BaseFragment() {
             viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
         }
     }
-
 
     private fun viewFlipperControl(child: Int, visible: Boolean) {
         when {
@@ -109,6 +108,11 @@ class GalleryFragment : BaseFragment() {
 
     private fun messageToast(message: String?) {
         message?.let { message -> toast(message) }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        this._viewDataBinding = null
     }
 
     override fun onDestroy() {

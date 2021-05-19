@@ -1,4 +1,4 @@
-package com.example.photoday.ui.fragment.timeline
+package com.example.photoday.ui.fragment.note
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,40 +9,37 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.databinding.FragmentTimelineBinding
-import com.example.photoday.ui.adapter.TimelineAdapter
+import com.example.photoday.databinding.FragmentNoteBinding
+import com.example.photoday.ui.adapter.NoteAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.model.item.Components
-import com.example.photoday.ui.toast.Toast.toast
+import com.example.photoday.ui.model.item.ItemNote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class TimelineFragment : BaseFragment() {
+class NoteFragment : BaseFragment() {
 
-    private var _viewDataBinding: FragmentTimelineBinding? = null
+    private var _viewDataBinding: FragmentNoteBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val viewModel: TimelineViewModel by viewModel {
+    private val viewModel: NoteViewModel by viewModel {
         parametersOf(findNavController())
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
-        _viewDataBinding = FragmentTimelineBinding.inflate(inflater, container, false)
+        _viewDataBinding = FragmentNoteBinding.inflate(inflater, container, false)
         return viewDataBinding.root
     }
 
     override fun onStart() {
         super.onStart()
-        CoroutineScope(Dispatchers.Main).launch {
-            init()
-        }
+        init()
     }
 
     override fun onResume() {
@@ -56,26 +53,24 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun initObserve() {
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
-                resourceList.data?.let { listPhoto ->
-                    initRecycleView(listPhoto)
+        this.viewModel.getAllFirebase().observe(viewLifecycleOwner) { resourceItem ->
+            resourceItem.data.apply {
+                this?.let { listNote ->
+                    initRecycleView(listNote)
+                    viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
                 }
-                messageToast(resourceList.message?.let { message -> context?.getString(message) })
             }
         }
     }
 
-    private fun initRecycleView(listPhoto: List<ItemPhoto>) {
+    private fun initRecycleView(listNote: List<ItemNote>) {
         CoroutineScope(Dispatchers.Main).launch {
-            viewDataBinding.recycleViewListTimeline.run {
+            viewDataBinding.recycleViewListNote.run {
                 layoutManager = LinearLayoutManager(context)
-                adapter= TimelineAdapter(context, listPhoto){ itemPhoto ->
-                    viewModel.navFragment(itemPhoto.photo)
+                adapter = NoteAdapter(context, listNote) {
+
                 }
             }
-        }.isCompleted.apply {
-            viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
         }
     }
 
@@ -83,15 +78,15 @@ class TimelineFragment : BaseFragment() {
         when {
             child == CHILD_FIRST && visible == PROGRESS_BAR_VISIBLE -> {
                 viewDataBinding.run {
-                    viewFlipperTimeline.displayedChild = CHILD_FIRST
-                    progressFlowTimeline.isVisible = PROGRESS_BAR_VISIBLE
+                    viewFlipperNote.displayedChild = CHILD_FIRST
+                    progressFlowNote.isVisible = PROGRESS_BAR_VISIBLE
                 }
             }
             child == CHILD_SECOND && visible == PROGRESS_BAR_INVISIBLE -> {
                 CoroutineScope(Dispatchers.Main).launch {
                     viewDataBinding.run {
-                        viewFlipperTimeline.displayedChild = CHILD_SECOND
-                        progressFlowTimeline.isVisible = PROGRESS_BAR_INVISIBLE
+                        viewFlipperNote.displayedChild = CHILD_SECOND
+                        progressFlowNote.isVisible = PROGRESS_BAR_INVISIBLE
                     }
                 }
             }
@@ -104,17 +99,10 @@ class TimelineFragment : BaseFragment() {
             components = Components(
                 appBar = TRUE,
                 bottomNavigation = TRUE,
-                floatingActionButton = TRUE),
-            barColor = R.color.orange_status_bar)
-    }
-
-    private fun messageToast(message: String?) {
-        message?.let { message -> toast(message) }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        this._viewDataBinding = null
+                floatingActionButton = TRUE
+            ),
+            barColor = R.color.orange_status_bar
+        )
     }
 
     override fun onDestroy() {

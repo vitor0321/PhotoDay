@@ -13,7 +13,7 @@ import com.example.photoday.ui.toast.Toast.toast
 import com.example.photoday.databinding.FragmentRegisterUserBinding
 import com.example.photoday.ui.model.user.UserLogin
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.stateBarNavigation.Components
+import com.example.photoday.ui.model.item.Components
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 

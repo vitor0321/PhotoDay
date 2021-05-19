@@ -1,4 +1,4 @@
-package com.example.photoday.ui.model.adapter
+package com.example.photoday.ui.model.item
 
 data class ItemPhoto(
         var dateCalendar: String = "",

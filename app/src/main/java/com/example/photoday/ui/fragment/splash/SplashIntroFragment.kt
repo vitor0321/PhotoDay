@@ -14,7 +14,7 @@ import com.example.photoday.constants.SPLASH_TIME_OUT
 import com.example.photoday.databinding.FragmentSplashIntroBinding
 import com.example.photoday.ui.navigation.Navigation.navFragmentSplashIntroToLogin
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.stateBarNavigation.Components
+import com.example.photoday.ui.model.item.Components
 
 class SplashIntroFragment : BaseFragment() {
 

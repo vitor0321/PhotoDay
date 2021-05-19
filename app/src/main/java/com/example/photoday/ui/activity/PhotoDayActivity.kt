@@ -21,7 +21,9 @@ import com.example.photoday.databinding.ActivityPhotoDayBinding
 import com.example.photoday.eventBus.MessageEvent
 import com.example.photoday.ui.common.ExhibitionCameraOrGallery
 import com.example.photoday.ui.databinding.data.ComponentsData
-import com.example.photoday.ui.dialog.AddPhotoDialog
+import com.example.photoday.ui.dialog.AddItemDialog
+import com.example.photoday.ui.dialog.AddNoteDialog
+import com.example.photoday.ui.model.item.ItemNote
 import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,14 +39,16 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
-    AddPhotoDialog.AddPhotoListener {
+    AddItemDialog.AddItemListener, AddNoteDialog.AddNotaListener {
 
     private var _viewDataBinding: ActivityPhotoDayBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
     private val viewModel: PhotoDayViewModel by viewModel()
 
-    private val componentsData by lazy { ComponentsData() }
+    private val componentsData: ComponentsData by inject {
+        parametersOf(this)
+    }
 
     private val exhibition: ExhibitionCameraOrGallery by inject {
         parametersOf(this)
@@ -99,6 +103,18 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         try {
             //here get the image from Exhibition
             when {
+                requestCode == REQUEST_NOTA && resultCode == Activity.RESULT_OK -> {
+                    data?.data?.let { photo ->
+                        datePhotoEventBus?.let { dateCalendar ->
+                            viewModel.createPushPhoto(dateCalendar, photo)
+                                .observe(this, { resources ->
+                                    messageToast(resources.message?.let { message ->
+                                        this.getString(message)
+                                    })
+                                })
+                        }
+                    }
+                }
                 requestCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK -> {
                     data?.data?.let { photo ->
                         datePhotoEventBus?.let { dateCalendar ->
@@ -189,23 +205,51 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         photoDialog()
     }
 
-    private fun photoDialog() {
-        /*open AddPhotoDialog*/
-        AddPhotoDialog.newInstance().apply {
+    private fun notaDialog() {
+        AddNoteDialog.newInstance(valueDate).apply {
             listener = this@PhotoDayActivity
         }
-            .show(supportFragmentManager, ADD_PHOTO_DIALOG)
+            .show(supportFragmentManager, ADD_NOTA_DIALOG)
+
     }
 
     override fun onAccessSelected(accessSelected: Int) {
         CoroutineScope(Dispatchers.Main).launch {
-            exhibition.exhibitionCaptureImage(
-                accessSelected,
-                valueDate,
-                this@PhotoDayActivity,
-                REQUEST_PHOTO_DAY
-            )
+            when (accessSelected) {
+                ADD_NOTE -> {
+                    notaDialog()
+                }
+                else -> {
+                    exhibition.exhibitionCaptureImage(
+                        accessSelected,
+                        valueDate,
+                        this@PhotoDayActivity,
+                        REQUEST_PHOTO_DAY
+                    )
+                }
+            }
         }
+    }
+
+    override fun onNotaSelected(nota: ItemNote?, message: Int?) {
+        when (message) {
+            null -> {
+                nota?.let {
+                    this.viewModel.salveNota(nota).observe(this) { ResourceItem ->
+                        messageToast(ResourceItem.message?.let { message -> this.getString(message) })
+                    }
+                }
+            }
+            else -> messageToast(this.getString(message))
+        }
+    }
+
+    private fun photoDialog() {
+        /*open AddPhotoDialog*/
+        AddItemDialog.newInstance().apply {
+            listener = this@PhotoDayActivity
+        }
+            .show(supportFragmentManager, ADD_PHOTO_DIALOG)
     }
 
     private fun messageToast(message: String?) {
