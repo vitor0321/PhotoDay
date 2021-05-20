@@ -14,9 +14,7 @@
         style="@style/CardView.Light"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/layout_marin_start_8dp"
-        android:layout_marginTop="@dimen/layout_margin_cardView_top_8dp"
-        android:layout_marginEnd="@dimen/layout_margin_end_8dp"
+        android:layout_margin="@dimen/layout_margin_8dp"
         android:orientation="vertical"
         app:cardCornerRadius="@dimen/card_corner_radius_18dp">
 

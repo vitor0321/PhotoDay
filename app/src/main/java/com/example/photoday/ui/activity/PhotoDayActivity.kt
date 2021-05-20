@@ -90,6 +90,9 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
     private fun initObserve() {
         viewModel.component.observe(this, { components ->
+            when (components.actionBar) {
+                TRUE -> supportActionBar?.show()
+            }
             componentsData.setComponentsData(components)
         })
     }

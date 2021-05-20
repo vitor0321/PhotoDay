@@ -8,6 +8,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
+import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentFullScreenPhotoBinding
 import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.fragment.base.BaseFragment
@@ -50,7 +51,8 @@ class FullScreenPhotoFragment : BaseFragment() {
             components = Components(
                 appBar = FALSE,
                 bottomNavigation = FALSE,
-                floatingActionButton = FALSE
+                floatingActionButton = FALSE,
+                actionBar = TRUE
             ),
             barColor = R.color.orange_status_bar
         )

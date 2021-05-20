@@ -54,7 +54,8 @@ class FullScreenNoteFragment : BaseFragment() {
             components = Components(
                 appBar = FALSE,
                 bottomNavigation = FALSE,
-                floatingActionButton = FALSE
+                floatingActionButton = FALSE,
+                actionBar = TRUE
             ),
             barColor = R.color.orange_status_bar
         )
