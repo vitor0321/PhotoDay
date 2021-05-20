@@ -4,11 +4,13 @@ import androidx.navigation.NavController
 import com.example.photoday.ui.fragment.configuration.ConfigurationFragmentDirections
 import com.example.photoday.ui.fragment.gallery.GalleryFragmentDirections
 import com.example.photoday.ui.fragment.login.LoginFragmentDirections
+import com.example.photoday.ui.fragment.note.NoteFragmentDirections
 import com.example.photoday.ui.fragment.register.RegisterFragmentDirections
 import com.example.photoday.ui.fragment.splash.SplashGoodbyeFragmentDirections
 import com.example.photoday.ui.fragment.splash.SplashIntroFragmentDirections
 import com.example.photoday.ui.fragment.splash.SplashLoginFragmentDirections
 import com.example.photoday.ui.fragment.timeline.TimelineFragmentDirections
+import com.example.photoday.ui.model.item.ItemNote
 
 object Navigation {
 
@@ -52,13 +54,22 @@ object Navigation {
             .let(navFragment::navigate)
     }
 
-    fun navFragmentTimelineToFullScreen(navFragment: NavController, itemPhoto: String){
+    fun navFragmentTimelineToFullScreenPhoto(navFragment: NavController, itemPhoto: String) {
         TimelineFragmentDirections.actionNavTimelineFragmentToFullscreenFragment(itemPhoto)
             .let(navFragment::navigate)
     }
 
-    fun navFragmentGalleryToFullScreen(navFragment: NavController, itemPhoto: String){
+    fun navFragmentGalleryToFullScreenPhoto(navFragment: NavController, itemPhoto: String) {
         GalleryFragmentDirections.actionNavGalleryFragmentToFullscreenFragment(itemPhoto)
+            .let(navFragment::navigate)
+    }
+
+    fun navFragmentNoteToFullScreenNote(navFragment: NavController, itemNota: ItemNote) {
+        NoteFragmentDirections.actionNavNoteFragmentToFullScreenNoteFragment(
+            itemDate = itemNota.date,
+            itemTitle = itemNota.title,
+            itemNote = itemNota.note
+        )
             .let(navFragment::navigate)
     }
 }

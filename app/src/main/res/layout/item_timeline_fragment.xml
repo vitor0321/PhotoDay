@@ -29,29 +29,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/date_photo_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/text_view_margin_start_16dp"
-                android:text="@{itemTimeline.dateCalendar}"
-                android:textSize="@dimen/text_size_16sp"
-                app:layout_constraintBottom_toTopOf="@id/image_timeline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/text_view_tools_date" />
-
             <ImageView
                 android:id="@+id/image_timeline"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
                 app:upLoadImageUri="@{itemTimeline.photo}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date_photo_text_view"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_item_photo" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/date_photo_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="@dimen/padding_text_6sp"
+                android:text="@{itemTimeline.dateCalendar}"
+                android:textSize="@dimen/text_size_12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/image_timeline"
+                tools:text="@string/text_view_tools_date" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

@@ -13,9 +13,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/orange_light_layout_background"
         android:theme="@style/ThemeOverlay.PhotoDay.FullscreenContainer"
-        tools:context=".ui.fragment.fullScreen.FullscreenFragment">
+        tools:context=".ui.fragment.fullScreenPhoto.FullScreenPhotoFragment">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image_view_full_screen"

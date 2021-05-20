@@ -206,11 +206,13 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     }
 
     private fun notaDialog() {
-        AddNoteDialog.newInstance(valueDate).apply {
+        val itemNote = valueDate?.let { date ->
+            ItemNote(date = date)
+        }
+        AddNoteDialog.newInstance(itemNote).apply {
             listener = this@PhotoDayActivity
         }
             .show(supportFragmentManager, ADD_NOTA_DIALOG)
-
     }
 
     override fun onAccessSelected(accessSelected: Int) {

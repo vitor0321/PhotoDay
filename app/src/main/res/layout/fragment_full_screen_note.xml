@@ -5,25 +5,18 @@
 
     <data>
 
-        <import type="androidx.appcompat.widget.AppCompatImageView" />
-
-        <variable
-            name="clickCardView"
-            type="android.view.View.OnClickListener" />
-
         <variable
             name="itemNote"
-            type="com.example.photoday.ui.databinding.data.ItemNoteData" />
+            type="com.example.photoday.ui.model.item.ItemNote" />
     </data>
 
     <androidx.cardview.widget.CardView
         style="@style/CardView.Light"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginStart="@dimen/layout_marin_start_8dp"
         android:layout_marginTop="@dimen/layout_margin_cardView_top_8dp"
         android:layout_marginEnd="@dimen/layout_margin_end_8dp"
-        android:onClick="@{(view)-> clickCardView.onClick(view)}"
         android:orientation="vertical"
         app:cardCornerRadius="@dimen/card_corner_radius_18dp">
 
@@ -36,7 +29,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/text_view_margin_start_16dp"
-                android:text="@{itemNote.dateData}"
+                android:text="@{itemNote.date}"
                 android:textSize="@dimen/text_size_12sp"
                 app:layout_constraintBottom_toTopOf="@id/text_view_title"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/padding_constrain_layout_8dp"
-                android:text="@{itemNote.titleData}"
+                android:text="@{itemNote.title}"
                 android:textAllCaps="true"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +58,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/text_view_margin_start_16dp"
-                android:text="@{itemNote.noteData}"
+                android:text="@{itemNote.note}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/text_view_title"
                 app:layout_constraintStart_toStartOf="@id/text_view_title"

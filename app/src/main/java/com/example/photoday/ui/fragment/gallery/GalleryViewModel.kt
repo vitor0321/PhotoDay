@@ -13,6 +13,6 @@ class GalleryViewModel(
     fun createPullPhotos() = repository.baseRepositoryListFileDownload()
 
     fun navFragment(itemPhoto: String) {
-        Navigation.navFragmentGalleryToFullScreen(navFragment, itemPhoto)
+        Navigation.navFragmentGalleryToFullScreenPhoto(navFragment, itemPhoto)
     }
 }

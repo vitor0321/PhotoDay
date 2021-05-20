@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentNoteBinding
@@ -64,11 +64,13 @@ class NoteFragment : BaseFragment() {
     }
 
     private fun initRecycleView(listNote: List<ItemNote>) {
+        val spanCount = SPAN_COUNT
+        val layoutManagerAdapter = GridLayoutManager(context, spanCount)
         CoroutineScope(Dispatchers.Main).launch {
             viewDataBinding.recycleViewListNote.run {
-                layoutManager = LinearLayoutManager(context)
-                adapter = NoteAdapter(context, listNote) {
-
+                layoutManager = layoutManagerAdapter
+                adapter = NoteAdapter(context, listNote) {note->
+                    viewModel.navFragment(note)
                 }
             }
         }

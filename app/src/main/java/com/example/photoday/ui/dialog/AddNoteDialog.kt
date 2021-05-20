@@ -11,7 +11,7 @@ import com.example.photoday.R
 import com.example.photoday.databinding.DialogFragmentAddNoteBinding
 import com.example.photoday.ui.model.item.ItemNote
 
-class AddNoteDialog(private val valueDate: String?) : DialogFragment() {
+class AddNoteDialog(private val itemNote: ItemNote?) : DialogFragment() {
 
     private var _viewDataBinding: DialogFragmentAddNoteBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
@@ -41,28 +41,30 @@ class AddNoteDialog(private val valueDate: String?) : DialogFragment() {
 
     private fun init() {
         this.viewDataBinding.apply {
-            textViewDate.text = valueDate
+            itemNote?.title?.let { editTextTitle.setText(itemNote.title) }
+            itemNote?.note?.let { editTextNote.setText(itemNote.note) }
+            textViewDate.text = itemNote?.date
             okButton = View.OnClickListener {
                 val title = editTextTitle.text.toString()
                 val note = editTextNote.text.toString()
                 when {
                     title.isBlank() -> {
-                        listener?.onNotaSelected(null, R.string.enter_title)
+                        listener?.onNotaSelected(nota = null, R.string.enter_title)
                         editTextNote.requestFocus()
                     }
                     note.isBlank() -> {
-                        listener?.onNotaSelected(null, R.string.enter_nota)
+                        listener?.onNotaSelected(nota = null, R.string.enter_nota)
                     }
                     else -> {
                         listener?.onNotaSelected(
-                            valueDate?.let { date ->
+                            itemNote?.date?.let { date ->
                                 ItemNote(
                                     date = date,
                                     title = title,
                                     note = note
                                 )
                             },
-                            null
+                            message = null
                         )
                     }
                 }
@@ -86,6 +88,6 @@ class AddNoteDialog(private val valueDate: String?) : DialogFragment() {
     }
 
     companion object {
-        fun newInstance(valueDate: String?) = AddNoteDialog(valueDate)
+        fun newInstance(itemNote: ItemNote?) = AddNoteDialog(itemNote)
     }
 }
