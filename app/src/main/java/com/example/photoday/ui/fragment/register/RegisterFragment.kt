@@ -125,7 +125,8 @@ class RegisterFragment : BaseFragment() {
             components = Components(
                 appBar = FALSE,
                 bottomNavigation = FALSE,
-                floatingActionButton = FALSE
+                floatingActionButton = FALSE,
+                actionBar = FALSE
             ),
             barColor = R.color.white_status_bar
         )

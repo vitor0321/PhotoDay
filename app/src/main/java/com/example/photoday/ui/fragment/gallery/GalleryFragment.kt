@@ -102,7 +102,8 @@ class GalleryFragment : BaseFragment() {
             components = Components(
                 appBar = TRUE,
                 bottomNavigation = TRUE,
-                floatingActionButton = TRUE),
+                floatingActionButton = TRUE,
+                actionBar = FALSE),
             barColor = R.color.orange_status_bar)
     }
 

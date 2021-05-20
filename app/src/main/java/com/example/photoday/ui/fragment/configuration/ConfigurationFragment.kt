@@ -200,7 +200,10 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
         statusAppBarNavigationBase(
             menu = FALSE_MENU,
             components = Components(
-                appBar = TRUE, bottomNavigation = TRUE, floatingActionButton = FALSE
+                appBar = TRUE,
+                bottomNavigation = TRUE,
+                floatingActionButton = FALSE,
+                actionBar = FALSE
             ),
             barColor = R.color.orange_status_bar
         )
