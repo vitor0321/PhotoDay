@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -23,25 +24,29 @@
         android:padding="@dimen/padding_constrain_layout_8dp">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_date"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/date_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/padding_text_6sp"
+            android:text="@{note.date}"
+            android:textSize="@dimen/text_size_12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/tex_input_title"
+            tools:text="@string/text_view_tools_date" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tex_input_title"
             style="@style/TextInputLayoutStyle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_date">
+            app:layout_constraintTop_toBottomOf="@id/date_text_view">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_title"
                 style="@style/TextInputEditText"
                 android:hint="@string/title"
-                android:text="@={note.titleData}" />
+                android:text="@={note.title}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,7 +63,7 @@
                 android:layout_height="300dp"
                 android:gravity="start"
                 android:hint="@string/nota"
-                android:text="@={note.titleData}" />
+                android:text="@={note.title}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

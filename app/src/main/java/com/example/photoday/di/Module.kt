@@ -13,11 +13,16 @@ import com.example.photoday.repository.firebaseUser.CheckUserFirebase
 import com.example.photoday.repository.firebaseUser.FirebaseAuthRepository
 import com.example.photoday.ui.activity.PhotoDayActivity
 import com.example.photoday.ui.activity.PhotoDayViewModel
-import com.example.photoday.ui.adapter.NoteAdapter
 import com.example.photoday.ui.common.ExhibitionCameraOrGallery
 import com.example.photoday.ui.databinding.data.ComponentsData
+import com.example.photoday.ui.databinding.data.ItemNoteData
+import com.example.photoday.ui.databinding.data.ItemPhotoData
 import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
+import com.example.photoday.ui.fragment.fullScreenNote.FullScreenNoteFragment
+import com.example.photoday.ui.fragment.fullScreenNote.FullScreenNoteViewModel
+import com.example.photoday.ui.fragment.fullScreenPhoto.FullScreenPhotoFragment
+import com.example.photoday.ui.fragment.fullScreenPhoto.FullScreenPhotoViewModel
 import com.example.photoday.ui.fragment.gallery.GalleryFragment
 import com.example.photoday.ui.fragment.gallery.GalleryViewModel
 import com.example.photoday.ui.fragment.login.LoginViewModel
@@ -39,6 +44,8 @@ import org.koin.dsl.module
 val repositoryModulo = module(override = true) {
     single<UserFirebaseData> { UserFirebaseData() }
     single<ComponentsData> { ComponentsData() }
+    single<ItemNoteData> { ItemNoteData() }
+    single<ItemPhotoData> { ItemPhotoData() }
     single<BaseRepositoryPhoto> {
         BaseRepositoryPhoto(
             get<FirebasePhoto>()
@@ -102,6 +109,8 @@ val uiModulo = module(override = true) {
     factory<TimelineFragment> { TimelineFragment() }
     factory<GalleryFragment> { GalleryFragment() }
     factory<NoteFragment> { NoteFragment() }
+    factory<FullScreenPhotoFragment> { FullScreenPhotoFragment() }
+    factory<FullScreenNoteFragment> { FullScreenNoteFragment() }
 }
 
 val viewModelModulo = module(override = true) {
@@ -146,5 +155,14 @@ val viewModelModulo = module(override = true) {
             repository = get<BaseRepositoryPhoto>(),
             navFragment = navFragment
         )
+    }
+    viewModel<FullScreenNoteViewModel> { (navFragment: NavController) ->
+        FullScreenNoteViewModel(
+            navFragment = navFragment,
+            repository = get<BaseRepositoryNote>()
+        )
+    }
+    viewModel<FullScreenPhotoViewModel> {
+        FullScreenPhotoViewModel()
     }
 }

@@ -16,8 +16,8 @@ import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.ui.adapter.GalleryAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.model.item.Components
+import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +61,7 @@ class GalleryFragment : BaseFragment() {
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.createPullPhotos().observe(viewLifecycleOwner, { resourceList ->
                 resourceList.data?.let { listPhoto -> initRecycleView(listPhoto) }
-                messageToast(resourceList.message?.let { message -> context?.getString(message) })
+                messageToast(resourceList.message)
             })
         }
     }
@@ -73,7 +73,7 @@ class GalleryFragment : BaseFragment() {
             viewDataBinding.recycleViewListGallery.run {
                 layoutManager = layoutManagerAdapter
                 adapter = GalleryAdapter(context, listPhoto) { itemPhoto ->
-                    viewModel.navFragment(itemPhoto.photo)
+                    viewModel.navFragment(itemPhoto)
                 }
             }
         }.isCompleted.apply {
@@ -106,12 +106,18 @@ class GalleryFragment : BaseFragment() {
             components = Components(
                 appBar = TRUE,
                 bottomNavigation = TRUE,
-                floatingActionButton = TRUE),
-            barColor = R.color.orange_status_bar)
+                floatingActionButton = TRUE,
+                actionBar = FALSE
+            ),
+            barColor = R.color.orange_status_bar
+        )
     }
 
-    private fun messageToast(message: String?) {
-        message?.let { message -> toast(message) }
+    private fun messageToast(message: Int?) {
+        message?.let { messageInt ->
+            val messageToast = this.getString(messageInt)
+            toast(messageToast)
+        }
     }
 
     override fun onStop() {

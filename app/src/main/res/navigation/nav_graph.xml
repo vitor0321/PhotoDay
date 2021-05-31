@@ -12,14 +12,14 @@
         android:layout="@layout/fragment_timeline"
         tools:layout="@layout/fragment_timeline">
         <action
-            android:id="@+id/action_nav_timelineFragment_to_fullscreenFragment"
-            app:destination="@id/fullscreenFragment"
+            android:id="@+id/action_nav_timelineFragment_to_full_screen_photo_Fragment"
+            app:destination="@id/fullScreenPhotoFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:launchSingleTop="false"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/fullscreenFragment"
+            app:popUpTo="@id/fullScreenPhotoFragment"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -30,14 +30,14 @@
         android:layout="@layout/fragment_gallery"
         tools:layout="@layout/fragment_gallery">
         <action
-            android:id="@+id/action_nav_galleryFragment_to_fullscreenFragment"
-            app:destination="@id/fullscreenFragment"
+            android:id="@+id/action_nav_galleryFragment_to_full_screen_photo_fragment"
+            app:destination="@id/fullScreenPhotoFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:launchSingleTop="false"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/fullscreenFragment"
+            app:popUpTo="@id/fullScreenPhotoFragment"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -167,17 +167,46 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/fullscreenFragment"
-        android:name="com.example.photoday.ui.fragment.fullScreen.FullscreenFragment"
-        android:label="fragment_fullscreen"
-        tools:layout="@layout/fragment_fullscreen" >
+        android:id="@+id/fullScreenPhotoFragment"
+        android:name="com.example.photoday.ui.fragment.fullScreenPhoto.FullScreenPhotoFragment"
+        android:label="fragment_full_screen_photo"
+        tools:layout="@layout/fragment_full_screen_photo">
         <argument
             android:name="itemPhoto"
+            app:argType="string" />
+        <argument
+            android:name="itemDate"
             app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/nav_noteFragment"
         android:name="com.example.photoday.ui.fragment.note.NoteFragment"
         android:label="fragment_note"
-        tools:layout="@layout/fragment_note" />
+        tools:layout="@layout/fragment_note">
+        <action
+            android:id="@+id/action_nav_noteFragment_to_full_screen_note_fragment"
+            app:destination="@id/fullScreenNoteFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/fullScreenNoteFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullScreenNoteFragment"
+        android:name="com.example.photoday.ui.fragment.fullScreenNote.FullScreenNoteFragment"
+        android:label="FullScreenNoteFragment"
+        tools:layout="@layout/fragment_full_screen_note">
+        <argument
+            android:name="itemDate"
+            app:argType="string" />
+        <argument
+            android:name="itemTitle"
+            app:argType="string" />
+        <argument
+            android:name="itemNote"
+            app:argType="string" />
+    </fragment>
 </navigation>

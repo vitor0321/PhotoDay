@@ -46,13 +46,17 @@ class FirebaseNote(
     }
 
     fun getAllFirestore() = MutableLiveData<ResourceItem<List<ItemNote>>>().apply {
+        val noteList: ArrayList<ItemNote> = ArrayList()
         firebaseFirestore.collection(authUser.email)
             .addSnapshotListener { s, _ ->
                 s?.let { snapshot ->
                     val note: List<ItemNote> = snapshot.documents.mapNotNull { document ->
                         document.toObject<NoteDocument>()?.toNota(document.id)
                     }
-                    value = ResourceItem(note)
+                    note.map { noteList.add(it) }
+                    noteList.sortBy { it.date }
+                    val listReverse = noteList.asReversed()
+                    value = ResourceItem(listReverse)
                 }
             }
     }

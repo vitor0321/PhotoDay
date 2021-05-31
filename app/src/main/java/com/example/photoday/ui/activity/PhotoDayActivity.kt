@@ -90,6 +90,10 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
 
     private fun initObserve() {
         viewModel.component.observe(this, { components ->
+            when (components.actionBar) {
+                TRUE -> supportActionBar?.show()
+                FALSE -> supportActionBar?.hide()
+            }
             componentsData.setComponentsData(components)
         })
     }
@@ -108,9 +112,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         datePhotoEventBus?.let { dateCalendar ->
                             viewModel.createPushPhoto(dateCalendar, photo)
                                 .observe(this, { resources ->
-                                    messageToast(resources.message?.let { message ->
-                                        this.getString(message)
-                                    })
+                                    messageToast(resources.message)
                                 })
                         }
                     }
@@ -120,9 +122,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         datePhotoEventBus?.let { dateCalendar ->
                             viewModel.createPushPhoto(dateCalendar, photo)
                                 .observe(this, { resources ->
-                                    messageToast(resources.message?.let { message ->
-                                        this.getString(message)
-                                    })
+                                    messageToast(resources.message)
                                 })
                         }
                     }
@@ -141,15 +141,13 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         datePhotoEventBus?.let { dateCalendar ->
                             viewModel.createPushPhoto(dateCalendar, Uri.parse(path))
                                 .observe(this, { resources ->
-                                    messageToast(resources.message?.let { message ->
-                                        this.getString(message)
-                                    })
+                                    messageToast(resources.message)
                                 })
                         }
                 }
             }
         } catch (e: Exception) {
-            messageToast(e.message)
+            messageToast(R.string.failure_capture_image)
         }
     }
 
@@ -177,7 +175,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         title = null
                     }
             } catch (e: Exception) {
-                messageToast(e.message)
+                messageToast(R.string.failure_initialize_control)
             }
 
         }
@@ -193,7 +191,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         try {
             DatePickerDialog(this, this, year, month, day ).show()
         } catch (e: Exception) {
-            messageToast(e.message)
+            messageToast(R.string.failure_initialize_date_picker)
         }
     }
 
@@ -206,11 +204,13 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     }
 
     private fun notaDialog() {
-        AddNoteDialog.newInstance(valueDate).apply {
+        val itemNote = valueDate?.let { date ->
+            ItemNote(date = date)
+        }
+        AddNoteDialog.newInstance(itemNote).apply {
             listener = this@PhotoDayActivity
         }
             .show(supportFragmentManager, ADD_NOTA_DIALOG)
-
     }
 
     override fun onAccessSelected(accessSelected: Int) {
@@ -236,11 +236,11 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
             null -> {
                 nota?.let {
                     this.viewModel.salveNota(nota).observe(this) { ResourceItem ->
-                        messageToast(ResourceItem.message?.let { message -> this.getString(message) })
+                        messageToast(ResourceItem.message)
                     }
                 }
             }
-            else -> messageToast(this.getString(message))
+            else -> messageToast(message)
         }
     }
 
@@ -252,8 +252,11 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
             .show(supportFragmentManager, ADD_PHOTO_DIALOG)
     }
 
-    private fun messageToast(message: String?) {
-        message?.let { message -> toast(message) }
+    private fun messageToast(message: Int?) {
+        message?.let { messageInt ->
+            val messageToast = this.getString(messageInt)
+            toast(messageToast)
+        }
     }
 
     override fun onDestroy() {

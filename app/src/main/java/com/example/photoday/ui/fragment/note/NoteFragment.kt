@@ -6,17 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentNoteBinding
 import com.example.photoday.ui.adapter.NoteAdapter
+import com.example.photoday.ui.databinding.data.ItemNoteData
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
 import com.example.photoday.ui.model.item.ItemNote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -64,11 +66,13 @@ class NoteFragment : BaseFragment() {
     }
 
     private fun initRecycleView(listNote: List<ItemNote>) {
+        val spanCount = SPAN_COUNT
+        val layoutManagerAdapter = GridLayoutManager(context, spanCount)
         CoroutineScope(Dispatchers.Main).launch {
             viewDataBinding.recycleViewListNote.run {
-                layoutManager = LinearLayoutManager(context)
-                adapter = NoteAdapter(context, listNote) {
-
+                layoutManager = layoutManagerAdapter
+                adapter = NoteAdapter(context, listNote) { note ->
+                    viewModel.navFragment(note)
                 }
             }
         }
@@ -99,7 +103,8 @@ class NoteFragment : BaseFragment() {
             components = Components(
                 appBar = TRUE,
                 bottomNavigation = TRUE,
-                floatingActionButton = TRUE
+                floatingActionButton = TRUE,
+                actionBar = FALSE
             ),
             barColor = R.color.orange_status_bar
         )

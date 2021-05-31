@@ -19,8 +19,8 @@ import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.dialog.AddItemDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.model.user.UserFirebase
 import com.example.photoday.ui.model.item.Components
+import com.example.photoday.ui.model.user.UserFirebase
 import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -81,7 +81,7 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
     private fun initObserve() {
         this.viewModel.getUserDBFirebase().observe(viewLifecycleOwner, { resourceUser ->
             this.userFirebaseData.setData(resourceUser.data)
-            messageToast(resourceUser.message?.let { message -> context?.getString(message) })
+            messageToast(resourceUser.message)
         })
     }
 
@@ -94,9 +94,7 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
                     data?.data?.let { data ->
                         viewModel.imageUser(data).observe(this, { resourceUser ->
                             this.userFirebaseData.setData(resourceUser.data)
-                            messageToast(resourceUser.message?.let { message ->
-                                context?.getString(message)
-                            })
+                            messageToast(resourceUser.message)
                         })
                     }
                 }
@@ -113,14 +111,12 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
                     )
                     viewModel.imageUser(Uri.parse(path)).observe(this, { resourceUser ->
                         this.userFirebaseData.setData(resourceUser.data)
-                        messageToast(resourceUser.message?.let { message ->
-                            context?.getString(message)
-                        })
+                        messageToast(resourceUser.message)
                     })
                 }
             }
         } catch (e: Exception) {
-            messageToast(e.message)
+            messageToast(R.string.failure_capture_image_user)
         }
     }
 
@@ -130,12 +126,12 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
             viewModel.logout().observe(viewLifecycleOwner, { resource ->
                 when (resource.login) {
                     GOODBYE -> {
-                        messageToast(resource.message?.let { message -> context?.getString(message) })
+                        messageToast(resource.message)
                         viewModel.navController(GOODBYE)
                         onDestroy()
                     }
                     null -> {
-                        messageToast(resource.message?.let { message -> context?.getString(message) })
+                        messageToast(resource.message)
                     }
                 }
             })
@@ -163,7 +159,7 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
                     REQUEST_CONFIGURATION
                 )
             } catch (e: Exception) {
-                messageToast(context?.getString(R.string.error_version_less_23))
+                messageToast(R.string.error_version_less_23)
             }
         }
     }
@@ -184,14 +180,12 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
                 userFirebase?.let {
                     viewModel.newNameUser(userFirebase).observe(this, { resourceResult ->
                         this.userFirebaseData.setData(resourceResult.data)
-                        messageToast(resourceResult.message?.let { message ->
-                            context?.getString(message)
-                        })
+                        messageToast(resourceResult.message)
                     })
                 }
             }
             else -> {
-                messageToast(context?.getString(message))
+                messageToast(message)
             }
         }
     }
@@ -200,14 +194,20 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
         statusAppBarNavigationBase(
             menu = FALSE_MENU,
             components = Components(
-                appBar = TRUE, bottomNavigation = TRUE, floatingActionButton = FALSE
+                appBar = TRUE,
+                bottomNavigation = TRUE,
+                floatingActionButton = FALSE,
+                actionBar = FALSE
             ),
             barColor = R.color.orange_status_bar
         )
     }
 
-    private fun messageToast(message: String?) {
-        message?.let { message -> toast(message) }
+    private fun messageToast(message: Int?) {
+        message?.let { messageInt ->
+            val messageToast = this.getString(messageInt)
+            toast(messageToast)
+        }
     }
 
     override fun onStop() {

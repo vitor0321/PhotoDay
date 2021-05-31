@@ -5,6 +5,7 @@
 
     <data>
         <import type="androidx.appcompat.widget.AppCompatImageView" />
+        <import type="android.text.TextUtils"/>
 
         <variable
             name="clickCardView"
@@ -29,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+<<<<<<< HEAD
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/date_photo_text_view"
                 android:layout_width="0dp"
@@ -40,10 +42,12 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/text_view_tools_date" />
 
+=======
+>>>>>>> developing
             <ImageView
                 android:id="@+id/image_timeline"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
 <<<<<<< HEAD
@@ -52,8 +56,20 @@
 >>>>>>> developing
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date_photo_text_view"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_item_photo" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/date_photo_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="@dimen/padding_text_6sp"
+                android:text="@{itemTimeline.date}"
+                android:textSize="@dimen/text_size_12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/image_timeline"
+                tools:text="@string/text_view_tools_date" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

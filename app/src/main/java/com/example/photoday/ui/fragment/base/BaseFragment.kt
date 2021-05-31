@@ -17,7 +17,8 @@ abstract class BaseFragment : Fragment() {
         photoDayViewModel.switchComponent = Components(
             components.appBar,
             components.bottomNavigation,
-            components.floatingActionButton
+            components.floatingActionButton,
+            components.actionBar
         )
 
         /*change color statusBar*/

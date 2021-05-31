@@ -21,12 +21,4 @@ class ComponentsData(
         bottomNavigation.postValue(this.components.bottomNavigation)
         floatingActionButton.postValue(this.components.floatingActionButton)
     }
-
-    fun getComponentsData(): Components? {
-        return this.components.copy(
-            appBar = appBar.value ?: return null,
-            bottomNavigation = bottomNavigation.value ?: return null,
-            floatingActionButton = floatingActionButton.value ?: return null
-        )
-    }
 }

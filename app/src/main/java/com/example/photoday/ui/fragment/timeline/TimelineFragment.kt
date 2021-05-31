@@ -17,12 +17,13 @@ import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.ui.adapter.TimelineAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
-import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.model.item.Components
+import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -66,7 +67,7 @@ class TimelineFragment : BaseFragment() {
                 resourceList.data?.let { listPhoto ->
                     initRecycleView(listPhoto)
                 }
-                messageToast(resourceList.message?.let { message -> context?.getString(message) })
+                messageToast(resourceList.message)
             }
         }
     }
@@ -87,8 +88,8 @@ class TimelineFragment : BaseFragment() {
         CoroutineScope(Dispatchers.Main).launch {
             viewDataBinding.recycleViewListTimeline.run {
                 layoutManager = LinearLayoutManager(context)
-                adapter= TimelineAdapter(context, listPhoto){ itemPhoto ->
-                    viewModel.navFragment(itemPhoto.photo)
+                adapter= TimelineAdapter(context, listPhoto) { itemPhoto ->
+                    viewModel.navFragment(itemPhoto)
                 }
 <<<<<<< HEAD
 
@@ -126,12 +127,16 @@ class TimelineFragment : BaseFragment() {
             components = Components(
                 appBar = TRUE,
                 bottomNavigation = TRUE,
-                floatingActionButton = TRUE),
+                floatingActionButton = TRUE,
+                actionBar = FALSE),
             barColor = R.color.orange_status_bar)
     }
 
-    private fun messageToast(message: String?) {
-        message?.let { message -> toast(message) }
+    private fun messageToast(message: Int?) {
+        message?.let { messageInt->
+            val messageToast =this.getString(messageInt)
+            toast(messageToast)
+        }
     }
 
     override fun onStop() {

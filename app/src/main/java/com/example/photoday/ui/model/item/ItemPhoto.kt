@@ -13,6 +13,6 @@ package com.example.photoday.ui.model.item
 >>>>>>> developing:app/src/main/java/com/example/photoday/ui/model/item/ItemPhoto.kt
 
 data class ItemPhoto(
-        var dateCalendar: String = "",
+        var date: String = "",
         var photo: String = ""
 )

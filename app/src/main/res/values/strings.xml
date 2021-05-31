@@ -4,6 +4,9 @@
 
     <!-- Photo Day Activity -->
     <string name="add_photo">ADD Photo</string>
+    <string name="failure_initialize_control">Failure Initialize Control</string>
+    <string name="failure_initialize_date_picker">Failure Initialize Date picker</string>
+    <string name="failure_capture_image">Failure Capture Image</string>
 
     <!-- Base Fragment -->
 
@@ -12,6 +15,7 @@
     <string name="email_user">Email</string>
     <string name="logout">logout</string>
     <string name="change_image_user">Image User</string>
+    <string name="failure_capture_image_user">Failure Capture Image User</string>
 
     <!-- Gallery Fragment -->
     <string name="configuration_gallery">Configuration Gallery</string>
@@ -25,6 +29,7 @@
     <string name="login">Login</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="register_new_user">Register New User</string>
+    <string name="failure_login_user">Failure Login User</string>
     <string name="check_your_email_and_confirm">Check your Email and Confirm</string>
 
     <!-- Register Fragment -->
@@ -101,6 +106,8 @@
     <string name="gallery_bottom">Gallery</string>
     <string name="configuration">Configuration</string>
     <string name="configuration_gallery_menu">Configuration Gallery</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
     <!-- Nav Graph -->
     <string name="nav_graph_label_timeline">Timeline</string>
