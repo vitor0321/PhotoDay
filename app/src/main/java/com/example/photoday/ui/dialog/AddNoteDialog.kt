@@ -9,7 +9,11 @@ import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.example.photoday.R
 import com.example.photoday.databinding.DialogFragmentAddNoteBinding
+import com.example.photoday.ui.databinding.data.ItemNoteData
+import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.model.item.ItemNote
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 
 class AddNoteDialog(private val itemNote: ItemNote?) : DialogFragment() {
 
@@ -41,9 +45,6 @@ class AddNoteDialog(private val itemNote: ItemNote?) : DialogFragment() {
 
     private fun init() {
         this.viewDataBinding.apply {
-            itemNote?.title?.let { editTextTitle.setText(itemNote.title) }
-            itemNote?.note?.let { editTextNote.setText(itemNote.note) }
-            textViewDate.text = itemNote?.date
             okButton = View.OnClickListener {
                 val title = editTextTitle.text.toString()
                 val note = editTextNote.text.toString()

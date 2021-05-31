@@ -9,11 +9,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
-import com.example.photoday.ui.toast.Toast.toast
 import com.example.photoday.databinding.FragmentRegisterUserBinding
-import com.example.photoday.ui.model.user.UserLogin
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
+import com.example.photoday.ui.model.user.UserLogin
+import com.example.photoday.ui.toast.Toast.toast
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -105,7 +105,7 @@ class RegisterFragment : BaseFragment() {
     private fun registerUser(userLogin: UserLogin){
         viewModel.signUpUser(userLogin)
             .observe(viewLifecycleOwner, { resourceMessage ->
-                messageToast(resourceMessage.message?.let { message -> context?.getString(message)})
+                messageToast(resourceMessage.message)
                 when (resourceMessage.navigation) {
                     true -> {
                         viewModel.navigationRegister()
@@ -113,10 +113,6 @@ class RegisterFragment : BaseFragment() {
                     }
                 }
             })
-    }
-
-    private fun messageToast(message: String?) {
-        message?.let { message -> toast(message) }
     }
 
     private fun statusBarNavigation() {
@@ -130,6 +126,13 @@ class RegisterFragment : BaseFragment() {
             ),
             barColor = R.color.white_status_bar
         )
+    }
+
+    private fun messageToast(message: Int?) {
+        message?.let { messageInt ->
+            val messageToast = this.getString(messageInt)
+            toast(messageToast)
+        }
     }
 
     override fun onDestroy() {

@@ -1,6 +1,6 @@
 package com.example.photoday.ui.model.item
 
 data class ItemPhoto(
-        var dateCalendar: String = "",
+        var date: String = "",
         var photo: String = ""
 )

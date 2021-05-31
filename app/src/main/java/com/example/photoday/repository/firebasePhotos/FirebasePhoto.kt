@@ -31,7 +31,7 @@ class FirebasePhoto(
                             item.name
                             imagesList.add(ItemPhoto(item.name, itemUri.toString()))
                         }.addOnCompleteListener {
-                            imagesList.sortBy { it.dateCalendar }
+                            imagesList.sortBy { it.date }
                             val listReversed = imagesList.asReversed()
                             value = ResourceItem(data = listReversed)
                         }

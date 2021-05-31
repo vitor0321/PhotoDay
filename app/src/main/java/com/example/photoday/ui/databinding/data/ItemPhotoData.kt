@@ -5,23 +5,23 @@ import com.example.photoday.ui.model.item.ItemPhoto
 
 class ItemPhotoData(
     private var itemPhoto: ItemPhoto = ItemPhoto(),
-    val dateCalendar: MutableLiveData<String> = MutableLiveData<String>().also {
-        it.value = itemPhoto.dateCalendar
+    val date: MutableLiveData<String> = MutableLiveData<String>().also {
+        it.value = itemPhoto.date
     },
     val photo: MutableLiveData<String> = MutableLiveData<String>().also {
         it.value = itemPhoto.photo
     },
 
     ) {
-    fun setItemPhotoData(itemPhoto: ItemPhoto) {
-        this.itemPhoto = itemPhoto
-        dateCalendar.postValue(this.itemPhoto.dateCalendar)
-        photo.postValue(this.itemPhoto.photo)
+    fun setItemPhotoData(itemPhoto: ItemPhoto?) {
+        itemPhoto?.let { this.itemPhoto = itemPhoto }
+        itemPhoto?.date?.let { date.postValue(this.itemPhoto.date) }
+        itemPhoto?.photo.let { photo.postValue(this.itemPhoto.photo) }
     }
 
     fun getComponentsData(): ItemPhoto? {
         return this.itemPhoto.copy(
-            dateCalendar = dateCalendar.value ?: return null,
+            date = date.value ?: return null,
             photo = photo.value ?: return null,
         )
     }

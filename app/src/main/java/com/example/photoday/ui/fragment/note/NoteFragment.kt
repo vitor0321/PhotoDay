@@ -11,12 +11,14 @@ import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentNoteBinding
 import com.example.photoday.ui.adapter.NoteAdapter
+import com.example.photoday.ui.databinding.data.ItemNoteData
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
 import com.example.photoday.ui.model.item.ItemNote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -69,7 +71,7 @@ class NoteFragment : BaseFragment() {
         CoroutineScope(Dispatchers.Main).launch {
             viewDataBinding.recycleViewListNote.run {
                 layoutManager = layoutManagerAdapter
-                adapter = NoteAdapter(context, listNote) {note->
+                adapter = NoteAdapter(context, listNote) { note ->
                     viewModel.navFragment(note)
                 }
             }

@@ -125,7 +125,7 @@ class LoginFragment : BaseFragment(), ForgotPasswordDialog.ForgotPasswordListene
                 }
             }
         } catch (e: Exception) {
-            messageToast(e.message)
+            messageToast(R.string.failure_login_user)
         }
     }
 
@@ -158,9 +158,7 @@ class LoginFragment : BaseFragment(), ForgotPasswordDialog.ForgotPasswordListene
     }
 
     private fun navigation(resourceUser: ResourceUser<Void>) {
-        this.messageToast(resourceUser.message?.let { message ->
-            context?.getString(message)
-        })
+        this.messageToast(resourceUser.message)
         when (resourceUser.login) {
             ON_START -> {
                 this.viewModel.navController(ON_START)
@@ -171,7 +169,7 @@ class LoginFragment : BaseFragment(), ForgotPasswordDialog.ForgotPasswordListene
                 onDestroy()
             }
             ERROR_LOGIN -> {
-                this.messageToast(getString(R.string.check_your_email_and_confirm))
+                this.messageToast(R.string.check_your_email_and_confirm)
             }
         }
     }
@@ -187,7 +185,7 @@ class LoginFragment : BaseFragment(), ForgotPasswordDialog.ForgotPasswordListene
 
     override fun onEmailSelected(email: String) {
         this.viewModel.forgotPassword(email).observe(viewLifecycleOwner, { resource ->
-            messageToast(resource.message?.let { message -> context?.getString(message) })
+            messageToast(resource.message)
         })
     }
 
@@ -204,8 +202,11 @@ class LoginFragment : BaseFragment(), ForgotPasswordDialog.ForgotPasswordListene
         )
     }
 
-    private fun messageToast(message: String?) {
-        message?.let { message -> toast(message) }
+    private fun messageToast(message: Int?) {
+        message?.let { messageInt ->
+            val messageToast = this.getString(messageInt)
+            toast(messageToast)
+        }
     }
 
     override fun onDestroy() {

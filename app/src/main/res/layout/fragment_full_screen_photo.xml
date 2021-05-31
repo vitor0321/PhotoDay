@@ -4,26 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.TextUtils"/>
+        <import type="androidx.appcompat.widget.AppCompatImageView" />
 
         <variable
-            name="itemFromRecycle"
-            type="com.example.photoday.ui.model.item.ItemPhoto" />
+            name="itemPhoto"
+            type="com.example.photoday.ui.databinding.data.ItemPhotoData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:theme="@style/ThemeOverlay.PhotoDay.FullscreenContainer"
-        tools:context=".ui.fragment.fullScreenPhoto.FullScreenPhotoFragment">
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{itemPhoto.date}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="@dimen/text_view_size_20sp"
+            android:layout_margin="@dimen/layout_margin_8dp"
+            app:layout_constraintBottom_toTopOf="@id/image_view_full_screen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="2021-05-15" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image_view_full_screen"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:upLoadImageUri="@{itemFromRecycle.photo}" />
+            app:layout_constraintTop_toBottomOf="@id/text_view_date"
+            app:upLoadImageUri="@{itemPhoto.photo}"
+            tools:src="@drawable/ic_item_photo"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

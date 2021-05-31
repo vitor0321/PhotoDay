@@ -5,6 +5,7 @@
 
     <data>
         <import type="androidx.appcompat.widget.AppCompatImageView" />
+        <import type="android.text.TextUtils"/>
 
         <variable
             name="clickCardView"
@@ -47,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:padding="@dimen/padding_text_6sp"
-                android:text="@{itemTimeline.dateCalendar}"
+                android:text="@{itemTimeline.date}"
                 android:textSize="@dimen/text_size_12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/image_timeline"

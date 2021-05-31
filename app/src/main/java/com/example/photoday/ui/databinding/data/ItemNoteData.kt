@@ -5,20 +5,20 @@ import com.example.photoday.ui.model.item.ItemNote
 
 class ItemNoteData(
     private var itemNote: ItemNote = ItemNote(),
-    val dateData: MutableLiveData<String> = MutableLiveData<String>().also {
+    val date: MutableLiveData<String> = MutableLiveData<String>().also {
         it.value = itemNote.date
     },
-    val titleData: MutableLiveData<String> = MutableLiveData<String>().also {
+    val title: MutableLiveData<String> = MutableLiveData<String>().also {
         it.value = itemNote.title
     },
-    val noteData: MutableLiveData<String> = MutableLiveData<String>().also {
+    val note: MutableLiveData<String> = MutableLiveData<String>().also {
         it.value = itemNote.note
     }
 ) {
-    fun setItemNotaData(note: ItemNote) {
-        this.itemNote = note
-        dateData.postValue(this.itemNote.date)
-        titleData.postValue(this.itemNote.title)
-        noteData.postValue(this.itemNote.note)
+    fun setItemNotaData(itemNote: ItemNote?) {
+        itemNote?.let { this.itemNote = itemNote }
+        itemNote?.date?.let { date.postValue(this.itemNote.date) }
+        itemNote?.title?.let { title.postValue(this.itemNote.title) }
+        itemNote?.note?.let { note.postValue(this.itemNote.note) }
     }
 }

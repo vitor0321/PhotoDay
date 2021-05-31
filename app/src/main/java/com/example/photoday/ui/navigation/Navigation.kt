@@ -11,6 +11,7 @@ import com.example.photoday.ui.fragment.splash.SplashIntroFragmentDirections
 import com.example.photoday.ui.fragment.splash.SplashLoginFragmentDirections
 import com.example.photoday.ui.fragment.timeline.TimelineFragmentDirections
 import com.example.photoday.ui.model.item.ItemNote
+import com.example.photoday.ui.model.item.ItemPhoto
 
 object Navigation {
 
@@ -44,23 +45,36 @@ object Navigation {
             .let(navFragment::navigate)
     }
 
-    fun navFragmentSplashLoginToTimeline(navFragment: NavController){
+    fun navFragmentSplashLoginToTimeline(navFragment: NavController) {
         SplashLoginFragmentDirections.actionSplashLoginToTimelineFragment()
             .let(navFragment::navigate)
     }
 
-    fun navFragmentRegisterToLogin(navFragment: NavController){
+    fun navFragmentRegisterToLogin(navFragment: NavController) {
         RegisterFragmentDirections.actionRegisterToLoginFragment()
             .let(navFragment::navigate)
     }
 
-    fun navFragmentTimelineToFullScreenPhoto(navFragment: NavController, itemPhoto: String) {
-        TimelineFragmentDirections.actionNavTimelineFragmentToFullscreenFragment(itemPhoto)
+    fun navFragmentTimelineToFullScreenPhoto(
+        navFragment: NavController,
+        itemPhoto: ItemPhoto
+    ) {
+        TimelineFragmentDirections.actionNavTimelineFragmentToFullScreenPhotoFragment(
+            itemDate = itemPhoto.date,
+            itemPhoto = itemPhoto.photo
+        )
             .let(navFragment::navigate)
     }
 
-    fun navFragmentGalleryToFullScreenPhoto(navFragment: NavController, itemPhoto: String) {
-        GalleryFragmentDirections.actionNavGalleryFragmentToFullscreenFragment(itemPhoto)
+
+    fun navFragmentGalleryToFullScreenPhoto(
+        navFragment: NavController,
+        itemPhoto: ItemPhoto
+    ) {
+        GalleryFragmentDirections.actionNavGalleryFragmentToFullScreenPhotoFragment(
+            itemDate = itemPhoto.date,
+            itemPhoto = itemPhoto.photo
+        )
             .let(navFragment::navigate)
     }
 
