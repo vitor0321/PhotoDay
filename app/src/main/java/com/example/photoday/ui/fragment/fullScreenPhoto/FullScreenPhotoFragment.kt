@@ -1,7 +1,10 @@
 package com.example.photoday.ui.fragment.fullScreenPhoto
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
@@ -12,6 +15,7 @@ import com.example.photoday.ui.databinding.data.ItemPhotoData
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
 import com.example.photoday.ui.model.item.ItemPhoto
+import com.example.photoday.ui.toast.Toast.toast
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -21,12 +25,18 @@ class FullScreenPhotoFragment : BaseFragment() {
     private var _viewDataBinding: FragmentFullScreenPhotoBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val viewModel: FullScreenPhotoViewModel by viewModel()
-
     private val arguments by navArgs<FullScreenPhotoFragmentArgs>()
     private val itemPhoto by lazy { arguments.itemPhoto }
     private val itemDate by lazy { arguments.itemDate }
-    private val itemPhotoData: ItemPhotoData by inject{
+
+    private val viewModel: FullScreenPhotoViewModel by viewModel {
+        parametersOf(
+            itemDate,
+            findNavController()
+        )
+    }
+
+    private val itemPhotoData: ItemPhotoData by inject {
         parametersOf(this)
     }
 
@@ -44,22 +54,23 @@ class FullScreenPhotoFragment : BaseFragment() {
         init()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_full_screen, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_full_screen_edit -> viewModel.editNote()
-            R.id.menu_full_screen_delete -> viewModel.deleteNote()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun init() {
         statusBarNavigation()
         setImageFullScreen()
+        deleteItemPhoto()
+    }
+
+    private fun deleteItemPhoto() {
+        viewDataBinding.deleteButton = View.OnClickListener {
+            viewModel.deleteNote().observe(viewLifecycleOwner) { resourceItem ->
+                when(resourceItem.message){
+                    TRUE -> messageToast(R.string.successfully_delete_image)
+                    FALSE-> messageToast(R.string.error_api_full_screen)
+                }
+            }
+            viewModel.navigation()
+            onDestroy()
+        }
     }
 
     private fun setImageFullScreen() {
@@ -75,10 +86,17 @@ class FullScreenPhotoFragment : BaseFragment() {
                 appBar = FALSE,
                 bottomNavigation = FALSE,
                 floatingActionButton = FALSE,
-                actionBar = TRUE
+                actionBar = FALSE
             ),
             barColor = R.color.orange_status_bar
         )
+    }
+
+    private fun messageToast(message: Int?) {
+        message?.let { messageInt ->
+            val messageToast = this.getString(messageInt)
+            toast(messageToast)
+        }
     }
 
     override fun onDestroy() {

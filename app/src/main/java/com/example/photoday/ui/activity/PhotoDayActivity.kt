@@ -21,7 +21,8 @@ import com.example.photoday.databinding.ActivityPhotoDayBinding
 import com.example.photoday.eventBus.MessageEvent
 import com.example.photoday.ui.common.ExhibitionCameraOrGallery
 import com.example.photoday.ui.databinding.data.ComponentsData
-import com.example.photoday.ui.dialog.AddItemDialog
+import com.example.photoday.ui.databinding.data.ItemNoteData
+import com.example.photoday.ui.dialog.AddItemPhotoDialog
 import com.example.photoday.ui.dialog.AddNoteDialog
 import com.example.photoday.ui.model.item.ItemNote
 import com.example.photoday.ui.toast.Toast.toast
@@ -39,18 +40,22 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
-    AddItemDialog.AddItemListener, AddNoteDialog.AddNotaListener {
+    AddItemPhotoDialog.AddItemListener, AddNoteDialog.NoteListener {
 
     private var _viewDataBinding: ActivityPhotoDayBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val viewModel: PhotoDayViewModel by viewModel()
+    private val viewModel: PhotoDayViewModel by viewModel {
+        parametersOf()
+    }
 
     private val componentsData: ComponentsData by inject {
         parametersOf(this)
     }
-
     private val exhibition: ExhibitionCameraOrGallery by inject {
+        parametersOf(this)
+    }
+    private val itemNoteData: ItemNoteData by inject {
         parametersOf(this)
     }
 
@@ -112,7 +117,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         datePhotoEventBus?.let { dateCalendar ->
                             viewModel.createPushPhoto(dateCalendar, photo)
                                 .observe(this, { resources ->
-                                    messageToast(resources.message)
+                                    checkMessage(resources.message)
                                 })
                         }
                     }
@@ -122,7 +127,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         datePhotoEventBus?.let { dateCalendar ->
                             viewModel.createPushPhoto(dateCalendar, photo)
                                 .observe(this, { resources ->
-                                    messageToast(resources.message)
+                                    checkMessage(resources.message)
                                 })
                         }
                     }
@@ -141,13 +146,20 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                         datePhotoEventBus?.let { dateCalendar ->
                             viewModel.createPushPhoto(dateCalendar, Uri.parse(path))
                                 .observe(this, { resources ->
-                                    messageToast(resources.message)
+                                    checkMessage(resources.message)
                                 })
                         }
                 }
             }
         } catch (e: Exception) {
             messageToast(R.string.failure_capture_image)
+        }
+    }
+
+    private fun checkMessage(message: Boolean?) {
+        when (message) {
+            TRUE -> messageToast(R.string.successfully_upload_image)
+            FALSE -> messageToast(R.string.error_api_photo)
         }
     }
 
@@ -203,16 +215,6 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         photoDialog()
     }
 
-    private fun notaDialog() {
-        val itemNote = valueDate?.let { date ->
-            ItemNote(date = date)
-        }
-        AddNoteDialog.newInstance(itemNote).apply {
-            listener = this@PhotoDayActivity
-        }
-            .show(supportFragmentManager, ADD_NOTA_DIALOG)
-    }
-
     override fun onAccessSelected(accessSelected: Int) {
         CoroutineScope(Dispatchers.Main).launch {
             when (accessSelected) {
@@ -231,25 +233,39 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         }
     }
 
-    override fun onNotaSelected(nota: ItemNote?, message: Int?) {
-        when (message) {
-            null -> {
-                nota?.let {
-                    this.viewModel.salveNota(nota).observe(this) { ResourceItem ->
-                        messageToast(ResourceItem.message)
-                    }
-                }
-            }
-            else -> messageToast(message)
-        }
-    }
-
     private fun photoDialog() {
         /*open AddPhotoDialog*/
-        AddItemDialog.newInstance().apply {
+        AddItemPhotoDialog.newInstance().apply {
             listener = this@PhotoDayActivity
         }
             .show(supportFragmentManager, ADD_PHOTO_DIALOG)
+    }
+
+    override fun onNotaSelected(nota: ItemNote?, typeDialog: String?) {
+        when (typeDialog) {
+            SALVE_NOTE -> {
+                nota?.let { itemNota ->
+                    this.viewModel.salveNota(itemNota).observe(this) { resourceItem ->
+                        when (resourceItem.message) {
+                            TRUE -> messageToast(R.string.note_add_item)
+                            FALSE -> messageToast(R.string.note_add_failure_activity)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun notaDialog() {
+        valueDate?.let { date ->
+            val itemNote = ItemNote(date = date, title = "", note = "")
+            itemNoteData.setItemNotaData(itemNote)
+
+            AddNoteDialog.newInstance(itemNote).apply {
+                listenerNote = this@PhotoDayActivity
+            }
+                .show(supportFragmentManager, ADD_NOTA_DIALOG)
+        }
     }
 
     private fun messageToast(message: Int?) {

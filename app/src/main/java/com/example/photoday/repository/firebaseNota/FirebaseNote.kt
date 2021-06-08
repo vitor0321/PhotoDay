@@ -1,11 +1,13 @@
 package com.example.photoday.repository.firebaseNota
 
 import androidx.lifecycle.MutableLiveData
-import com.example.photoday.R
+import com.example.photoday.constants.FALSE
+import com.example.photoday.constants.TRUE
 import com.example.photoday.ui.model.item.ItemNote
 import com.example.photoday.ui.model.resource.ResourceItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 
 class FirebaseNote(
@@ -14,21 +16,47 @@ class FirebaseNote(
 ) {
     private val authUser = auth.currentUser
 
-    fun saveFirestore(note: ItemNote) = MutableLiveData<ResourceItem<Int>>().apply {
+    fun saveFirestore(note: ItemNote) = MutableLiveData<ResourceItem<Void?>>().apply {
         NoteDocument(
             date = note.date,
             title = note.title,
             note = note.note
         ).also { itemNote ->
             try {
-                firebaseFirestore.collection(authUser.email)
-                    .document().apply {
-                        this.set(itemNote)
-                        ResourceItem(R.string.nota_add)
-                    }
+                note.id?.let {
+                    ResourceItem(data = saveData(note))
+                } ?: run {
+                    firebaseFirestore.collection(authUser.email)
+                        .document()
+                        .set(itemNote)
+                        .addOnSuccessListener {
+                            value = ResourceItem(message = TRUE)
+                        }
+                        .addOnFailureListener {
+                            value = ResourceItem(message = FALSE)
+                        }
+                }
             } catch (e: Exception) {
-                ResourceItem(R.string.error_api)
+                value = ResourceItem(message = FALSE)
             }
+        }
+    }
+
+    private fun saveData(note: ItemNote) = MutableLiveData<ResourceItem<Any>>().apply {
+        try {
+            note.id?.let { id ->
+                firebaseFirestore.collection(authUser.email)
+                    .document(id)
+                    .set(note, SetOptions.merge())
+                    .addOnSuccessListener {
+                        value = ResourceItem(message = TRUE)
+                    }
+                    .addOnFailureListener {
+                        value = ResourceItem(message = FALSE)
+                    }
+            }
+        } catch (e: Exception) {
+            value = ResourceItem(message = FALSE)
         }
     }
 
@@ -39,7 +67,7 @@ class FirebaseNote(
                 s?.let { document ->
                     document.toObject<NoteDocument>()?.toNota(document.id)
                         ?.let { note ->
-                            value = ResourceItem(note)
+                            value = ResourceItem(data = note)
                         }
                 }
             }
@@ -56,17 +84,20 @@ class FirebaseNote(
                     note.map { noteList.add(it) }
                     noteList.sortBy { it.date }
                     val listReverse = noteList.asReversed()
-                    value = ResourceItem(listReverse)
+                    value = ResourceItem(data = listReverse)
                 }
             }
     }
 
-    fun delete(noteId: String) = MutableLiveData<ResourceItem<Int>>().apply {
+    fun delete(noteId: String) = MutableLiveData<ResourceItem<Any>>().apply {
         firebaseFirestore.collection(authUser.email)
             .document(noteId)
             .delete()
-            .isSuccessful.apply {
-                value = ResourceItem(R.string.nota_delete)
+            .addOnSuccessListener {
+                value = ResourceItem(message = TRUE)
+            }
+            .addOnFailureListener {
+                value = ResourceItem(message = FALSE)
             }
     }
 

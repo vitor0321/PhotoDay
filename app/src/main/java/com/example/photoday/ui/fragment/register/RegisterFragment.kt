@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FALSE_MENU
+import com.example.photoday.constants.TRUE
 import com.example.photoday.databinding.FragmentRegisterUserBinding
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
@@ -105,7 +106,10 @@ class RegisterFragment : BaseFragment() {
     private fun registerUser(userLogin: UserLogin){
         viewModel.signUpUser(userLogin)
             .observe(viewLifecycleOwner, { resourceMessage ->
-                messageToast(resourceMessage.message)
+                when(resourceMessage.message){
+                    TRUE->{messageToast(R.string.check_your_email_and_confirm)}
+                    FALSE->{messageToast(R.string.authentication_failed_try_again)}
+                }
                 when (resourceMessage.navigation) {
                     true -> {
                         viewModel.navigationRegister()

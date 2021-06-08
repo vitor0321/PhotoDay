@@ -18,7 +18,6 @@ import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -57,27 +56,24 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun initObserve() {
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
-                resourceList.data?.let { listPhoto ->
-                    initRecycleView(listPhoto)
-                }
-                messageToast(resourceList.message)
+        viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
+            resourceList.data?.let { listPhoto ->
+                initRecycleView(listPhoto)
+            }
+            when (resourceList.message) {
+                FALSE -> messageToast(R.string.error_api)
             }
         }
     }
 
     private fun initRecycleView(listPhoto: List<ItemPhoto>) {
-        CoroutineScope(Dispatchers.Main).launch {
-            viewDataBinding.recycleViewListTimeline.run {
-                layoutManager = LinearLayoutManager(context)
-                adapter= TimelineAdapter(context, listPhoto) { itemPhoto ->
-                    viewModel.navFragment(itemPhoto)
-                }
+        viewDataBinding.recycleViewListTimeline.run {
+            layoutManager = LinearLayoutManager(context)
+            adapter = TimelineAdapter(context, listPhoto) { itemPhoto ->
+                viewModel.navFragment(itemPhoto)
             }
-        }.isCompleted.apply {
-            viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
         }
+        viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
     }
 
     private fun viewFlipperControl(child: Int, visible: Boolean) {
@@ -112,7 +108,7 @@ class TimelineFragment : BaseFragment() {
 
     private fun messageToast(message: Int?) {
         message?.let { messageInt->
-            val messageToast =this.getString(messageInt)
+            val messageToast = this.getString(messageInt)
             toast(messageToast)
         }
     }

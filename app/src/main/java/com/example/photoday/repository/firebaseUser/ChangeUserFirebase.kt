@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
+import com.example.photoday.constants.FALSE
+import com.example.photoday.constants.TRUE
 import com.example.photoday.ui.model.resource.ResourceUser
 import com.example.photoday.ui.model.user.UserFirebase
 import com.google.firebase.auth.FirebaseAuth
@@ -27,7 +29,7 @@ class ChangeUserFirebase(
                             val userPhoto = UserFirebase(image = image)
                             value = ResourceUser(
                                 data = userPhoto,
-                                message = R.string.image_change_successful
+                                message = TRUE
                             )
                         }
                     }
@@ -35,7 +37,7 @@ class ChangeUserFirebase(
                 val mediatorData = value
                 when (value) {
                     null -> value =
-                        ResourceUser(data = mediatorData?.data, message = R.string.error_api)
+                        ResourceUser(data = mediatorData?.data, message = FALSE)
                 }
             }
         }
@@ -55,7 +57,7 @@ class ChangeUserFirebase(
                 val liveDataKeep = value
                 when (value) {
                     null -> value =
-                        ResourceUser(data = liveDataKeep?.data, message = R.string.error_api)
+                        ResourceUser(data = liveDataKeep?.data, message = FALSE)
                 }
             }
         }
@@ -73,12 +75,12 @@ class ChangeUserFirebase(
                         if (task.isSuccessful) {
                             value = ResourceUser(
                                 data = newName,
-                                message = R.string.name_change_successful
+                                message = TRUE
                             )
                         }
                     }
             } catch (e: Exception) {
-                value = ResourceUser(message = R.string.failure_api)
+                value = ResourceUser(message = FALSE)
             }
         }
 
@@ -89,15 +91,15 @@ class ChangeUserFirebase(
                     .addOnCompleteListener { task ->
                         value = when {
                             task.isSuccessful -> {
-                                ResourceUser(message = R.string.email_sent)
+                                ResourceUser(message = TRUE)
                             }
                             else -> {
-                                ResourceUser(message = R.string.unregistered_email)
+                                ResourceUser(message = FALSE)
                             }
                         }
                     }
             } catch (e: Exception) {
-                value = ResourceUser(message = R.string.failure_api)
+                value = ResourceUser(message = null)
             }
         }
 }

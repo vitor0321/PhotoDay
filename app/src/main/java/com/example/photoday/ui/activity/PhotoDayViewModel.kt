@@ -11,7 +11,7 @@ import com.example.photoday.ui.model.item.ItemNote
 
 class PhotoDayViewModel(
     private val photoRepository: BaseRepositoryPhoto,
-    private val notaRepository: BaseRepositoryNote
+    private val notaRepository: BaseRepositoryNote,
 ) : ViewModel() {
 
     val component: LiveData<Components> get() = _component
@@ -33,5 +33,4 @@ class PhotoDayViewModel(
 
     fun salveNota(nota: ItemNote) =
         notaRepository.saveFirebase(nota)
-
 }

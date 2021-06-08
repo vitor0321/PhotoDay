@@ -22,12 +22,11 @@ const val FORGOT_PASSWORD = "FORGOT_PASSWORD"
 /*Configuration*/
 const val NEW_NAME = "NEW_NAME"
 const val GOODBYE = 456
+const val GOODBYE_FAILURE = 458
 
 /*Nota*/
-const val NOTA = "NOTA"
-
-/*Exhibition Image*/
-const val ADD_IMAGE_USER = "ADD_IMAGE_USER"
+const val DELETE_NOTE = "DELETE_NOTE"
+const val SALVE_NOTE = "SALVE_NOTE"
 
 /*Dialog*/
 const val ADD_PHOTO_DIALOG = "ADD_PHOTO_DIALOG"
@@ -42,6 +41,8 @@ const val REQUEST_NOTA = 1555
 const val ADD_GALLERY = 1111
 const val ADD_CAMERA = 1112
 const val ADD_NOTE = 1113
+const val ENTER_TITLE = "Enter with a title"
+const val ENTER_NOTE = "Enter with a note"
 
 /*Firebase Photo*/
 const val IMAGES = "images/"

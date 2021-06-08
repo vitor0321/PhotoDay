@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
+import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.IMAGES
+import com.example.photoday.constants.TRUE
 import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.model.resource.ResourceItem
 import com.google.android.gms.tasks.Task
@@ -33,7 +35,7 @@ class FirebasePhoto(
                         }.addOnCompleteListener {
                             imagesList.sortBy { it.date }
                             val listReversed = imagesList.asReversed()
-                            value = ResourceItem(data = listReversed)
+                            value = ResourceItem(data = listReversed, message = TRUE)
                         }
                     }
                 }
@@ -41,7 +43,7 @@ class FirebasePhoto(
                 val mediatorKeep = value
                 when (value) {
                     null -> value =
-                        ResourceItem(data = mediatorKeep?.data, message = R.string.error_api)
+                        ResourceItem(data = mediatorKeep?.data, message = FALSE)
                 }
             }
         }
@@ -53,13 +55,13 @@ class FirebasePhoto(
         try {
             curFile?.let {
                 imageRef.reference.child("$IMAGES$dateCalendar").putFile(it)
-                value = ResourceItem(message = R.string.successfully_upload_image)
+                value = ResourceItem(message = TRUE)
             }
         } catch (e: Exception) {
             val liveDataKeep = value
             when (value) {
                 null -> value =
-                    ResourceItem(data = liveDataKeep?.data, message = R.string.error_api)
+                    ResourceItem(data = liveDataKeep?.data, message = FALSE)
             }
         }
     }
@@ -70,9 +72,9 @@ class FirebasePhoto(
     ): LiveData<ResourceItem<Void?>> = MutableLiveData<ResourceItem<Void?>>().apply {
         value = try {
             imageRef.reference.child("$IMAGES$dateCalendar").delete()
-            ResourceItem(message = R.string.successfully_delete_image)
+            ResourceItem(message = TRUE)
         } catch (e: Exception) {
-            ResourceItem(message = R.string.error_api)
+            ResourceItem(message = FALSE)
         }
     }
 }

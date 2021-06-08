@@ -37,6 +37,8 @@
     <dimen name="layout_margin_top_8dp_text_view">8dp</dimen>
     <dimen name="text_view_size">16sp</dimen>
     <dimen name="text_size_12sp">12sp</dimen>
+    <dimen name="text_size_18sp">16sp</dimen>
+    <dimen name="text_size_20sp">18sp</dimen>
     <dimen name="padding_text_6sp">6sp</dimen>
     <dimen name="text_view_size_20sp">20sp</dimen>
     <dimen name="text_view_margin_start_16dp">16dp</dimen>

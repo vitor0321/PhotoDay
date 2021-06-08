@@ -54,27 +54,24 @@ class GalleryFragment : BaseFragment() {
     }
 
     private fun initObserve() {
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.createPullPhotos().observe(viewLifecycleOwner, { resourceList ->
-                resourceList.data?.let { listPhoto -> initRecycleView(listPhoto) }
-                messageToast(resourceList.message)
-            })
-        }
+        viewModel.createPullPhotos().observe(viewLifecycleOwner, { resourceList ->
+            resourceList.data?.let { listPhoto -> initRecycleView(listPhoto) }
+            when (resourceList.message) {
+                FALSE -> messageToast(R.string.error_api)
+            }
+        })
     }
 
     private fun initRecycleView(listPhoto: List<ItemPhoto>) {
         val spanCount = SPAN_COUNT
         val layoutManagerAdapter = GridLayoutManager(context, spanCount)
-        CoroutineScope(Dispatchers.Main).launch {
-            viewDataBinding.recycleViewListGallery.run {
-                layoutManager = layoutManagerAdapter
-                adapter = GalleryAdapter(context, listPhoto) { itemPhoto ->
-                    viewModel.navFragment(itemPhoto)
-                }
+        viewDataBinding.recycleViewListGallery.run {
+            layoutManager = layoutManagerAdapter
+            adapter = GalleryAdapter(context, listPhoto) { itemPhoto ->
+                viewModel.navFragment(itemPhoto)
             }
-        }.isCompleted.apply {
-            viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
         }
+        viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
     }
 
     private fun viewFlipperControl(child: Int, visible: Boolean) {

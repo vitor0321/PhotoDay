@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.photoday.repository.BaseRepositoryNote
 import com.example.photoday.ui.model.item.ItemNote
-import com.example.photoday.ui.navigation.Navigation
 
 class NoteViewModel(
     private val navFragment: NavController,
@@ -13,7 +12,8 @@ class NoteViewModel(
 
     fun getAllFirebase() = repository.getAllFirebase()
 
-    fun navFragment(note: ItemNote) {
-        Navigation.navFragmentNoteToFullScreenNote(navFragment, note)
-    }
+    fun salveNota(nota: ItemNote) = repository.saveFirebase(nota)
+
+    fun delete(id: String) = repository.delete(id)
+
 }

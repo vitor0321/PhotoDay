@@ -19,8 +19,6 @@ import com.example.photoday.ui.databinding.data.ItemNoteData
 import com.example.photoday.ui.databinding.data.ItemPhotoData
 import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
-import com.example.photoday.ui.fragment.fullScreenNote.FullScreenNoteFragment
-import com.example.photoday.ui.fragment.fullScreenNote.FullScreenNoteViewModel
 import com.example.photoday.ui.fragment.fullScreenPhoto.FullScreenPhotoFragment
 import com.example.photoday.ui.fragment.fullScreenPhoto.FullScreenPhotoViewModel
 import com.example.photoday.ui.fragment.gallery.GalleryFragment
@@ -110,7 +108,6 @@ val uiModulo = module(override = true) {
     factory<GalleryFragment> { GalleryFragment() }
     factory<NoteFragment> { NoteFragment() }
     factory<FullScreenPhotoFragment> { FullScreenPhotoFragment() }
-    factory<FullScreenNoteFragment> { FullScreenNoteFragment() }
 }
 
 val viewModelModulo = module(override = true) {
@@ -156,13 +153,11 @@ val viewModelModulo = module(override = true) {
             navFragment = navFragment
         )
     }
-    viewModel<FullScreenNoteViewModel> { (navFragment: NavController) ->
-        FullScreenNoteViewModel(
+    viewModel<FullScreenPhotoViewModel> { (date: String, navFragment: NavController) ->
+        FullScreenPhotoViewModel(
             navFragment = navFragment,
-            repository = get<BaseRepositoryNote>()
+            repository = get<BaseRepositoryPhoto>(),
+            date = date
         )
-    }
-    viewModel<FullScreenPhotoViewModel> {
-        FullScreenPhotoViewModel()
     }
 }
