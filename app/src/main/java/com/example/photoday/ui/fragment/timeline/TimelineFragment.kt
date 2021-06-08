@@ -4,20 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentTimelineBinding
-import com.example.photoday.ui.adapter.TimelineAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
-import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.toast.Toast.toast
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -26,6 +23,7 @@ class TimelineFragment : BaseFragment() {
     private var _viewDataBinding: FragmentTimelineBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
+    private val adapter: TimelineAdapter by inject()
     private val viewModel: TimelineViewModel by viewModel {
         parametersOf(findNavController())
     }
@@ -40,9 +38,7 @@ class TimelineFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        CoroutineScope(Dispatchers.Main).launch {
-            init()
-        }
+        init()
     }
 
     override fun onResume() {
@@ -53,27 +49,30 @@ class TimelineFragment : BaseFragment() {
 
     private fun init() {
         statusBarNavigation()
+        configurationRecyclerView()
     }
 
     private fun initObserve() {
         viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
             resourceList.data?.let { listPhoto ->
-                initRecycleView(listPhoto)
+                adapter.update(listPhoto)
+                viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
             }
             when (resourceList.message) {
-                FALSE -> messageToast(R.string.error_api)
+                FALSE -> {
+                    messageToast(R.string.error_api)
+                }
             }
         }
     }
 
-    private fun initRecycleView(listPhoto: List<ItemPhoto>) {
-        viewDataBinding.recycleViewListTimeline.run {
-            layoutManager = LinearLayoutManager(context)
-            adapter = TimelineAdapter(context, listPhoto) { itemPhoto ->
-                viewModel.navFragment(itemPhoto)
-            }
+    private fun configurationRecyclerView() {
+        val divisor = DividerItemDecoration(context, LinearLayout.VERTICAL)
+        viewDataBinding.recycleViewListTimeline.addItemDecoration(divisor)
+        adapter.onItemClickListener = { item ->
+            viewModel.navFragment(item)
         }
-        viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
+        viewDataBinding.recycleViewListTimeline.adapter = adapter
     }
 
     private fun viewFlipperControl(child: Int, visible: Boolean) {
@@ -85,11 +84,9 @@ class TimelineFragment : BaseFragment() {
                 }
             }
             child == CHILD_SECOND && visible == PROGRESS_BAR_INVISIBLE -> {
-                CoroutineScope(Dispatchers.Main).launch {
-                    viewDataBinding.run {
-                        viewFlipperTimeline.displayedChild = CHILD_SECOND
-                        progressFlowTimeline.isVisible = PROGRESS_BAR_INVISIBLE
-                    }
+                viewDataBinding.run {
+                    viewFlipperTimeline.displayedChild = CHILD_SECOND
+                    progressFlowTimeline.isVisible = PROGRESS_BAR_INVISIBLE
                 }
             }
         }

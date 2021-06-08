@@ -1,4 +1,4 @@
-package com.example.photoday.ui.adapter.extension
+package com.example.photoday.ui.databinding
 
 import android.net.Uri
 import android.widget.ImageView

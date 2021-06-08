@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentGalleryBinding
-import com.example.photoday.ui.adapter.GalleryAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
 import com.example.photoday.ui.model.item.ItemPhoto

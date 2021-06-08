@@ -1,31 +1,26 @@
-package com.example.photoday.ui.adapter
+package com.example.photoday.ui.fragment.gallery
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photoday.ui.adapter.extension.DiffCallback
-import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.databinding.ItemGalleryFragmentBinding
+import com.example.photoday.ui.adapter.extension.DiffCallback
 import com.example.photoday.ui.databinding.data.ItemPhotoData
+import com.example.photoday.ui.model.item.ItemPhoto
 
 class GalleryAdapter(
     private val context: Context,
     private val items: List<ItemPhoto>,
     var onItemClickListener: (selectItem: ItemPhoto) -> Unit = {},
-) : ListAdapter<ItemPhoto, GalleryAdapter.ViewHolder>(DiffCallback) {
+) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(context)
         val viewDataBinding = ItemGalleryFragmentBinding.inflate(inflater, parent, false)
-        return ViewHolder(viewDataBinding).also {
-            viewDataBinding.lifecycleOwner = it
-        }
+        return ViewHolder(viewDataBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -34,42 +29,22 @@ class GalleryAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    override fun onViewAttachedToWindow(holder: ViewHolder) {
-        super.onViewAttachedToWindow(holder)
-        holder.stateRegistry(Lifecycle.State.STARTED)
-    }
-
-    override fun onViewDetachedFromWindow(holder: ViewHolder) {
-        super.onViewDetachedFromWindow(holder)
-        holder.stateRegistry(Lifecycle.State.DESTROYED)
-    }
-
     inner class ViewHolder(private val viewDataBinding: ItemGalleryFragmentBinding) :
-        RecyclerView.ViewHolder(viewDataBinding.root), View.OnClickListener, LifecycleOwner {
+        RecyclerView.ViewHolder(viewDataBinding.root), View.OnClickListener {
 
         private lateinit var itemPhoto: ItemPhoto
-        private val registry = LifecycleRegistry(this)
-
-        override fun getLifecycle(): Lifecycle = registry
 
         override fun onClick(view: View?) {
-            if (::itemPhoto.isInitialized) {
-                onItemClickListener(itemPhoto)
-            }
+            onItemClickListener(itemPhoto)
         }
 
         init {
-            stateRegistry(Lifecycle.State.INITIALIZED)
             viewDataBinding.clickCardView = this
         }
 
         fun bind(item: ItemPhoto) {
             this.itemPhoto = item
             viewDataBinding.itemGallery = ItemPhotoData(item)
-        }
-
-        fun stateRegistry(state: Lifecycle.State) {
-            registry.run { state }
         }
     }
 }
