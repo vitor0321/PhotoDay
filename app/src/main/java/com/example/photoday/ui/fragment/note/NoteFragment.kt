@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentNoteBinding
-import com.example.photoday.ui.adapter.NoteAdapter
 import com.example.photoday.ui.databinding.data.ItemNoteData
 import com.example.photoday.ui.dialog.AddNoteDialog
 import com.example.photoday.ui.fragment.base.BaseFragment

@@ -27,6 +27,7 @@ import com.example.photoday.ui.fragment.login.LoginViewModel
 import com.example.photoday.ui.fragment.note.NoteFragment
 import com.example.photoday.ui.fragment.note.NoteViewModel
 import com.example.photoday.ui.fragment.register.RegisterViewModel
+import com.example.photoday.ui.fragment.timeline.TimelineAdapter
 import com.example.photoday.ui.fragment.timeline.TimelineFragment
 import com.example.photoday.ui.fragment.timeline.TimelineViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -108,6 +109,7 @@ val uiModulo = module(override = true) {
     factory<GalleryFragment> { GalleryFragment() }
     factory<NoteFragment> { NoteFragment() }
     factory<FullScreenPhotoFragment> { FullScreenPhotoFragment() }
+    factory<TimelineAdapter> {TimelineAdapter(get<Context>())  }
 }
 
 val viewModelModulo = module(override = true) {

@@ -1,4 +1,4 @@
-package com.example.photoday.ui.adapter
+package com.example.photoday.ui.fragment.timeline
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,18 +7,16 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.photoday.databinding.ItemTimelineFragmentBinding
-import com.example.photoday.ui.adapter.extension.DiffCallback
 import com.example.photoday.ui.databinding.data.ItemPhotoData
 import com.example.photoday.ui.model.item.ItemPhoto
 
 class TimelineAdapter(
     private val context: Context,
-    private val items: List<ItemPhoto>,
+    private val items: MutableList<ItemPhoto> = mutableListOf(),
     var onItemClickListener: (selectItem: ItemPhoto) -> Unit = {},
-) : ListAdapter<ItemPhoto, TimelineAdapter.ViewHolder>(DiffCallback) {
+) : RecyclerView.Adapter<TimelineAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(context)
@@ -42,6 +40,13 @@ class TimelineAdapter(
     override fun onViewDetachedFromWindow(holder: ViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.stateRegistry(Lifecycle.State.DESTROYED)
+    }
+
+    fun update(newItem: List<ItemPhoto>) {
+        notifyItemRangeRemoved(0, items.size)
+        this.items.clear()
+        this.items.addAll(newItem)
+        notifyItemRangeInserted(0, items.size)
     }
 
     inner class ViewHolder(private val viewDataBinding: ItemTimelineFragmentBinding) :

@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentTimelineBinding
-import com.example.photoday.ui.adapter.TimelineAdapter
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
 import com.example.photoday.ui.model.item.ItemPhoto
@@ -18,6 +17,7 @@ import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -26,6 +26,7 @@ class TimelineFragment : BaseFragment() {
     private var _viewDataBinding: FragmentTimelineBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
+    private val adapter: TimelineAdapter by inject()
     private val viewModel: TimelineViewModel by viewModel {
         parametersOf(findNavController())
     }
@@ -58,22 +59,20 @@ class TimelineFragment : BaseFragment() {
     private fun initObserve() {
         viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
             resourceList.data?.let { listPhoto ->
-                initRecycleView(listPhoto)
+                adapter.update(listPhoto)
+                viewDataBinding.recycleViewListTimeline.run {
+                    layoutManager = LinearLayoutManager(context)
+                }
+                viewDataBinding.recycleViewListTimeline.adapter = adapter
+                adapter.onItemClickListener = {itemPhoto->
+                    viewModel.navFragment(itemPhoto)
+                }
+                viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
             }
             when (resourceList.message) {
                 FALSE -> messageToast(R.string.error_api)
             }
         }
-    }
-
-    private fun initRecycleView(listPhoto: List<ItemPhoto>) {
-        viewDataBinding.recycleViewListTimeline.run {
-            layoutManager = LinearLayoutManager(context)
-            adapter = TimelineAdapter(context, listPhoto) { itemPhoto ->
-                viewModel.navFragment(itemPhoto)
-            }
-        }
-        viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
     }
 
     private fun viewFlipperControl(child: Int, visible: Boolean) {

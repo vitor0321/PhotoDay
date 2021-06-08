@@ -1,4 +1,4 @@
-package com.example.photoday.ui.adapter
+package com.example.photoday.ui.fragment.note
 
 import android.content.Context
 import android.view.LayoutInflater
