@@ -10,13 +10,13 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
-import com.example.photoday.ui.toast.Toast.toast
 import com.example.photoday.databinding.FragmentLoginBinding
-import com.example.photoday.ui.model.resource.ResourceUser
-import com.example.photoday.ui.model.user.UserLogin
 import com.example.photoday.ui.dialog.ForgotPasswordDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
+import com.example.photoday.ui.model.resource.ResourceUser
+import com.example.photoday.ui.model.user.UserLogin
+import com.example.photoday.ui.toast.Toast.toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -158,7 +158,11 @@ class LoginFragment : BaseFragment(), ForgotPasswordDialog.ForgotPasswordListene
     }
 
     private fun navigation(resourceUser: ResourceUser<Void>) {
-        this.messageToast(resourceUser.message)
+        when(resourceUser.message){
+            TRUE->messageToast(R.string.login_is_success)
+            FALSE-> messageToast(R.string.verify_your_email_address)
+            null->messageToast(R.string.failure_api_login)
+        }
         when (resourceUser.login) {
             ON_START -> {
                 this.viewModel.navController(ON_START)
@@ -185,7 +189,11 @@ class LoginFragment : BaseFragment(), ForgotPasswordDialog.ForgotPasswordListene
 
     override fun onEmailSelected(email: String) {
         this.viewModel.forgotPassword(email).observe(viewLifecycleOwner, { resource ->
-            messageToast(resource.message)
+            when (resource.message) {
+                TRUE -> messageToast(R.string.email_sent)
+                FALSE -> messageToast(R.string.unregistered_email)
+                null -> messageToast(R.string.failure_api_login)
+            }
         })
     }
 

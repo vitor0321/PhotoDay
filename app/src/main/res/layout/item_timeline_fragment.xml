@@ -18,9 +18,10 @@
     <androidx.cardview.widget.CardView
         style="@style/CardView.Light"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_height_180dp"
+        android:layout_height="wrap_content"
         android:onClick="@{(view)-> clickCardView.onClick(view)}"
         android:layout_marginStart="@dimen/layout_marin_start_8dp"
+        android:maxHeight="@dimen/layout_height_180dp"
         android:layout_marginTop="@dimen/layout_margin_cardView_top_8dp"
         android:layout_marginEnd="@dimen/layout_margin_end_8dp"
         android:orientation="vertical"
@@ -46,30 +47,36 @@
 >>>>>>> developing
             <ImageView
                 android:id="@+id/image_timeline"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/layout_height_180dp"
                 android:adjustViewBounds="true"
+<<<<<<< HEAD
                 android:scaleType="fitXY"
 <<<<<<< HEAD
 =======
+=======
+                android:scaleType="centerCrop"
+>>>>>>> developing
                 app:upLoadImageUri="@{itemTimeline.photo}"
 >>>>>>> developing
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ic_item_photo" />
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/date_photo_text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:textColor="@color/orange"
                 android:padding="@dimen/padding_text_6sp"
+                android:textSize="@dimen/text_view_size_16sp"
                 android:text="@{itemTimeline.date}"
-                android:textSize="@dimen/text_size_12sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/image_timeline"
-                tools:text="@string/text_view_tools_date" />
+                tools:text="@tools:sample/date/mmddyy" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

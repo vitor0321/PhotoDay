@@ -3,8 +3,10 @@ package com.example.photoday.repository.firebaseUser
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.photoday.R
+import com.example.photoday.constants.FALSE
 import com.example.photoday.constants.FIRST_LOGIN
 import com.example.photoday.constants.ON_START
+import com.example.photoday.constants.TRUE
 import com.example.photoday.ui.model.resource.ResourceUser
 import com.google.firebase.auth.FirebaseAuth
 
@@ -27,25 +29,25 @@ class CheckUserFirebase(
                                     ON_START -> {
                                         value = ResourceUser(
                                             login = ON_START,
-                                            message = R.string.login_is_success
+                                            message = TRUE
                                         )
                                     }
                                     FIRST_LOGIN -> {
                                         value = ResourceUser(
                                             login = FIRST_LOGIN,
-                                            message = R.string.login_is_success
+                                            message = TRUE
                                         )
                                     }
                                 }
                             }
                             else -> {
-                                value = ResourceUser(message = R.string.verify_your_email_address)
+                                value = ResourceUser(message = FALSE)
                             }
                         }
                     }
                 }
             } catch (e: Exception) {
-                value = ResourceUser(message = R.string.failure_api)
+                value = ResourceUser(message = null)
             }
         }
 }

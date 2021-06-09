@@ -10,11 +10,11 @@ import androidx.fragment.app.DialogFragment
 import com.example.photoday.constants.ADD_CAMERA
 import com.example.photoday.constants.ADD_GALLERY
 import com.example.photoday.constants.ADD_NOTE
-import com.example.photoday.databinding.DialogFragmentAddItemBinding
+import com.example.photoday.databinding.DialogFragmentAddItemPhotoBinding
 
-class AddItemDialog : DialogFragment() {
+class AddItemPhotoDialog : DialogFragment() {
 
-    private var _viewDataBinding: DialogFragmentAddItemBinding? = null
+    private var _viewDataBinding: DialogFragmentAddItemPhotoBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
     var listener: AddItemListener? = null
@@ -24,7 +24,7 @@ class AddItemDialog : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _viewDataBinding = DialogFragmentAddItemBinding.inflate(inflater, container, false)
+        _viewDataBinding = DialogFragmentAddItemPhotoBinding.inflate(inflater, container, false)
         return viewDataBinding.root
     }
 
@@ -70,6 +70,6 @@ class AddItemDialog : DialogFragment() {
     }
 
     companion object {
-        fun newInstance() = AddItemDialog()
+        fun newInstance() = AddItemPhotoDialog()
     }
 }

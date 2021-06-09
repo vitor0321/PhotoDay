@@ -16,7 +16,7 @@ import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentConfigurationBinding
 import com.example.photoday.ui.common.ExhibitionCameraOrGallery
 import com.example.photoday.ui.databinding.data.UserFirebaseData
-import com.example.photoday.ui.dialog.AddItemDialog
+import com.example.photoday.ui.dialog.AddItemPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
@@ -30,7 +30,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.io.ByteArrayOutputStream
 
-class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
+class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener,
     NewUserNameDialog.NewUserNameListener {
 
     private var _viewDataBinding: FragmentConfigurationBinding? = null
@@ -81,7 +81,7 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
     private fun initObserve() {
         this.viewModel.getUserDBFirebase().observe(viewLifecycleOwner, { resourceUser ->
             this.userFirebaseData.setData(resourceUser.data)
-            messageToast(resourceUser.message)
+            checkMessage(resourceUser.message)
         })
     }
 
@@ -94,7 +94,7 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
                     data?.data?.let { data ->
                         viewModel.imageUser(data).observe(this, { resourceUser ->
                             this.userFirebaseData.setData(resourceUser.data)
-                            messageToast(resourceUser.message)
+                            checkMessage(resourceUser.message)
                         })
                     }
                 }
@@ -111,7 +111,7 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
                     )
                     viewModel.imageUser(Uri.parse(path)).observe(this, { resourceUser ->
                         this.userFirebaseData.setData(resourceUser.data)
-                        messageToast(resourceUser.message)
+                        checkMessage(resourceUser.message)
                     })
                 }
             }
@@ -126,12 +126,12 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
             viewModel.logout().observe(viewLifecycleOwner, { resource ->
                 when (resource.login) {
                     GOODBYE -> {
-                        messageToast(resource.message)
+                        messageToast(R.string.successfully_logged)
                         viewModel.navController(GOODBYE)
                         onDestroy()
                     }
-                    null -> {
-                        messageToast(resource.message)
+                    GOODBYE_FAILURE -> {
+                        messageToast(R.string.failure_api)
                     }
                 }
             })
@@ -141,7 +141,7 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
     private fun photoDialog() {
         /*open AddPhotoDialog*/
         activity?.let { activity ->
-            AddItemDialog.newInstance().apply {
+            AddItemPhotoDialog.newInstance().apply {
                 listener = this@ConfigurationFragment
             }
                 .show(activity.supportFragmentManager, ADD_PHOTO_DIALOG)
@@ -180,7 +180,10 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
                 userFirebase?.let {
                     viewModel.newNameUser(userFirebase).observe(this, { resourceResult ->
                         this.userFirebaseData.setData(resourceResult.data)
-                        messageToast(resourceResult.message)
+                        when(resourceResult.message){
+                            TRUE-> messageToast(R.string.name_change_successful)
+                            FALSE-> messageToast(R.string.failure_api)
+                        }
                     })
                 }
             }
@@ -201,6 +204,13 @@ class ConfigurationFragment : BaseFragment(), AddItemDialog.AddItemListener,
             ),
             barColor = R.color.orange_status_bar
         )
+    }
+
+    private fun checkMessage(check: Boolean?){
+        when(check){
+            TRUE-> messageToast(R.string.image_change_successful)
+            FALSE-> messageToast(R.string.error_api_configuration)
+        }
     }
 
     private fun messageToast(message: Int?) {

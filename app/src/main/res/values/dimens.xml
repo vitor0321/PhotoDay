@@ -36,7 +36,9 @@
     <!--Text View-->
     <dimen name="layout_margin_top_8dp_text_view">8dp</dimen>
     <dimen name="text_view_size">16sp</dimen>
-    <dimen name="text_size_12sp">12sp</dimen>
+    <dimen name="text_view_size_16sp">16sp</dimen>
+    <dimen name="text_size_18sp">18sp</dimen>
+    <dimen name="text_size_20sp">20sp</dimen>
     <dimen name="padding_text_6sp">6sp</dimen>
     <dimen name="text_view_size_20sp">20sp</dimen>
     <dimen name="text_view_margin_start_16dp">16dp</dimen>
@@ -72,6 +74,7 @@
     <dimen name="layout_margin_end_8dp">8dp</dimen>
     <dimen name="card_corner_radius_18dp">18dp</dimen>
     <dimen name="layout_height_180dp">180dp</dimen>
+    <dimen name="layout_height_90dp">90dp</dimen>
     <dimen name="text_size_16sp">16sp</dimen>
 
     <!--Shapeable ImageView-->

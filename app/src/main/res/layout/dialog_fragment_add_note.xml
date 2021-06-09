@@ -10,6 +10,10 @@
             type="com.example.photoday.ui.databinding.data.ItemNoteData" />
 
         <variable
+            name="deleteButton"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="okButton"
             type="android.view.View.OnClickListener" />
 
@@ -30,10 +34,23 @@
             android:background="@color/white"
             android:padding="@dimen/padding_text_6sp"
             android:text="@{note.date}"
-            android:textSize="@dimen/text_size_12sp"
+            android:textSize="@dimen/text_view_size_16sp"
+            app:layout_constraintEnd_toStartOf="@id/image_edit_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tex_input_title"
-            tools:text="@string/text_view_tools_date" />
+            tools:text="@tools:sample/date/mmddyy" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/image_edit_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:onClick="@{deleteButton}"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintBottom_toTopOf="@id/tex_input_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/date_text_view"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tex_input_title"
@@ -45,6 +62,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_title"
                 style="@style/TextInputEditText"
+                android:textAllCaps="true"
+                android:textSize="@dimen/text_size_20sp"
+                android:textStyle="bold"
                 android:hint="@string/title"
                 android:text="@={note.title}" />
 
@@ -61,9 +81,10 @@
                 android:id="@+id/edit_text_note"
                 style="@style/TextInputEditText"
                 android:layout_height="300dp"
+                android:textSize="@dimen/text_size_18sp"
                 android:gravity="start"
                 android:hint="@string/nota"
-                android:text="@={note.title}" />
+                android:text="@={note.note}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

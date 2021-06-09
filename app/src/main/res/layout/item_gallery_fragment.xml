@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             app:upLoadImageUri="@{itemGallery.photo}"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_item_photo" />
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     </androidx.cardview.widget.CardView>
 </layout>

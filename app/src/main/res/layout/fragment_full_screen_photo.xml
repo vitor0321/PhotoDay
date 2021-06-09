@@ -4,12 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.text.TextUtils"/>
+
+        <import type="android.text.TextUtils" />
+
         <import type="androidx.appcompat.widget.AppCompatImageView" />
 
         <variable
             name="itemPhoto"
             type="com.example.photoday.ui.databinding.data.ItemPhotoData" />
+
+        <variable
+            name="deleteButton"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,17 +24,30 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_view_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{itemPhoto.date}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="@dimen/text_view_size_20sp"
+            android:gravity="center"
             android:layout_margin="@dimen/layout_margin_8dp"
             app:layout_constraintBottom_toTopOf="@id/image_view_full_screen"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/image_edit_button"
             app:layout_constraintVertical_bias="0.0"
             tools:text="2021-05-15" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/image_edit_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:onClick="@{deleteButton}"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintBottom_toTopOf="@id/image_view_full_screen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_view_date"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image_view_full_screen"

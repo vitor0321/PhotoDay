@@ -7,6 +7,10 @@
     <string name="failure_initialize_control">Failure Initialize Control</string>
     <string name="failure_initialize_date_picker">Failure Initialize Date picker</string>
     <string name="failure_capture_image">Failure Capture Image</string>
+    <string name="successfully_upload_image">Successfully upload image</string>
+    <string name="error_api_photo">Error API</string>
+    <string name="note_add_item">Note ADD Successful</string>
+    <string name="note_add_failure_activity">Opsss! Failure API. Try again</string>
 
     <!-- Base Fragment -->
 
@@ -14,11 +18,16 @@
     <string name="user_name">User name</string>
     <string name="email_user">Email</string>
     <string name="logout">logout</string>
+    <string name="name_change_successful">Name change Successful</string>
+    <string name="image_change_successful">Image change Successful</string>
     <string name="change_image_user">Image User</string>
+    <string name="failure_api">Opsss! Failure API. Try again</string>
     <string name="failure_capture_image_user">Failure Capture Image User</string>
+    <string name="error_api_configuration">Error API</string>
 
     <!-- Gallery Fragment -->
     <string name="configuration_gallery">Configuration Gallery</string>
+    <string name="error_api">Error API</string>
 
     <!-- Login Fragment -->
     <string name="please_enter_valid_email_login">Please enter valid email</string>
@@ -27,9 +36,15 @@
     <string name="email_user_login">Email</string>
     <string name="password">  Password</string>
     <string name="login">Login</string>
+    <string name="login_is_success">Login Success</string>
+    <string name="verify_your_email_address">Please verify your email address</string>
+    <string name="email_sent">Email sent</string>
+    <string name="unregistered_email">Unregistered Email</string>
+    <string name="failure_api_login">Opsss! Failure API. Try again</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="register_new_user">Register New User</string>
     <string name="failure_login_user">Failure Login User</string>
+    <string name="authentication_failed_try_again">Authentication failed. Try again</string>
     <string name="check_your_email_and_confirm">Check your Email and Confirm</string>
 
     <!-- Register Fragment -->
@@ -44,7 +59,6 @@
     <string name="register">Register</string>
 
     <!-- Timeline Fragment -->
-    <string name="text_view_tools_date">01/01/2021</string>
 
     <!-- Splash Fragment -->
     <string name="photo_day">Photo Day</string>
@@ -57,10 +71,7 @@
     <string name="what_is_your_name">What\'s your name?</string>
     <string name="enter_valid_name">Enter a valid name</string>
     <string name="enter_title">Enter with a title</string>
-    <string name="enter_nota">Enter with a nota</string>
-    <string name="nota_add">Nota ADD Successful</string>
-    <string name="nota_delete">Nota delete successful</string>
-    <string name="name_change_successful">Name change Successful</string>
+    <string name="enter_note">Enter with a note</string>
     <string name="please_enter_email_dialog">Please enter email</string>
     <string name="cannot_access_gallery">Cannot Access Gallery</string>
     <string name="please_enter_valid_email_dialog">Please Enter Valid Email</string>
@@ -68,7 +79,6 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="new_user_name">New Name</string>
-    <string name="error_api">Error API</string>
 
     <!-- Permission -->
     <string name="version_less_23">Version less than 23</string>
@@ -80,26 +90,20 @@
     <!-- Firebase Auth-->
     <string name="successfully_logged">Logged successfully</string>
     <string name="please_enter_email">Please enter email</string>
-    <string name="email_sent">Email sent</string>
-    <string name="image_change_successful">Image change Successful</string>
     <string name="please_enter_valid_email">Please Enter Valid Email</string>
-    <string name="unregistered_email">Unregistered Email</string>
     <string name="auth_failed">Sorry, auth failed.</string>
     <string name="login_success">Login success</string>
     <string name="email_already_exists">Email already exists</string>
-    <string name="authentication_failed_try_again">Authentication failed. Try again</string>
     <string name="login_failed">Login failed.</string>
-    <string name="login_is_success">Login Success</string>
     <string name="password_needs_least_6_digits">Password needs at least 6 digits</string>
     <string name="email_invalid">Email invalid</string>
     <string name="email_already_been">Email Address has already been registered</string>
     <string name="unknown_error">Unknown error</string>
-    <string name="verify_your_email_address">Please verify your email address</string>
     <string name="email_or_password_wrong">Email or Password is wrong</string>
 
-    <!-- Repository Firebase Photo  -->
-    <string name="successfully_upload_image">Successfully upload image</string>
+    <!-- Full Screen Photo Fragment  -->
     <string name="successfully_delete_image">Successfully delete Image</string>
+    <string name="error_api_full_screen">Error API</string>
 
     <!-- Menu  -->
     <string name="timeline">Timeline</string>
@@ -120,12 +124,17 @@
     <string name="nav_graph_label_splash_intro">Splash Intro</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="failure_api">Opsss! Failure API. Try again</string>
 
     <!-- Note Fragment -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="note">Note</string>
     <string name="title">Title</string>
     <string name="nota">Nota</string>
+    <string name="note_add">Note ADD Successful</string>
+    <string name="note_add_failure">Opsss! Failure API. Try again</string>
+    <string name="note_delete">Note delete successful</string>
+    <string name="note_delete_failure">Delete Note Failure</string>
+
+
 
 </resources>
