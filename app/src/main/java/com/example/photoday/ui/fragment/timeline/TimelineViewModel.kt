@@ -11,7 +11,7 @@ class TimelineViewModel(
     private val navFragment: NavController
 ) : ViewModel() {
 
-    fun createPullPhotos() = repository.baseRepositoryListFileDownload()
+    fun createPullPhotos()=repository.baseRepositoryListFileDownload()
 
     fun navFragment(itemPhoto: ItemPhoto) {
         Navigation.navFragmentTimelineToFullScreenPhoto(

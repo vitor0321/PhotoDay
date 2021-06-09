@@ -13,9 +13,6 @@ import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
 import com.example.photoday.ui.toast.Toast.toast
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -26,6 +23,7 @@ class TimelineFragment : BaseFragment() {
     private val viewDataBinding get() = _viewDataBinding!!
 
     private val adapterTimeline: TimelineAdapter by inject()
+
     private val viewModel: TimelineViewModel by viewModel {
         parametersOf(findNavController())
     }
@@ -38,17 +36,19 @@ class TimelineFragment : BaseFragment() {
         return viewDataBinding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initObserve()
+    }
+
     override fun onStart() {
         super.onStart()
-        CoroutineScope(Dispatchers.Main).launch {
-            init()
-        }
+        init()
     }
 
     override fun onResume() {
         super.onResume()
         viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
-        initObserve()
     }
 
     private fun init() {
@@ -56,12 +56,12 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun initObserve() {
-        viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
-            resourceList.data?.let { listPhoto ->
-                adapterTimeline.update(listPhoto)
+        viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceItem ->
+            resourceItem.data?.let { listNote ->
+                adapterTimeline.update(listNote)
                 initRecycleView()
             }
-            when (resourceList.message) {
+            when (resourceItem.message) {
                 FALSE -> messageToast(R.string.error_api)
             }
         }
@@ -87,11 +87,9 @@ class TimelineFragment : BaseFragment() {
                 }
             }
             child == CHILD_SECOND && visible == PROGRESS_BAR_INVISIBLE -> {
-                CoroutineScope(Dispatchers.Main).launch {
-                    viewDataBinding.run {
-                        viewFlipperTimeline.displayedChild = CHILD_SECOND
-                        progressFlowTimeline.isVisible = PROGRESS_BAR_INVISIBLE
-                    }
+                viewDataBinding.run {
+                    viewFlipperTimeline.displayedChild = CHILD_SECOND
+                    progressFlowTimeline.isVisible = PROGRESS_BAR_INVISIBLE
                 }
             }
         }

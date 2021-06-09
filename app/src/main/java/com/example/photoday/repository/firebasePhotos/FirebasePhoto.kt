@@ -21,7 +21,6 @@ class FirebasePhoto(
 
     fun listFileDownload(): LiveData<ResourceItem<List<ItemPhoto>?>> =
         MediatorLiveData<ResourceItem<List<ItemPhoto>?>>().apply {
-            try {
                 val storageRef = imageRef.reference.child(IMAGES)
                 val imagesList: ArrayList<ItemPhoto> = ArrayList()
                 val listAllTask: Task<ListResult> = storageRef.listAll()
@@ -39,13 +38,6 @@ class FirebasePhoto(
                         }
                     }
                 }
-            } catch (e: Exception) {
-                val mediatorKeep = value
-                when (value) {
-                    null -> value =
-                        ResourceItem(data = mediatorKeep?.data, message = FALSE)
-                }
-            }
         }
 
     fun uploadImageToStorage(
