@@ -14,7 +14,7 @@ import com.example.photoday.ui.model.item.ItemNote
 
 class NoteAdapter(
     private val context: Context,
-    private val items: List<ItemNote>,
+    private val items: MutableList<ItemNote> = mutableListOf(),
     var onItemClickListener: (selectNota: ItemNote) -> Unit = {}
 ) : RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
 
@@ -40,6 +40,13 @@ class NoteAdapter(
     override fun onViewDetachedFromWindow(holder: ViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.stateRegistry(Lifecycle.State.DESTROYED)
+    }
+
+    fun update(newItem: List<ItemNote>) {
+        notifyItemRangeRemoved(0, items.size)
+        this.items.clear()
+        this.items.addAll(newItem)
+        notifyItemRangeInserted(0, items.size)
     }
 
     inner class ViewHolder(private val viewDataBinding: ItemNoteFragmentBinding) :

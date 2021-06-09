@@ -34,11 +34,11 @@
             android:background="@color/white"
             android:padding="@dimen/padding_text_6sp"
             android:text="@{note.date}"
-            android:textSize="@dimen/text_size_12sp"
+            android:textSize="@dimen/text_view_size_16sp"
             app:layout_constraintEnd_toStartOf="@id/image_edit_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tex_input_title"
-            tools:text="@string/text_view_tools_date" />
+            tools:text="@tools:sample/date/mmddyy" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/image_edit_button"
@@ -62,6 +62,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_title"
                 style="@style/TextInputEditText"
+                android:textAllCaps="true"
+                android:textSize="@dimen/text_size_20sp"
+                android:textStyle="bold"
                 android:hint="@string/title"
                 android:text="@={note.title}" />
 
@@ -78,6 +81,7 @@
                 android:id="@+id/edit_text_note"
                 style="@style/TextInputEditText"
                 android:layout_height="300dp"
+                android:textSize="@dimen/text_size_18sp"
                 android:gravity="start"
                 android:hint="@string/nota"
                 android:text="@={note.note}" />

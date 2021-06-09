@@ -50,7 +50,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize"
-             />
+            tools:srcCompat="@tools:sample/backgrounds/scenic"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_edit_name_user"

@@ -12,11 +12,11 @@ import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
-import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -25,7 +25,8 @@ class GalleryFragment : BaseFragment() {
     private var _viewDataBinding: FragmentGalleryBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val viewModel: GalleryViewModel by viewModel{
+    private val adapterGallery: GalleryAdapter by inject()
+    private val viewModel: GalleryViewModel by viewModel {
         parametersOf(findNavController())
     }
 
@@ -54,24 +55,29 @@ class GalleryFragment : BaseFragment() {
 
     private fun initObserve() {
         viewModel.createPullPhotos().observe(viewLifecycleOwner, { resourceList ->
-            resourceList.data?.let { listPhoto -> initRecycleView(listPhoto) }
+            resourceList.data?.let { listPhoto ->
+                adapterGallery.update(listPhoto)
+                initRecycleView()
+            }
             when (resourceList.message) {
                 FALSE -> messageToast(R.string.error_api)
             }
         })
     }
 
-    private fun initRecycleView(listPhoto: List<ItemPhoto>) {
+    private fun initRecycleView() {
         val spanCount = SPAN_COUNT
         val layoutManagerAdapter = GridLayoutManager(context, spanCount)
         viewDataBinding.recycleViewListGallery.run {
             layoutManager = layoutManagerAdapter
-            adapter = GalleryAdapter(context, listPhoto) { itemPhoto ->
+            this.adapter = adapterGallery
+            adapterGallery.onItemClickListener = { itemPhoto ->
                 viewModel.navFragment(itemPhoto)
             }
         }
         viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
     }
+
 
     private fun viewFlipperControl(child: Int, visible: Boolean) {
         when {

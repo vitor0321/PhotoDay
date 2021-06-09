@@ -28,6 +28,7 @@ class NoteFragment : BaseFragment(), AddNoteDialog.NoteListener {
     private var _viewDataBinding: FragmentNoteBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
+    private val adapterNote: NoteAdapter by inject()
     private val viewModel: NoteViewModel by viewModel {
         parametersOf(findNavController())
     }
@@ -62,23 +63,21 @@ class NoteFragment : BaseFragment(), AddNoteDialog.NoteListener {
     private fun initObserve() {
         viewModel.getAllFirebase().observe(viewLifecycleOwner) { resourceItem ->
             resourceItem.data?.let { listNote ->
-                initRecycleView(listNote)
+                adapterNote.update(listNote)
+                initRecycleView()
             }
         }
     }
 
-    private fun initRecycleView(listNote: List<ItemNote>?) {
-        listNote?.let {
-            viewDataBinding.recycleViewListNote.run {
-                layoutManager = LinearLayoutManager(context)
-                adapter = NoteAdapter(context, listNote) { note ->
-                    notaDialog(note)
-                }
+    private fun initRecycleView() {
+        viewDataBinding.recycleViewListNote.run {
+            layoutManager = LinearLayoutManager(context)
+            this.adapter = adapterNote
+            adapterNote.onItemClickListener = { note ->
+                notaDialog(note)
             }
-            viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
-        } ?: run {
-            viewFlipperControl(CHILD_FIRST, PROGRESS_BAR_VISIBLE)
         }
+        viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
     }
 
     override fun onNotaSelected(note: ItemNote?, typeDialog: String?) {

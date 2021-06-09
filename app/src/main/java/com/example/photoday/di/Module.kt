@@ -21,9 +21,11 @@ import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
 import com.example.photoday.ui.fragment.fullScreenPhoto.FullScreenPhotoFragment
 import com.example.photoday.ui.fragment.fullScreenPhoto.FullScreenPhotoViewModel
+import com.example.photoday.ui.fragment.gallery.GalleryAdapter
 import com.example.photoday.ui.fragment.gallery.GalleryFragment
 import com.example.photoday.ui.fragment.gallery.GalleryViewModel
 import com.example.photoday.ui.fragment.login.LoginViewModel
+import com.example.photoday.ui.fragment.note.NoteAdapter
 import com.example.photoday.ui.fragment.note.NoteFragment
 import com.example.photoday.ui.fragment.note.NoteViewModel
 import com.example.photoday.ui.fragment.register.RegisterViewModel
@@ -110,6 +112,8 @@ val uiModulo = module(override = true) {
     factory<NoteFragment> { NoteFragment() }
     factory<FullScreenPhotoFragment> { FullScreenPhotoFragment() }
     factory<TimelineAdapter> {TimelineAdapter(get<Context>())  }
+    factory<GalleryAdapter> { GalleryAdapter(get<Context>())  }
+    factory<NoteAdapter> { NoteAdapter(get<Context>()) }
 }
 
 val viewModelModulo = module(override = true) {

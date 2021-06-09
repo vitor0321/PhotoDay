@@ -12,7 +12,6 @@ import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
-import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +25,7 @@ class TimelineFragment : BaseFragment() {
     private var _viewDataBinding: FragmentTimelineBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
 
-    private val adapter: TimelineAdapter by inject()
+    private val adapterTimeline: TimelineAdapter by inject()
     private val viewModel: TimelineViewModel by viewModel {
         parametersOf(findNavController())
     }
@@ -59,20 +58,24 @@ class TimelineFragment : BaseFragment() {
     private fun initObserve() {
         viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceList ->
             resourceList.data?.let { listPhoto ->
-                adapter.update(listPhoto)
-                viewDataBinding.recycleViewListTimeline.run {
-                    layoutManager = LinearLayoutManager(context)
-                }
-                viewDataBinding.recycleViewListTimeline.adapter = adapter
-                adapter.onItemClickListener = {itemPhoto->
-                    viewModel.navFragment(itemPhoto)
-                }
-                viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
+                adapterTimeline.update(listPhoto)
+                initRecycleView()
             }
             when (resourceList.message) {
                 FALSE -> messageToast(R.string.error_api)
             }
         }
+    }
+
+    private fun initRecycleView(){
+        viewDataBinding.recycleViewListTimeline.run {
+            layoutManager = LinearLayoutManager(context)
+            this.adapter = adapterTimeline
+            adapterTimeline.onItemClickListener = { itemPhoto->
+                viewModel.navFragment(itemPhoto)
+            }
+        }
+        viewFlipperControl(CHILD_SECOND, PROGRESS_BAR_INVISIBLE)
     }
 
     private fun viewFlipperControl(child: Int, visible: Boolean) {

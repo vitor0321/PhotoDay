@@ -10,7 +10,11 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.RecyclerView
 import com.example.photoday.databinding.ItemTimelineFragmentBinding
 import com.example.photoday.ui.databinding.data.ItemPhotoData
+import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.model.item.ItemPhoto
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
+import org.koin.java.KoinJavaComponent.inject
 
 class TimelineAdapter(
     private val context: Context,
@@ -53,6 +57,7 @@ class TimelineAdapter(
         RecyclerView.ViewHolder(viewDataBinding.root), View.OnClickListener, LifecycleOwner {
 
         private lateinit var itemPhoto: ItemPhoto
+
         private val registry = LifecycleRegistry(this)
 
         override fun getLifecycle(): Lifecycle = registry

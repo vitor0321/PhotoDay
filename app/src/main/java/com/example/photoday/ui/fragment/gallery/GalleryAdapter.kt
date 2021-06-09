@@ -14,7 +14,7 @@ import com.example.photoday.ui.model.item.ItemPhoto
 
 class GalleryAdapter(
     private val context: Context,
-    private val items: List<ItemPhoto>,
+    private val items: MutableList<ItemPhoto> = mutableListOf(),
     var onItemClickListener: (selectItem: ItemPhoto) -> Unit = {},
 ) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
 
@@ -40,6 +40,13 @@ class GalleryAdapter(
     override fun onViewDetachedFromWindow(holder: ViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.stateRegistry(Lifecycle.State.DESTROYED)
+    }
+
+    fun update(newItem: List<ItemPhoto>) {
+        notifyItemRangeRemoved(0, items.size)
+        this.items.clear()
+        this.items.addAll(newItem)
+        notifyItemRangeInserted(0, items.size)
     }
 
     inner class ViewHolder(private val viewDataBinding: ItemGalleryFragmentBinding) :
