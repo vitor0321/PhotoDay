@@ -1,5 +1,7 @@
 package com.example.photoday.constants
 
+import com.example.photoday.BuildConfig
+
 const val TRUE = true
 const val FALSE = false
 
@@ -9,8 +11,7 @@ const val RC_SIGN_IN = 123
 
 /*Firebase*/
 const val GALLERY_TYPE = "image/*"
-const val DEFAULT_WEB_CLIENT_ID =
-    "49062301467-3v2h2s5hk33aic1a1g86j05rdbhqb3af.apps.googleusercontent.com"
+const val DEFAULT_WEB_CLIENT_ID = BuildConfig.DEFAULT_WEB_CLIENT_ID
 
 /*Login*/
 const val ON_START = 100
@@ -41,8 +42,6 @@ const val REQUEST_NOTA = 1555
 const val ADD_GALLERY = 1111
 const val ADD_CAMERA = 1112
 const val ADD_NOTE = 1113
-const val ENTER_TITLE = "Enter with a title"
-const val ENTER_NOTE = "Enter with a note"
 
 /*Firebase Photo*/
 const val IMAGES = "images/"

@@ -17,15 +17,7 @@ class PhotoDayApp : Application() {
             androidLogger(org.koin.core.logger.Level.NONE)
             androidContext(this@PhotoDayApp)
 
-            modules(
-                listOf(
-                    repositoryModulo,
-                    firebaseRepositoryModulo,
-                    accessExceptionModulo,
-                    uiModulo,
-                    viewModelModulo,
-                )
-            )
+            modules(appModules)
         }
     }
 }
