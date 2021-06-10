@@ -167,3 +167,10 @@ val viewModelModulo = module(override = true) {
         )
     }
 }
+val appModules = listOf(
+    repositoryModulo,
+    firebaseRepositoryModulo,
+    accessExceptionModulo,
+    uiModulo,
+    viewModelModulo,
+)
