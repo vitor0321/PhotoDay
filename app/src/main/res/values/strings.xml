@@ -130,6 +130,7 @@
     <string name="note">Note</string>
     <string name="title">Title</string>
     <string name="nota">Nota</string>
+    <string name="error_api_note">Error API</string>
     <string name="note_add">Note ADD Successful</string>
     <string name="note_add_failure">Opsss! Failure API. Try again</string>
     <string name="note_delete">Note delete successful</string>

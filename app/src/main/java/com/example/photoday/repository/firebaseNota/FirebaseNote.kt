@@ -33,11 +33,11 @@ class FirebaseNote(
                             value = ResourceItem(message = TRUE)
                         }
                         .addOnFailureListener {
-                            value = ResourceItem(message = FALSE)
+                            value = ResourceItem(message = null)
                         }
                 }
             } catch (e: Exception) {
-                value = ResourceItem(message = FALSE)
+                value = ResourceItem(message = null)
             }
         }
     }
@@ -84,7 +84,7 @@ class FirebaseNote(
                     note.map { noteList.add(it) }
                     noteList.sortBy { it.date }
                     val listReverse = noteList.asReversed()
-                    value = ResourceItem(data = listReverse)
+                    value = ResourceItem(data = listReverse,message = null)
                 }
             }
     }
@@ -97,7 +97,7 @@ class FirebaseNote(
                 value = ResourceItem(message = TRUE)
             }
             .addOnFailureListener {
-                value = ResourceItem(message = FALSE)
+                value = ResourceItem(message = null)
             }
     }
 

@@ -22,6 +22,7 @@ import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
 import com.example.photoday.ui.model.user.UserFirebase
 import com.example.photoday.ui.toast.Toast.toast
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,6 +46,8 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
     private val userFirebaseData: UserFirebaseData by inject {
         parametersOf(this)
     }
+
+    private val auth: FirebaseAuth by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -123,18 +126,16 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
     private fun logout() {
         CoroutineScope(Dispatchers.Main).launch {
             /*logout with Firebase*/
-            viewModel.logout().observe(viewLifecycleOwner, { resource ->
-                when (resource.login) {
-                    GOODBYE -> {
-                        messageToast(R.string.successfully_logged)
-                        viewModel.navController(GOODBYE)
-                        onDestroy()
-                    }
-                    GOODBYE_FAILURE -> {
-                        messageToast(R.string.failure_api)
-                    }
+            viewModel.logout().observe(viewLifecycleOwner) { resource ->
+                resource.login?.let {
+                    messageToast(R.string.successfully_logged)
+                    viewModel.navController(GOODBYE)
+                    auth.signOut()
+                    onDestroy()
+                } ?: run {
+                    messageToast(R.string.failure_api)
                 }
-            })
+            }
         }
     }
 
@@ -175,22 +176,16 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
     }
 
     override fun onNewNameSelected(userFirebase: UserFirebase?, message: Int?) {
-        when (message) {
-            null -> {
-                userFirebase?.let {
-                    viewModel.newNameUser(userFirebase).observe(this, { resourceResult ->
-                        this.userFirebaseData.setData(resourceResult.data)
-                        when(resourceResult.message){
-                            TRUE-> messageToast(R.string.name_change_successful)
-                            FALSE-> messageToast(R.string.failure_api)
-                        }
-                    })
-                }
+        message?.let {
+            userFirebase?.let {
+                viewModel.newNameUser(userFirebase).observe(this, { resourceResult ->
+                    this.userFirebaseData.setData(resourceResult.data)
+                    resourceResult.message?.let {
+                        messageToast(R.string.name_change_successful)
+                    } ?: run { messageToast(R.string.failure_api) }
+                })
             }
-            else -> {
-                messageToast(message)
-            }
-        }
+        } ?: run { messageToast(message) }
     }
 
     private fun statusBarNavigation() {
@@ -206,11 +201,10 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
         )
     }
 
-    private fun checkMessage(check: Boolean?){
-        when(check){
-            TRUE-> messageToast(R.string.image_change_successful)
-            FALSE-> messageToast(R.string.error_api_configuration)
-        }
+    private fun checkMessage(check: Boolean?) {
+        check?.let {
+            messageToast(R.string.image_change_successful)
+        } ?: run { messageToast(R.string.error_api_configuration) }
     }
 
     private fun messageToast(message: Int?) {
@@ -218,11 +212,6 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
             val messageToast = this.getString(messageInt)
             toast(messageToast)
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        this._viewDataBinding = null
     }
 
     override fun onDestroy() {

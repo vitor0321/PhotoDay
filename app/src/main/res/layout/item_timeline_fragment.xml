@@ -53,6 +53,7 @@
                 android:textSize="@dimen/text_view_size_16sp"
                 android:text="@{itemTimeline.date}"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/image_timeline"
                 tools:text="@tools:sample/date/mmddyy" />

@@ -23,15 +23,13 @@ class NoteAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(items[position])
-    }
 
     fun update(newItem: List<ItemNote>) {
-        notifyItemRangeRemoved(0, items.size)
         this.items.clear()
         this.items.addAll(newItem)
-        notifyItemRangeInserted(0, items.size)
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(private val viewDataBinding: ItemNoteFragmentBinding) :

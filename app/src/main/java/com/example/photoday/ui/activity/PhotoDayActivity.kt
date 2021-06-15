@@ -179,13 +179,13 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                 bottomNavMainActivity.background = null
                 /*Action Bar Gone*/
                 supportActionBar?.hide()
-                /* control all bottom navigation navigation */
-                bottomNavMainActivity.setupWithNavController(navController)
                 navController
-                    .addOnDestinationChangedListener { controller, destination, arguments ->
+                    .addOnDestinationChangedListener { _, _, _ ->
                         /* change the fragment title as it is in the nav_graph Label */
                         title = null
                     }
+                /* control all bottom navigation navigation */
+                bottomNavMainActivity.setupWithNavController(navController)
             } catch (e: Exception) {
                 messageToast(R.string.failure_initialize_control)
             }
@@ -246,10 +246,9 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
             SALVE_NOTE -> {
                 nota?.let { itemNota ->
                     this.viewModel.salveNota(itemNota).observe(this) { resourceItem ->
-                        when (resourceItem.message) {
-                            TRUE -> messageToast(R.string.note_add_item)
-                            FALSE -> messageToast(R.string.note_add_failure_activity)
-                        }
+                        resourceItem.message?.let {
+                            messageToast(R.string.note_add_item)
+                        } ?: run { messageToast(R.string.note_add_failure_activity) }
                     }
                 }
             }

@@ -4,5 +4,5 @@ class ResourceUser<T>(
     val data: T? = null,
     val message: Boolean? = null,
     val login: Int? = null,
-    val navigation: Boolean? = false
+    val navigation: Boolean? = null
 )

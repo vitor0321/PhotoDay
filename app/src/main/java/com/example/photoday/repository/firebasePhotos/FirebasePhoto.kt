@@ -4,24 +4,27 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.photoday.R
 import com.example.photoday.constants.FALSE
-import com.example.photoday.constants.IMAGES
 import com.example.photoday.constants.TRUE
 import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.model.resource.ResourceItem
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
 
 class FirebasePhoto(
-    private val imageRef : FirebaseStorage
+    private val imageRef: FirebaseStorage,
+    private val auth: FirebaseAuth
 ) {
+
+    private val user = auth.currentUser
 
     fun listFileDownload(): LiveData<ResourceItem<List<ItemPhoto>?>> =
         MediatorLiveData<ResourceItem<List<ItemPhoto>?>>().apply {
-                val storageRef = imageRef.reference.child(IMAGES)
+            user?.email?.let {email->
+                val storageRef = imageRef.reference.child("$email/")
                 val imagesList: ArrayList<ItemPhoto> = ArrayList()
                 val listAllTask: Task<ListResult> = storageRef.listAll()
                 listAllTask.addOnCompleteListener { result ->
@@ -34,10 +37,11 @@ class FirebasePhoto(
                         }.addOnCompleteListener {
                             imagesList.sortBy { it.date }
                             val listReversed = imagesList.asReversed()
-                            value = ResourceItem(data = listReversed, message = TRUE)
+                            value = ResourceItem(data = listReversed, message = null)
                         }
                     }
                 }
+            }
         }
 
     fun uploadImageToStorage(
@@ -45,9 +49,11 @@ class FirebasePhoto(
         curFile: Uri?,
     ): LiveData<ResourceItem<Void?>> = MutableLiveData<ResourceItem<Void?>>().apply {
         try {
-            curFile?.let {
-                imageRef.reference.child("$IMAGES$dateCalendar").putFile(it)
-                value = ResourceItem(message = TRUE)
+            user?.email?.let { email ->
+                curFile?.let {
+                    imageRef.reference.child("$email/$dateCalendar").putFile(it)
+                    value = ResourceItem(message = TRUE)
+                }
             }
         } catch (e: Exception) {
             val liveDataKeep = value
@@ -58,15 +64,16 @@ class FirebasePhoto(
         }
     }
 
-
     fun deleteImage(
         dateCalendar: String,
     ): LiveData<ResourceItem<Void?>> = MutableLiveData<ResourceItem<Void?>>().apply {
         value = try {
-            imageRef.reference.child("$IMAGES$dateCalendar").delete()
-            ResourceItem(message = TRUE)
+            user?.email?.let { email ->
+                imageRef.reference.child("$email/$dateCalendar").delete()
+                ResourceItem(message = TRUE)
+            }
         } catch (e: Exception) {
-            ResourceItem(message = FALSE)
+            ResourceItem(message = null)
         }
     }
 }

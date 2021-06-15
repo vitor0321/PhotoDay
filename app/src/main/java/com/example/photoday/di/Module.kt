@@ -18,6 +18,7 @@ import com.example.photoday.ui.databinding.data.ComponentsData
 import com.example.photoday.ui.databinding.data.ItemNoteData
 import com.example.photoday.ui.databinding.data.ItemPhotoData
 import com.example.photoday.ui.databinding.data.UserFirebaseData
+import com.example.photoday.ui.fragment.configuration.ConfigurationFragment
 import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
 import com.example.photoday.ui.fragment.fullScreenPhoto.FullScreenPhotoFragment
 import com.example.photoday.ui.fragment.fullScreenPhoto.FullScreenPhotoViewModel
@@ -54,7 +55,8 @@ val repositoryModulo = module(override = true) {
     }
     single<FirebasePhoto> {
         FirebasePhoto(
-            get<FirebaseStorage>()
+            get<FirebaseStorage>(),
+            get<FirebaseAuth>()
         )
     }
     single<ChangeUserFirebase> {
@@ -110,6 +112,7 @@ val uiModulo = module(override = true) {
     factory<TimelineFragment> { TimelineFragment() }
     factory<GalleryFragment> { GalleryFragment() }
     factory<NoteFragment> { NoteFragment() }
+    factory<ConfigurationFragment> { ConfigurationFragment() }
     factory<FullScreenPhotoFragment> { FullScreenPhotoFragment() }
     factory<TimelineAdapter> {TimelineAdapter(get<Context>())  }
     factory<GalleryAdapter> { GalleryAdapter(get<Context>())  }

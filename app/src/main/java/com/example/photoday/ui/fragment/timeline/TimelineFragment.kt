@@ -12,6 +12,7 @@ import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentTimelineBinding
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
+import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.toast.Toast.toast
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -57,21 +58,21 @@ class TimelineFragment : BaseFragment() {
 
     private fun initObserve() {
         viewModel.createPullPhotos().observe(viewLifecycleOwner) { resourceItem ->
-            resourceItem.data?.let { listNote ->
-                adapterTimeline.update(listNote)
-                initRecycleView()
-            }
-            when (resourceItem.message) {
-                FALSE -> messageToast(R.string.error_api)
-            }
+            resourceItem.data?.let(this::upDateAdapter)
+            resourceItem.message?.let { messageToast(R.string.error_api) }
         }
     }
 
-    private fun initRecycleView(){
+    private fun upDateAdapter(listNote: List<ItemPhoto>) {
+        adapterTimeline.update(listNote)
+        initRecycleView()
+    }
+
+    private fun initRecycleView() {
         viewDataBinding.recycleViewListTimeline.run {
             layoutManager = LinearLayoutManager(context)
             this.adapter = adapterTimeline
-            adapterTimeline.onItemClickListener = { itemPhoto->
+            adapterTimeline.onItemClickListener = { itemPhoto ->
                 viewModel.navFragment(itemPhoto)
             }
         }
@@ -111,11 +112,6 @@ class TimelineFragment : BaseFragment() {
             val messageToast = this.getString(messageInt)
             toast(messageToast)
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        this._viewDataBinding = null
     }
 
     override fun onDestroy() {

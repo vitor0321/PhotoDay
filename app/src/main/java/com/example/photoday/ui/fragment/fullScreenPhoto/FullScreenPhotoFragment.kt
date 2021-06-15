@@ -63,10 +63,9 @@ class FullScreenPhotoFragment : BaseFragment() {
     private fun deleteItemPhoto() {
         viewDataBinding.deleteButton = View.OnClickListener {
             viewModel.deleteNote().observe(viewLifecycleOwner) { resourceItem ->
-                when(resourceItem.message){
-                    TRUE -> messageToast(R.string.successfully_delete_image)
-                    FALSE-> messageToast(R.string.error_api_full_screen)
-                }
+                resourceItem.message?.let {
+                    messageToast(R.string.successfully_delete_image)
+                }?: run { messageToast(R.string.error_api_full_screen) }
             }
             viewModel.navigation()
             onDestroy()
