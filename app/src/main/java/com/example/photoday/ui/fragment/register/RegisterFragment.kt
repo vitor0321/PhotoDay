@@ -106,15 +106,14 @@ class RegisterFragment : BaseFragment() {
     private fun registerUser(userLogin: UserLogin){
         viewModel.signUpUser(userLogin)
             .observe(viewLifecycleOwner, { resourceMessage ->
-                when(resourceMessage.message){
-                    TRUE->{messageToast(R.string.check_your_email_and_confirm)}
-                    FALSE->{messageToast(R.string.authentication_failed_try_again)}
-                }
-                when (resourceMessage.navigation) {
-                    true -> {
-                        viewModel.navigationRegister()
-                        onDestroy()
-                    }
+
+                resourceMessage.message?.let {
+                    messageToast(R.string.check_your_email_and_confirm)
+                }?: run{messageToast(R.string.authentication_failed_try_again)}
+
+                resourceMessage.navigation?.let {
+                    viewModel.navigationRegister()
+                    onDestroy()
                 }
             })
     }

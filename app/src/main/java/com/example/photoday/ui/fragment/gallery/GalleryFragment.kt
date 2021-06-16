@@ -16,6 +16,7 @@ import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentGalleryBinding
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
+import com.example.photoday.ui.model.item.ItemPhoto
 import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,14 +60,14 @@ class GalleryFragment : BaseFragment() {
 
     private fun initObserve() {
         viewModel.createPullPhotos().observe(viewLifecycleOwner, { resourceList ->
-            resourceList.data?.let { listPhoto ->
-                adapterGallery.update(listPhoto)
-                initRecycleView()
-            }
-            when (resourceList.message) {
-                FALSE -> messageToast(R.string.error_api)
-            }
+            resourceList.data?.let(this::upDateAdapter)
+            resourceList.message?.let { messageToast(R.string.error_api) }
         })
+    }
+
+    private fun upDateAdapter(listNote: List<ItemPhoto>) {
+        adapterGallery.update(listNote)
+        initRecycleView()
     }
 
     private fun initRecycleView() {
@@ -120,11 +121,6 @@ class GalleryFragment : BaseFragment() {
             val messageToast = this.getString(messageInt)
             toast(messageToast)
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        this._viewDataBinding = null
     }
 
     override fun onDestroy() {

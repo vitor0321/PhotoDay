@@ -43,9 +43,6 @@ const val ADD_GALLERY = 1111
 const val ADD_CAMERA = 1112
 const val ADD_NOTE = 1113
 
-/*Firebase Photo*/
-const val IMAGES = "images/"
-
 /*Gallery Fragment*/
 const val SPAN_COUNT = 2
 

@@ -62,11 +62,14 @@ class NoteFragment : BaseFragment(), AddNoteDialog.NoteListener {
 
     private fun initObserve() {
         viewModel.getAllFirebase().observe(viewLifecycleOwner) { resourceItem ->
-            resourceItem.data?.let { listNote ->
-                adapterNote.update(listNote)
-                initRecycleView()
-            }
+            resourceItem.data?.let(this::upDateAdapter)
+            resourceItem.message?.let { messageToast(R.string.error_api_note) }
         }
+    }
+
+    private fun upDateAdapter(listNote: List<ItemNote>) {
+        adapterNote.update(listNote)
+        initRecycleView()
     }
 
     private fun initRecycleView() {
@@ -85,20 +88,18 @@ class NoteFragment : BaseFragment(), AddNoteDialog.NoteListener {
             DELETE_NOTE -> {
                 note?.id?.let {
                     viewModel.delete(note.id).observe(viewLifecycleOwner) { resourceItem ->
-                        when (resourceItem.message) {
-                            TRUE -> messageToast(R.string.note_delete)
-                            FALSE -> messageToast(R.string.note_delete_failure)
-                        }
+                        resourceItem.message?.let {
+                            messageToast(R.string.note_delete)
+                        }?: run { messageToast(R.string.note_delete_failure) }
                     }
                 }
             }
             SALVE_NOTE -> {
                 note?.let { itemNota ->
                     this.viewModel.salveNota(itemNota).observe(this) { resourceItem ->
-                        when (resourceItem.message) {
-                            TRUE -> messageToast(R.string.note_add)
-                            FALSE -> messageToast(R.string.note_add_failure)
-                        }
+                        resourceItem.message?.let {
+                            messageToast(R.string.note_add)
+                        }?: run { messageToast(R.string.note_add_failure) }
                     }
                 }
             }

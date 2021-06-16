@@ -53,10 +53,9 @@ class LoginFragment : BaseFragment(), ForgotPasswordDialog.ForgotPasswordListene
 
     private fun initObserver() {
         // Check if user is signed in (non-null) and update UI accordingly.
-        this.viewModel.updateUI(ON_START)
-            .observe(viewLifecycleOwner, { resourceUser ->
-                navigation(resourceUser)
-            })
+        this.viewModel.updateUI(ON_START).observe(viewLifecycleOwner) { resourceUser ->
+            navigation(resourceUser)
+        }
     }
 
     private fun initButton() {

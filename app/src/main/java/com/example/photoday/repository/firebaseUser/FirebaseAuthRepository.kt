@@ -25,7 +25,7 @@ class FirebaseAuthRepository(
                         value = ResourceUser(login = GOODBYE)
                     }
             } catch (e: Exception) {
-                value = ResourceUser(login = GOODBYE_FAILURE)
+                value = ResourceUser(login = null)
             }
         }
 
@@ -93,10 +93,10 @@ class FirebaseAuthRepository(
                     }
                 }
                 .addOnFailureListener {
-                    value = ResourceUser(message = FALSE)
+                    value = ResourceUser(message = null)
                 }
         } catch (e: IllegalArgumentException) {
-            value = ResourceUser(message = FALSE)
+            value = ResourceUser(message = null)
         }
     }
 }

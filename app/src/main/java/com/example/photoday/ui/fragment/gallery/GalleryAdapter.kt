@@ -63,10 +63,9 @@ class GalleryAdapter(
             imageView.setOnClickListener { listen.invoke(item) }
 =======
     fun update(newItem: List<ItemPhoto>) {
-        notifyItemRangeRemoved(0, items.size)
         this.items.clear()
         this.items.addAll(newItem)
-        notifyItemRangeInserted(0, items.size)
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(private val viewDataBinding: ItemGalleryFragmentBinding) :

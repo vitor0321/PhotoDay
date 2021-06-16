@@ -37,7 +37,7 @@ class ChangeUserFirebase(
                 val mediatorData = value
                 when (value) {
                     null -> value =
-                        ResourceUser(data = mediatorData?.data, message = FALSE)
+                        ResourceUser(data = mediatorData?.data, message = null)
                 }
             }
         }
@@ -80,7 +80,7 @@ class ChangeUserFirebase(
                         }
                     }
             } catch (e: Exception) {
-                value = ResourceUser(message = FALSE)
+                value = ResourceUser(message = null)
             }
         }
 

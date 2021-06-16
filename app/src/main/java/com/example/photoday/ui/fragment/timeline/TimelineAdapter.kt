@@ -74,11 +74,14 @@ class TimelineAdapter(
         holder.stateRegistry(Lifecycle.State.DESTROYED)
 =======
     fun update(newItem: List<ItemPhoto>) {
-        notifyItemRangeRemoved(0, items.size)
         this.items.clear()
         this.items.addAll(newItem)
+<<<<<<< HEAD
         notifyItemRangeInserted(0, items.size)
 >>>>>>> developing:app/src/main/java/com/example/photoday/ui/fragment/timeline/TimelineAdapter.kt
+=======
+        notifyDataSetChanged()
+>>>>>>> developing
     }
 
     inner class ViewHolder(private val viewDataBinding: ItemTimelineFragmentBinding) :
