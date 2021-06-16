@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
@@ -172,9 +173,11 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private fun initializeControl() {
         viewDataBinding.apply {
             try {
-                val navHostFragment =
-                    supportFragmentManager.findFragmentById(R.id.main_activity_nav_host) as NavHostFragment
+                val navHostFragment = supportFragmentManager
+                    .findFragmentById(R.id.main_activity_nav_host) as NavHostFragment
                 val navController: NavController = navHostFragment.navController
+                navController.graph.startDestination = R.id.nav_timelineFragment
+
                 //background menu navigation
                 bottomNavMainActivity.background = null
                 /*Action Bar Gone*/

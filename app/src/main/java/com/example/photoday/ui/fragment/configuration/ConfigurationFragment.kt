@@ -204,7 +204,7 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
     private fun checkMessage(check: Boolean?) {
         check?.let {
             messageToast(R.string.image_change_successful)
-        } ?: run { messageToast(R.string.error_api_configuration) }
+        }
     }
 
     private fun messageToast(message: Int?) {
