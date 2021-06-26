@@ -5,19 +5,18 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.example.photoday.repository.BaseRepositoryNote
 import com.example.photoday.repository.BaseRepositoryPhoto
+import com.example.photoday.repository.BaseRepositoryPreferences
 import com.example.photoday.repository.BaseRepositoryUser
 import com.example.photoday.repository.firebaseNota.FirebaseNote
 import com.example.photoday.repository.firebasePhotos.FirebasePhoto
 import com.example.photoday.repository.firebaseUser.ChangeUserFirebase
 import com.example.photoday.repository.firebaseUser.CheckUserFirebase
 import com.example.photoday.repository.firebaseUser.FirebaseAuthRepository
+import com.example.photoday.repository.preferences.SwitchConfigurationPreference
 import com.example.photoday.ui.activity.PhotoDayActivity
 import com.example.photoday.ui.activity.PhotoDayViewModel
 import com.example.photoday.ui.common.ExhibitionCameraOrGallery
-import com.example.photoday.ui.databinding.data.ComponentsData
-import com.example.photoday.ui.databinding.data.ItemNoteData
-import com.example.photoday.ui.databinding.data.ItemPhotoData
-import com.example.photoday.ui.databinding.data.UserFirebaseData
+import com.example.photoday.ui.databinding.data.*
 import com.example.photoday.ui.fragment.configuration.ConfigurationFragment
 import com.example.photoday.ui.fragment.configuration.ConfigurationViewModel
 import com.example.photoday.ui.fragment.fullScreenPhoto.FullScreenPhotoFragment
@@ -43,11 +42,14 @@ import com.google.firebase.storage.ktx.storage
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val repositoryModulo = module(override = true) {
+val dataBindingModulo = module(override = true) {
     single<UserFirebaseData> { UserFirebaseData() }
     single<ComponentsData> { ComponentsData() }
     single<ItemNoteData> { ItemNoteData() }
     single<ItemPhotoData> { ItemPhotoData() }
+    single<ItemNavigationData> { ItemNavigationData() }
+}
+val repositoryModulo = module(override = true) {
     single<BaseRepositoryPhoto> {
         BaseRepositoryPhoto(
             get<FirebasePhoto>()
@@ -106,6 +108,17 @@ val accessExceptionModulo = module(override = true) {
     single<ExhibitionCameraOrGallery> { ExhibitionCameraOrGallery }
 }
 
+val preferenceModulo = module(override = true) {
+    single<BaseRepositoryPreferences> { BaseRepositoryPreferences(get<SwitchConfigurationPreference>()) }
+    single<SwitchConfigurationPreference> { SwitchConfigurationPreference(get<Context>()) }
+}
+
+val adapterModulo = module(override = true) {
+    factory<TimelineAdapter> { TimelineAdapter(get<Context>()) }
+    factory<GalleryAdapter> { GalleryAdapter(get<Context>()) }
+    factory<NoteAdapter> { NoteAdapter(get<Context>()) }
+}
+
 val uiModulo = module(override = true) {
     factory<FragmentActivity> { FragmentActivity() }
     factory<PhotoDayActivity> { PhotoDayActivity() }
@@ -114,22 +127,21 @@ val uiModulo = module(override = true) {
     factory<NoteFragment> { NoteFragment() }
     factory<ConfigurationFragment> { ConfigurationFragment() }
     factory<FullScreenPhotoFragment> { FullScreenPhotoFragment() }
-    factory<TimelineAdapter> {TimelineAdapter(get<Context>())  }
-    factory<GalleryAdapter> { GalleryAdapter(get<Context>())  }
-    factory<NoteAdapter> { NoteAdapter(get<Context>()) }
 }
 
 val viewModelModulo = module(override = true) {
     viewModel<PhotoDayViewModel> {
         PhotoDayViewModel(
             photoRepository = get<BaseRepositoryPhoto>(),
-            notaRepository = get<BaseRepositoryNote>()
+            notaRepository = get<BaseRepositoryNote>(),
+            preferences = get<BaseRepositoryPreferences>()
         )
     }
     viewModel<ConfigurationViewModel> { (navFragment: NavController) ->
         ConfigurationViewModel(
-            repository = get<BaseRepositoryUser>(),
+            repositoryUser = get<BaseRepositoryUser>(),
             navFragment = navFragment,
+            preferences = get<BaseRepositoryPreferences>()
         )
     }
     viewModel<GalleryViewModel> { (navFragment: NavController) ->
@@ -171,9 +183,12 @@ val viewModelModulo = module(override = true) {
     }
 }
 val appModules = listOf(
+    dataBindingModulo,
     repositoryModulo,
     firebaseRepositoryModulo,
     accessExceptionModulo,
+    preferenceModulo,
+    adapterModulo,
     uiModulo,
     viewModelModulo,
 )

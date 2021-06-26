@@ -81,4 +81,7 @@
     <dimen name="layout_marin_top_60dp">60dp</dimen>
     <dimen name="layout_width_100dp">100dp</dimen>
     <dimen name="layout_height_100dp">100dp</dimen>
+
+    <!--Switch Button-->
+    <dimen name="layout_margin_start_switch_24dp">24dp</dimen>
 </resources>

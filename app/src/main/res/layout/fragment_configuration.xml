@@ -4,17 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.text.TextUtils"/>
+
+        <import type="android.text.TextUtils" />
 
         <variable
             name="userFirebase"
             type="com.example.photoday.ui.databinding.data.UserFirebaseData" />
+
         <variable
             name="addImageClickButton"
-            type="android.view.View.OnClickListener"/>
+            type="android.view.View.OnClickListener" />
+
         <variable
             name="changeNameButton"
             type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onGenderChange"
+            type="android.widget.CompoundButton.OnCheckedChangeListener"/>
+
+        <variable
+            name="model"
+            type="com.example.photoday.ui.databinding.data.ItemNavigationData"/>
+
         <variable
             name="logoutButton"
             type="android.view.View.OnClickListener" />
@@ -88,6 +100,47 @@
             app:layout_constraintTop_toBottomOf="@id/text_view_user_name"
             tools:text="@string/email_user" />
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/btn_switch_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/layout_margin_start_switch_24dp"
+            android:checked="@={model.checkedGallery}"
+            android:onCheckedChanged="@{onGenderChange}"
+            app:layout_constraintBottom_toTopOf="@id/btn_switch_image_day"
+            app:layout_constraintEnd_toStartOf="@id/text_view_gallery"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_user_email" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/switch_gallery"
+            app:layout_constraintBottom_toBottomOf="@id/btn_switch_gallery"
+            app:layout_constraintStart_toEndOf="@id/btn_switch_gallery"
+            app:layout_constraintTop_toTopOf="@id/btn_switch_gallery" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/btn_switch_image_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            app:layout_constraintEnd_toEndOf="@id/btn_switch_gallery"
+            app:layout_constraintStart_toStartOf="@id/btn_switch_gallery"
+            app:layout_constraintTop_toBottomOf="@id/btn_switch_gallery" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_view_image_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/switch_image_day"
+            app:layout_constraintBottom_toBottomOf="@id/btn_switch_image_day"
+            app:layout_constraintStart_toEndOf="@id/btn_switch_image_day"
+            app:layout_constraintTop_toTopOf="@id/btn_switch_image_day" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_logout"
             android:layout_width="0dp"
@@ -98,7 +151,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_user_email" />
+            app:layout_constraintTop_toBottomOf="@id/btn_switch_image_day" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

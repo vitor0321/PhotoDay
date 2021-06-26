@@ -14,12 +14,15 @@ import androidx.navigation.fragment.findNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.FragmentConfigurationBinding
+import com.example.photoday.generated.callback.OnClickListener
 import com.example.photoday.ui.common.ExhibitionCameraOrGallery
+import com.example.photoday.ui.databinding.data.ItemNavigationData
 import com.example.photoday.ui.databinding.data.UserFirebaseData
 import com.example.photoday.ui.dialog.AddItemPhotoDialog
 import com.example.photoday.ui.dialog.NewUserNameDialog
 import com.example.photoday.ui.fragment.base.BaseFragment
 import com.example.photoday.ui.model.item.Components
+import com.example.photoday.ui.model.item.ItemNavigation
 import com.example.photoday.ui.model.user.UserFirebase
 import com.example.photoday.ui.toast.Toast.toast
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +33,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.io.ByteArrayOutputStream
+
 
 class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener,
     NewUserNameDialog.NewUserNameListener {
@@ -46,8 +50,12 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
     private val userFirebaseData: UserFirebaseData by inject {
         parametersOf(this)
     }
-
+    private val itemNavigationData: ItemNavigationData by inject {
+        parametersOf(this)
+    }
     private val auth: FirebaseAuth by inject()
+
+    var listenerSwitch: SwitchListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,6 +80,11 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
 
     private fun initButton() {
         viewDataBinding.apply {
+            this.setOnGenderChange { buttonView, isChecked ->
+                setItemNavigation(isChecked)
+                setListener(isChecked)
+                setItemNavigationData(isChecked)
+            }
             /*Button logout*/
             this.logoutButton = View.OnClickListener { logout() }
             /*Button edit user photo*/
@@ -86,6 +99,10 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
             this.userFirebaseData.setData(resourceUser.data)
             checkMessage(resourceUser.message)
         })
+        this.viewModel.getStatusSwitchPreferences().observe(viewLifecycleOwner) { check ->
+            setListener(check)
+            setItemNavigationData(check)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -131,7 +148,6 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
                     messageToast(R.string.successfully_logged)
                     viewModel.navController(GOODBYE)
                     auth.signOut()
-                    onDestroy()
                 } ?: run {
                     messageToast(R.string.failure_api)
                 }
@@ -188,6 +204,21 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
         } ?: run { messageToast(message) }
     }
 
+    private fun setItemNavigationData(check: Boolean) {
+        itemNavigationData.setItemNavigationData(ItemNavigation(check))
+    }
+
+    private fun setListener(checked: Boolean) {
+        listenerSwitch?.onSwitchSelected(checked)
+    }
+
+    private fun setItemNavigation(checked: Boolean) {
+        when (checked) {
+            TRUE -> viewModel.switchPreferencesGallery(KEY_SWITCH_GALLERY, TRUE)
+            FALSE -> viewModel.switchPreferencesGallery(KEY_SWITCH_GALLERY, FALSE)
+        }
+    }
+
     private fun statusBarNavigation() {
         statusAppBarNavigationBase(
             menu = FALSE_MENU,
@@ -217,6 +248,17 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
     override fun onDestroy() {
         super.onDestroy()
         this._viewDataBinding = null
+    }
+
+    companion object {
+        fun newInstance() = ConfigurationFragment()
+    }
+
+    interface SwitchListener : OnClickListener.Listener {
+        fun onSwitchSelected(status: Boolean)
+        override fun _internalCallbackOnClick(sourceId: Int, callbackArg_0: View?) {
+            TODO("Not yet implemented")
+        }
     }
 }
 
