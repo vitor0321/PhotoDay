@@ -13,18 +13,19 @@ import android.view.View
 import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.photoday.R
 import com.example.photoday.constants.*
 import com.example.photoday.databinding.ActivityPhotoDayBinding
 import com.example.photoday.eventBus.MessageEvent
+import com.example.photoday.generated.callback.OnClickListener
 import com.example.photoday.ui.common.ExhibitionCameraOrGallery
 import com.example.photoday.ui.databinding.data.ComponentsData
 import com.example.photoday.ui.databinding.data.ItemNoteData
 import com.example.photoday.ui.dialog.AddItemPhotoDialog
 import com.example.photoday.ui.dialog.AddNoteDialog
+import com.example.photoday.ui.fragment.configuration.ConfigurationFragment
 import com.example.photoday.ui.model.item.ItemNote
 import com.example.photoday.ui.toast.Toast.toast
 import kotlinx.coroutines.CoroutineScope
@@ -41,7 +42,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
-    AddItemPhotoDialog.AddItemListener, AddNoteDialog.NoteListener {
+    AddItemPhotoDialog.AddItemListener, AddNoteDialog.NoteListener,
+    ConfigurationFragment.SwitchListener {
 
     private var _viewDataBinding: ActivityPhotoDayBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
@@ -49,7 +51,6 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     private val viewModel: PhotoDayViewModel by viewModel {
         parametersOf()
     }
-
     private val componentsData: ComponentsData by inject {
         parametersOf(this)
     }
@@ -61,6 +62,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
     }
 
     private var datePhotoEventBus: String? = null
+    private lateinit var controller: NavController
 
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -82,8 +84,14 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        controller
+    }
+
     private fun init() {
         initializeControl()
+        getStatusSwitchPreferences()
         initButton()
         initObserve()
     }
@@ -114,24 +122,10 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
             //here get the image from Exhibition
             when {
                 requestCode == REQUEST_NOTA && resultCode == Activity.RESULT_OK -> {
-                    data?.data?.let { photo ->
-                        datePhotoEventBus?.let { dateCalendar ->
-                            viewModel.createPushPhoto(dateCalendar, photo)
-                                .observe(this, { resources ->
-                                    checkMessage(resources.message)
-                                })
-                        }
-                    }
+                    pushPhotoFirebase(data)
                 }
                 requestCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK -> {
-                    data?.data?.let { photo ->
-                        datePhotoEventBus?.let { dateCalendar ->
-                            viewModel.createPushPhoto(dateCalendar, photo)
-                                .observe(this, { resources ->
-                                    checkMessage(resources.message)
-                                })
-                        }
-                    }
+                    pushPhotoFirebase(data)
                 }
                 requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK -> {
                     val imageBitmap =
@@ -157,6 +151,17 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         }
     }
 
+    private fun pushPhotoFirebase(data: Intent?) {
+        data?.data?.let { photo ->
+            datePhotoEventBus?.let { dateCalendar ->
+                viewModel.createPushPhoto(dateCalendar, photo)
+                    .observe(this, { resources ->
+                        checkMessage(resources.message)
+                    })
+            }
+        }
+    }
+
     private fun checkMessage(message: Boolean?) {
         when (message) {
             TRUE -> messageToast(R.string.successfully_upload_image)
@@ -175,20 +180,28 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
             try {
                 val navHostFragment = supportFragmentManager
                     .findFragmentById(R.id.main_activity_nav_host) as NavHostFragment
-                val navController: NavController = navHostFragment.navController
-                navController.graph.startDestination = R.id.nav_timelineFragment
+                controller = navHostFragment.navController
+                controller.graph.setStartDestination(R.id.nav_timelineFragment)
 
                 //background menu navigation
                 bottomNavMainActivity.background = null
                 /*Action Bar Gone*/
                 supportActionBar?.hide()
-                navController
-                    .addOnDestinationChangedListener { _, _, _ ->
-                        /* change the fragment title as it is in the nav_graph Label */
-                        title = null
-                    }
+                controller.addOnDestinationChangedListener { _, destination, _ ->
+                   /* when (destination.id) {
+                        R.id.nav_galleryFragment -> {
+                            ConfigurationFragment.newInstance().apply {
+                                listenerSwitch = this@PhotoDayActivity
+                            }
+                        }
+                        eu fiz isso para o listener mas não deu certo....
+                    }*/
+                    /* change the fragment title as it is in the nav_graph Label */
+                    title = null
+                }
+
                 /* control all bottom navigation navigation */
-                bottomNavMainActivity.setupWithNavController(navController)
+                bottomNavMainActivity.setupWithNavController(controller)
             } catch (e: Exception) {
                 messageToast(R.string.failure_initialize_control)
             }
@@ -218,6 +231,23 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         photoDialog()
     }
 
+    override fun onSwitchSelected(status: Boolean) {
+        onSwitchGallerySelected(status)
+    }
+
+    private fun getStatusSwitchPreferences() {
+        viewModel.getStatusSwitchPreferences().apply {
+            onSwitchGallerySelected(this)
+        }
+    }
+
+    private fun onSwitchGallerySelected(switchCheck: Boolean) {
+        when (switchCheck) {
+            TRUE -> viewDataBinding.bottomNavMainActivity.menu.hasVisibleItems()
+            FALSE -> viewDataBinding.bottomNavMainActivity.menu.removeItem(R.id.nav_galleryFragment)
+        }
+    }
+
     override fun onAccessSelected(accessSelected: Int) {
         CoroutineScope(Dispatchers.Main).launch {
             when (accessSelected) {
@@ -240,8 +270,7 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         /*open AddPhotoDialog*/
         AddItemPhotoDialog.newInstance().apply {
             listener = this@PhotoDayActivity
-        }
-            .show(supportFragmentManager, ADD_PHOTO_DIALOG)
+        }.show(supportFragmentManager, ADD_PHOTO_DIALOG)
     }
 
     override fun onNotaSelected(nota: ItemNote?, typeDialog: String?) {
@@ -277,9 +306,17 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         }
     }
 
+    override fun onPause() {
+        controller
+        super.onPause()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
+        AddItemPhotoDialog.newInstance().apply {
+            listener = null
+        }
         _viewDataBinding = null
     }
 }

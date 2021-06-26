@@ -24,6 +24,8 @@
     <string name="failure_api">Opsss! Failure API. Try again</string>
     <string name="failure_capture_image_user">Failure Capture Image User</string>
     <string name="error_api_configuration">Error API</string>
+    <string name="switch_gallery">Gallery</string>
+    <string name="switch_image_day">Image day</string>
 
     <!-- Gallery Fragment -->
     <string name="configuration_gallery">Configuration Gallery</string>
@@ -108,6 +110,7 @@
     <!-- Menu  -->
     <string name="timeline">Timeline</string>
     <string name="gallery_bottom">Gallery</string>
+    <string name="image_day">Image Day</string>
     <string name="configuration">Configuration</string>
     <string name="configuration_gallery_menu">Configuration Gallery</string>
     <string name="edit">Edit</string>
@@ -135,7 +138,5 @@
     <string name="note_add_failure">Opsss! Failure API. Try again</string>
     <string name="note_delete">Note delete successful</string>
     <string name="note_delete_failure">Delete Note Failure</string>
-
-
 
 </resources>

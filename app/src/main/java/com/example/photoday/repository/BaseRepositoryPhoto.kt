@@ -17,6 +17,4 @@ class BaseRepositoryPhoto(private val repositoryPhoto: FirebasePhoto) {
 
     fun baseRepositoryDeleteImage(date: String) =
         repositoryPhoto.deleteImage(date)
-
-
 }

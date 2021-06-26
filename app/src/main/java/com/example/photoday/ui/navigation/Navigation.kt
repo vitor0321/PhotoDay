@@ -59,8 +59,8 @@ object Navigation {
         itemPhoto: ItemPhoto
     ) {
         TimelineFragmentDirections.actionNavTimelineFragmentToFullScreenPhotoFragment(
-            itemDate = itemPhoto.date,
-            itemPhoto = itemPhoto.photo
+            itemPhoto.date,
+            itemPhoto.photo
         )
             .let(navFragment::navigate)
     }
@@ -71,8 +71,8 @@ object Navigation {
         itemPhoto: ItemPhoto
     ) {
         GalleryFragmentDirections.actionNavGalleryFragmentToFullScreenPhotoFragment(
-            itemDate = itemPhoto.date,
-            itemPhoto = itemPhoto.photo
+            itemPhoto.date,
+            itemPhoto.photo
         )
             .let(navFragment::navigate)
     }
