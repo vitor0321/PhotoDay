@@ -1,6 +1,7 @@
 package com.example.photoday.ui.fragment.configuration
 
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -55,7 +56,7 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
     }
     private val auth: FirebaseAuth by inject()
 
-    var listenerSwitch: SwitchListener? = null
+    lateinit var listenerSwitch: SwitchListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -208,8 +209,13 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
         itemNavigationData.setItemNavigationData(ItemNavigation(check))
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listenerSwitch = context as SwitchListener
+    }
+
     private fun setListener(checked: Boolean) {
-        listenerSwitch?.onSwitchSelected(checked)
+        listenerSwitch.onSwitchSelected(checked)
     }
 
     private fun setItemNavigation(checked: Boolean) {
@@ -250,15 +256,8 @@ class ConfigurationFragment : BaseFragment(), AddItemPhotoDialog.AddItemListener
         this._viewDataBinding = null
     }
 
-    companion object {
-        fun newInstance() = ConfigurationFragment()
-    }
-
-    interface SwitchListener : OnClickListener.Listener {
+    interface SwitchListener {
         fun onSwitchSelected(status: Boolean)
-        override fun _internalCallbackOnClick(sourceId: Int, callbackArg_0: View?) {
-            TODO("Not yet implemented")
-        }
     }
 }
 

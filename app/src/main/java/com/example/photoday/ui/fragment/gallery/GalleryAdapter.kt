@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.photoday.databinding.ItemGalleryFragmentBinding
-import com.example.photoday.ui.adapter.modelAdapter.ItemPhoto
 import com.example.photoday.ui.databinding.data.ItemPhotoData
+import com.example.photoday.ui.model.item.ItemPhoto
 
 class GalleryAdapter(
     private val context: Context,

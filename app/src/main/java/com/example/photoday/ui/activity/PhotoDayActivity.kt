@@ -84,11 +84,6 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        controller
-    }
-
     private fun init() {
         initializeControl()
         getStatusSwitchPreferences()
@@ -231,14 +226,14 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
         photoDialog()
     }
 
-    override fun onSwitchSelected(status: Boolean) {
-        onSwitchGallerySelected(status)
-    }
-
     private fun getStatusSwitchPreferences() {
         viewModel.getStatusSwitchPreferences().apply {
             onSwitchGallerySelected(this)
         }
+    }
+
+    override fun onSwitchSelected(status: Boolean) {
+        onSwitchGallerySelected(status)
     }
 
     private fun onSwitchGallerySelected(switchCheck: Boolean) {
@@ -304,11 +299,6 @@ class PhotoDayActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
             val messageToast = this.getString(messageInt)
             toast(messageToast)
         }
-    }
-
-    override fun onPause() {
-        controller
-        super.onPause()
     }
 
     override fun onDestroy() {
